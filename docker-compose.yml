@@ -1,0 +1,32 @@
+version: '2.4'
+volumes:
+    # we create a shared volume so that the xserver can mount its socket file, and our application container will be able to use it to display
+    xserver-volume:
+services:
+  xserver:
+    image: balenablocks/xserver
+    restart: always
+    privileged: true
+    command: ["-ac"]
+    volumes:
+      # when we start, a UNIX socket is mounted in this directory, for communication to the X server
+      - 'xserver-volume:/tmp/.X11-unix'
+ # toto:
+ #   build: ./toto
+ #   restart: always
+ #   privileged: true
+  kiosk:
+    build: ./kiosk
+    restart: always
+    privileged: true
+    #network_mode: host
+    ports:
+      - 8080:8080
+    volumes:
+      # We will have access to the UNIX socket shared by xserver after it has started up.
+      - 'xserver-volume:/tmp/.X11-unix'
+    environment:
+      # We need to specify which display we want to use for the X server. :0 is the first display that we have plugged in. This because there is no default display specified.
+      - DISPLAY=:0
+      - ELECTRON_ENABLE_HW_ACCELERATION=1
+     # - NO_AT_BRIDGE=1

@@ -1,0 +1,77 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "paths": {
+      "@/components/*": [
+        "src/components/*"
+      ],
+      "@/types/*": [
+        "src/types/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
+      ],
+      "@/data/*": [
+        "data/*"
+      ],
+      "@/providers/*": [
+        "src/providers/*"
+      ],
+      "@/internationalization/*": [
+        "internationalization/*"
+      ],
+      "@/theme/*": [
+        "src/theme/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "baseUrl": "./",
+  "paths": {
+    "@/components/*": [
+      "renderer/src/*"
+    ],
+    "@/types/*": [
+      "src/types/*"
+    ],
+    "@/utils/*": [
+      "src/utils/*"
+    ],
+    "@/data/*": [
+      "data/*"
+    ],
+    "@/providers/*": [
+      "src/providers/*"
+    ],
+    "@/internationalization/*": [
+      "internationalization/*"
+    ],
+    "@/theme/*": [
+      "src/theme/*"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

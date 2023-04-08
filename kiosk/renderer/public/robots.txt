@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://hejtoto.com
+
+# Sitemaps
+Sitemap: https://hejtoto.com/sitemap.xml
