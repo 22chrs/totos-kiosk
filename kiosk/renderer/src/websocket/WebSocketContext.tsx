@@ -1,4 +1,5 @@
 // WebSocketContext.tsx
+
 import { createContext, useContext, useEffect, useState } from "react";
 import WebSocketClient from "@/websocket/websocketClient";
 
@@ -13,8 +14,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVER) {
-      // Create a new WebSocketClient with the environment variable
-      const client = new WebSocketClient();
+      const client = new WebSocketClient("kiosk");
       setWs(client);
 
       return () => {

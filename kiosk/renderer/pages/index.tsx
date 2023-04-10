@@ -40,7 +40,8 @@ const IndexPage = () => {
   const handleClick = () => {
     console.log('Button clicked');
     if (wsClient) {
-      wsClient.send('Sent World');
+      wsClient.send('orchester', 'Hello, Orchester!'); // Send a message to the host (orchester)
+      // wsClient.send('clientB', 'Hello, Client B!'); // Send a message to another client (clientB)
     } else {
       console.log('WebSocket client is not available');
     }
