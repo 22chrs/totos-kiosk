@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useWebSocket } from '@/websocket/WebSocketContext'; // Import useWebSocket hook
 
 import PageLayout from '@/components/page-layout';
 
@@ -8,6 +9,7 @@ import {
 } from '@/components/page-layout/gridLayers';
 import {
   Box,
+  Button,
   Divider,
   Heading,
   Link,
@@ -32,6 +34,17 @@ type Props = {
 const IndexPage = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
+  
+  const wsClient = useWebSocket(); // Use the hook to get the WebSocket client instance
+
+  const handleClick = () => {
+    console.log('Button clicked');
+    if (wsClient) {
+      wsClient.send('Hello World');
+    } else {
+      console.log('WebSocket client is not available');
+    }
+  };
 
   return (
     <PageLayout title='Home' description=''>
@@ -81,6 +94,7 @@ const IndexPage = () => {
         child1={
           <Box>
             <Heading variant='logo'>{t('24-7-barister-robot')}</Heading>
+            <Button onClick={handleClick}>Hello World</Button> // Add onClick event to the button
             <br />
             <Divider />
             <Text>

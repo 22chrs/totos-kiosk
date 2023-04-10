@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
-    "build2": "electron:build -- --dir",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
@@ -35,7 +34,8 @@
     "react-i18next": "^12.2.0",
     "react-icons": "^4.8.0",
     "react-intersection-observer": "^9.4.3",
-    "react-use": "^17.4.0"
+    "react-use": "^17.4.0",
+    "isomorphic-ws": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

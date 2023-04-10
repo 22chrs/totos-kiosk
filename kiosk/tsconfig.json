@@ -21,7 +21,9 @@
       "@/data/*": ["data/*"],
       "@/providers/*": ["src/providers/*"],
       "@/internationalization/*": ["internationalization/*"],
-      "@/theme/*": ["src/theme/*"]
+      "@/theme/*": ["src/theme/*"],
+      "@/src/*": ["src/*"],
+      "@/websocket/*": ["src/websocket/*"]
     },
     "incremental": true
   },

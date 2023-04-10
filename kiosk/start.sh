@@ -9,11 +9,18 @@ while [ ! -e /tmp/.X11-unix/X${DISPLAY#*:} ]; do sleep 0.5; done
 # Set the keyboard layout
 setxkbmap de
 
+#start dbus
+mkdir -p /run/dbus
+dbus-daemon --system --fork
+
 # This stops the CPU performance scaling down
 echo "Setting CPU Scaling Governor to 'performance'"
 echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 
 
+
 #chromium --no-sandbox
 
 chmod +x /opt/toto-1.0.0.AppImage
-/opt/toto-1.0.0.AppImage --no-sandbox
+/opt/toto-1.0.0.AppImage --no-sandbox —use-gl=desktop
+
+# --disable-software-rasterizer

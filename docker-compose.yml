@@ -11,15 +11,15 @@ services:
     volumes:
       # when we start, a UNIX socket is mounted in this directory, for communication to the X server
       - 'xserver-volume:/tmp/.X11-unix'
- # toto:
- #   build: ./toto
- #   restart: always
- #   privileged: true
+  orchester:
+    build: ./orchester
+    restart: always
+    privileged: true
   kiosk:
     build: ./kiosk
     restart: always
     privileged: true
-    #network_mode: host
+    network_mode: host
     ports:
       - 8080:8080
     volumes:

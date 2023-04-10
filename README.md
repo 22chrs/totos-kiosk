@@ -2,7 +2,7 @@
 https://github.com/michyaraque/tauri-boilerplate
 
 
-## make file strutur
-find . \( -path './*/node_modules' -o -path './*/src-tauri/target' -o -path './.git' -path './node_modules' -o -path './app' -o -path './.git' \) -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' > file_structure.txt
+cd /Users/chris/GitDrive/Toto/totos-kiosk
 
-find . \( -path './.next' -o -path './node_modules' -o -path './app' -o -path './public' \) -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' > file_structure.txt
+## make file strutur
+find . \( -path './*/app' -o  -path './*/renderer/public/assets' -o -path './kiosk/renderer/.next' -o -path './*/node_modules' -o -path './*/dist' -o -path './.git' -path './node_modules' -o -path './app' -o -path './.git' \) -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' > file_structure.txt

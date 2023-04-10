@@ -1,0 +1,152 @@
+.
+|____balena.yml
+|____.DS_Store
+|____LICENSE
+|____toto
+| |____README 2.md
+| |____.DS_Store
+| |____Dockerfile
+| |____readme.md
+| |____src
+| | |____requirements.txt
+| | |____UR5Kinematics.py
+| | |____MODELS
+| | | |____detect_faces_video.py
+| | | |____deploy.prototxt.txt
+| | | |____res10_300x300_ssd_iter_140000.caffemodel
+| | |____Face_tracking01.py
+| | |____URBasic
+| | | |____dataLogging.py
+| | | |____manipulation.py
+| | | |____kinematic.py
+| | | |____connectionState.py
+| | | |____realTimeClient.py
+| | | |____dataLog.py
+| | | |______init__.py
+| | | |____rtde.py
+| | | |____dashboard.py
+| | | |____robotConnector.py
+| | | |____urScript.py
+| | | |____robotModel.py
+| | | |____logConfig.xml
+| | | |____rtdeConfigurationDefault.xml
+| | | |____urScriptExt.py
+|____README.md
+|____.dockerignore
+|____.gitignore
+|____.gitattributes
+|____file_structure.txt
+|____docker-compose.yml
+|____kiosk
+| |____renderer
+| | |____internationalization
+| | | |____locales
+| | | | |____de
+| | | | | |____de_DE.json
+| | | | |____en
+| | | | | |____en_US.json
+| | | |____i18n.tsx
+| | |____next.config.mjs
+| | |____next.config.js
+| | |____next-sitemap.config.js
+| | |____next-env.d.ts
+| | |____public
+| | | |____.DS_Store
+| | | |____sitemap-0.xml
+| | | |____sitemap.xml
+| | | |____robots.txt
+| | |____tsconfig.json
+| | |____data
+| | | |____data-example.ts
+| | |____pages
+| | | |____index.tsx
+| | | |____404.tsx
+| | | |____imprint.tsx
+| | | |____about
+| | | | |____sustainability.tsx
+| | | | |____contact.tsx
+| | | | |____jobs.tsx
+| | | | |____feedback.tsx
+| | | | |____about.tsx
+| | | |_____document.tsx
+| | | |____privacy.tsx
+| | | |____service
+| | | | |____pricing.tsx
+| | | | |____dates.tsx
+| | | | |____faqs.tsx
+| | | | |____barista.tsx
+| | | | |____places.tsx
+| | | |_____app.tsx
+| | |____src
+| | | |____types
+| | | | |____type-example.ts
+| | | |____.DS_Store
+| | | |____providers
+| | | | |____provider-example.tsx
+| | | |____utils
+| | | | |____fetcher.ts
+| | | |____components
+| | | | |____page-layout
+| | | | | |____index.tsx
+| | | | | |____padding.tsx
+| | | | | |____animationBoxes.tsx
+| | | | | |____gridLayers.tsx
+| | | | |____dates
+| | | | | |____dates.jsx
+| | | | |____.DS_Store
+| | | | |____forms
+| | | | | |____SignInForm.tsx
+| | | | |____buttons
+| | | | | |____LanguageButton.tsx
+| | | | | |____CustomButtons.tsx
+| | | | | |____ThemeButton.tsx
+| | | | |____funktions
+| | | | | |____random.tsx
+| | | | |____images
+| | | | | |____randomImage.tsx
+| | | | |____layout
+| | | | | |____index.tsx
+| | | | | |____menu
+| | | | | | |____Items.tsx
+| | | | | | |____HeaderMenu.tsx
+| | | | | | |____MobilMenu.tsx
+| | | | | | |____footer.tsx
+| | | | | | |____header.tsx
+| | | | |____logo
+| | | | | |____LogoUniversal.tsx
+| | | | | |____Logo.tsx
+| | | | | |____LogoQuer.tsx
+| | | | | |____LogoUniversalFooter.tsx
+| | | | |____random
+| | | | | |____ExternalLink.tsx
+| | | | | |____Meta.tsx
+| | | | | |____BoxThemeButton.tsx
+| | | | |____pricing
+| | | | | |____pricing.tsx
+| | | |____theme
+| | | | |____fontStyle.tsx
+| | | | |____theme.tsx
+| | | | |____fonts.tsx
+| | | |____constants.ts
+| | | |____websocketClient.js
+| |____.DS_Store
+| |____.env.local
+| |____Dockerfile
+| |____package-lock.json
+| |____package.json
+| |____electron-builder.yml
+| |____tsconfig.json
+| |____.vscode
+| | |____launch.json
+| | |____tasks.json
+| |____main
+| | |____background.ts
+| | |____helpers
+| | | |____create-window.ts
+| | | |____index.ts
+| |____nextron.config.js
+| |____start.sh
+|____orchester
+| |____requirements.txt
+| |____Dockerfile
+| |____main.py
