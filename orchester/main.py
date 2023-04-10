@@ -10,7 +10,9 @@ async def echo(websocket, path):
     
     try:
         async for message in websocket:
-            await websocket.send(message)
+            print(f"Received message: {message}")
+            response = f"Server response: {message}"
+            await websocket.send(response)
     except websockets.ConnectionClosed:
         print("Connection closed gracefully")
     finally:

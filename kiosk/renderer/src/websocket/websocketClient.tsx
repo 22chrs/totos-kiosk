@@ -1,5 +1,4 @@
-// websocketClient.js
-
+// websocketClient.ts
 import WebSocket from "isomorphic-ws";
 
 const serverEnv = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_ENV;
@@ -8,6 +7,8 @@ const serverAddress =
   serverEnv === "local" ? "localhost:8765" : "orchester:8765";
 
 class WebSocketClient {
+  ws: WebSocket;
+
   constructor() {
     console.log(`Connecting to WebSocket server at ${serverAddress}`);
     this.ws = new WebSocket(`ws://${serverAddress}`);
@@ -29,7 +30,7 @@ class WebSocketClient {
     });
   }
 
-  send(message) {
+  send(message: string) {
     if (this.ws.readyState === WebSocket.OPEN) {
       console.log(`Sending message: ${message}`);
       this.ws.send(message);
