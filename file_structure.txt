@@ -46,6 +46,7 @@
 | | | | |____en
 | | | | | |____en_US.json
 | | | |____i18n.tsx
+| | |____.env.local
 | | |____next.config.mjs
 | | |____next.config.js
 | | |____next-sitemap.config.js
@@ -55,6 +56,7 @@
 | | | |____sitemap-0.xml
 | | | |____sitemap.xml
 | | | |____robots.txt
+| | |____.env
 | | |____tsconfig.json
 | | |____data
 | | | |____data-example.ts
@@ -78,6 +80,10 @@
 | | | | |____places.tsx
 | | | |_____app.tsx
 | | |____src
+| | | |____websocket
+| | | | |____websocketClient.tsx
+| | | | |____WebSocketContext.tsx
+| | | | |____WebSocketMessageHandler.tsx
 | | | |____types
 | | | | |____type-example.ts
 | | | |____.DS_Store
@@ -128,9 +134,7 @@
 | | | | |____theme.tsx
 | | | | |____fonts.tsx
 | | | |____constants.ts
-| | | |____websocketClient.js
 | |____.DS_Store
-| |____.env.local
 | |____Dockerfile
 | |____package-lock.json
 | |____package.json

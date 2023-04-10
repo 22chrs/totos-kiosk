@@ -1,7 +1,9 @@
 version: '2.4'
 volumes:
-    # we create a shared volume so that the xserver can mount its socket file, and our application container will be able to use it to display
     xserver-volume:
+networks:
+  custom_network:  # Add this line
+    driver: bridge
 services:
   xserver:
     image: balenablocks/xserver
@@ -9,24 +11,25 @@ services:
     privileged: true
     command: ["-ac"]
     volumes:
-      # when we start, a UNIX socket is mounted in this directory, for communication to the X server
       - 'xserver-volume:/tmp/.X11-unix'
+    networks:  # Add these lines
+      - custom_network
   orchester:
     build: ./orchester
     restart: always
     privileged: true
+    hostname: orchester
+    networks:  # Add these lines
+      - custom_network
   kiosk:
     build: ./kiosk
     restart: always
     privileged: true
-    network_mode: host
-    ports:
-      - 8080:8080
+    hostname: kiosk
     volumes:
-      # We will have access to the UNIX socket shared by xserver after it has started up.
       - 'xserver-volume:/tmp/.X11-unix'
     environment:
-      # We need to specify which display we want to use for the X server. :0 is the first display that we have plugged in. This because there is no default display specified.
       - DISPLAY=:0
-      - ELECTRON_ENABLE_HW_ACCELERATION=1
-     # - NO_AT_BRIDGE=1
+      #- ELECTRON_ENABLE_HW_ACCELERATION=1
+    networks:  # Add these lines
+      - custom_network

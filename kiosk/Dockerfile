@@ -33,9 +33,9 @@ COPY ./start.sh /opt/
 # x11-xkb-utils (German keyboard layout)
 # tzdata (set UTC Time Zone)
 RUN sudo apt update && sudo apt -y install fuse \ 
-    chromium \ 
     tzdata \ 
     x11-xkb-utils 
+#chromium \ 
 
 # Set timezone to Berlin (tzdata required, x11-xkb-utils
 ENV TZ=Europe/Berlin

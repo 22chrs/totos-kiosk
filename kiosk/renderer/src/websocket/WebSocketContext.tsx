@@ -12,13 +12,15 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [ws, setWs] = useState<WebSocketClient | null>(null);
 
   useEffect(() => {
-    // Create a new WebSocketClient with the environment variable
-    const client = new WebSocketClient(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER as string);
-    setWs(client);
+    if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVER) {
+      // Create a new WebSocketClient with the environment variable
+      const client = new WebSocketClient();
+      setWs(client);
 
-    return () => {
-      client.ws.close();
-    };
+      return () => {
+        client.ws.close();
+      };
+    }
   }, []);
 
   return (
