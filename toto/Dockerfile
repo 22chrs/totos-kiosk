@@ -17,4 +17,4 @@ RUN apt clean \
 ENV UDEV=1
 
 # main.py will run when container starts up on the device
-CMD ["python","-u","Face_tracking01.py"]
+CMD ["python","-u","main.py"]

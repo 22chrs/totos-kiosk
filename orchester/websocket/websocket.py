@@ -1,3 +1,5 @@
+# websocket.py (orchestor)
+
 import asyncio
 import websockets
 import os
@@ -29,7 +31,7 @@ async def echo(websocket, path):
 
             if target_alias in clients:
                 target = clients[target_alias]
-                await target.send(data["message"])
+                await target.send(json.dumps({"from": client_alias, "message": data["message"]}))
             else:
                 print(f"No client found with alias: {target_alias}")
     except websockets.ConnectionClosed:
@@ -54,3 +56,23 @@ def start_websocket_server():
         asyncio.get_event_loop().run_forever()
     except Exception as e:
         print(f"WebSocket server failed to start: {e}")
+
+# Function to send a message from the host
+async def send_message_from_host(client_alias, message):
+    if client_alias in clients:
+        target = clients[client_alias]
+        if isinstance(target, HostWebSocket):
+            print("Cannot send message to the host itself")
+        else:
+            try:
+                await target.send(json.dumps({"from": "orchester", "message": message}))
+                print(f"{client_alias}: {message}")
+            except Exception as e:
+                print(f"Error sending message: {e}")
+    else:
+        print(f"No client found with alias: {client_alias}")
+
+# Entry point for the script
+if __name__ == '__main__':
+    # Call the function to start the WebSocket server
+    start_websocket_server()

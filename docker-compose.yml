@@ -1,9 +1,11 @@
 version: '2.4'
 volumes:
     xserver-volume:
+
 networks:
-  custom_network:  # Add this line
+  custom_network:  
     driver: bridge
+
 services:
   xserver:
     image: balenablocks/xserver
@@ -12,15 +14,7 @@ services:
     command: ["-ac"]
     volumes:
       - 'xserver-volume:/tmp/.X11-unix'
-    networks:  # Add these lines
-      - custom_network
-  orchester:
-    build: ./orchester
-    restart: always
-    privileged: true
-    hostname: orchester
-    networks:  # Add these lines
-      - custom_network
+
   kiosk:
     build: ./kiosk
     restart: always
@@ -30,6 +24,21 @@ services:
       - 'xserver-volume:/tmp/.X11-unix'
     environment:
       - DISPLAY=:0
-      #- ELECTRON_ENABLE_HW_ACCELERATION=1
-    networks:  # Add these lines
+    networks:  
+      - custom_network
+
+  orchester:
+    build: ./orchester
+    restart: always
+    privileged: true
+    hostname: orchester
+    networks:  
+      - custom_network
+
+  toto:
+    build: ./toto
+    restart: always
+    privileged: true
+    hostname: toto
+    networks:  
       - custom_network
