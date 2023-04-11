@@ -3,11 +3,8 @@
 |____.DS_Store
 |____LICENSE
 |____toto
-| |____README 2.md
-| |____.DS_Store
-| |____Dockerfile
-| |____readme.md
-| |____src
+| |____totoCam
+| | |____README 2.md
 | | |____requirements.txt
 | | |____UR5Kinematics.py
 | | |____MODELS
@@ -31,14 +28,90 @@
 | | | |____logConfig.xml
 | | | |____rtdeConfigurationDefault.xml
 | | | |____urScriptExt.py
+| |____websocket
+| | |______pycache__
+| | | |____websocket.cpython-311.pyc
+| | |____websocket.py
+| |____.DS_Store
+| |____requirements.txt
+| |____Dockerfile
+| |____readme.md
+| |____main.py
 |____README.md
+|____browser
+| |____balena.yml
+| |____policy.json
+| |____repo.yml
+| |____.DS_Store
+| |____.versionbot
+| | |____CHANGELOG.yml
+| |____CHANGELOG.md
+| |____public-html
+| | |____index.html
+| | |____css
+| | | |____scrolling-nav.css
+| | |____js
+| | | |____scrolling-nav.js
+| | |____logo.svg
+| | |____vendor
+| | | |____jquery-easing
+| | | | |____jquery.easing.compatibility.js
+| | | | |____jquery.easing.js
+| | | | |____jquery.easing.min.js
+| | | |____bootstrap
+| | | | |____css
+| | | | | |____bootstrap.min.css
+| | | | | |____bootstrap-reboot.min.css.map
+| | | | | |____bootstrap.css
+| | | | | |____bootstrap-grid.css.map
+| | | | | |____bootstrap-grid.min.css
+| | | | | |____bootstrap.css.map
+| | | | | |____bootstrap.min.css.map
+| | | | | |____bootstrap-reboot.min.css
+| | | | | |____bootstrap-reboot.css
+| | | | | |____bootstrap-grid.css
+| | | | | |____bootstrap-grid.min.css.map
+| | | | | |____bootstrap-reboot.css.map
+| | | | |____js
+| | | | | |____bootstrap.bundle.js
+| | | | | |____bootstrap.bundle.min.js.map
+| | | | | |____bootstrap.bundle.js.map
+| | | | | |____bootstrap.js
+| | | | | |____bootstrap.bundle.min.js
+| | | | | |____bootstrap.min.js
+| | | | | |____bootstrap.js.map
+| | | | | |____bootstrap.min.js.map
+| | | |____jquery
+| | | | |____jquery.slim.min.js
+| | | | |____jquery.slim.js
+| | | | |____jquery.min.js
+| | | | |____jquery.min.map
+| | | | |____jquery.slim.min.map
+| | | | |____jquery.js
+| |____readme.md
+| |____Dockerfile.template
+| |____.gitignore
+| |____package.json
+| |____VERSION
+| |____logo.png
+| |____.github
+| | |____workflows
+| | | |____flowzone.yml
+| |____src
+| | |____server.js
+| | |____startx.sh
+| | |____start.sh
 |____.dockerignore
 |____.gitignore
 |____.gitattributes
 |____file_structure.txt
 |____docker-compose.yml
 |____kiosk
-| |____renderer
+| |____.DS_Store
+| |____Dockerfile
+| |____dbus.conf
+| |____hejtoto.com
+| | |____.DS_Store
 | | |____internationalization
 | | | |____locales
 | | | | |____de
@@ -47,17 +120,106 @@
 | | | | | |____en_US.json
 | | | |____i18n.tsx
 | | |____.env.local
+| | |____server.js
 | | |____next.config.mjs
-| | |____next.config.js
 | | |____next-sitemap.config.js
 | | |____next-env.d.ts
+| | |____README.md
 | | |____public
-| | | |____.DS_Store
 | | | |____sitemap-0.xml
 | | | |____sitemap.xml
 | | | |____robots.txt
+| | | |____assets
+| | | | |____.DS_Store
+| | | | |____images
+| | | | | |____01.png
+| | | | | |____03.png
+| | | | | |____02.png
+| | | | | |____06.png
+| | | | | |____07.png
+| | | | | |____05.png
+| | | | | |____robotarm
+| | | | | | |____01.jpg
+| | | | | | |____03.jpg
+| | | | | | |____02.jpg
+| | | | | |____04.png
+| | | | | |____midjourney
+| | | | | | |____22chrs_a_series_of_cute_unicorn_like_stickers_of_a_6_axis_robot_2e265171-3a5b-4ab2-a99d-6bcbdfeafac3-Verbessert.jpg
+| | | | | | |____14.jpg
+| | | | | | |____28.jpg
+| | | | | | |____29.jpg
+| | | | | | |____15.jpg
+| | | | | | |____01.jpg
+| | | | | | |____17.jpg
+| | | | | | |____03.jpg
+| | | | | | |____02.jpg
+| | | | | | |____16.jpg
+| | | | | | |____12.jpg
+| | | | | | |____06.jpg
+| | | | | | |____07.jpg
+| | | | | | |____13.jpg
+| | | | | | |____05.jpg
+| | | | | | |____11.jpg
+| | | | | | |____10.jpg
+| | | | | | |____04.jpg
+| | | | | | |____22chrs_a_series_of_cute_stickers_of_a_6_axis_robot_arm_with_cof_2dd6490e-8abc-46a8-836c-e8f43767b049-Verbessert.jpg
+| | | | | | |____21.jpg
+| | | | | | |____09.jpg
+| | | | | | |____22chrs_a_series_of_cute_stickers_of_a_6_axis_robot_arm_with_cof_bace1f09-ffae-4215-8117-5a2f7b3e3c19-Verbessert.jpg
+| | | | | | |____08.jpg
+| | | | | | |____20.jpg
+| | | | | | |____22.jpg
+| | | | | | |____23.jpg
+| | | | | | |____33.jpg
+| | | | | | |____27.jpg
+| | | | | | |____26.jpg
+| | | | | | |____32.jpg
+| | | | | | |____18.jpg
+| | | | | | |____24.jpg
+| | | | | | |____30.jpg
+| | | | | | |____31.jpg
+| | | | | | |____25.jpg
+| | | | | | |____19.jpg
+| | | | | | |____egal.jpg
+| | | | | | |____22chrs_a_series_of_cute_stickers_of_a_6_axis_robot_arm_with_cof_183b0263-1c5a-49d5-84ad-36de67b5dabe-Verbessert.jpg
+| | | | | |____09.png
+| | | | | |____08.png
+| | | | | |____logo
+| | | | | | |____logo-quer.svg
+| | | | | | |____HT.png
+| | | | | | |____Logo.png
+| | | | | | |____logo.svg
+| | | | | | |____HT.svg
+| | | | |____favicon
+| | | | | |____favicon-16x16.png
+| | | | | |____mstile-310x310.png
+| | | | | |____apple-touch-icon-120x120.png
+| | | | | |____favicon-96x96.ico
+| | | | | |____android-icon-192x192.png
+| | | | | |____mstile-70x70.png
+| | | | | |____apple-touch-icon-152x152.png
+| | | | | |____favicon-32x32.ico
+| | | | | |____apple-touch-icon-180x180.png
+| | | | | |____favicon-16x16.ico
+| | | | | |____apple-touch-icon-114x114.png
+| | | | | |____apple-touch-icon-76x76.png
+| | | | | |____favicon-96x96.png
+| | | | | |____apple-touch-icon-57x57.png
+| | | | | |____apple-touch-icon-72x72.png
+| | | | | |____mstile-150x150.png
+| | | | | |____apple-touch-icon-60x60.png
+| | | | | |____apple-touch-icon-144x144.png
+| | | | | |____favicon-32x32.png
+| | |____.prettierrc.json
+| | |____.gitignore
+| | |____package-lock.json
+| | |____package.json
 | | |____.env
+| | |____.gitattributes
 | | |____tsconfig.json
+| | |____.vscode
+| | | |____settings.json
+| | | |____extensions.json
 | | |____data
 | | | |____data-example.ts
 | | |____pages
@@ -79,6 +241,7 @@
 | | | | |____barista.tsx
 | | | | |____places.tsx
 | | | |_____app.tsx
+| | |____.eslintrc.json
 | | |____src
 | | | |____websocket
 | | | | |____websocketClient.tsx
@@ -86,7 +249,6 @@
 | | | | |____WebSocketMessageHandler.tsx
 | | | |____types
 | | | | |____type-example.ts
-| | | |____.DS_Store
 | | | |____providers
 | | | | |____provider-example.tsx
 | | | |____utils
@@ -99,7 +261,6 @@
 | | | | | |____gridLayers.tsx
 | | | | |____dates
 | | | | | |____dates.jsx
-| | | | |____.DS_Store
 | | | | |____forms
 | | | | | |____SignInForm.tsx
 | | | | |____buttons
@@ -134,23 +295,12 @@
 | | | | |____theme.tsx
 | | | | |____fonts.tsx
 | | | |____constants.ts
-| |____.DS_Store
-| |____Dockerfile
-| |____package-lock.json
-| |____package.json
-| |____electron-builder.yml
-| |____tsconfig.json
-| |____.vscode
-| | |____launch.json
-| | |____tasks.json
-| |____main
-| | |____background.ts
-| | |____helpers
-| | | |____create-window.ts
-| | | |____index.ts
-| |____nextron.config.js
 | |____start.sh
 |____orchester
+| |____websocket
+| | |______pycache__
+| | | |____websocket.cpython-311.pyc
+| | |____websocket.py
 | |____requirements.txt
 | |____Dockerfile
 | |____main.py

@@ -1,46 +1,52 @@
-version: '2.4'
+version: '2.1'
 volumes:
-    xserver-volume:
+  xserver-volume:
+  settings:                          # Only required if using PERSISTENT flag (see below)
 
-networks:
-  custom_network:  
-    driver: bridge
+# networks:
+#   custom_network:  
+#     driver: bridge
 
 services:
-  xserver:
-    image: balenablocks/xserver
+  browser:
+    build: ./browser
     restart: always
-    privileged: true
-    command: ["-ac"]
-    networks:  
-      - custom_network
+    privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
+    # network_mode: host
+    # networks:
+    #   - custom_network
     volumes:
-      - 'xserver-volume:/tmp/.X11-unix'
-
-
-  kiosk:
-    build: ./kiosk
-    restart: always
-    privileged: true
-    hostname: kiosk
-    volumes:
-      - 'xserver-volume:/tmp/.X11-unix'
+      - 'settings:/data' # Only required if using PERSISTENT flag (see below)
     environment:
-      - DISPLAY=:0
-    networks:  
-      - custom_network
-    devices:
-      - /dev/dri
-    group_add:
-      - video
+      - LAUNCH_URL=http://app:8081
+      - SHOW_CURSOR=1
+      - ENABLE_GPU=1
+      - KIOSK=1
+     # - LOCAL_HTTP_DELAY=10
+     # - XKB_LAYOUT=de
+     # - FLAGS=--enable-accelerated-video-decode
+  
+  app:
+    build: ./app
+    restart: always
+    privileged: true
+    hostname: app
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+  #ports:
+  #    - "8080:8080"
+    # networks:  
+    #   - custom_network
 
   orchester:
     build: ./orchester
     restart: always
     privileged: true
     hostname: orchester
-    networks:  
-      - custom_network
+    # networks:  
+    #   - custom_network
 
   toto:
     build: ./toto
@@ -49,5 +55,5 @@ services:
     hostname: toto
     environment:
       - WEBSOCKET_SERVER_URI=ws://orchester:8765
-    networks:  
-      - custom_network
+    # networks:  
+    #   - custom_network

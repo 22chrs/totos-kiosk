@@ -45,7 +45,7 @@ async def echo(websocket, path):
         print(f"Client disconnected: {client_alias}")
 
 # Function to start the WebSocket server as host
-def start_websocket_server():
+async def start_websocket_server():
     host = '0.0.0.0'
     port = int(os.environ.get('PORT', 8765))
 
@@ -54,9 +54,8 @@ def start_websocket_server():
     start_server = websockets.serve(echo, host, port)
 
     try:
-        asyncio.get_event_loop().run_until_complete(start_server)
+        await start_server
         print(f"WebSocket server successfully started on {host}:{port}")
-        asyncio.get_event_loop().run_forever()
     except Exception as e:
         print(f"WebSocket server failed to start: {e}")
 

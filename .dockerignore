@@ -11,38 +11,38 @@ toto/totoCam
 
 ### KIOSK
 # dependencies
-kiosk/hejtoto.com/node_modules
-kiosk/hejtoto.com/.pnp
-kiosk/hejtoto.com/.pnp.js
-kiosk/hejtoto.com/yarn.lock
+app/hejtoto.com/node_modules
+app/hejtoto.com/.pnp
+app/hejtoto.com/.pnp.js
+app/hejtoto.com/yarn.lock
 
 # testing
-kiosk/hejtoto.com/coverage
+app/hejtoto.com/coverage
 
 # next.js
-kiosk/hejtoto.com/.next/
-kiosk/hejtoto.com/out/
+app/hejtoto.com/.next/
+app/hejtoto.com/out/
 
 # production
-kiosk/hejtoto.com/build
+app/hejtoto.com/build
 
 # misc
-kiosk/hejtoto.com/.DS_Store
-kiosk/hejtoto.com/*.pem
+app/hejtoto.com/.DS_Store
+app/hejtoto.com/*.pem
 
 # debug
-kiosk/hejtoto.com/npm-debug.log*
-kiosk/hejtoto.com/yarn-debug.log*
-kiosk/hejtoto.com/yarn-error.log*
+app/hejtoto.com/npm-debug.log*
+app/hejtoto.com/yarn-debug.log*
+app/hejtoto.com/yarn-error.log*
 
 # local env files
-kiosk/hejtoto.com/.env.local
-kiosk/hejtoto.com/.env.development.local
-kiosk/hejtoto.com/.env.test.local
-kiosk/hejtoto.com/.env.production.local
+app/hejtoto.com/.env.local
+app/hejtoto.com/.env.development.local
+app/hejtoto.com/.env.test.local
+app/hejtoto.com/.env.production.local
 
 # vercel
-kiosk/hejtoto.com/.vercel
+app/hejtoto.com/.vercel
 
 # package-lock
 #kiosk/hejtoto.com/package-lock.json
