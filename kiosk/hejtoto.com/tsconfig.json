@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "./renderer/",
+    "baseUrl": ".",
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/types/*": ["src/types/*"],
@@ -22,14 +22,11 @@
       "@/providers/*": ["src/providers/*"],
       "@/internationalization/*": ["internationalization/*"],
       "@/theme/*": ["src/theme/*"],
-      "@/src/*": ["src/*"],
       "@/websocket/*": ["src/websocket/*"]
     },
     "incremental": true
   },
   "include": [
-    "app",
-    "dist",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
@@ -40,5 +37,5 @@
     "src/components/buttons/SignInButton.tsx2",
     "src/components/images/image.__"
   ],
-  "exclude": ["node_modules", "renderer/next.config.js", "app", "dist"]
+  "exclude": ["node_modules"]
 }

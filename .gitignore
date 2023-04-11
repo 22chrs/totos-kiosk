@@ -1,6 +1,48 @@
-kiosk/node_modules
-kiosk/dist
-kiosk/*.log
-kiosk/.next
-kiosk/app
-kiosk/renderer/.next
+# kiosk/node_modules
+# kiosk/dist
+# kiosk/*.log
+# kiosk/.next
+# kiosk/app
+# kiosk/renderer/.next
+
+
+
+# dependencies
+kiosk/hejtoto.com/node_modules
+kiosk/hejtoto.com/.pnp
+kiosk/hejtoto.com/.pnp.js
+kiosk/hejtoto.com/yarn.lock
+
+# testing
+kiosk/hejtoto.com/coverage
+
+# next.js
+kiosk/hejtoto.com/.next/
+kiosk/hejtoto.com/out/
+
+# production
+kiosk/hejtoto.com/build
+
+# misc
+kiosk/hejtoto.com/.DS_Store
+kiosk/hejtoto.com/*.pem
+
+# debug
+kiosk/hejtoto.com/npm-debug.log*
+kiosk/hejtoto.com/yarn-debug.log*
+kiosk/hejtoto.com/yarn-error.log*
+
+# local env files
+kiosk/hejtoto.com/.env.local
+kiosk/hejtoto.com/.env.development.local
+kiosk/hejtoto.com/.env.test.local
+kiosk/hejtoto.com/.env.production.local
+
+# vercel
+kiosk/hejtoto.com/.vercel
+
+# package-lock
+kiosk/hejtoto.com/package-lock.json
+
+# VSCode
+#.vscode/

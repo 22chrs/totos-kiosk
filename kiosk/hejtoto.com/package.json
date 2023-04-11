@@ -1,14 +1,14 @@
 {
   "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
-  "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
-  "main": "app/background.js",
   "scripts": {
-    "dev": "nextron",
-    "build": "nextron build",
-    "postinstall": "electron-builder install-app-deps"
+    "dev": "next",
+    "build": "next build",
+    "startLocal": "node server.js",
+    "postbuild": "next-sitemap",
+    "start": "next start",
+    "lint": "next lint",
+    "prettier": "npx prettier {src,pages,data,internationalization}/* --write",
+    "type-check": "tsc"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
@@ -18,14 +18,14 @@
     "chakra-dayzed-datepicker": "^0.2.7",
     "date-fns": "^2.29.3",
     "dayzed": "^3.2.3",
-    "electron-serve": "^1.1.0",
-    "electron-store": "^8.1.0",
+    "express": "^4.17.17",
     "formik": "^2.2.9",
     "framer-motion": "^10.2.3",
     "gray-matter": "^4.0.3",
     "i18next": "^22.4.11",
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.1.1",
+    "isomorphic-ws": "^5.0.0",
     "next": "^13.2.3",
     "next-seo": "^5.15.0",
     "prettier-plugin-organize-imports": "^3.2.2",
@@ -35,20 +35,16 @@
     "react-icons": "^4.8.0",
     "react-intersection-observer": "^9.4.3",
     "react-use": "^17.4.0",
-    "isomorphic-ws": "^5.0.0"
+    "sharp": "^0.32.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
-    "@types/react": "^18.0.26",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "electron": "^21.3.3",
-    "electron-builder": "^23.6.0",
     "eslint": "^8.35.0",
     "eslint-config-next": "^13.2.3",
-    "next": "^13.3.0",
     "next-sitemap": "^4.0.5",
-    "nextron": "^8.5.0",
     "prettier": "^2.8.4",
-    "typescript": "^5.0.4"
+    "typescript": "^4.9.5"
   }
 }

@@ -1,0 +1,22 @@
+{
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "vscode-color-picker.languages": [
+    "python",
+    "javascript",
+    "typescript",
+    "javascript execute",
+    "TypeScript execute"
+  ],
+
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.pathMatcher": "{locale}/{namespace}.json",
+  "i18n-ally.sourceLanguage": "de",
+  "i18n-ally.displayLanguage": "de",
+  "i18n-ally.localesPaths": ["internationalization/locales"],
+  "i18n-ally.editor.preferEditor": true,
+  //"i18n-ally.translate.deepl.apiKey": null
+}
+å

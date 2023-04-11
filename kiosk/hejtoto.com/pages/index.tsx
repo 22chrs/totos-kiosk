@@ -95,7 +95,7 @@ const IndexPage = () => {
         child1={
           <Box>
             <Heading variant='logo'>{t('24-7-barister-robot')}</Heading>
-            <Button onClick={handleClick}>Hello World</Button> // Add onClick event to the button
+            <Button onClick={handleClick}>Hello World</Button> 
             <br />
             <Divider />
             <Text>

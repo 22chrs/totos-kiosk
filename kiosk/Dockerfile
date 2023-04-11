@@ -7,11 +7,12 @@ FROM balenalib/generic-amd64-debian-node:18-bullseye-build AS base_image
 
 WORKDIR /opt/
 
-# copy file system (without .dockerigonre files)
-COPY ./ /opt/
+# copy file system (without the files listed in the .dockerigonre)
+COPY ./hejtoto.com /opt/
+#RUN ls -la
 
 # install dependencies including devDependencies
-RUN npm ci --only=dev
+RUN npm ci 
 
 # build electron app
 RUN npm run build
@@ -24,66 +25,39 @@ RUN npm run build
 FROM balenalib/generic-amd64-debian-node:18-bullseye-run
 
 WORKDIR /opt/
-COPY --from=base_image /opt/dist/toto-1.0.0.AppImage /opt/
+
+# copy the nextjs app
+COPY --from=base_image /opt/next.config.mjs /opt/
+COPY --from=base_image /opt/package.json /opt/
+COPY --from=base_image /opt/package-lock.json /opt/
+COPY --from=base_image /opt/.next /opt/.next
+COPY --from=base_image /opt/public /opt/public
+COPY --from=base_image /opt/server.js /opt/
+
+# copy the start skript and other stuff
 COPY ./start.sh /opt/
 COPY dbus.conf /etc/dbus-1/system.conf
 #RUN dir -s
+
+
+# Install production dependencies only
+RUN npm ci --only=prod
 
 #RUN echo "keyboard-configuration keyboard-configuration/layoutcode select de" | debconf-set-selections
 # fuse (use AppImage)
 # x11-xkb-utils (German keyboard layout)
 # tzdata (set UTC Time Zone)
 # apt-rdepends (dependency list maker)
+# x11-xserver-utils (config xserver)
 RUN sudo apt update && sudo apt install -y fuse \
     tzdata \
     x11-xkb-utils \
     chromium \
-    dbus \
+    dbus-x11 \
+    upower \
+    x11-xserver-utils \
+    netcat \
     apt-rdepends
-
-#RUN apt-rdepends chromium | grep -v "^ " | grep -v -E '(debconf-2.0|gsettings-backend|dbus-session-bus|xdg-desktop-portal-backend)' > dependencies-chromium.list
-#RUN sudo xargs -a dependencies-chromium.list apt install -y
-
-
-# # Create a new user
-# RUN useradd -m appuser
-# # Set ownership and permissions for the new user
-# RUN chown -R appuser:appuser /opt/
-# # Set USER environment variable to the new user
-# ENV USER=appuser
-
-# RUN sudo apt update && sudo apt install -y \
-#     libgtk-3-0 \
-#     libnss3 \
-#     libxss1 \
-#     libasound2 \
-#     libx11-xcb1 \
-#     libdrm2 \
-#     libgbm1 \
-#     libxtst6 \
-#     libxrandr2 \
-#     libatk1.0-0 \
-#     libdbus-1-3 \
-#     libglib2.0-0 \
-#     libexpat1 \
-#     fuse \
-#     tzdata \
-#     dbus \
-#     dbus-x11 \
-#     x11-xkb-utils  \
-#     libgl1-mesa-glx \
-#     libgl1-mesa-dri 
-
-#RUN sudo apt install -y chromium
-
-# # Install debconf-utils and apply the preseed configuration
-# RUN apt-get update && \
-#     apt-get install -y debconf-utils && \
-#     cat /tmp/keyboard_preseed.cfg | debconf-set-selections && \
-#     rm /tmp/keyboard_preseed.cfg
-
-# RUN sudo apt-get install -y \
-#     xserver-xorg-input-evdev 
 
 # Clean up to reduce container size
 RUN apt clean \

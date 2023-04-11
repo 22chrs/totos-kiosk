@@ -20,7 +20,7 @@ services:
 
   kiosk:
     build: ./kiosk
-    #restart: always
+    restart: always
     privileged: true
     hostname: kiosk
     volumes:
@@ -29,6 +29,10 @@ services:
       - DISPLAY=:0
     networks:  
       - custom_network
+    devices:
+      - /dev/dri
+    group_add:
+      - video
 
   orchester:
     build: ./orchester

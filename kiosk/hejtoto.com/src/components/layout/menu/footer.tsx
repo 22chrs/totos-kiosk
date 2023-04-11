@@ -95,7 +95,7 @@ export default function Footer() {
 
           <HStack py='2' h={9}>
             <Icon as={FaInstagram} />
-            <Link isExternal href="chrome://gpu/" className='myItem'>
+            <Link isExternal href={INSTA} className='myItem'>
               <ButtonText text='Instagram' />
             </Link>
           </HStack>
