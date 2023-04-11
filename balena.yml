@@ -1,6 +1,6 @@
 name: huhu-toto-app
 type: sw.application
-version: 3.0.4
+version: 4.0.4
 joinable: false
 description: >-
   Totos Kiosk
