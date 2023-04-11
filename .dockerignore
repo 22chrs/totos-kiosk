@@ -1,15 +1,11 @@
-# kiosk/node_modules
-# kiosk/dist
-# kiosk/*.log
-# kiosk/.next
-# kiosk/app
-# kiosk/renderer/.next
-# kiosk/renderer/.env.local
+### ORCHESTER
+orchester/env/
 
 ### TOTO
 toto/totoCam
+toto/env/
 
-### KIOSK
+### APP
 # dependencies
 app/hejtoto.com/node_modules
 app/hejtoto.com/.pnp

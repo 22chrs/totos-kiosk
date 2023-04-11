@@ -1,20 +1,13 @@
-version: '2.1'
+version: '2.4'
 volumes:
   xserver-volume:
   settings:                          # Only required if using PERSISTENT flag (see below)
-
-# networks:
-#   custom_network:  
-#     driver: bridge
 
 services:
   browser:
     build: ./browser
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
-    # network_mode: host
-    # networks:
-    #   - custom_network
     volumes:
       - 'settings:/data' # Only required if using PERSISTENT flag (see below)
     environment:
@@ -35,18 +28,12 @@ services:
       - "8081:8081"
     environment:
       - PORT=8081
-  #ports:
-  #    - "8080:8080"
-    # networks:  
-    #   - custom_network
 
   orchester:
     build: ./orchester
     restart: always
     privileged: true
     hostname: orchester
-    # networks:  
-    #   - custom_network
 
   toto:
     build: ./toto
@@ -55,5 +42,3 @@ services:
     hostname: toto
     environment:
       - WEBSOCKET_SERVER_URI=ws://orchester:8765
-    # networks:  
-    #   - custom_network
