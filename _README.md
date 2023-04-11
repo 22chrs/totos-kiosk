@@ -1,7 +1,3 @@
-# Boilerplate and Starter for Tauri with TauriJS, ReactJS +18, Vite, Typescript, Zustand and Chakra-UI
-https://github.com/michyaraque/tauri-boilerplate
-
-
 cd /Users/chris/GitDrive/Toto/totos-kiosk
 
 ## make file strutur

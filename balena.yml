@@ -1,9 +1,9 @@
-name: huhu-toto-app
+name: hej-toto-app
 type: sw.application
-version: 4.0.4
+version: 5.0.0
 joinable: false
 description: >-
-  Totos Kiosk
+  Hej Toto App
 assets:
   repository:
     type: blob.asset
@@ -14,8 +14,8 @@ assets:
     data:
       url: 'https://raw.githubusercontent.com/balena-io-examples/balena-python-hello-world/master/logo.png'
 data:
-  #applicationConfigVariables:
-  # - RESIN_HOST_CONFIG_gpu_mem: 2048
+  applicationConfigVariables:
+   - RESIN_HOST_CONFIG_gpu_mem: 2048
   defaultDeviceType: "generic-amd64"
   supportedDeviceTypes:
     - generic-amd64
