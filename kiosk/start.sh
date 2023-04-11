@@ -1,4 +1,4 @@
-#start.sh
+#!/bin/sh
 
 # https://github.com/balena-labs-projects/xserver
 # We are going to wait for the UNIX socket to be mounted before trying to start the application. This will prevent us from going into a crash loop before xserver is ready. See more info here: https://github.com/balenablocks/xserver#waiting-for-xserver-to-start
@@ -10,12 +10,13 @@ while ! xset -q; do sleep 0.5; done
 # Set the keyboard layout
 setxkbmap de
 
-#start dbus
-#mkdir -p /run/dbus
-#dbus-daemon --system --fork
-#sudo dbus-daemon --config-file=/etc/dbus-1/system.conf --fork
-
-# Use dbus-launch instead
+# dbus
+rm -f /run/dbus/pid
+# Create the /run/dbus directory if it does not exist
+mkdir -p /run/dbus
+# Start the system D-Bus daemon
+dbus-daemon --system --fork
+# Use dbus-launch
 export $(dbus-launch)
 
 # This stops the CPU performance scaling down
@@ -25,6 +26,5 @@ echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 npm run startLocal
 while ! nc -z localhost 3000; do sleep 1; done
 
-chromium --kiosk --no-sandbox --disable-dev-shm-usage http://localhost:3000 
+exec chromium --kiosk --no-sandbox --disable-dev-shm-usage http://localhost:3000 
 #chromium --kiosk --no-sandbox --disable-dev-shm-usage --disable-infobars --incognito http://localhost:3000 
-echo "Chromium started."

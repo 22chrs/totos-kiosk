@@ -53,6 +53,7 @@ RUN sudo apt update && sudo apt install -y fuse \
     tzdata \
     x11-xkb-utils \
     chromium \
+    dbus \
     dbus-x11 \
     upower \
     x11-xserver-utils \
