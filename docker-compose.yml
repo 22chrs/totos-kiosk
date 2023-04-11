@@ -12,8 +12,11 @@ services:
     restart: always
     privileged: true
     command: ["-ac"]
+    #networks:  
+    #  - custom_network
     volumes:
       - 'xserver-volume:/tmp/.X11-unix'
+
 
   kiosk:
     build: ./kiosk
@@ -40,5 +43,7 @@ services:
     restart: always
     privileged: true
     hostname: toto
+    environment:
+      - WEBSOCKET_SERVER_URI=ws://orchester:8765
     networks:  
       - custom_network

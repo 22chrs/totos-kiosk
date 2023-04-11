@@ -26,12 +26,15 @@ async def echo(websocket, path):
         # Iterate over incoming messages from the client
         async for message in websocket:
             data = json.loads(message)
-            print(f"{client_alias}: {data['message']}")
             target_alias = data["target"]
 
             if target_alias in clients:
                 target = clients[target_alias]
                 await target.send(json.dumps({"from": client_alias, "message": data["message"]}))
+                if target_alias == "orchester":
+                    print(f"{client_alias}: {data['message']}")
+                else:
+                    print(f"Message from {client_alias} to {target_alias}: {data['message']}")
             else:
                 print(f"No client found with alias: {target_alias}")
     except websockets.ConnectionClosed:

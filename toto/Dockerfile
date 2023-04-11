@@ -1,10 +1,10 @@
 # Python base image
-FROM balenalib/generic-amd64-debian-python:3.7-bullseye-build
+FROM balenalib/generic-amd64-debian-python:3.7-bullseye-run
 
 WORKDIR /opt/
 
 # This will copy all files in our root to the working directory in the container
-COPY /src/ /opt/
+COPY ./ /opt/
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt

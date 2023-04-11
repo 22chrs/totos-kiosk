@@ -26,25 +26,67 @@ FROM balenalib/generic-amd64-debian-node:18-bullseye-build
 WORKDIR /opt/
 COPY --from=base_image /opt/dist/toto-1.0.0.AppImage /opt/
 COPY ./start.sh /opt/
+COPY ./keyboard_preseed.cfg /tmp/
 #RUN dir -s
 
 #RUN echo "keyboard-configuration keyboard-configuration/layoutcode select de" | debconf-set-selections
 # fuse (use AppImage)
 # x11-xkb-utils (German keyboard layout)
 # tzdata (set UTC Time Zone)
-RUN sudo apt update && sudo apt -y install fuse \ 
-    tzdata \ 
-    x11-xkb-utils 
+# libnss3 (electron dependency)
+#RUN sudo apt update && sudo apt -y install fuse \ 
+#    tzdata \ 
+#    libnss3 \
+#    x11-xkb-utils 
 #chromium \ 
+
+# Create a new user
+RUN useradd -m appuser
+# Set ownership and permissions for the new user
+RUN chown -R appuser:appuser /opt/
+# Set USER environment variable to the new user
+ENV USER=appuser
+
+RUN sudo apt update && sudo apt install -y \
+    libgtk-3-0 \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libx11-xcb1 \
+    libdrm2 \
+    libgbm1 \
+    libxtst6 \
+    libxrandr2 \
+    libatk1.0-0 \
+    libdbus-1-3 \
+    libglib2.0-0 \
+    libexpat1 \
+    fuse \
+    tzdata \
+    dbus \
+    dbus-x11 \
+    x11-xkb-utils  \
+    libgl1-mesa-glx \
+    libgl1-mesa-dri 
+
+# Install debconf-utils and apply the preseed configuration
+RUN apt-get update && \
+    apt-get install -y debconf-utils && \
+    cat /tmp/keyboard_preseed.cfg | debconf-set-selections && \
+    rm /tmp/keyboard_preseed.cfg
+
+RUN sudo apt-get install -y \
+    xserver-xorg-input-evdev 
+
+# Clean up to reduce container size
+RUN apt clean \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Set timezone to Berlin (tzdata required, x11-xkb-utils
 ENV TZ=Europe/Berlin
 # Create symbolic link
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Clean up to reduce container size
-RUN apt clean \
-    && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=production \
     # this is specific for balena, to let the startup script know we want to use all udev devices (mouse, keyboard, etc)

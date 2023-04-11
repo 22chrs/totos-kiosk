@@ -3,6 +3,7 @@
 import asyncio
 import websockets
 import json
+import os
 
 websocket_global = None
 
@@ -51,7 +52,7 @@ async def send_message(target: str, message: str) -> bool:
 
 # Main function to handle WebSocket connection
 async def websocket_main():
-    uri = "ws://localhost:8765"
+    uri = os.environ.get("WEBSOCKET_SERVER_URI", "ws://localhost:8765")
     alias = "toto"
 
     while True:
