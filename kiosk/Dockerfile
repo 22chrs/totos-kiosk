@@ -26,7 +26,7 @@ FROM balenalib/generic-amd64-debian-node:18-bullseye-run
 WORKDIR /opt/
 COPY --from=base_image /opt/dist/toto-1.0.0.AppImage /opt/
 COPY ./start.sh /opt/
-COPY ./keyboard_preseed.cfg /tmp/
+COPY dbus.conf /etc/dbus-1/system.conf
 #RUN dir -s
 
 #RUN echo "keyboard-configuration keyboard-configuration/layoutcode select de" | debconf-set-selections
@@ -38,6 +38,7 @@ RUN sudo apt update && sudo apt install -y fuse \
     tzdata \
     x11-xkb-utils \
     chromium \
+    dbus \
     apt-rdepends
 
 #RUN apt-rdepends chromium | grep -v "^ " | grep -v -E '(debconf-2.0|gsettings-backend|dbus-session-bus|xdg-desktop-portal-backend)' > dependencies-chromium.list

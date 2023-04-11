@@ -9,11 +9,13 @@ while [ ! -e /tmp/.X11-unix/X${DISPLAY#*:} ]; do sleep 0.5; done
 # Set the keyboard layout
 setxkbmap de
 
-# Add a 5-second delay before starting the app for the xserver to start
+# Add a delay before starting the app for the xserver to start
 sleep 10
 
-# Start D-Bus system message bus
-#dbus-daemon --system
+#start dbus
+mkdir -p /run/dbus
+#dbus-daemon --system --fork
+sudo dbus-daemon --config-file=/etc/dbus-1/system.conf --fork
 
 # This stops the CPU performance scaling down
 echo "Setting CPU Scaling Governor to 'performance'"
@@ -27,7 +29,7 @@ echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 #sudo -u appuser /opt/toto-1.0.0.AppImage --no-sandbox --use-gl=desktop
 
 chmod +x /opt/toto-1.0.0.AppImage
-/opt/toto-1.0.0.AppImage --disable-gpu --no-sandbox 
+/opt/toto-1.0.0.AppImage --no-sandbox —use-gl=desktop
 #—use-gl=desktop
 
 
