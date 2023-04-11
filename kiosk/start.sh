@@ -13,7 +13,7 @@ setxkbmap de
 sleep 10
 
 # Start D-Bus system message bus
-dbus-daemon --system
+#dbus-daemon --system
 
 # This stops the CPU performance scaling down
 echo "Setting CPU Scaling Governor to 'performance'"
@@ -23,8 +23,12 @@ echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 #chromium --no-sandbox
 
 # Install and start the electron application
+#chmod +x /opt/toto-1.0.0.AppImage
+#sudo -u appuser /opt/toto-1.0.0.AppImage --no-sandbox --use-gl=desktop
+
 chmod +x /opt/toto-1.0.0.AppImage
-sudo -u appuser /opt/toto-1.0.0.AppImage --no-sandbox --use-gl=desktop
+/opt/toto-1.0.0.AppImage --disable-gpu --no-sandbox 
+#—use-gl=desktop
 
 
 # --disable-software-rasterizer
