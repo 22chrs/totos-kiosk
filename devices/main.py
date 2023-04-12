@@ -1,7 +1,4 @@
-# main.py (devices)
-
 import asyncio
-from websocket.websocket import websocket_main, send_message
 from usbserial.usbserial import UsbSerialManager
 
 # Entry point for the script
@@ -10,7 +7,7 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
 
     # Create a UsbSerialManager instance to handle Teensy devices
-    usb_manager = UsbSerialManager()
+    usb_manager = UsbSerialManager(vid=0x16C0, pid=0x0483, baudrate=115200, timeout=0.1)
 
     # Define a coroutine that periodically sends messages to Teensy devices
     async def send_periodically():
@@ -18,18 +15,13 @@ if __name__ == '__main__':
             print("send_periodically() called")
             # Send "Hello, World!" to the Teensy devices
             usb_manager.send_message("Motorsteuerung_A", "Hello, World!")
-            usb_manager.send_message("Motorsteuerung_B", "Hello, World!")
+            #usb_manager.send_message("Motorsteuerung_B", "Hello, World!")
 
-            # Wait for 15 seconds before sending the next message
+            # Wait for 5 seconds before sending the next message
             await asyncio.sleep(5)
-            #await send_message("kiosk", "Hallo Kiosk! (by devices)")
-            #await send_message("orchester", "Hallo Orchester! (by devices)")
 
-    # Run the websocket_main() function in the background
-    loop.create_task(websocket_main())
+    async def main():
+        await usb_manager.discover_devices()
+        await send_periodically()
 
-    # Run the send_periodically() coroutine in the background
-    loop.create_task(send_periodically())
-
-    # Run the event loop indefinitely
-    loop.run_forever()
+    loop.run_until_complete(main())

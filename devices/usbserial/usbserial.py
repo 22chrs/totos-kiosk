@@ -1,88 +1,72 @@
 import asyncio
 import serial
+import time
 from serial.tools import list_ports
 
 class DeviceSerial:
-    # Constructor: initializes the serial device with the given device information
-    def __init__(self, device_info, timeout=1):
-        self.port = self._get_device_port(device_info)
-        self.alias = device_info["alias"]
-        self.baudrate = device_info["baudrate"]
+    def __init__(self, port, baudrate, timeout, alias_timeout=5):
+        self.port = port
+        self.baudrate = baudrate
         self.timeout = timeout
+        self.alias_timeout = alias_timeout
+        self.device_info = {'port': port, 'alias': None}
         self.serial_connection = None
+        self.received_ack = asyncio.Event()
 
-    @staticmethod
-    def _get_device_port(device_info):
-        vid, pid = device_info["vid"], device_info["pid"]
-
-        for port_info in list_ports.comports():
-            if (port_info.vid, port_info.pid) == (vid, pid):
-                return port_info.device
-
-        raise ValueError(f"{device_info['name']} device not found")
-
-    def connect(self):
+    async def connect(self):
         try:
-            self.serial_connection = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            print(f"Connected to {self.alias} on port {self.port}")
+            self.serial_connection = serial.Serial(self.device_info['port'], self.baudrate, timeout=self.timeout)
+            print(f"Connected to device at {self.device_info['port']}")
+            self.serial_connection.write("REQUEST_ALIAS\n".encode())  # Send REQUEST_ALIAS command
         except Exception as e:
-            print(f"Error connecting to {self.alias}: {e}")
+            print(f"Error connecting to {self.device_info['port']}: {str(e)}")
+            return
 
-    def disconnect(self):
-        if self.serial_connection:
-            self.serial_connection.close()
-            print(f"Disconnected from {self.alias}")
+        await self.receive_initial_alias()
 
-    def send_data(self, data):
-        if self.serial_connection:
-            try:
-                self.serial_connection.write(data.encode())
-            except Exception as e:
-                print(f"Error sending data to {self.alias}: {e}")
+    async def receive_initial_alias(self):
+        start_time = time.time()
+        while True:
+            current_time = time.time()
+            if current_time - start_time > self.alias_timeout:
+                print("Alias timeout reached.")
+                break
 
-    def read_data(self):
-        if self.serial_connection:
-            try:
+            if self.serial_connection.in_waiting > 0:
+                print("Serial data available.")
                 data = self.serial_connection.readline().decode().strip()
-                return data
-            except Exception as e:
-                print(f"Error reading data from {self.alias}: {e}")
-        return None
-    
-    async def wait_for_acknowledgment(self):
-        if self.serial_connection:
-            while True:
-                data = self.read_data()
-                if data and data.startswith("ACK:"):
-                    return data[4:]
-                await asyncio.sleep(0.1)  # Add sleep to avoid blocking the event loop
+                if data:
+                    print(f"Received data: {data}")
+                    self.device_info["alias"] = data
+                    break
+            else:
+                print("No serial data available.")
+                await asyncio.sleep(0.1)
 
-# List of supported devices with their VID, PID, baud rate, and alias values
-devices = [
-    {
-        "name": "Teensy 4.1",
-        "vid": 0x16C0,
-        "pid": 0x0483,
-        "baudrate": 9600,
-        "alias": "Motorsteuerung_A",
-    },
-    {
-        "name": "Teensy 4.1",
-        "vid": 0x16C0,
-        "pid": 0x0483,
-        "baudrate": 9600,
-        "alias": "Motorsteuerung_B",
-    },
-]
+    def send_data(self, message):
+        try:
+            self.serial_connection.write((message + '\n').encode())
+        except Exception as e:
+            print(f"Error sending data to {self.device_info['alias']}: {str(e)}")
 
 class UsbSerialManager:
-    def __init__(self):
+    def __init__(self, vid, pid, baudrate, timeout):
+        self.vid = vid
+        self.pid = pid
+        self.baudrate = baudrate
+        self.timeout = timeout
         self.devices = {}
-        for device_info in devices:
-            alias = device_info["alias"]
-            self.devices[alias] = DeviceSerial(device_info)
-            self.devices[alias].connect()
-        asyncio.get_event_loop().create_task(self.wait_for_acknowledgments())
+
+    async def discover_devices(self):
+        available_ports = self._get_ports_with_pid_and_vid(self.vid, self.pid)
+        for port_info in available_ports:
+            device = DeviceSerial(port_info.device, self.baudrate, self.timeout)
+            await device.connect()  # Add parentheses here
+
+
+    def _get_ports_with_pid_and_vid(self, vid, pid):
+        """Return a list of port_info objects for all devices with the given VID and PID."""
+        return [port_info for port_info in list_ports.comports() if (port_info.vid == vid and port_info.pid == pid)]
 
     async def wait_for_acknowledgments(self):
         for device in self.devices.values():
@@ -93,5 +77,8 @@ class UsbSerialManager:
         if alias in self.devices:
             print(f"{alias}: {message}")
             self.devices[alias].send_data(message)
-        else:
-            print(f"Device with alias '{alias}' not found.")
+
+    async def start(self):
+        wait_for_ack_task = asyncio.ensure_future(self.wait_for_acknowledgments())
+        send_periodically_task = asyncio.ensure_future(self.send_periodically())
+        await asyncio.gather(wait_for_ack_task, send_periodically_task)
