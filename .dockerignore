@@ -1,5 +1,6 @@
 ### DEVICES
 devices/env/lib
+devices/CODE-teensy
 
 ### ORCHESTER
 orchester/env/

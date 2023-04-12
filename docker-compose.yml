@@ -35,6 +35,14 @@ services:
     privileged: true
     hostname: orchester
 
+  devices:
+    build: ./devices
+    restart: always
+    privileged: true
+    hostname: devices
+    environment:
+      - WEBSOCKET_SERVER_URI=ws://orchester:8765
+
   toto:
     build: ./toto
     restart: always

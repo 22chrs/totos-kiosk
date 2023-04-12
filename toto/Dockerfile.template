@@ -2,7 +2,7 @@
 
 ARG PYTHON_VERSION="3.7"
 ARG DEBIAN_VERSION="bullseye"
-FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${PYTHON_VERSION}-${DEBIAN_VERSION}-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-python:${PYTHON_VERSION}-${DEBIAN_VERSION}-run
 WORKDIR /opt/
 
 # This will copy all files in our root to the working directory in the container
