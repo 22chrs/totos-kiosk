@@ -1,3 +1,4 @@
+import asyncio
 import serial
 from serial.tools import list_ports
 
@@ -47,6 +48,14 @@ class DeviceSerial:
             except Exception as e:
                 print(f"Error reading data from {self.alias}: {e}")
         return None
+    
+    async def wait_for_acknowledgment(self):
+        if self.serial_connection:
+            while True:
+                data = self.read_data()
+                if data and data.startswith("ACK:"):
+                    return data[4:]
+                await asyncio.sleep(0.1)  # Add sleep to avoid blocking the event loop
 
 # List of supported devices with their VID, PID, baud rate, and alias values
 devices = [
@@ -73,9 +82,16 @@ class UsbSerialManager:
             alias = device_info["alias"]
             self.devices[alias] = DeviceSerial(device_info)
             self.devices[alias].connect()
+        asyncio.get_event_loop().create_task(self.wait_for_acknowledgments())
+
+    async def wait_for_acknowledgments(self):
+        for device in self.devices.values():
+            device_ack_alias = await device.wait_for_acknowledgment()
+            print(f"Received acknowledgment from {device_ack_alias}")
 
     def send_message(self, alias, message):
         if alias in self.devices:
+            print(f"{alias}: {message}")
             self.devices[alias].send_data(message)
         else:
             print(f"Device with alias '{alias}' not found.")
