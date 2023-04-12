@@ -10,9 +10,8 @@ orchester/env/lib
 
 
 ### TOTO
-toto/totoCam
 toto/env/lib
-
+toto/ur_log
 
 ### APP
 # dependencies

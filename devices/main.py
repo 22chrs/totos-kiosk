@@ -1,5 +1,5 @@
 import asyncio
-from usbserial.usbserial import UsbSerialManager
+from usbserial.usbserial import UsbSerialManager, DeviceSerial
 
 # Entry point for the script
 if __name__ == '__main__':
@@ -13,6 +13,7 @@ if __name__ == '__main__':
     async def send_periodically():
         while True:
             print("send_periodically() called")
+            #print(f"Device alias: {DeviceSerial.device_info['alias']}")
             # Send "Hello, World!" to the Teensy devices
             usb_manager.send_message("Motorsteuerung_A", "Hello, World!")
             #usb_manager.send_message("Motorsteuerung_B", "Hello, World!")

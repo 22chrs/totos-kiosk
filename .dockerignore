@@ -6,8 +6,8 @@ devices/CODE-teensy
 orchester/env/
 
 ### TOTO
-toto/totoCam
 toto/env/
+toto/ur_log
 
 ### APP
 # dependencies
