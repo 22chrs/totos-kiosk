@@ -1,5 +1,8 @@
-# Python base image
-FROM balenalib/generic-amd64-debian-python:3.7-bullseye-run
+# Dockerfile (orchester)
+
+ARG PYTHON_VERSION="3.11.2"
+ARG DEBIAN_VERSION="bullseye"
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${PYTHON_VERSION}-${DEBIAN_VERSION}-run
 
 WORKDIR /opt/
 
@@ -8,10 +11,6 @@ COPY . .
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Clean up to reduce container size
-RUN apt clean \
-    && rm -rf /var/lib/apt/lists/*
 
 # Enable udevd so that plugged dynamic hardware devices show up in our container.
 ENV UDEV=1

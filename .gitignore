@@ -1,6 +1,10 @@
 .DS_Store
 file_structure.txt
 
+
+### DEVICES
+devices/env/lib
+
 ### ORCHESTER
 orchester/env/lib
 
