@@ -7,8 +7,8 @@ orchester/env/
 
 ### TOTO
 toto/env/
-toto/ur_log
-toto/URSim_VIRTUAL
+toto/ur_log/
+toto/URSim_VIRTUAL/
 
 ### APP
 # dependencies

@@ -19,19 +19,20 @@ import imutils
 from imutils.video import VideoStream
 import math3d as m3d
 
+from findCamera import find_camera_source
+
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
-RASPBERRY_BOOL = False
+camera_source = 0
 # If this is run on a linux system, a picamera will be used.
 # If you are using a linux system, with a webcam instead of a raspberry pi delete the following if-statement
 if sys.platform == "linux":
-    import picamera
-    from picamera.array import PiRGBArray
-    RASPBERRY_BOOL = True
+    device_name_pattern = r"4K\sUSB\sCAMERA\sHD\sUSB\sCAMERA"
+    camera_source = find_camera_source(device_name_pattern)
 
 ROBOT_IP = '192.168.178.83'
-ACCELERATION = 0.9  # Robot acceleration value
-VELOCITY = 0.8  # Robot speed value
+ACCELERATION = 0.3  # Robot acceleration value
+VELOCITY = 0.5  # Robot speed value
 
 # The Joint position the robot starts at
 robot_startposition = (math.radians(-218),
@@ -51,20 +52,21 @@ video_asp_ratio  = video_resolution[0] / video_resolution[1]  # Aspect ration of
 video_viewangle_hor = math.radians(25)  # Camera FOV (field of fiew) angle in radians in horizontal direction
 
 # Variable which scales the robot movement from pixels to meters.
-m_per_pixel = 00.00009  
+m_per_pixel = 00.00001  
+#m_per_pixel = 00.00009  
 
 # Size of the robot view-window
 # The robot will at most move this distance in each direction
-max_x = 0.2
-max_y = 0.2
+max_x = 0.05
+max_y = 0.05
 
 # Maximum Rotation of the robot at the edge of the view window
-hor_rot_max = math.radians(50)
+hor_rot_max = math.radians(20)
 vert_rot_max = math.radians(25)
 
 
-vs = VideoStream(src= 0 ,
-                 usePiCamera= RASPBERRY_BOOL,
+vs = VideoStream(src= camera_source,
+                 usePiCamera= False,
                  resolution=video_resolution,
                  framerate = 13,
                  meter_mode = "backlit",

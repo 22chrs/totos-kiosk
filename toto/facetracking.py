@@ -19,7 +19,12 @@ import imutils
 from imutils.video import VideoStream
 import math3d as m3d
 
+from findCamera import find_camera_source
 
+camera_source = 1
+if sys.platform == "linux":
+    device_name_pattern = r"4K\sUSB\sCAMERA\sHD\sUSB\sCAMERA"
+    camera_source = find_camera_source(device_name_pattern)
 
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
@@ -51,12 +56,12 @@ m_per_pixel = 00.00001
 
 # Size of the robot view-window
 # The robot will at most move this distance in each direction
-max_x = 0.01
-max_y = 0.01
+max_x = 0.05
+max_y = 0.05
 
 # Maximum Rotation of the robot at the edge of the view window
-hor_rot_max = math.radians(10)
-vert_rot_max = math.radians(5)
+hor_rot_max = math.radians(20)
+vert_rot_max = math.radians(25)
 
 
 vs = VideoStream(src= 0 ,
@@ -123,7 +128,7 @@ video_resolution = (640, 480)  # Example value, adjust according to your video r
 video_midpoint = (320, 240)  # Example value, adjust according to your video resolution
 
 # Capture video using webcam or video file
-cap = cv2.VideoCapture(0)  # Use 0 for webcam or replace with the path to a video file
+cap = cv2.VideoCapture(camera_source)  # Use 0 for webcam or replace with the path to a video file
 
 while True:
     ret, frame = cap.read()

@@ -37,27 +37,11 @@ COPY --from=base_image /opt/.env /opt/
 
 # copy the start skript and other stuff
 COPY ./start.sh /opt/
-#COPY dbus.conf /etc/dbus-1/system.conf
 #RUN dir -s
 
 
 # Install production dependencies only
 RUN npm ci --only=prod
-
-#RUN echo "keyboard-configuration keyboard-configuration/layoutcode select de" | debconf-set-selections
-# fuse (use AppImage)
-# x11-xkb-utils (German keyboard layout)
-# tzdata (set UTC Time Zone)
-# apt-rdepends (dependency list maker)
-# x11-xserver-utils (config xserver)
-
-
-# # Clean up to reduce container size
-# RUN apt clean \
-#     && rm -rf /var/lib/apt/lists/*
-
-
-
 
 ENV NODE_ENV=production \
     # this is specific for balena, to let the startup script know we want to use all udev devices (mouse, keyboard, etc)
