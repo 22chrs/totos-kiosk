@@ -12,6 +12,7 @@ orchester/env/lib
 ### TOTO
 toto/env/lib
 toto/ur_log
+toto/URSim_VIRTUAL
 
 ### APP
 # dependencies

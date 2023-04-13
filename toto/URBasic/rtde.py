@@ -36,6 +36,10 @@ import xml.etree.ElementTree as ET
 import time
 import os.path
 
+
+import collections
+collections.Iterable = collections.abc.Iterable
+
 DEFAULT_TIMEOUT = 1.0
 
 class Command:
