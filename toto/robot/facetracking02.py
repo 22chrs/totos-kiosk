@@ -1,39 +1,24 @@
 """
-Face_tracking01
-Python program for realtime face tracking of a Universal Robot (tested with UR5cb)
-Demonstration Video: https://youtu.be/HHb-5dZoPFQ
-Explanation Video: https://www.youtube.com/watch?v=9XCNE0BmtUg
-
 Created by Robin Godwyll
 License: GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html
-
 """
 
-
+# Import necessary libraries
 import URBasic
 import math
-import sys
+import numpy as np
+import os
+os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = "/usr/local/lib/python3.11/site-packages/cv2/qt/plugins"
 import cv2
 import time
 import imutils
 from imutils.video import VideoStream
 import math3d as m3d
 
-from findCamera import find_camera_source
-
-camera_source = 1
-if sys.platform == "linux":
-    device_name_pattern = r"4K\sUSB\sCAMERA\sHD\sUSB\sCAMERA"
-    camera_source = find_camera_source(device_name_pattern)
-
-"""SETTINGS AND VARIABLES ________________________________________________________________"""
-
-
+# Set constants for robot connection, speed, acceleration, and start position
 ROBOT_IP = '192.168.178.83'
-ACCELERATION = 0.1  # Robot acceleration value
-VELOCITY = 0.1  # Robot speed value
-
-# The Joint position the robot starts at
+ACCELERATION = 0.3  # Robot acceleration value
+VELOCITY = 0.5  # Robot speed value
 robot_startposition = (math.radians(-218),
                     math.radians(-63),
                     math.radians(-93),
@@ -41,30 +26,29 @@ robot_startposition = (math.radians(-218),
                     math.radians(88),
                     math.radians(0))
 
-# Path to the face-detection model:
+# Load pre-trained face detection model
 pretrained_model = cv2.dnn.readNetFromCaffe("MODELS/deploy.prototxt.txt", "MODELS/res10_300x300_ssd_iter_140000.caffemodel")
 
-video_resolution = (700, 400)  # resolution the video capture will be resized to, smaller sizes can speed up detection
+# Set video stream resolution and related constants
+video_resolution = (700, 400)
 video_midpoint = (int(video_resolution[0]/2),
                   int(video_resolution[1]/2))
-video_asp_ratio  = video_resolution[0] / video_resolution[1]  # Aspect ration of each frame
-video_viewangle_hor = math.radians(25)  # Camera FOV (field of fiew) angle in radians in horizontal direction
+video_asp_ratio  = video_resolution[0] / video_resolution[1]
+video_viewangle_hor = math.radians(25)
 
-# Variable which scales the robot movement from pixels to meters.
-m_per_pixel = 00.00001  
-#m_per_pixel = 00.00009  
+# Set scaling factor for robot movement
+m_per_pixel = 00.00001
 
-# Size of the robot view-window
-# The robot will at most move this distance in each direction
+# Set size of the robot view-window
 max_x = 0.05
 max_y = 0.05
 
-# Maximum Rotation of the robot at the edge of the view window
+# Set maximum rotation of the robot at the edge of the view window
 hor_rot_max = math.radians(20)
 vert_rot_max = math.radians(25)
 
-
-vs = VideoStream(src= 0 ,
+# Initialize video stream
+vs = VideoStream(src= 0,
                  usePiCamera= False,
                  resolution=video_resolution,
                  framerate = 13,
@@ -75,97 +59,64 @@ vs = VideoStream(src= 0 ,
                  rotation = 0).start()
 time.sleep(0.2)
 
-
-
-"""FUNCTIONS _____________________________________________________________________________"""
-
-
-def find_faces_haar(image, face_cascade, video_midpoint):
-    # Resize the input image
+# Function to find faces in an image using the pre-trained model
+def find_faces_dnn(image):
     frame = image
-    frame = imutils.resize(frame, width=video_resolution[0])
+    frame = imutils.resize(frame, width= video_resolution[0])
+
+    # grab the frame dimensions and convert it to a blob
     (h, w) = frame.shape[:2]
+    blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0,
+                                 (300, 300), (104.0, 177.0, 123.0))
 
-    # Convert the frame to grayscale for the Haar cascade classifier
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # pass the blob through the network and obtain the detections and predictions
+    pretrained_model.setInput(blob)
 
-    # Perform face detection using the Haar cascade classifier
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
-
+    # the following line handles the actual face detection
+    # it is the most computationally intensive part of the entire program
+    # TODO: find a quicker face detection model
+    detections = pretrained_model.forward()
     face_centers = []
-    # Iterate through the detected faces
-    for (x, y, w, h) in faces:
-        startX, startY, endX, endY = x, y, x + w, y + h
+    # loop over the detections
+    for i in range(0, detections.shape[2]):
+        # extract the confidence (i.e., probability) associated with the prediction
+        confidence = detections[0, 0, i, 2]
 
-        # Calculate the center of the face
-        face_center = (int(startX + w / 2), int(startY + h / 2))
+        # filter out weak detections by ensuring the `confidence` is
+        # greater than the minimum confidence
+        if confidence < 0.4:
+            continue
 
-        # Calculate the position of the face center relative to the video midpoint
+        # compute the (x, y)-coordinates of the bounding box for the object
+        box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+        (startX, startY, endX, endY) = box.astype("int")
+
+
+        # draw the bounding box of the face along with the associated probability
+        text = "{:.2f}%".format(confidence * 100)
+        y = startY - 10 if startY - 10 > 10 else startY + 10
+
+        face_center = (int(startX + (endX - startX) / 2), int(startY + (endY - startY) / 2))
         position_from_center = (face_center[0] - video_midpoint[0], face_center[1] - video_midpoint[1])
-
-        # Add the position to the list of face centers
         face_centers.append(position_from_center)
 
-        # Draw a rectangle around the face
-        cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 0, 255), 2)
-
-        # Draw the text "Face" above the rectangle
-        cv2.putText(frame, "Face", (startX, y - 10 if startY - 10 > 10 else startY + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
-
-        # Draw a line from the video midpoint to the face center
+        cv2.rectangle(frame, (startX, startY), (endX, endY),
+                      (0, 0, 255), 2)
+        cv2.putText(frame, text, (startX, y),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+        #cv2.putText(frame, str(position_from_center), face_center, 0, 1, (0, 200, 0))
         cv2.line(frame, video_midpoint, face_center, (0, 200, 0), 5)
-
-        # Draw a circle at the face center
         cv2.circle(frame, face_center, 4, (0, 200, 0), 3)
 
     return face_centers, frame
 
-# Load the Haar cascade for face detection
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-
-# Set the video resolution and midpoint
-video_resolution = (640, 480)  # Example value, adjust according to your video resolution
-video_midpoint = (320, 240)  # Example value, adjust according to your video resolution
-
-# Capture video using webcam or video file
-cap = cv2.VideoCapture(camera_source)  # Use 0 for webcam or replace with the path to a video file
-
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-
-    face_centers, frame = find_faces_haar(frame, face_cascade, video_midpoint)
-    cv2.imshow("Face Detection", frame)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
-
-
-
-
-
+# Function to display the frame with detected faces
 def show_frame(frame):
     cv2.imshow('RobotCamera', frame)
     k = cv2.waitKey(6) & 0xff
 
+# Function to check if the robot movement is within the max_x and max_y limits
 def check_max_xy(xy_coord):
-    """
-    Checks if the face is outside of the predefined maximum values on the lookaraound plane
-
-    Inputs:
-        xy_coord: list of 2 values: x and y value of the face in the lookaround plane.
-            These values will be evaluated against max_x and max_y
-
-    Return Value:
-        x_y: new x and y values
-            if the values were within the maximum values (max_x and max_y) these are the same as the input.
-            if one or both of the input values were over the maximum, the maximum will be returned instead
-    """
-
     x_y = [0, 0]
     #print("xy before conversion: ", xy_coord)
 
@@ -189,9 +140,9 @@ def check_max_xy(xy_coord):
     else:
         raise Exception(" y is wrong somehow", xy_coord[1], max_y)
     #print("xy after conversion: ", x_y)
-
     return x_y
 
+# Function to set the origin of the robot's lookplane
 def set_lookorigin():
     """
     Creates a new coordinate system at the current robot tcp position.
@@ -207,6 +158,7 @@ def set_lookorigin():
     orig = m3d.Transform(position)
     return orig
 
+# Function to move the robot to the position of the detected face
 def move_to_face(list_of_facepos,robot_pos):
     """
     Function that moves the robot to the position of the face
@@ -258,41 +210,43 @@ def move_to_face(list_of_facepos,robot_pos):
 
     return prev_robot_pos
 
-"""FACE TRACKING LOOP ____________________________________________________________________"""
 
-# initialise robot with URBasic
-print("initialising robot")
+
+# Initialize robot with URBasic
 robotModel = URBasic.robotModel.RobotModel()
 robot = URBasic.urScriptExt.UrScriptExt(host=ROBOT_IP,robotModel=robotModel)
 
+# Reset robot errors and move it to the start position
 robot.reset_error()
-print("robot initialised")
 time.sleep(1)
-
-# Move Robot to the midpoint of the lookplane
 robot.movej(q=robot_startposition, a= ACCELERATION, v= VELOCITY )
 
+# Set robot's position and lookplane origin
 robot_position = [0,0]
 origin = set_lookorigin()
 
-robot.init_realtime_control()  # starts the realtime control loop on the Universal-Robot Controller
-time.sleep(1) # just a short wait to make sure everything is initialised
+# Start robot's realtime control
+robot.init_realtime_control()
+time.sleep(1)
 
+# Main face tracking loop
 try:
-    print("starting loop")
     while True:
-
         frame = vs.read()
-        face_positions, new_frame = find_faces_haar(frame)
+        face_positions, new_frame = find_faces_dnn(frame)
         show_frame(new_frame)
+
+        # If faces are detected, move the robot towards the detected face
         if len(face_positions) > 0:
-            robot_position = move_to_face(face_positions,robot_position)
+            robot_position = move_to_face(face_positions, robot_position)
 
     print("exiting loop")
+
+# If the user presses Ctrl+C, close the robot connection
 except KeyboardInterrupt:
     print("closing robot connection")
-    # Remember to always close the robot connection, otherwise it is not possible to reconnect
     robot.close()
 
+# If any other exception occurs, close the robot connection
 except:
     robot.close()

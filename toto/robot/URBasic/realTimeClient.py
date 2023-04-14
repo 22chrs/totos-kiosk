@@ -307,4 +307,8 @@ class RealTimeClient(object):
             time.sleep(0.05)
         self.__sendPrg(prgRest)
         self.__robotModel.rtcProgramRunning = False
+    
         
+    def wait_for_program_finish(self):
+        if self.__thread is not None:
+            self.__thread.join()

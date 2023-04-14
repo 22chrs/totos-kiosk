@@ -3,16 +3,17 @@ file_structure.txt
 
 
 ### DEVICES
-devices/env/lib
+devices/env/
 
 ### ORCHESTER
-orchester/env/lib
+orchester/env/
 
 
 ### TOTO
-toto/env/lib
-toto/ur_log
-toto/URSim_VIRTUAL
+toto/env/
+toto/robot/ur_log/
+toto/robot/URSim_VIRTUAL/
+
 
 ### APP
 # dependencies

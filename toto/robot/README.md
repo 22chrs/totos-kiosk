@@ -84,3 +84,14 @@ TODO
 - [ ] documentation
 - [x] comments
 - [x] add links to libraries and other resources
+
+
+
+ToDo
+- Modifizierung und Erstellung Facetracking Class
+  - [ ] Kamera ist fixiert oder an Roboter
+  - [ ] Funktion: Roboter Face starten
+  - [ ] Funktion: Roboter Face beenden mit Input = Endkoordinate
+- Erstellung Skrip Class
+  - [x] Funktion: Skipt starten und benachrichtigt werden wenn fertig
+- Cleane Main

@@ -12,23 +12,17 @@ License: GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html
 import URBasic
 import math
 import numpy as np
-import sys
+import os
+os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = "/usr/local/lib/python3.11/site-packages/cv2/qt/plugins"
 import cv2
 import time
 import imutils
 from imutils.video import VideoStream
 import math3d as m3d
 
-from findCamera import find_camera_source
 
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
-camera_source = 0
-# If this is run on a linux system, a picamera will be used.
-# If you are using a linux system, with a webcam instead of a raspberry pi delete the following if-statement
-if sys.platform == "linux":
-    device_name_pattern = r"4K\sUSB\sCAMERA\sHD\sUSB\sCAMERA"
-    camera_source = find_camera_source(device_name_pattern)
 
 ROBOT_IP = '192.168.178.83'
 ACCELERATION = 0.3  # Robot acceleration value
@@ -65,7 +59,7 @@ hor_rot_max = math.radians(20)
 vert_rot_max = math.radians(25)
 
 
-vs = VideoStream(src= camera_source,
+vs = VideoStream(src= 0,
                  usePiCamera= False,
                  resolution=video_resolution,
                  framerate = 13,
