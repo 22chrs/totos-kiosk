@@ -11,7 +11,7 @@ orchester/env/
 
 ### TOTO
 toto/env/
-toto/robot/ur_log/
+toto/ur_log/
 toto/robot/URSim_VIRTUAL/
 
 
