@@ -308,7 +308,29 @@ class RealTimeClient(object):
         self.__sendPrg(prgRest)
         self.__robotModel.rtcProgramRunning = False
     
-        
+
+### NEW CODE HERE:
+
     def wait_for_program_finish(self):
         if self.__thread is not None:
             self.__thread.join()
+
+    def sendScript_blocking(self, programName):
+        # Load the script file
+        print("hello")
+        with open(f'./scripts/{programName}.script', 'r') as file:
+            script = file.read()
+        # Send the script
+        self.SendProgram(script)
+        print("script started")
+        self.wait_for_program_finish()
+        print("script finished")
+
+    def sendScript(self, programName):
+        script_thread = threading.Thread(target=self.sendScript_blocking, args=(programName,))
+        script_thread.start()
+
+    def hello():
+        print("hello hello")
+
+### END NEW CODE

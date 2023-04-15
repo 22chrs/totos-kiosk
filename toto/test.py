@@ -1,15 +1,20 @@
-from robot.robotControl import robotControl
-from robot import URBasic
+import URBasic
+import time
+import threading
 
-
-ROBOT_IP = '192.168.178.83'
+ROBOT_IP = "192.168.178.83"
 ACCELERATION = 0.3  # Robot acceleration value
 VELOCITY = 0.5  # Robot speed value
-robot_startposition = [...]  # Define the start position
 
-# Initialize RobotControl
-robot_control = robotControl(ROBOT_IP, ACCELERATION, VELOCITY)
+# Init URBasic
+robotModel = URBasic.robotModel.RobotModel()
+robot = URBasic.urScriptExt.UrScriptExt(host=ROBOT_IP, robotModel=robotModel)
 
-# Send script
+# Create an instance of RealTimeClient
+#robotModel.rt_interface = ROBOT_IP
+#real_time_client = URBasic.realTimeClient.RealTimeClient(robotModel)
+
+
 if __name__ == '__main__':
-    robot_control.send_script('test')
+    robot.hello()
+    #robot.sendScript('test')

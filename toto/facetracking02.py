@@ -27,7 +27,7 @@ robot_startposition = (math.radians(-218),
                     math.radians(0))
 
 # Load pre-trained face detection model
-pretrained_model = cv2.dnn.readNetFromCaffe("MODELS/deploy.prototxt.txt", "MODELS/res10_300x300_ssd_iter_140000.caffemodel")
+pretrained_model = cv2.dnn.readNetFromCaffe("facetracking/deploy.prototxt.txt", "facetracking/res10_300x300_ssd_iter_140000.caffemodel")
 
 # Set video stream resolution and related constants
 video_resolution = (700, 400)
@@ -212,7 +212,8 @@ def move_to_face(list_of_facepos,robot_pos):
 
 
 
-# Initialize robot with URBasic
+# initialise robot with URBasic
+print("initialising robot")
 robotModel = URBasic.robotModel.RobotModel()
 robot = URBasic.urScriptExt.UrScriptExt(host=ROBOT_IP,robotModel=robotModel)
 

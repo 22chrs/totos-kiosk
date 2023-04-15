@@ -9,26 +9,29 @@ License: GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html
 
 """
 
-import sys
-sys.path.append("./robot/URBasic")
-from robot import *
+import URBasic
 import math
 import numpy as np
-import os
-os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = "/usr/local/lib/python3.11/site-packages/cv2/qt/plugins"
+import sys
 import cv2
 import time
 import imutils
 from imutils.video import VideoStream
 import math3d as m3d
 
-
 """SETTINGS AND VARIABLES ________________________________________________________________"""
 
+RASPBERRY_BOOL = False
+# If this is run on a linux system, a picamera will be used.
+# If you are using a linux system, with a webcam instead of a raspberry pi delete the following if-statement
+if sys.platform == "linux":
+    import picamera
+    from picamera.array import PiRGBArray
+    RASPBERRY_BOOL = True
 
-ROBOT_IP = '192.168.178.83'
-ACCELERATION = 0.3  # Robot acceleration value
-VELOCITY = 0.5  # Robot speed value
+ROBOT_IP = '192.168.178.120'
+ACCELERATION = 0.9  # Robot acceleration value
+VELOCITY = 0.8  # Robot speed value
 
 # The Joint position the robot starts at
 robot_startposition = (math.radians(-218),
@@ -39,7 +42,7 @@ robot_startposition = (math.radians(-218),
                     math.radians(0))
 
 # Path to the face-detection model:
-pretrained_model = cv2.dnn.readNetFromCaffe("MODELS/deploy.prototxt.txt", "MODELS/res10_300x300_ssd_iter_140000.caffemodel")
+pretrained_model = cv2.dnn.readNetFromCaffe("facetracking/deploy.prototxt.txt", "facetracking/res10_300x300_ssd_iter_140000.caffemodel")
 
 video_resolution = (700, 400)  # resolution the video capture will be resized to, smaller sizes can speed up detection
 video_midpoint = (int(video_resolution[0]/2),
@@ -48,21 +51,20 @@ video_asp_ratio  = video_resolution[0] / video_resolution[1]  # Aspect ration of
 video_viewangle_hor = math.radians(25)  # Camera FOV (field of fiew) angle in radians in horizontal direction
 
 # Variable which scales the robot movement from pixels to meters.
-m_per_pixel = 00.00001  
-#m_per_pixel = 00.00009  
+m_per_pixel = 00.00009  
 
 # Size of the robot view-window
 # The robot will at most move this distance in each direction
-max_x = 0.05
-max_y = 0.05
+max_x = 0.2
+max_y = 0.2
 
 # Maximum Rotation of the robot at the edge of the view window
-hor_rot_max = math.radians(20)
+hor_rot_max = math.radians(50)
 vert_rot_max = math.radians(25)
 
 
-vs = VideoStream(src= 0,
-                 usePiCamera= False,
+vs = VideoStream(src= 0 ,
+                 usePiCamera= RASPBERRY_BOOL,
                  resolution=video_resolution,
                  framerate = 13,
                  meter_mode = "backlit",
