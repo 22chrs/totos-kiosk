@@ -6,12 +6,12 @@
 #         if self.__thread is not None:
 #             self.__thread.join()
 
-
 import URBasic
 import time
 import threading
 
-ROBOT_IP = "192.168.178.83"
+#ROBOT_IP = "192.168.178.83"
+ROBOT_IP = "192.168.8.124"
 ACCELERATION = 0.3  # Robot acceleration value
 VELOCITY = 0.5  # Robot speed value
 
@@ -23,13 +23,12 @@ robot = URBasic.urScriptExt.UrScriptExt(host=ROBOT_IP, robotModel=robotModel)
 robotModel.rt_interface = ROBOT_IP
 real_time_client = URBasic.realTimeClient.RealTimeClient(robotModel)
 
-
 def sendScript_blocking(programName):
     # Load the script file
     with open(f'./scripts/{programName}.script', 'r') as file:
         script = file.read()
     # Send the script
-    real_time_client.SendProgram(script)
+    #real_time_client.SendProgram(script)
     print("script started")
     real_time_client.wait_for_program_finish()
     print("script finished")

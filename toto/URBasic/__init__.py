@@ -40,3 +40,5 @@ from URBasic.robotModel import RobotModel
 from URBasic.rtde import RTDE
 from URBasic.urScript import UrScript
 from URBasic.urScriptExt import UrScriptExt
+from URBasic.scriptFiles import ScriptFiles
+from URBasic.testClass import TestClass
