@@ -56,12 +56,13 @@ class DeviceSerial:
             print(f"Error sending data to {self.device_info['alias']}: {str(e)}")
 
 class UsbSerialManager:
-    def __init__(self, vid, pid, baudrate, timeout):
+    def __init__(self, vid, pid, baudrate, timeout, required_aliases):
         # Initialize the UsbSerialManager object with given parameters
         self.vid = vid
         self.pid = pid
         self.baudrate = baudrate
         self.timeout = timeout
+        self.required_aliases = required_aliases
         self.devices = {}
     
     def print_object_properties(self):
@@ -71,6 +72,13 @@ class UsbSerialManager:
         print(f"Baudrate: {self.baudrate}")
         print(f"Timeout: {self.timeout}")
         print(f"Devices: {self.devices}")
+    
+    async def check_required_aliases(self):
+        missing_aliases = [alias for alias in self.required_aliases if alias not in self.devices]
+        if missing_aliases:
+            print(f"Error: The following required aliases are not connected: {', '.join(missing_aliases)}")
+        else:
+            print("All required aliases are connected.")
 
     async def discover_devices(self):
         # Discover devices with the specified VID and PID and establish a connection
@@ -98,5 +106,8 @@ class UsbSerialManager:
             self.devices[alias].send_data(message)
 
     async def start(self):
-        # Start the main tasks: waiting for acknowledgments and sending messages periodically
-        wait_for_ack_task = asyncio
+         # Start the main tasks
+        await self.discover_devices()
+        await self.check_required_aliases()
+
+
