@@ -1,4 +1,9 @@
 # main.py (toto)
+# ToDo: GCode senden, hier relative Korrekturkoordinaten senden können
+# ToDo: Live Toto Programm starten -> Abbruch und ohne zu stoppen zu eine Stop Positionfahren und melden sobald Stillstans
+# ToDo: wait (und report) wenn der Robo noch startet
+# ToDo: Packete die noch gesendent werden verstehen
+# ToDo: Facetracking mit Kamera statisch
 
 from websocket.websocket import websocket_main, send_message
 import asyncio
