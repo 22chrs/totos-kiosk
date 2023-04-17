@@ -80,6 +80,9 @@ class UsbSerialManager:
         else:
             print("All required aliases are connected.")
 
+    def all_required_aliases_connected(self):
+        return all(alias in self.devices for alias in self.required_aliases)
+
     async def discover_devices(self):
         # Discover devices with the specified VID and PID and establish a connection
         available_ports = self._get_ports_with_pid_and_vid(self.vid, self.pid)
@@ -100,10 +103,15 @@ class UsbSerialManager:
             print(f"Received acknowledgment from {device_ack_alias}")
 
     def send_message(self, alias, message):
-        # Send a message to the specified device alias
+        # Send a message to the specified device alias only if all required aliases are connected
+        if not self.all_required_aliases_connected():
+            print("Error: Cannot send message, not all required aliases are connected.")
+            return
         if alias in self.devices:
             print(f"{alias}: {message}")
             self.devices[alias].send_data(message)
+        else:
+            print(f"Error: Alias {alias} not found among connected devices.")
 
     async def start(self):
          # Start the main tasks

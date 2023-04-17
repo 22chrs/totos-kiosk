@@ -2,7 +2,7 @@ import asyncio
 from usbserial.usbserial import UsbSerialManager, DeviceSerial
 
 
-teensys = {"Motorsteuerung_A, Motorsteuerung_B"}
+teensys = {"Motorsteuerung_A", "Motorsteuerung_B"}
 
 # Entry point for the script
 if __name__ == '__main__':
