@@ -29,7 +29,7 @@ if sys.platform == "linux":
     from picamera.array import PiRGBArray
     RASPBERRY_BOOL = True
 
-ROBOT_IP = '192.168.178.120'
+ROBOT_IP = '192.168.8.124'
 ACCELERATION = 0.9  # Robot acceleration value
 VELOCITY = 0.8  # Robot speed value
 
