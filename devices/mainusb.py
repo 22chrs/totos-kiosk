@@ -2,7 +2,7 @@ import asyncio
 from usbserial.usbserial import UsbSerialManager, DeviceSerial
 
 
-required_aliases = {"Motorsteuerung_A, Motorsteuerung_B"}
+teensys = {"Motorsteuerung_A, Motorsteuerung_B"}
 
 # Entry point for the script
 if __name__ == '__main__':
@@ -10,7 +10,7 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
 
     # Create a UsbSerialManager instance to handle Teensy devices
-    usb_manager = UsbSerialManager(vid=0x16C0, pid=0x0483, baudrate=115200, timeout=0.1, required_aliases=required_aliases)
+    usb_manager = UsbSerialManager(vid=0x16C0, pid=0x0483, baudrate=115200, timeout=0.1, required_aliases=teensys)
 
     # Define a coroutine that periodically sends messages to Teensy devices
     async def send_periodically():
