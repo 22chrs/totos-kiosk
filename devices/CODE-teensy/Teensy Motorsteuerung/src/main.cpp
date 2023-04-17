@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const String alias = "Motorsteuerung_A"; // Replace with the unique alias for each Teensy
+const String alias = "Motorsteuerung_B"; // Replace with the unique alias for each Teensy
 const int ledPin = 13;                   // Built-in LED pin on Teensy
 
 void setup()

@@ -77,7 +77,7 @@ class UsbSerialManager:
         available_ports = self._get_ports_with_pid_and_vid(self.vid, self.pid)
         for port_info in available_ports:
             device = DeviceSerial(port_info.device, self.baudrate, self.timeout)
-            await device.connect()
+            await device.async_connect()
             if device.device_info['alias']:
                 self.devices[device.device_info['alias']] = device
 
