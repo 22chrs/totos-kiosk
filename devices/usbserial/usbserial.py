@@ -25,6 +25,15 @@ class DeviceSerial:
             return
         self.receive_initial_alias()
 
+    def is_connected(self):
+        if self.serial_connection:
+            try:
+                self.serial_connection.write(b'\n')
+                return True
+            except Exception as e:
+                return False
+        return False
+
     def receive_initial_alias(self):
         # Receive the initial alias from the serial device
         start_time = time.time()
@@ -82,11 +91,32 @@ class UsbSerialManager:
 
     def all_required_aliases_connected(self):
         return all(alias in self.devices for alias in self.required_aliases)
+    
+    def check_device_connections(self):
+        disconnected_aliases = []
+        for alias, device in self.devices.items():
+            if not device.is_connected():
+                disconnected_aliases.append(alias)
+        for alias in disconnected_aliases:
+            print(f"Device '{alias}' has been disconnected.")
+            del self.devices[alias]
+
+    async def check_and_reconnect_devices(self):
+        while True:
+            self.check_device_connections()
+            if not self.all_required_aliases_connected():
+                missing_aliases = [alias for alias in self.required_aliases if alias not in self.devices]
+                print(f"Attempting to reconnect to missing devices: {', '.join(missing_aliases)}")
+                await self.discover_devices()
+            await asyncio.sleep(2)
 
     async def discover_devices(self):
         # Discover devices with the specified VID and PID and establish a connection
         available_ports = self._get_ports_with_pid_and_vid(self.vid, self.pid)
         for port_info in available_ports:
+            # Skip devices that are already connected
+            if any(device.device_info['port'] == port_info.device for device in self.devices.values()):
+                continue
             device = DeviceSerial(port_info.device, self.baudrate, self.timeout)
             await device.async_connect()
             if device.device_info['alias']:
@@ -114,8 +144,11 @@ class UsbSerialManager:
             print(f"Error: Alias {alias} not found among connected devices.")
 
     async def start(self):
-         # Start the main tasks
+        # Start the main tasks
         await self.discover_devices()
         await self.check_required_aliases()
+
+        # Start the check_and_reconnect_devices task
+        asyncio.create_task(self.check_and_reconnect_devices())
 
 

@@ -22,9 +22,7 @@ if __name__ == '__main__':
             #usb_manager.print_object_properties()
             #usb_manager.send_message("Motorsteuerung_B", "Hello, World!")
 
-            await asyncio.sleep(5)
-
-
+            await asyncio.sleep(3)
 
     async def main():
         await usb_manager.start()
