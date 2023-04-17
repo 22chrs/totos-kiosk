@@ -14,7 +14,7 @@ class DeviceSerial:
         self.serial_connection = None
         self.received_ack = asyncio.Event()
 
-    async def connect(self):
+    def connect(self):
         # Connect to the serial device and request its alias
         try:
             self.serial_connection = serial.Serial(self.device_info['port'], self.baudrate, timeout=self.timeout)
@@ -23,9 +23,9 @@ class DeviceSerial:
         except Exception as e:
             print(f"Error connecting to {self.device_info['port']}: {str(e)}")
             return
-        await self.receive_initial_alias()
+        self.receive_initial_alias()
 
-    async def receive_initial_alias(self):
+    def receive_initial_alias(self):
         # Receive the initial alias from the serial device
         start_time = time.time()
         while True:
@@ -39,11 +39,14 @@ class DeviceSerial:
                 if data:
                     print(f"Received alias: {data}")
                     self.device_info["alias"] = data
-                    
                     break
             else:
                 print("Waiting for alias ...")
-                await asyncio.sleep(0.1)
+                time.sleep(0.1)
+
+    async def async_connect(self):
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, self.connect)
 
     def send_data(self, message):
         # Send data to the serial device

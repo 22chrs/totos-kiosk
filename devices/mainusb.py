@@ -12,7 +12,6 @@ if __name__ == '__main__':
     # Define a coroutine that periodically sends messages to Teensy devices
     async def send_periodically():
         while True:
-            print("send_periodically() called")
             #print(f"Device alias: {DeviceSerial.device_info['alias']}")
             # Send "Hello, World!" to the Teensy devices
             usb_manager.send_message("Motorsteuerung_A", "Hello, World!")
@@ -20,7 +19,6 @@ if __name__ == '__main__':
             #usb_manager.print_object_properties()
             #usb_manager.send_message("Motorsteuerung_B", "Hello, World!")
 
-            # Wait for 5 seconds before sending the next message
             await asyncio.sleep(5)
 
 
