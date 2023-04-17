@@ -23,7 +23,6 @@ class DeviceSerial:
         except Exception as e:
             print(f"Error connecting to {self.device_info['port']}: {str(e)}")
             return
-
         await self.receive_initial_alias()
 
     async def receive_initial_alias(self):
@@ -61,6 +60,14 @@ class UsbSerialManager:
         self.baudrate = baudrate
         self.timeout = timeout
         self.devices = {}
+    
+    def print_object_properties(self):
+        # Print the UsbSerialManager object's properties
+        print(f"VID: {self.vid}")
+        print(f"PID: {self.pid}")
+        print(f"Baudrate: {self.baudrate}")
+        print(f"Timeout: {self.timeout}")
+        print(f"Devices: {self.devices}")
 
     async def discover_devices(self):
         # Discover devices with the specified VID and PID and establish a connection
@@ -68,6 +75,8 @@ class UsbSerialManager:
         for port_info in available_ports:
             device = DeviceSerial(port_info.device, self.baudrate, self.timeout)
             await device.connect()
+            if device.device_info['alias']:
+                self.devices[device.device_info['alias']] = device
 
     def _get_ports_with_pid_and_vid(self, vid, pid):
         # Return a list of port_info objects for all devices with the given VID and PID

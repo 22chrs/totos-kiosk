@@ -4,6 +4,7 @@
 # ToDo: wait (und report) wenn der Robo noch startet
 # ToDo: Packete die noch gesendent werden verstehen
 # ToDo: Facetracking mit Kamera statisch
+# ToDo: Connection Close and reopen?
 
 from websocket.websocket import websocket_main, send_message
 import asyncio

@@ -16,10 +16,14 @@ if __name__ == '__main__':
             #print(f"Device alias: {DeviceSerial.device_info['alias']}")
             # Send "Hello, World!" to the Teensy devices
             usb_manager.send_message("Motorsteuerung_A", "Hello, World!")
+
+            #usb_manager.print_object_properties()
             #usb_manager.send_message("Motorsteuerung_B", "Hello, World!")
 
             # Wait for 5 seconds before sending the next message
             await asyncio.sleep(5)
+
+
 
     async def main():
         await usb_manager.discover_devices()
