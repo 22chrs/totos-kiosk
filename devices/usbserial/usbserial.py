@@ -57,7 +57,8 @@ class DeviceSerial:
 
     async def send_periodic_ack(self):
         while True:
-            self.send_data("ACK:" + self.device_info["alias"])
+            if self.serial_connection is not None:
+                self.send_data("ACK:" + self.device_info["alias"])
             await asyncio.sleep(1)
 
     async def async_connect(self):
@@ -66,10 +67,14 @@ class DeviceSerial:
 
     def send_data(self, message):
         # Send data to the serial device
+        if self.serial_connection is None:
+            print(f"Error sending data to {self.device_info['alias']}: Serial connection is None")
+            return
         try:
             self.serial_connection.write((message + '\n').encode())
-        except Exception as e:
+        except serial.SerialException as e:
             print(f"Error sending data to {self.device_info['alias']}: {str(e)}")
+            self.serial_connection = None
 
 class UsbSerialManager:
     def __init__(self, vid, pid, baudrate, timeout, required_aliases):
