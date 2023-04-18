@@ -101,13 +101,20 @@ class UsbSerialManager:
             print(f"Device '{alias}' has been disconnected.")
             del self.devices[alias]
 
-    async def check_and_reconnect_devices(self):
+    async def reconnect_devices(self):
+        # Continuously check for and attempt to reconnect to missing devices
+        all_connected = self.all_required_aliases_connected()
         while True:
             self.check_device_connections()
             if not self.all_required_aliases_connected():
                 missing_aliases = [alias for alias in self.required_aliases if alias not in self.devices]
                 print(f"Attempting to reconnect to missing devices: {', '.join(missing_aliases)}")
                 await self.discover_devices()
+                all_connected = False
+            else:
+                if not all_connected:
+                    print("All required devices are connected back again.")
+                    all_connected = True
             await asyncio.sleep(2)
 
     async def discover_devices(self):
@@ -148,7 +155,7 @@ class UsbSerialManager:
         await self.discover_devices()
         await self.check_required_aliases()
 
-        # Start the check_and_reconnect_devices task
-        asyncio.create_task(self.check_and_reconnect_devices())
+        # Start the reconnect_devices task concurrently
+        asyncio.ensure_future(self.reconnect_devices())
 
 
