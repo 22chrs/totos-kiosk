@@ -30,19 +30,14 @@ void oledClear()
     u8g2.clearBuffer();
 }
 
-void updateOledMessage(String message)
+void sendOledMessage(String message)
 {
-    oledMessage = message;
-}
-
-void oledPrint(bool nextPage)
-{
-    if (nextPage)
+    u8g2.clear();
+    u8g2.firstPage();
+    do
     {
-        if (!u8g2.nextPage())
-            return;
-        u8g2.firstPage();
-    }
-    // Show the incoming message
-    u8g2.drawStr(0, 10, oledMessage.c_str());
+        u8g2.drawStr(0, 10, "Received data:");
+        u8g2.drawStr(0, 20, message.c_str());
+
+    } while (u8g2.nextPage());
 }

@@ -10,7 +10,6 @@ extern String oledMessage;
 
 void setupOled();
 void oledClear();
-void updateOledMessage(String message);
-void oledPrint(bool nextPage);
+void sendOledMessage(String message);
 
 #endif

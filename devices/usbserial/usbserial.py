@@ -55,6 +55,11 @@ class DeviceSerial:
                 print("Waiting for alias ...")
                 time.sleep(0.1)
 
+    async def send_periodic_ack(self):
+        while True:
+            self.send_data("ACK:" + self.device_info["alias"])
+            await asyncio.sleep(1)
+
     async def async_connect(self):
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, self.connect)
@@ -160,4 +165,6 @@ class UsbSerialManager:
         # Start the reconnect_devices task concurrently
         asyncio.ensure_future(self.reconnect_devices())
 
-
+        # Start the send_periodic_ack task concurrently for each connected device
+        for device in self.devices.values():
+            asyncio.ensure_future(device.send_periodic_ack())
