@@ -48,6 +48,8 @@ class DeviceSerial:
                 if data:
                     print(f"Received alias: {data}")
                     self.device_info["alias"] = data
+                    # Send "connected" message after receiving the alias
+                    self.send_data("connected")
                     break
             else:
                 print("Waiting for alias ...")
