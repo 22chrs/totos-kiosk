@@ -22,12 +22,11 @@ if __name__ == '__main__':
             #usb_manager.print_object_properties()
             #usb_manager.send_message("Motorsteuerung_B", "Hello, World!")
 
-            await asyncio.sleep(3)
+            await asyncio.sleep(13)
 
     async def main():
         await usb_manager.start()
         await send_periodically()
 
+    loop.create_task(websocket_main())
     loop.run_until_complete(main())
-    #loop.create_task(websocket_main())
-    loop.create_task(send_periodically())
