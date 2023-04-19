@@ -1,5 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { useWebSocket } from '@/websocket/WebSocketContext'; // Import useWebSocket hook
+import { useContext } from 'react';
+import { DisplayContext } from '@/providers/DisplayContext';
+
+
 
 import PageLayout from '@/components/page-layout';
 
@@ -32,6 +36,7 @@ type Props = {
 };
 
 const IndexPage = () => {
+  const { displayNumber } = useContext(DisplayContext);
   const { t } = useTranslation();
   const { i18n } = useTranslation();
   
@@ -54,7 +59,9 @@ const IndexPage = () => {
         pb='8vh'
         child1={
           <Box>
-            <Heading variant='logo'>Hej Toto!</Heading>
+            <Heading variant="logo">
+              {displayNumber === '1' ? 'Display 1' : 'Display 2'}
+            </Heading>
             <br />
             <Divider />
 

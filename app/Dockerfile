@@ -43,11 +43,11 @@ COPY ./start.sh /opt/
 # Install production dependencies only
 RUN npm ci --only=prod
 
-ENV NODE_ENV=production \
-    # this is specific for balena, to let the startup script know we want to use all udev devices (mouse, keyboard, etc)
-    UDEV=1 \
-    # this is very important, we need to tell our environment that we are going to talk to display 0, which is hosted by the xserver block
-    DISPLAY=:0
+ENV NODE_ENV=production 
+# this is specific for balena, to let the startup script know we want to use all udev devices (mouse, keyboard, etc)
+#UDEV=1 \
+# this is very important, we need to tell our environment that we are going to talk to display 0, which is hosted by the xserver block
+#DISPLAY=:0
 
 # We are running our entrypoint commands through the start.sh script, because we need to do a couple more things outside of just run electron
 CMD ["bash", "/opt/start.sh"]
