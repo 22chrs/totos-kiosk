@@ -11,13 +11,15 @@ services:
     volumes:
       - 'settings:/data' # Only required if using PERSISTENT flag (see below)
     environment:
-      - LAUNCH_URL=http://app:8081
+      - LAUNCH_URL=http://app:8081?display=2
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
-      - KIOSK=0
+      - KIOSK=1
      # - LOCAL_HTTP_DELAY=10
      # - XKB_LAYOUT=de
-     # - FLAGS=--enable-accelerated-video-decode
+     # - FLAGS=--enable-accelerated-video-decode --disable-context-menu --disable-pinch --lang=de
+      - FLAGS=--disable-pinch
+      - WINDOW_SIZE=1980,1080
   
   app:
     build: ./app

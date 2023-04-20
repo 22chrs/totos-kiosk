@@ -200,7 +200,7 @@ const Privacy = () => {
           <Heading variant='h3'>Anschrift und Kontaktdaten</Heading>
 
           <Box>
-            Hej Toto UG i.Gr. (haftungsbeschränkt)
+            Hej Toto UG (haftungsbeschränkt)
             <br />
             Reudnitzer Str. 1 <br />
             04103 Leipzig <br />
@@ -218,9 +218,16 @@ const Privacy = () => {
           <Box>
             <HStack pt='5'>
               <Icon fontSize='xl' as={FiHash} />
-              <Text fontWeight={700}>USt-IdNr.</Text>
+              <Text fontWeight={700}>Angaben zum Unternehmen</Text>
             </HStack>
-            <Text>DE XXX (i.Gr., daher UsID folgt sobald vorhanden.)</Text>
+            <Box>
+              <Text>
+                USt-IdNr.: DE 359 859 979
+                <br />
+                HRB 41379 <br />
+                Amtsgericht Leipzig
+              </Text>
+            </Box>
           </Box>
 
           <Box>

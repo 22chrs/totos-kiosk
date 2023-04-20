@@ -1,5 +1,3 @@
-// _app.tsx
-
 import Layout from '@/components/layout';
 import '@/internationalization/i18n';
 
@@ -20,14 +18,26 @@ const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const displayQueryParam = (router.query.display as string) || '1';
 
-  //at the first render initialRenderComplete is false for hydration error
+  // At the first render initialRenderComplete is false for hydration error
   const [initialRenderComplete, setInitialRenderComplete] =
     useState<boolean>(false);
 
   useEffect(() => {
     setInitialRenderComplete(true);
+
+    // Disable right-click
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+
+    window.addEventListener('contextmenu', handleContextMenu);
+
+    return () => {
+      window.removeEventListener('contextmenu', handleContextMenu);
+    };
   }, []);
-  // to here anti error code
+
+  // To here anti error code
   if (!initialRenderComplete) return <></>;
 
   if (!router.isReady) {
