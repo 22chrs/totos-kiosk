@@ -113,10 +113,8 @@ export const MenuListItem = ({ text, link }) => {
 
 export const MenuButtonFull = ({ text }) => {
   return (
-    <MenuButton>
-      <Button size='md' colorScheme='brand'>
-        {text}
-      </Button>
+    <MenuButton as={Button} size='md' colorScheme='brand'>
+      {text}
     </MenuButton>
   );
 };

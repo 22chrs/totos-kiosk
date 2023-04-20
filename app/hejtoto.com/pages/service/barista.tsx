@@ -62,7 +62,7 @@ const Barista = () => {
             width='700'
             height='700'
             alt='Cover Image'
-            layout='intrinsic'
+            priority
             quality={70}
             src={randomImagesBox()} // Add this line to provide the src prop
           />

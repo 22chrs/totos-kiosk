@@ -5,6 +5,7 @@
 import WebSocket from 'isomorphic-ws';
 
 const serverEnv = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_ENV;
+const websocketServiceEnv = process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV;
 
 const serverAddress =
   serverEnv === 'local' ? 'localhost:8765' : 'orchester:8765';
@@ -18,7 +19,10 @@ class WebSocketClient {
     this.displayNumber = displayNumber;
     this.reconnectInterval = 2000; // Reconnect every 2 seconds
 
-    this.connect();
+    // Only connect when serverEnv is not 'local'
+    if (websocketServiceEnv == 'useWebsocket') {
+      this.connect();
+    }
   }
 
   connect() {

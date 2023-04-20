@@ -20,8 +20,6 @@ const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const displayQueryParam = (router.query.display as string) || '1';
 
-  console.log('displayQueryParam in _app.tsx:', displayQueryParam); // Add this line to log the displayQueryParam
-
   //at the first render initialRenderComplete is false for hydration error
   const [initialRenderComplete, setInitialRenderComplete] =
     useState<boolean>(false);

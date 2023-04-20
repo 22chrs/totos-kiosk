@@ -18,7 +18,7 @@ export const CustomImage = chakra(NextImage, {
     boxShadow: 'xl',
     border: '0px',
     borderColor: 'transparent',
-    placeholder: 'empty', // Change this line
+    placeholder: 'empty',
   },
 
   shouldForwardProp: (prop) =>
@@ -30,9 +30,10 @@ export const CustomImage2 = ({ src, alt }) => {
     <Box borderRadius='1.2rem' boxShadow='xl' overflow='hidden'>
       <NextImage
         width='700'
-        placeholder='empty' // Change this line
+        placeholder='empty'
         height='700'
         alt={alt}
+        priority
         quality={70}
         src={src}
       />

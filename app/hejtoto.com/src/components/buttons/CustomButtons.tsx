@@ -3,7 +3,7 @@ import { Button, Text, useColorModeValue } from '@chakra-ui/react';
 export const ButtonLightFooter = ({ text }) => {
   return (
     <Button
-      as='button'
+      //as='button'
       size='md'
       //colorScheme='brand'
       variant='ghost'
