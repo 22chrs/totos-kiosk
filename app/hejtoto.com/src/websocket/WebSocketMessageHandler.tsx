@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { useWebSocket } from '@/websocket/WebSocketContext';
+import { useEffect } from 'react';
 
 const WebSocketMessageHandler = () => {
   const ws = useWebSocket();
@@ -12,11 +12,11 @@ const WebSocketMessageHandler = () => {
       };
 
       // Handle WebSocket messages in your app
-      ws.ws.addEventListener("message", handleMessage);
+      ws.ws.addEventListener('message', handleMessage);
 
       // Clean up the listener when the component is unmounted
       return () => {
-        ws.ws.removeEventListener("message", handleMessage);
+        ws.ws.removeEventListener('message', handleMessage);
       };
     }
   }, [ws]);

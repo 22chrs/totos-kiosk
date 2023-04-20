@@ -12,6 +12,7 @@ export const DisplayProvider = ({
   children,
   displayNumber,
 }: PropsWithChildren<{ displayNumber: string }>) => {
+  console.log('displayNumber in DisplayProvider:', displayNumber);
   return (
     <DisplayContext.Provider
       value={{
