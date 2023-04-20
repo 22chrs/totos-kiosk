@@ -6,11 +6,14 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Link,
   Menu,
   Stack,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
+
+import NextLink from 'next/link';
+
+import { MagicLink } from '@/components/links/CustomLink';
 
 import { MenuButtonFull, MenuListBrand } from '@/components/layout/menu/Items';
 import { Field, FieldProps, Form, Formik } from 'formik';
@@ -121,7 +124,7 @@ function FormikEmailAndPassword() {
                 />
                 <FormErrorMessage>{form.errors.password}</FormErrorMessage>
                 <FormHelperText>
-                  <Link>Passwort vergessen?</Link>
+                  <MagicLink as={NextLink}>Passwort vergessen?</MagicLink>
                 </FormHelperText>
               </FormControl>
             )}

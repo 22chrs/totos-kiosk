@@ -1,3 +1,4 @@
+import { MagicLink } from '@/components/links/CustomLink';
 import PageLayout from '@/components/page-layout';
 import { Button, Divider, Heading, Text, VStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -9,11 +10,11 @@ const NotFoundPage = () => {
         <Heading>404 Not found</Heading>
         <Divider />
         <Text>The page you&apos;re looking for was not found.</Text>
-        <NextLink href='/' passHref>
+        <MagicLink as={NextLink} href='/' passHref>
           <Button colorScheme='brand' size='md'>
             Return to home
           </Button>
-        </NextLink>
+        </MagicLink>
       </VStack>
     </PageLayout>
   );

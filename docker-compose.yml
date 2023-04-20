@@ -14,7 +14,7 @@ services:
       - LAUNCH_URL=http://app:8081
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
-      - KIOSK=1
+      - KIOSK=0
      # - LOCAL_HTTP_DELAY=10
      # - XKB_LAYOUT=de
      # - FLAGS=--enable-accelerated-video-decode

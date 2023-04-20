@@ -1,10 +1,9 @@
-import { useTranslation } from 'react-i18next';
+import { DisplayContext } from '@/providers/DisplayContext';
 import { useWebSocket } from '@/websocket/WebSocketContext'; // Import useWebSocket hook
 import { useContext } from 'react';
-import { DisplayContext } from '@/providers/DisplayContext';
+import { useTranslation } from 'react-i18next';
 
-
-
+import { MagicLink } from '@/components/links/CustomLink';
 import PageLayout from '@/components/page-layout';
 
 import {
@@ -16,7 +15,6 @@ import {
   Button,
   Divider,
   Heading,
-  Link,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -39,7 +37,7 @@ const IndexPage = () => {
   const { displayNumber } = useContext(DisplayContext);
   const { t } = useTranslation();
   const { i18n } = useTranslation();
-  
+
   const wsClient = useWebSocket(); // Use the hook to get the WebSocket client instance
 
   const handleClick = () => {
@@ -59,7 +57,7 @@ const IndexPage = () => {
         pb='8vh'
         child1={
           <Box>
-            <Heading variant="logo">
+            <Heading variant='logo'>
               {displayNumber === '1' ? 'Display 1' : 'Display 2'}
             </Heading>
             <br />
@@ -69,7 +67,7 @@ const IndexPage = () => {
               <i>Hej Toto</i> {t('is-a-premium')}{' '}
               <strong>{t('vending-machine')}</strong>
               {t('which-offers-high-quality')}{' '}
-              <Link
+              <MagicLink
                 as={NextLink}
                 color={useColorModeValue(
                   'brandColor.lightMode',
@@ -78,7 +76,7 @@ const IndexPage = () => {
                 href='/service/barista'
               >
                 {t('barista-style-coffee')}
-              </Link>
+              </MagicLink>
               {t('featuring-advanced')}
               <strong> {t('robotic-arm')}</strong>
               {t(
@@ -102,7 +100,7 @@ const IndexPage = () => {
         child1={
           <Box>
             <Heading variant='logo'>{t('24-7-barister-robot')}</Heading>
-            <Button onClick={handleClick}>Hello World</Button> 
+            <Button onClick={handleClick}>Hello World</Button>
             <br />
             <Divider />
             <Text>
@@ -114,7 +112,7 @@ const IndexPage = () => {
               {t(
                 'beverages-that-rival-those-from-your-favorite-local-coffee-shop-all-from-the-convenience-of'
               )}{' '}
-              <Link
+              <MagicLink
                 as={NextLink}
                 color={useColorModeValue(
                   'brandColor.lightMode',
@@ -123,7 +121,7 @@ const IndexPage = () => {
                 href='/'
               >
                 <i>Hej Toto</i>
-              </Link>
+              </MagicLink>
               !
             </Text>
           </Box>

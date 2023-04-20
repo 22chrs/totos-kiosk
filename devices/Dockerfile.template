@@ -1,5 +1,7 @@
 # Dockerfile (devices)
 
+#ToDo: Websocket usecontext -> 1. u 2.client je nach context  
+
 # Python base image
 #FROM balenalib/generic-amd64-debian-python:3.11.2-bullseye-run
 

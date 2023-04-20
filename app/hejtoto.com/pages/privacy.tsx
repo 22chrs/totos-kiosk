@@ -1,10 +1,10 @@
+import { MagicLink } from '@/components/links/CustomLink';
 import PageLayout from '@/components/page-layout';
 import {
   Box,
   Heading,
   HStack,
   Icon,
-  Link,
   ListItem,
   Text,
   UnorderedList,
@@ -228,9 +228,9 @@ const Privacy = () => {
               <Icon fontSize='xl' as={FiGlobe} />
               <Text fontWeight={700}>Internetauftritt</Text>
             </HStack>
-            <Link href='https://hejtoto.com' target='_blank'>
+            <MagicLink href='https://hejtoto.com' target='_blank'>
               <Text>www.hejtoto.com</Text>
-            </Link>
+            </MagicLink>
           </Box>
 
           <Box>
@@ -238,9 +238,9 @@ const Privacy = () => {
               <Icon fontSize='xl' as={FiMail} />
               <Text fontWeight={700}>E-Mail Adresse</Text>
             </HStack>
-            <Link href='hej@hejtoto.com' target='_blank'>
+            <MagicLink href='hej@hejtoto.com' target='_blank'>
               <Text>hej@hejtoto.com</Text>
-            </Link>
+            </MagicLink>
           </Box>
 
           <Box>
@@ -385,7 +385,7 @@ const Privacy = () => {
             die Speicherung personenbezogener Daten, die die betroffene Person
             uns für den Newsletterversand erteilt hat, kann jederzeit widerrufen
             werden. Zum Zwecke des Widerrufs der Einwilligung findet sich in
-            jedem Newsletter ein entsprechender Link. Ferner besteht die
+            jedem Newsletter ein entsprechender MagicLinc. Ferner besteht die
             Möglichkeit, sich jederzeit auch direkt auf der Internetseite des
             für die Verarbeitung Verantwortlichen vom Newsletterversand
             abzumelden oder dies dem für die Verarbeitung Verantwortlichen auf
@@ -576,7 +576,7 @@ const Privacy = () => {
             veröffentlichten personenbezogenen Daten verarbeiten, darüber in
             Kenntnis zu setzen, dass die betroffene Person von diesen anderen
             für die Datenverarbeitung Verantwortlichen die Löschung sämtlicher
-            Links zu diesen personenbezogenen Daten oder von Kopien oder
+            MagicLincs zu diesen personenbezogenen Daten oder von Kopien oder
             Replikationen dieser personenbezogenen Daten verlangt hat, soweit
             die Verarbeitung nicht erforderlich ist. Der Mitarbeitende von Hej
             Toto wird im Einzelfall das Notwendige veranlassen.

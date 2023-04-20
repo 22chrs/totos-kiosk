@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext } from 'react';
+import { createContext, PropsWithChildren } from 'react';
 
 type DisplayContextType = {
   displayNumber: string;

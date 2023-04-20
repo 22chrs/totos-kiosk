@@ -1,3 +1,4 @@
+import { MagicLink } from '@/components/links/CustomLink';
 import { availableLanguages } from '@/internationalization/i18n';
 import { GITHUB, INSTA, TIKTOK, YOUTUBE } from 'src/constants';
 
@@ -8,7 +9,6 @@ import {
   GridItem,
   HStack,
   Icon,
-  Link,
   Text,
   useBreakpointValue,
   useColorModeValue,
@@ -76,42 +76,46 @@ export default function Footer() {
       <GridItem colSpan={1}>
         <Box pb={isMobil || isTablet ? '12' : '8'}>
           <HStack justify='left' pb={isMobil || isTablet ? '6' : '8'} h={12}>
-            <Link href='/' as={NextLink} style={{ textDecoration: 'none' }}>
+            <MagicLink
+              href='/'
+              as={NextLink}
+              style={{ textDecoration: 'none' }}
+            >
               <LogoUniversalFooter
                 width='auto'
                 height={40}
                 logoType='Logo'
                 top={1.0}
               />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
             <Icon as={FaTiktok} />
-            <Link isExternal href={TIKTOK} className='myItem'>
+            <MagicLink isExternal href={TIKTOK} className='myItem'>
               <ButtonText text='TikTok' />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
             <Icon as={FaInstagram} />
-            <Link isExternal href={INSTA} className='myItem'>
+            <MagicLink isExternal href={INSTA} className='myItem'>
               <ButtonText text='Instagram' />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
             <Icon as={FaYoutube} />
-            <Link isExternal href={YOUTUBE} className='myItem'>
+            <MagicLink isExternal href={YOUTUBE} className='myItem'>
               <ButtonText text='YouTube' />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
             <Icon as={FaGithub} />
-            <Link isExternal href={GITHUB} className='myItem'>
+            <MagicLink isExternal href={GITHUB} className='myItem'>
               <ButtonText text='GitHub' />
-            </Link>
+            </MagicLink>
           </HStack>
         </Box>
       </GridItem>
@@ -123,21 +127,21 @@ export default function Footer() {
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/about/contact' className='myItem'>
+            <MagicLink as={NextLink} href='/about/contact' className='myItem'>
               <ButtonText text='Say hello!' />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/about/about' className='myItem'>
+            <MagicLink as={NextLink} href='/about/about' className='myItem'>
               <ButtonText text={t('ueber-uns')} />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/about/jobs' className='myItem'>
+            <MagicLink as={NextLink} href='/about/jobs' className='myItem'>
               <ButtonText text={t('karriere')} />
-            </Link>
+            </MagicLink>
           </HStack>
         </Box>
       </GridItem>
@@ -149,27 +153,27 @@ export default function Footer() {
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/service/barista' className='myItem'>
+            <MagicLink as={NextLink} href='/service/barista' className='myItem'>
               <ButtonText text='Barista Café' />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/service/dates' className='myItem'>
+            <MagicLink as={NextLink} href='/service/dates' className='myItem'>
               <ButtonText text={t('veranstaltungen')} />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/service/places' className='myItem'>
+            <MagicLink as={NextLink} href='/service/places' className='myItem'>
               <ButtonText text={t('kollaboration')} />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/service/faqs' className='myItem'>
+            <MagicLink as={NextLink} href='/service/faqs' className='myItem'>
               <ButtonText text='FAQs' />
-            </Link>
+            </MagicLink>
           </HStack>
         </Box>
       </GridItem>
@@ -181,15 +185,15 @@ export default function Footer() {
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/imprint' className='myItem'>
+            <MagicLink as={NextLink} href='/imprint' className='myItem'>
               <ButtonText text={t('impressum')} />
-            </Link>
+            </MagicLink>
           </HStack>
 
           <HStack py='2' h={9}>
-            <Link as={NextLink} href='/privacy' className='myItem'>
+            <MagicLink as={NextLink} href='/privacy' className='myItem'>
               <ButtonText text={t('datenschutz')} />
-            </Link>
+            </MagicLink>
           </HStack>
         </Box>
       </GridItem>

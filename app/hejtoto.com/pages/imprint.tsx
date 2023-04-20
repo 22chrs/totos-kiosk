@@ -1,10 +1,10 @@
+import { MagicLink } from '@/components/links/CustomLink';
 import { useTranslation } from 'react-i18next';
 
 import PageLayout from '@/components/page-layout';
 import { Box, Heading, HStack, Icon, Text } from '@chakra-ui/react';
 
 import { StandardPage } from '@/components/page-layout/padding';
-import Link from 'next/link';
 import {
   FiGlobe,
   FiHash,
@@ -55,9 +55,9 @@ const Impressum = () => {
               <Icon fontSize='xl' as={FiGlobe} />
               <Text fontWeight={700}>Internetauftritt</Text>
             </HStack>
-            <Link href='https://hejtoto.com' target='_blank'>
+            <MagicLink href='https://hejtoto.com' target='_blank'>
               <Text>www.hejtoto.com</Text>
-            </Link>
+            </MagicLink>
           </Box>
 
           <Box>
@@ -65,9 +65,9 @@ const Impressum = () => {
               <Icon fontSize='xl' as={FiMail} />
               <Text fontWeight={700}>E-Mail Adresse</Text>
             </HStack>
-            <Link href='hej@hejtoto.com' target='_blank'>
+            <MagicLink href='hej@hejtoto.com' target='_blank'>
               <Text>hej@hejtoto.com</Text>
-            </Link>
+            </MagicLink>
           </Box>
 
           <Box>

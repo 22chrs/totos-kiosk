@@ -1,6 +1,5 @@
 import {
   Button,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -11,9 +10,11 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
+import { MagicLink } from '@/components/links/CustomLink';
+
 export const MenuHoverButton = ({ text, link, pr }) => {
   return (
-    <Link href={link} as={NextLink}>
+    <MagicLink href={link} as={NextLink}>
       <MenuButton
         pr={pr}
         className='MenuHoverButton'
@@ -41,7 +42,7 @@ export const MenuHoverButton = ({ text, link, pr }) => {
           {text}
         </Text>
       </MenuButton>
-    </Link>
+    </MagicLink>
   );
 };
 
@@ -79,7 +80,7 @@ export const MenuListDropdown = ({ children, text, pr }) => {
 
 export const MenuListItem = ({ text, link }) => {
   return (
-    <Link
+    <MagicLink
       as={NextLink}
       href={link}
       justifyContent='flex-start'
@@ -104,7 +105,7 @@ export const MenuListItem = ({ text, link }) => {
           {text}
         </Text>
       </MenuItem>
-    </Link>
+    </MagicLink>
   );
 };
 

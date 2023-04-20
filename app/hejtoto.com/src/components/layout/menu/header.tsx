@@ -1,10 +1,10 @@
 import HeaderMenu from '@/components/layout/menu/HeaderMenu';
+import { MagicLink } from '@/components/links/CustomLink';
 import {
   Box,
   Grid,
   GridItem,
   HStack,
-  Link,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -39,9 +39,9 @@ const Header = () => {
           w='15vw'
           //bgColor='red.100'
         >
-          <Link href='/' as={NextLink} style={{ textDecoration: 'none' }}>
+          <MagicLink href='/' as={NextLink} style={{ textDecoration: 'none' }}>
             <LogoUniversal width='auto' height={55} logoType='Logo' top='0' />
-          </Link>
+          </MagicLink>
         </GridItem>
 
         <GridItem

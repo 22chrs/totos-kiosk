@@ -1,3 +1,4 @@
+import { MagicLink } from '@/components/links/CustomLink';
 import { useTranslation } from 'react-i18next';
 
 import { CustomImage, randomImagesBox } from '@/components/images/randomImage';
@@ -8,7 +9,6 @@ import {
   Box,
   Divider,
   Heading,
-  Link,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -43,7 +43,7 @@ const Barista = () => {
               {t(
                 'beverages-that-rival-those-from-your-favorite-local-coffee-shop-all-from-the-convenience-of'
               )}{' '}
-              <Link
+              <MagicLink
                 as={NextLink}
                 color={useColorModeValue(
                   'brandColor.lightMode',
@@ -52,7 +52,7 @@ const Barista = () => {
                 href='/'
               >
                 <i>Hej Toto</i>
-              </Link>
+              </MagicLink>
               !
             </Text>
           </Box>
