@@ -19,24 +19,33 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
-  //animation
-
   // Calc Postion of Top for LightSwicht
   const [postionElementY, setPostionElementY] = useState(
     Math.round(window.innerHeight * 0.88)
   );
-  //const [postionElementX, setPostionElementX] = useState(window.innerWidth);
   const [visibilityLightSwicht, setVisibilityLightSwicht] = useState(1);
 
-  const [scrollCalc, setScrollCalc] = useState(0);
+  useEffect(() => {
+    function updatePositionElementY() {
+      setPostionElementY(Math.round(window.innerHeight * 0.88));
+    }
+
+    window.addEventListener('resize', updatePositionElementY);
+    updatePositionElementY(); // update initial position
+
+    return () => {
+      window.removeEventListener('resize', updatePositionElementY);
+    };
+  }, []);
+
   useEffect(() => {
     const scrollHeightMax = getScrollHeight();
     const footerHeight = getElementHeightById('footer');
     const buttonHeight = getElementHeightById('themeButton');
 
-    function handleScroll() {
+    function updateVisibility() {
       const scrollHeight = document.documentElement.scrollTop;
-      const berechnung = Math.round(
+      const calculation = Math.round(
         postionElementY +
           scrollHeight -
           scrollHeightMax +
@@ -44,20 +53,24 @@ const Layout = ({ children }: LayoutProps) => {
           0.5 * buttonHeight
       );
 
-      setScrollCalc(berechnung);
+      if (calculation > 0) {
+        setVisibilityLightSwicht(0);
+      } else {
+        setVisibilityLightSwicht(1);
+      }
     }
 
-    if (scrollCalc > 0) {
-      setVisibilityLightSwicht(0);
-    } else {
-      setVisibilityLightSwicht(1);
-    }
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // get initial scroll height
+    window.addEventListener('resize', updateVisibility);
+    window.addEventListener('scroll', updateVisibility);
+
+    updateVisibility(); // get initial values
+
+    // Cleanup function
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', updateVisibility);
+      window.removeEventListener('resize', updateVisibility);
     };
-  }, [scrollCalc, postionElementY]);
+  }, [postionElementY]);
 
   return (
     <>
@@ -77,22 +90,10 @@ const Layout = ({ children }: LayoutProps) => {
         top={postionElementY}
         position='fixed'
         left='calc(5vw)'
-        //left='calc(50vw - 1.5rem)' // mittig
         opacity={visibilityLightSwicht}
       >
         <ThemeButtonNackt />
       </Box>
-
-      {/* <Box
-        id='themeButton'
-        top='88vh'
-        //top='88vh'
-        position='fixed'
-        left='calc(10vw - 1.5rem)'
-        visibility={isVisibilArrowButton}
-      >
-        <ArrowButton />
-      </Box> */}
 
       <Box id='footer'>
         <Footer />

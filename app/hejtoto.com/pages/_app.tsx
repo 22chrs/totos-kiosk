@@ -1,4 +1,4 @@
-import Layout from '@/components/layout';
+import Layout from '@/components/layout/Layout';
 import '@/internationalization/i18n';
 
 import { useRouter } from 'next/router';

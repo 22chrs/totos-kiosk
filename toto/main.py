@@ -5,6 +5,7 @@
 # ToDo: Packete die noch gesendent werden verstehen
 # ToDo: Facetracking mit Kamera statisch
 # ToDo: Connection Close and reopen?
+# ToDo: fixed IPAdresse am Router oder besser via Bonjour
 
 from websocket.websocket import websocket_main, send_message
 import asyncio
@@ -12,7 +13,9 @@ import math
 import time
 from URBasic import RoboClass
 
-ROBOT_IP = "192.168.8.124"
+ROBOT_IP = "192.168.8.1"
+# Fritz!box: 192.168.178.83
+# MAC ADDRESS: 00:30:D6:21:C5:F4
 ACCELERATION = 0.3  # Robot acceleration value
 VELOCITY = 0.5  # Robot speed value
 

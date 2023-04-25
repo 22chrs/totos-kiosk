@@ -4,6 +4,7 @@ devices/CODE-teensy
 
 ### ORCHESTER
 orchester/env/
+orchester/venv/
 
 ### TOTO
 toto/env/

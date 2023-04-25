@@ -14,7 +14,6 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@fontsource/josefin-sans": "^4.5.12",
     "chakra-dayzed-datepicker": "^0.2.7",
     "date-fns": "^2.29.3",
     "dayzed": "^3.2.3",
