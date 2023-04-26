@@ -26,38 +26,40 @@ export const CustomImage = chakra(NextImage, {
   },
 
   shouldForwardProp: (prop) =>
-    ['src', 'alt', 'width', 'height', 'quality', 'layout'].includes(prop),
+    ['src', 'alt', 'width', 'height', 'quality', 'layout', 'onLoad'].includes(
+      prop
+    ),
 });
 
 export const RandomImage = ({ src, alt }) => {
   const [imageSrc, setImageSrc] = useState(src);
   const [key, setKey] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const variantsImg: Variants = {
     hidden: {
       opacity: 0,
       x: 0,
       y: 0,
-      transition: { duration: 0.3, ease: 'easeIn' },
+      transition: { duration: 0.5, ease: 'easeIn' },
     },
     enter: {
       opacity: 1,
       x: 0,
       y: 0,
-      transition: { duration: 0.3, ease: 'easeIn' },
-    },
-    exit: {
-      opacity: 0,
-      x: 0,
-      y: 0,
-      transition: { duration: 0.3, ease: 'easeIn' },
+      transition: { duration: 0.5, ease: 'easeIn' },
     },
   };
 
   useEffect(() => {
     setImageSrc(src);
     setKey((prevKey) => prevKey + 1);
+    setIsLoaded(false);
   }, [src]);
+
+  const handleImageLoad = () => {
+    setIsLoaded(true);
+  };
 
   return (
     <MotionContainer
@@ -67,14 +69,13 @@ export const RandomImage = ({ src, alt }) => {
       minH={{ base: 'auto', md: '100vh' }}
       px='0'
       initial='hidden'
-      animate='enter'
-      exit='exit'
+      animate={isLoaded ? 'enter' : 'hidden'}
       variants={variantsImg}
       centerContent
       key={key}
     >
       <Box borderRadius='1.2rem' boxShadow='xl' overflow='hidden'>
-        <NextImage
+        <CustomImage
           width='700'
           placeholder='empty'
           height='700'
@@ -82,6 +83,7 @@ export const RandomImage = ({ src, alt }) => {
           priority
           quality={70}
           src={imageSrc}
+          onLoad={handleImageLoad}
         />
       </Box>
     </MotionContainer>
