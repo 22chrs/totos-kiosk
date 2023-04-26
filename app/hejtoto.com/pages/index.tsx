@@ -1,5 +1,6 @@
 import { DisplayContext } from '@/providers/DisplayContext';
 import { useWebSocket } from '@/websocket/WebSocketContext'; // Import useWebSocket hook
+import NextImage from 'next/image';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,11 +21,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
-import {
-  CustomImage2,
-  randomImagesArm,
-  randomImagesBox,
-} from '@/components/images/randomImage';
+import { CustomImage2, randomImagesArm } from '@/components/images/randomImage';
 
 type Props = {
   title: string;
@@ -87,9 +84,13 @@ const IndexPage = () => {
           </Box>
         }
         child2={
-          <CustomImage2
-            alt='Robot arm makes coffee'
-            src={randomImagesBox()} // Add this line to provide the src prop
+          <NextImage
+            width='700'
+            placeholder='empty'
+            height='700'
+            alt='schön'
+            priority
+            src='/assets/images/midjourney/02.jpg'
           />
         }
       />
