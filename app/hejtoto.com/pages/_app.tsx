@@ -10,13 +10,11 @@ import { DisplayProvider } from '@/providers/DisplayContext';
 import { WebSocketProvider } from '@/websocket/WebSocketContext';
 import { AnimatePresence } from 'framer-motion';
 
-import Fonts from '@/theme/fonts';
 import theme from '@/theme/theme';
 import { AppProps } from 'next/app';
 import { useEffect } from 'react';
 
 // Disable right-click function
-const kioskEnv = process.env.KIOSK;
 const disableRightClick = () => {
   document.addEventListener('contextmenu', (event) => {
     event.preventDefault();
@@ -28,25 +26,46 @@ const App = ({ Component, pageProps }: AppProps) => {
   const displayQueryParam = (router.query.display as string) || '1';
 
   useEffect(() => {
-    if (kioskEnv === 'true') {
+    if (process.env.KIOSK === 'true') {
       disableRightClick();
     }
   }, []);
 
-  return (
-    <ChakraProvider theme={theme}>
-      <Fonts />
-      <DisplayProvider displayNumber={displayQueryParam}>
-        <WebSocketProvider>
-          <Layout>
-            <AnimatePresence mode='wait' initial={true}>
-              <Component {...pageProps} key={router.route} />
-            </AnimatePresence>
-          </Layout>
-        </WebSocketProvider>
-      </DisplayProvider>
-    </ChakraProvider>
-  );
+  console.log('Display query param:', displayQueryParam); // Add this line
+  console.log(
+    'WebSocket server env:',
+    process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_ENV
+  ); // Add this line
+  console.log(
+    'WebSocket service env:',
+    process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV
+  ); // Add this line
+
+  const renderContent = () => {
+    if (process.env.WEBSOCKET_SERVICE_ENV === 'false') {
+      return (
+        <Layout>
+          <AnimatePresence mode='wait' initial={true}>
+            <Component {...pageProps} key={router.route} />
+          </AnimatePresence>
+        </Layout>
+      );
+    } else {
+      return (
+        <DisplayProvider displayNumber={displayQueryParam}>
+          <WebSocketProvider>
+            <Layout>
+              <AnimatePresence mode='wait' initial={true}>
+                <Component {...pageProps} key={router.route} />
+              </AnimatePresence>
+            </Layout>
+          </WebSocketProvider>
+        </DisplayProvider>
+      );
+    }
+  };
+
+  return <ChakraProvider theme={theme}>{renderContent()}</ChakraProvider>;
 };
 
 export default App;

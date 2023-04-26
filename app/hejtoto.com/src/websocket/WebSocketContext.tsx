@@ -17,7 +17,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const { displayNumber } = useContext(DisplayContext); // Get displayNumber from DisplayContexts
 
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVER) {
+    if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_ENV) {
       const client = new WebSocketClient('app', displayNumber); // Pass displayNumber here
       setWs(client);
 

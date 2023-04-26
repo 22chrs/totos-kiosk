@@ -22,6 +22,7 @@ app/hejtoto.com/node_modules
 app/hejtoto.com/.pnp
 app/hejtoto.com/.pnp.js
 app/hejtoto.com/yarn.lock
+app/hejtoto.com/.DS_Store
 
 # testing
 app/hejtoto.com/coverage
@@ -43,10 +44,10 @@ app/hejtoto.com/yarn-debug.log*
 app/hejtoto.com/yarn-error.log*
 
 # local env files
-app/hejtoto.com/.env.local
-app/hejtoto.com/.env.development.local
-app/hejtoto.com/.env.test.local
-app/hejtoto.com/.env.production.local
+#app/hejtoto.com/.env.local
+#app/hejtoto.com/.env.development.local
+#app/hejtoto.com/.env.test.local
+#app/hejtoto.com/.env.production.local
 
 # vercel
 app/hejtoto.com/.vercel

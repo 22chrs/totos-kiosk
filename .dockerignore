@@ -42,6 +42,7 @@ app/hejtoto.com/.env.local
 app/hejtoto.com/.env.development.local
 app/hejtoto.com/.env.test.local
 app/hejtoto.com/.env.production.local
+app/hejtoto.com/.env
 
 # vercel
 app/hejtoto.com/.vercel

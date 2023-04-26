@@ -14,7 +14,8 @@ const nextConfig = {
 
   env: {
     KIOSK: process.env.KIOSK,
-    BALENA_APP_ID: process.env.BALENA_APP_ID,
+    NEXT_PUBLIC_WEBSOCKET_SERVER_ENV: process.env.WEBSOCKET_SERVER_ENV,
+    NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV: process.env.WEBSOCKET_SERVICE_ENV,
   },
 };
 

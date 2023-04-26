@@ -33,7 +33,7 @@ COPY --from=base_image /opt/package-lock.json /opt/
 COPY --from=base_image /opt/.next /opt/.next
 COPY --from=base_image /opt/public /opt/public
 COPY --from=base_image /opt/server.js /opt/
-COPY --from=base_image /opt/.env /opt/
+COPY --from=base_image /opt/.env.production /opt/
 
 # copy the start skript and other stuff
 COPY ./start.sh /opt/
