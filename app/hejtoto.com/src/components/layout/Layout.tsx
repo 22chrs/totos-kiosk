@@ -20,9 +20,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   // Calc Postion of Top for LightSwicht
-  const [postionElementY, setPostionElementY] = useState(
-    Math.round(window.innerHeight * 0.9 - getElementHeightById('themeButton'))
-  );
+  const [postionElementY, setPostionElementY] = useState(0);
   const [visibilityLightSwicht, setVisibilityLightSwicht] = useState(0);
 
   useEffect(() => {

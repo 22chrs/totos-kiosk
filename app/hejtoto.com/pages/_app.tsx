@@ -2,7 +2,7 @@ import Layout from '@/components/layout/Layout';
 import '@/internationalization/i18n';
 
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { ChakraProvider } from '@chakra-ui/react';
 
@@ -19,33 +19,6 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   const router = useRouter();
   const displayQueryParam = (router.query.display as string) || '1';
-
-  // At the first render initialRenderComplete is false for hydration error
-  const [initialRenderComplete, setInitialRenderComplete] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    setInitialRenderComplete(true);
-
-    // Disable right-click
-    const handleContextMenu = (e: MouseEvent) => {
-      e.preventDefault();
-    };
-
-    window.addEventListener('contextmenu', handleContextMenu);
-
-    return () => {
-      window.removeEventListener('contextmenu', handleContextMenu);
-    };
-  }, []);
-
-  // To here anti error code
-  if (!initialRenderComplete) return <></>;
-
-  if (!router.isReady) {
-    return null;
-  }
-
   const { displayNumber } = pageProps;
 
   return (
