@@ -21,13 +21,17 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   // Calc Postion of Top for LightSwicht
   const [postionElementY, setPostionElementY] = useState(
-    Math.round(window.innerHeight * 0.88)
+    Math.round(window.innerHeight * 0.9 - getElementHeightById('themeButton'))
   );
-  const [visibilityLightSwicht, setVisibilityLightSwicht] = useState(1);
+  const [visibilityLightSwicht, setVisibilityLightSwicht] = useState(0);
 
   useEffect(() => {
     function updatePositionElementY() {
-      setPostionElementY(Math.round(window.innerHeight * 0.88));
+      setPostionElementY(
+        Math.round(
+          window.innerHeight * 0.9 - getElementHeightById('themeButton')
+        )
+      );
     }
 
     window.addEventListener('resize', updatePositionElementY);

@@ -7,8 +7,8 @@ const styles = {
     body: {
       fontWeight: '400',
       fontSize: 'md',
-
       bg: mode('pageBGColor.lightMode', 'pageBGColor.darkMode')(props),
+      //transition: 'all 3.2s ease-in-out', // Add this line for the transition
     },
   }),
 };

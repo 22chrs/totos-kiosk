@@ -15,6 +15,8 @@ import theme from '@/theme/theme';
 import { AppProps } from 'next/app';
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const [contentVisible, setContentVisible] = useState(false);
+
   const router = useRouter();
   const displayQueryParam = (router.query.display as string) || '1';
 
