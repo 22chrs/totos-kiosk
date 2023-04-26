@@ -1,4 +1,17 @@
-import WebSocket from 'isomorphic-ws';
+// websocketClient.tsx
+
+// only import websocket if not server side rendering
+let WebSocket;
+if (typeof window === 'undefined') {
+  try {
+    WebSocket = require('isomorphic-ws');
+  } catch (error) {
+    console.error('Failed to load isomorphic-ws', error);
+  }
+} else {
+  WebSocket = window.WebSocket;
+}
+//import WebSocket from 'isomorphic-ws';
 
 const serverAddress =
   process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_ENV === 'local'
