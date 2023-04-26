@@ -2,7 +2,6 @@ import Layout from '@/components/layout/Layout';
 import '@/internationalization/i18n';
 
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { ChakraProvider } from '@chakra-ui/react';
 
@@ -14,13 +13,25 @@ import { AnimatePresence } from 'framer-motion';
 import Fonts from '@/theme/fonts';
 import theme from '@/theme/theme';
 import { AppProps } from 'next/app';
+import { useEffect } from 'react';
+
+// Disable right-click function
+const kioskEnv = process.env.KIOSK;
+const disableRightClick = () => {
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+  });
+};
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const [contentVisible, setContentVisible] = useState(false);
-
   const router = useRouter();
   const displayQueryParam = (router.query.display as string) || '1';
-  const { displayNumber } = pageProps;
+
+  useEffect(() => {
+    if (kioskEnv === 'true') {
+      disableRightClick();
+    }
+  }, []);
 
   return (
     <ChakraProvider theme={theme}>

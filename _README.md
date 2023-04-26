@@ -7,3 +7,6 @@ find . \( -path './*/app' -o  -path './kiosk/hejtoto.com/node_modules' -o -path 
 
 ## make file strutur toto
 find . \( -path './env/*' -o -path './robot/ur_log/*' \) -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' > file_structure.txt
+
+## make file strutur toto
+find . \( -path './.next/*' -o -path './node_modules/*' -o -path './public/*' \) -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g' > file_structure.txt

@@ -25,7 +25,7 @@ export const CustomImage = chakra(NextImage, {
     ['src', 'alt', 'width', 'height', 'quality', 'layout'].includes(prop),
 });
 
-export const CustomImage2 = ({ src, alt }) => {
+export const RandomImage = ({ src, alt }) => {
   return (
     <Box borderRadius='1.2rem' boxShadow='xl' overflow='hidden'>
       <NextImage

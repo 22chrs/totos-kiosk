@@ -14,12 +14,22 @@ services:
       - LAUNCH_URL=http://app:8081?display=2
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
-      - KIOSK=1
+      - KIOSK=0
+      - FLAGS= --enable-accelerated-video-decode --disable-context-menu --disable-pinch --lang=de
      # - LOCAL_HTTP_DELAY=10
-     # - XKB_LAYOUT=de
-     # - FLAGS=--enable-accelerated-video-decode --disable-context-menu --disable-pinch --lang=de
-      - FLAGS=--disable-pinch
-      - WINDOW_SIZE=1980,1080
+     # - FLAGS=--disable-pinch
+     # - WINDOW_SIZE=1980,1080
+      - WINDOW_SIZE=43840, 2160
+    ports:
+      - '5011' # management API (optional)
+
+  browsercontrol:
+    image: balenablocks/browsercontrol
+    restart: always
+    network_mode: host
+    privileged: true
+    ports:
+      - 80:80
   
   app:
     build: ./app

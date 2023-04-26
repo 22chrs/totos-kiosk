@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here
+  // config options here
+  /*
   experimental: {
     appDir: true, // for Next.js 13 or later if you want to use the new beta app directory
   },
@@ -9,6 +10,11 @@ const nextConfig = {
   i18n: {
     locales: ['de_DE', 'en_US'],
     defaultLocale: 'de_DE',
+  },
+
+  env: {
+    KIOSK: process.env.KIOSK,
+    BALENA_APP_ID: process.env.BALENA_APP_ID,
   },
 };
 
