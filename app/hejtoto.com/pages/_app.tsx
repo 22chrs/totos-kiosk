@@ -35,14 +35,15 @@ const App = ({ Component, pageProps }: AppProps) => {
   console.log(
     'WebSocket server env:',
     process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_ENV
-  ); // Add this line
+  );
   console.log(
     'WebSocket service env:',
     process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV
-  ); // Add this line
+  );
 
   const renderContent = () => {
-    if (process.env.WEBSOCKET_SERVICE_ENV === 'false') {
+    if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV === 'false') {
+      console.log('no websocket');
       return (
         <Layout>
           <AnimatePresence mode='wait' initial={true}>
@@ -51,6 +52,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         </Layout>
       );
     } else {
+      console.log('using websocket ..');
       return (
         <DisplayProvider displayNumber={displayQueryParam}>
           <WebSocketProvider>

@@ -1,7 +1,7 @@
 import { MagicLink } from '@/components/links/CustomLink';
 import { useTranslation } from 'react-i18next';
 
-import { CustomImage, randomImagesBox } from '@/components/images/randomImage';
+import { RandomImage, randomImagesBox } from '@/components/images/randomImage';
 
 import PageLayout from '@/components/page-layout';
 import { GridTextImage } from '@/components/page-layout/gridLayers';
@@ -58,12 +58,8 @@ const Barista = () => {
           </Box>
         }
         child2={
-          <CustomImage
-            width='700'
-            height='700'
+          <RandomImage
             alt='Cover Image'
-            priority
-            quality={70}
             src={randomImagesBox()} // Add this line to provide the src prop
           />
         }
