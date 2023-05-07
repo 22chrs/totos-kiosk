@@ -1,4 +1,5 @@
-import Layout from '@/components/layout/Layout';
+import KioskLayout from '@/components/layout/KioskLayout';
+import LayoutWebsite from '@/components/layout/LayoutWebsite';
 import '@/internationalization/i18n';
 
 import { useRouter } from 'next/router';
@@ -24,7 +25,6 @@ const disableRightClick = () => {
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
-  const displayQueryParam = (router.query.display as string) || '1';
 
   useEffect(() => {
     if (process.env.KIOSK === 'true') {
@@ -32,7 +32,6 @@ const App = ({ Component, pageProps }: AppProps) => {
     }
   }, []);
 
-  console.log('Display query param:', displayQueryParam); // Add this line
   console.log(
     'WebSocket server env:',
     process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_ENV
@@ -48,25 +47,27 @@ const App = ({ Component, pageProps }: AppProps) => {
       return (
         <ChakraProvider theme={theme}>
           <Fonts />
-          <Layout>
+          <LayoutWebsite>
             <AnimatePresence mode='wait' initial={true}>
               <Component {...pageProps} key={router.route} />
             </AnimatePresence>
-          </Layout>
+          </LayoutWebsite>
         </ChakraProvider>
       );
     } else {
       console.log('using websocket ..');
+      const displayQueryParam = (router.query.display as string) || '1';
+      console.log('Display query param:', displayQueryParam);
       return (
         <ChakraProvider theme={theme}>
           <Fonts />
           <DisplayProvider displayNumber={displayQueryParam}>
             <WebSocketProvider>
-              <Layout>
+              <KioskLayout>
                 <AnimatePresence mode='wait' initial={true}>
                   <Component {...pageProps} key={router.route} />
                 </AnimatePresence>
-              </Layout>
+              </KioskLayout>
             </WebSocketProvider>
           </DisplayProvider>
         </ChakraProvider>

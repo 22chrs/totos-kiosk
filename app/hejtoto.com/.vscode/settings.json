@@ -16,7 +16,6 @@
   "i18n-ally.sourceLanguage": "de",
   "i18n-ally.displayLanguage": "de",
   "i18n-ally.localesPaths": ["internationalization/locales"],
-  "i18n-ally.editor.preferEditor": true,
+  "i18n-ally.editor.preferEditor": true
   //"i18n-ally.translate.deepl.apiKey": null
 }
-å
