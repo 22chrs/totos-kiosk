@@ -1,3 +1,9 @@
+const useWebsocket = process.env.WEBSOCKET_SERVICE_ENV === 'useWebsocket';
+
+const locales = useWebsocket
+  ? ['de_DE', 'en_US', 'fr_FR', 'ru_RU']
+  : ['de_DE', 'en_US'];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // config options here
@@ -8,7 +14,7 @@ const nextConfig = {
   */
 
   i18n: {
-    locales: ['de_DE', 'en_US'],
+    locales: locales,
     defaultLocale: 'de_DE',
   },
 
