@@ -81,12 +81,7 @@ export default function Footer() {
               as={NextLink}
               style={{ textDecoration: 'none' }}
             >
-              <LogoUniversalFooter
-                width='auto'
-                height={40}
-                logoType='Logo'
-                top={1.0}
-              />
+              <LogoUniversalFooter height={40} logoType='Logo' top={1.0} />
             </MagicLink>
           </HStack>
 

@@ -1,12 +1,12 @@
 import { Icon } from '@chakra-ui/react';
 
-const LogoQuer = ({ width, height, colorBG, colorFont, top }) => {
+const LogoQuer = ({ height, colorBG, colorFont, top }) => {
   return (
     <Icon position='relative' top={top}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 218.22 221.81'
-        width={width}
+        //width={width}
         height={height}
       >
         <path

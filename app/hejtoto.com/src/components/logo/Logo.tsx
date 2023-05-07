@@ -1,12 +1,12 @@
 import { Box } from '@chakra-ui/react';
 
-const Logo = ({ width, height, colorBG, colorFont, top }) => {
+const Logo = ({ height, colorBG, colorFont, top }) => {
   return (
     <Box position='relative' top={top}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 402.64 145.45'
-        width={width}
+        //width='auto'
         height={height}
         style={{
           filter: 'drop-shadow(0.3rem 0.3rem 0.6rem rgba(0, 0, 0, 0.2))',

@@ -1,6 +1,7 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import theme from 'src/theme/theme';
+import matomoTrackingCode from 'src/utils/matomo';
 
 class Doc extends Document {
   render() {
@@ -30,6 +31,12 @@ class Doc extends Document {
             content='/assets/favicon/mstile-310x310.png'
           />
           <meta name='msapplication-TileColor' content='#fd5' />
+
+          <script
+            dangerouslySetInnerHTML={{
+              __html: matomoTrackingCode,
+            }}
+          />
         </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

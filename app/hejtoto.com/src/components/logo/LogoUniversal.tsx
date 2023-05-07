@@ -3,7 +3,7 @@ import LogoQuer from '@/components/logo/LogoQuer';
 
 import { Box, useColorModeValue } from '@chakra-ui/react';
 
-const LogoUniversal = ({ logoType, height, width, top }) => {
+const LogoUniversal = ({ logoType, height, top }) => {
   const colorFont = useColorModeValue('#F7FAFC', '#2D3748');
   const colorBG = useColorModeValue('#2D3748', '#F7FAFC');
 
@@ -13,7 +13,7 @@ const LogoUniversal = ({ logoType, height, width, top }) => {
         colorFont={colorFont}
         colorBG={colorBG}
         height={height}
-        width={width}
+        //width={width}
         top={top}
       />
     ) : (
@@ -21,7 +21,7 @@ const LogoUniversal = ({ logoType, height, width, top }) => {
         colorFont={colorFont}
         colorBG={colorBG}
         height={height}
-        width={width}
+        //width={width}
         top={top}
       />
     );

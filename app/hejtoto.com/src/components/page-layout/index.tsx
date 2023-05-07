@@ -1,5 +1,5 @@
 import { Container, ContainerProps } from '@chakra-ui/react';
-import { motion, Variants } from 'framer-motion';
+import { Variants, motion } from 'framer-motion';
 import { NextSeo } from 'next-seo';
 import { ReactNode } from 'react';
 
@@ -15,7 +15,7 @@ const PageLayout = ({ title, description, children }: PageProps) => {
   const variants: Variants = {
     hidden: {
       opacity: 0,
-      x: -20,
+      x: -30,
       y: 0,
       transition: { duration: 0.3, ease: 'easeIn' },
     },
@@ -23,11 +23,11 @@ const PageLayout = ({ title, description, children }: PageProps) => {
       opacity: 1,
       x: 0,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeIn' },
+      transition: { duration: 0.5, ease: 'easeIn' },
     },
     exit: {
       opacity: 0,
-      x: -20,
+      x: -50,
       y: 0,
       transition: { duration: 0.3, ease: 'easeIn' },
     },

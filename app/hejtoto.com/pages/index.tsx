@@ -12,7 +12,6 @@ import {
 } from '@/components/page-layout/gridLayers';
 import {
   Box,
-  Button,
   Divider,
   Heading,
   Text,
@@ -20,11 +19,8 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
-import {
-  RandomImage,
-  randomImagesArm,
-  randomImagesBox,
-} from '@/components/images/randomImage';
+import { CustomImage } from '@/components/images/CustomImage';
+import { RandomImage, randomImagesBox } from '@/components/images/randomImage';
 
 type Props = {
   title: string;
@@ -58,7 +54,11 @@ const IndexPage = () => {
         child1={
           <Box>
             <Heading variant='logo'>
-              {displayNumber === '1' ? 'Display 1' : 'Display 2'}
+              {displayNumber === '1'
+                ? 'Display 1'
+                : displayNumber === '2'
+                ? 'Display 2'
+                : 'Hej Toto'}
             </Heading>
             <br />
             <Divider />
@@ -103,7 +103,7 @@ const IndexPage = () => {
         child1={
           <Box>
             <Heading variant='logo'>{t('24-7-barister-robot')}</Heading>
-            <Button onClick={handleClick}>Hello World</Button>
+            {/* <Button onClick={handleClick}>Hello World</Button> */}
             <br />
             <Divider />
             <Text>
@@ -130,9 +130,15 @@ const IndexPage = () => {
           </Box>
         }
         child2={
-          <RandomImage
+          // <RandomImage
+          //   alt='Robot arm makes coffee'
+          //   src={randomImagesArm()} // Add this line to provide the src prop
+          // />
+          <CustomImage
             alt='Robot arm makes coffee'
-            src={randomImagesArm()} // Add this line to provide the src prop
+            src='/assets/images/robotarm/02.jpg' // Add this line to provide the src prop
+            width='700'
+            height='700'
           />
         }
       />

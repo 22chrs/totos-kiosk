@@ -10,6 +10,7 @@ import { DisplayProvider } from '@/providers/DisplayContext';
 import { WebSocketProvider } from '@/websocket/WebSocketContext';
 import { AnimatePresence } from 'framer-motion';
 
+import Fonts from '@/theme/fonts';
 import theme from '@/theme/theme';
 import { AppProps } from 'next/app';
 import { useEffect } from 'react';
@@ -45,29 +46,35 @@ const App = ({ Component, pageProps }: AppProps) => {
     if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV === 'false') {
       console.log('no websocket');
       return (
-        <Layout>
-          <AnimatePresence mode='wait' initial={true}>
-            <Component {...pageProps} key={router.route} />
-          </AnimatePresence>
-        </Layout>
+        <ChakraProvider theme={theme}>
+          <Fonts />
+          <Layout>
+            <AnimatePresence mode='wait' initial={true}>
+              <Component {...pageProps} key={router.route} />
+            </AnimatePresence>
+          </Layout>
+        </ChakraProvider>
       );
     } else {
       console.log('using websocket ..');
       return (
-        <DisplayProvider displayNumber={displayQueryParam}>
-          <WebSocketProvider>
-            <Layout>
-              <AnimatePresence mode='wait' initial={true}>
-                <Component {...pageProps} key={router.route} />
-              </AnimatePresence>
-            </Layout>
-          </WebSocketProvider>
-        </DisplayProvider>
+        <ChakraProvider theme={theme}>
+          <Fonts />
+          <DisplayProvider displayNumber={displayQueryParam}>
+            <WebSocketProvider>
+              <Layout>
+                <AnimatePresence mode='wait' initial={true}>
+                  <Component {...pageProps} key={router.route} />
+                </AnimatePresence>
+              </Layout>
+            </WebSocketProvider>
+          </DisplayProvider>
+        </ChakraProvider>
       );
     }
   };
 
-  return <ChakraProvider theme={theme}>{renderContent()}</ChakraProvider>;
+  return renderContent();
 };
 
 export default App;

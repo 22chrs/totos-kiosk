@@ -40,7 +40,7 @@ const Header = () => {
           //bgColor='red.100'
         >
           <MagicLink href='/' as={NextLink} style={{ textDecoration: 'none' }}>
-            <LogoUniversal width='auto' height={55} logoType='Logo' top='0' />
+            <LogoUniversal height={55} logoType='Logo' top='0' />
           </MagicLink>
         </GridItem>
 
