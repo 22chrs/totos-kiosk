@@ -13,8 +13,8 @@ const Kiosk = () => {
   const { displayNumber } = useContext(DisplayContext);
 
   return (
-    <PageLayout title='Jobs' description=''>
-      <StandardPage heading='Kiosk'>
+    <PageLayout title={t('kiosk')} description=''>
+      <StandardPage heading={t('kiosk')}>
         <Text variant='logo'>
           {displayNumber === '1'
             ? 'Display 1 attached.'

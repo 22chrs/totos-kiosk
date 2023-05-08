@@ -1,7 +1,17 @@
 const useWebsocket = process.env.WEBSOCKET_SERVICE_ENV === 'useWebsocket';
 
 const locales = useWebsocket
-  ? ['de_DE', 'en_US', 'fr_FR', 'ru_RU']
+  ? [
+      'de_DE',
+      'en_US',
+      'fr_FR',
+      'ru_RU',
+      'es_ES',
+      'it_IT',
+      'nl_NL',
+      'pl_PL',
+      'uk_UA',
+    ]
   : ['de_DE', 'en_US'];
 
 /** @type {import('next').NextConfig} */
