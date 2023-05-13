@@ -1,5 +1,5 @@
 import IndexPageWebsite from './indexWebsite';
-import IndexPageKiosk from './kiosk/kiosk';
+import IndexPageKiosk from './kiosk/index';
 
 const IndexPage = () => {
   const isWebsocketEnabled =

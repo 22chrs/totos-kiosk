@@ -1,14 +1,27 @@
 import { MagicLink } from '@/components/links/CustomLink';
-import { Box, Grid, GridItem, HStack } from '@chakra-ui/react';
+import { Box, Grid, GridItem, HStack, useColorMode } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
-import { LanguagesButtonNackt } from '@/components/buttons/LanguageButton';
-import LogoUniversal from '@/components/logo/LogoUniversal';
+import { PaymentImages } from '@/components/images/PaymentImages';
+import LogoKiosk from '@/components/logo/LogoKiosk';
 
-// 5 |15-50-25| 5
-const Header = () => {
+// 5 |20-50-20| 5
+export const HeaderStartPage = () => {
+  const router = useRouter();
+  const handlePageClick = () => {
+    router.push('./kiosk/shop');
+  };
+
+  const { toggleColorMode } = useColorMode();
   return (
-    <Box px='5vw' w='100%' maxW='100%' position='absolute'>
+    <Box
+      px='5vw'
+      w='100%'
+      maxW='100%'
+      position='absolute'
+      onClick={handlePageClick}
+    >
       <Grid
         templateColumns='repeat(7, 1fr)'
         templateRows='repeat(1, 1fr)'
@@ -19,11 +32,60 @@ const Header = () => {
           area={'headerLogo'}
           colSpan={1}
           rowSpan={1}
-          w='15vw'
+          w='20vw'
           //bgColor='red.100'
         >
+          <Box
+            onClick={(e) => {
+              toggleColorMode();
+              e.stopPropagation();
+            }}
+          >
+            <LogoKiosk height={120} logoType='Logo' top='0' />
+          </Box>
+        </GridItem>
+
+        <GridItem
+          w='50vw'
+          //bgColor='blue.100'
+          area={'headerMenu'}
+          colSpan={5}
+          rowSpan={1}
+          as='header'
+        ></GridItem>
+
+        <GridItem
+          //bgColor='orange.100'
+          w='20vw'
+          area={'headerRight'}
+          colSpan={1}
+          rowSpan={1}
+        >
+          <PaymentImages />
+          <HStack justify='right' spacing={5}></HStack>
+        </GridItem>
+
+        <GridItem area={'main'} colSpan={5} rowSpan={5}></GridItem>
+
+        <GridItem colSpan={3}></GridItem>
+      </Grid>
+    </Box>
+  );
+};
+
+// 5 |15-50-25| 5
+export const HeaderMainPage = () => {
+  return (
+    <Box px='5vw' w='100%' maxW='100%' position='absolute'>
+      <Grid
+        templateColumns='repeat(7, 1fr)'
+        templateRows='repeat(1, 1fr)'
+        pt='6vh'
+        as='header'
+      >
+        <GridItem area={'headerLogo'} colSpan={1} rowSpan={1} w='15vw'>
           <MagicLink href='/' as={NextLink} style={{ textDecoration: 'none' }}>
-            <LogoUniversal height={55} logoType='Logo' top='0' />
+            <LogoKiosk height={60} logoType='Logo' top='0' />
           </MagicLink>
         </GridItem>
 
@@ -44,9 +106,7 @@ const Header = () => {
           colSpan={1}
           rowSpan={1}
         >
-          <HStack justify='right' spacing={5}>
-            <LanguagesButtonNackt />
-          </HStack>
+          <HStack justify='right' spacing={5}></HStack>
         </GridItem>
 
         <GridItem area={'main'} colSpan={5} rowSpan={5}></GridItem>
@@ -56,5 +116,3 @@ const Header = () => {
     </Box>
   );
 };
-
-export default Header;

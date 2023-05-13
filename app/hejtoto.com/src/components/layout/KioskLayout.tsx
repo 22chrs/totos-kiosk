@@ -1,23 +1,17 @@
 // NoFooterLayout.tsx
 
-import Header from '@/components/layout/menuKiosk/header';
-import { HStack, useColorModeValue } from '@chakra-ui/react';
+import { useLayoutContext } from '@/providers/LayoutContext';
 
-const NoFooterLayout = ({ children }) => {
+const KioskLayout = ({ children }) => {
+  const { header, footer } = useLayoutContext();
+
   return (
     <>
-      <Header />
-      <HStack
-        as='main'
-        bgColor={useColorModeValue(
-          'pageBGColor.lightMode',
-          'pageBGColor.darkMode'
-        )}
-      >
-        {children}
-      </HStack>
+      {header}
+      {children}
+      {footer}
     </>
   );
 };
 
-export default NoFooterLayout;
+export default KioskLayout;

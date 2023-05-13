@@ -18,6 +18,15 @@ type LayoutProps = {
   pt?: number | string; // Add 'pt' as an optional prop
 };
 
+function isSafariMobile() {
+  const userAgent = navigator.userAgent;
+  return (
+    /iP(ad|od|hone)/i.test(userAgent) &&
+    /WebKit/i.test(userAgent) &&
+    !/(CriOS|FxiOS|OPiOS|mercury)/i.test(userAgent)
+  );
+}
+
 const Layout = ({ children }: LayoutProps) => {
   // Calc Postion of Top for LightSwicht
   const [postionElementY, setPostionElementY] = useState(0);
@@ -25,9 +34,15 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     function updatePositionElementY() {
+      let yOffset = 0;
+      if (isSafariMobile()) {
+        yOffset = window.visualViewport.height - window.innerHeight;
+      }
+
       setPostionElementY(
         Math.round(
-          window.innerHeight * 0.9 - getElementHeightById('themeButton')
+          (window.innerHeight + yOffset) * 0.9 -
+            getElementHeightById('themeButton')
         )
       );
     }

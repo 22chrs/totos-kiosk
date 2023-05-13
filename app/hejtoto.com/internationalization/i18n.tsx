@@ -28,8 +28,8 @@ const resources = {
         Français: {
           translation: fr_FR,
         },
-        Русский: {
-          translation: ru_RU,
+        Nederlands: {
+          translation: nl_NL,
         },
         Español: {
           translation: es_ES,
@@ -37,14 +37,14 @@ const resources = {
         Italiano: {
           translation: it_IT,
         },
-        Nederlands: {
-          translation: nl_NL,
-        },
         Polski: {
           translation: pl_PL,
         },
         Українська: {
           translation: uk_UA,
+        },
+        Русский: {
+          translation: ru_RU,
         },
       }
     : {}),

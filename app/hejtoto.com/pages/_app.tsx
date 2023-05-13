@@ -11,6 +11,7 @@ import { DisplayProvider } from '@/providers/DisplayContext';
 import { WebSocketProvider } from '@/websocket/WebSocketContext';
 import { AnimatePresence } from 'framer-motion';
 
+import { LayoutProvider } from '@/providers/LayoutContext';
 import Fonts from '@/theme/fonts';
 import theme from '@/theme/theme';
 import { AppProps } from 'next/app';
@@ -47,11 +48,15 @@ const App = ({ Component, pageProps }: AppProps) => {
       return (
         <ChakraProvider theme={theme}>
           <Fonts />
-          <LayoutWebsite>
-            <AnimatePresence mode='wait' initial={true}>
-              <Component {...pageProps} key={router.route} />
-            </AnimatePresence>
-          </LayoutWebsite>
+          <DisplayProvider displayNumber={'default'}>
+            <LayoutProvider>
+              <LayoutWebsite>
+                <AnimatePresence mode='wait' initial={true}>
+                  <Component {...pageProps} key={router.route} />
+                </AnimatePresence>
+              </LayoutWebsite>
+            </LayoutProvider>
+          </DisplayProvider>
         </ChakraProvider>
       );
     } else {
@@ -62,13 +67,15 @@ const App = ({ Component, pageProps }: AppProps) => {
         <ChakraProvider theme={theme}>
           <Fonts />
           <DisplayProvider displayNumber={displayQueryParam}>
-            <WebSocketProvider>
-              <KioskLayout>
-                <AnimatePresence mode='wait' initial={true}>
-                  <Component {...pageProps} key={router.route} />
-                </AnimatePresence>
-              </KioskLayout>
-            </WebSocketProvider>
+            <LayoutProvider>
+              <WebSocketProvider>
+                <KioskLayout>
+                  <AnimatePresence mode='wait' initial={true}>
+                    <Component {...pageProps} key={router.route} />
+                  </AnimatePresence>
+                </KioskLayout>
+              </WebSocketProvider>
+            </LayoutProvider>
           </DisplayProvider>
         </ChakraProvider>
       );
