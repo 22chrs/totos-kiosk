@@ -62,7 +62,7 @@ const MobilMenu = () => {
               FAQ
             </Link>
 
-            <ModalHeader px='0' pt='15' pb='2'>
+            <ModalHeader px='0' pt='10' pb='2'>
               Über uns
             </ModalHeader>
             <Link onClick={onClose} href='/about/about'>
