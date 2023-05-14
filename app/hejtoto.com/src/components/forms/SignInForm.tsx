@@ -7,8 +7,14 @@ import {
   FormLabel,
   Input,
   Menu,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
   Stack,
   useColorModeValue as mode,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import NextLink from 'next/link';
@@ -156,5 +162,39 @@ export function SignInForm() {
         </Stack>
       </MenuListBrand>
     </Menu>
+  );
+}
+
+export function SignInFormMobil() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <Box>
+      <Button
+        variant='outline'
+        colorScheme='brand'
+        onClick={onOpen}
+        bgColor='transparent'
+        border='2px'
+        _hover={{ bgColor: 'transparent' }}
+      >
+        Sign In
+      </Button>
+      <Modal
+        variant='toto'
+        autoFocus={false}
+        size='xs'
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+      >
+        <ModalOverlay bg='blackAlpha.100' backdropFilter='blur(12px)' />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody textAlign='left'>
+            <FormikEmailAndPassword />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Box>
   );
 }

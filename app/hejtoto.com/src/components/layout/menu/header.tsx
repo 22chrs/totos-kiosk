@@ -20,7 +20,7 @@ const Header = () => {
     base: true,
     sm: true,
     md: true,
-    lg: true,
+    lg: false,
     xl: false,
   });
 
@@ -66,7 +66,8 @@ const Header = () => {
           <HStack justify='right' spacing={5}>
             {!isMobil && <LanguagesButtonNackt />}
 
-            <SignInForm />
+            {!isMobil && <SignInForm />}
+            {/* {isMobil && <SignInFormMobil />} */}
 
             {isMobil && <MobilMenu />}
           </HStack>
