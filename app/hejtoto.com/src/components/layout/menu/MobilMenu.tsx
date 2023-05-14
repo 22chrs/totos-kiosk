@@ -7,6 +7,7 @@ import {
   ModalHeader,
   ModalOverlay,
   VStack,
+  useBreakpointValue,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -15,6 +16,14 @@ import { FaHamburger } from 'react-icons/fa';
 
 const MobilMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const isMobil = useBreakpointValue({
+    base: true,
+    sm: true,
+    md: false,
+    lg: false,
+    xl: false,
+  });
 
   return (
     <>
@@ -42,7 +51,7 @@ const MobilMenu = () => {
         autoFocus={false}
       >
         <ModalOverlay />
-        <ModalContent px='0' minW='60%' w='auto' maxW='90%'>
+        <ModalContent px='0' minW='50%' w={isMobil ? '90vw' : 'auto'}>
           <ModalCloseButton pt='5' pr='4' />
 
           <VStack spacing={3} textAlign='left' align='left' px='20%'>
