@@ -1,52 +1,101 @@
 import {
+  Box,
+  Button,
   Icon,
-  Menu,
-  MenuButton,
-  MenuGroup,
-  MenuList,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  VStack,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
+import Link from 'next/link';
 import { FaHamburger } from 'react-icons/fa';
 
-import { MenuListItem } from '@/components/layout/menu/Items';
-
 const MobilMenu = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <Menu gutter={20}>
-      <MenuButton>
+    <Box>
+      <Button
+        onClick={onOpen}
+        bgColor='transparent'
+        _hover={{ bgColor: 'transparent' }}
+      >
         <Icon
           _focusVisible={{
             outline: 'none',
           }}
           as={FaHamburger}
-          fontSize='2xl'
+          fontSize='3xl'
           color={useColorModeValue('fontColor.lightMode', 'fontColor.darkMode')}
         />
-      </MenuButton>
-      <MenuList
-        minW='fit-content'
-        border='2px'
-        padding={10}
-        rounded={0}
-        _focusVisible={{
-          outline: 'none',
-        }}
-      >
-        <MenuGroup title='Unser Service ▾' fontSize='20' pb='2'>
-          <MenuListItem link='/service/barista' text='Barista Café' />
-          <MenuListItem link='/service/dates' text='Veranstaltung planen' />
-          <MenuListItem link='/service/pricing' text='Preise' />
-          <MenuListItem link='/service/places' text='Aufstellorte' />
-          <MenuListItem link='/service/faqs' text='FAQs' />
-        </MenuGroup>
+      </Button>
 
-        <MenuGroup title='Über uns ▾' pt='8' fontSize='20' pb='2'>
-          <MenuListItem link='/about/about' text='Toto & Team' />
-          <MenuListItem link='/about/feedback' text='Feedback' />
-          <MenuListItem link='/about/sustainability' text='Nachhaltigkeit' />
-        </MenuGroup>
-      </MenuList>
-    </Menu>
+      <Modal size='xs' isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay
+          bg='blackAlpha.100'
+          backdropFilter='blur(12px)'
+          //backdropInvert='60%'
+          //backdropBlur='2px'
+        />
+        <ModalContent
+          border='2px'
+          borderColor={useColorModeValue(
+            'fontColor.lightMode',
+            'fontColor.darkMode'
+          )}
+          borderRadius='0'
+          px='0'
+          pt='12'
+          pb='15'
+          bgColor={useColorModeValue(
+            'footerBGColor.lightMode',
+            'footerBGColor.darkMode'
+          )}
+          //bgColor='red'
+        >
+          {/* <ModalCloseButton pt='5' pr='4' /> */}
+          <ModalBody textAlign='center'>
+            <VStack spacing={3} textAlign='left' align='left' px='20%'>
+              <ModalHeader px='0' pb='2'>
+                Unser Service
+              </ModalHeader>
+              <Link onClick={onClose} href='/service/barista'>
+                Veranstaltung planen
+              </Link>
+              <Link onClick={onClose} href='/service/pricing'>
+                Preise
+              </Link>
+              <Link onClick={onClose} href='/service/places'>
+                Aufstellorte
+              </Link>
+              <Link onClick={onClose} href='/service/faqs'>
+                FAQ
+              </Link>
+
+              <ModalHeader px='0' pt='15' pb='2'>
+                Über uns
+              </ModalHeader>
+              <Link onClick={onClose} href='/about/about'>
+                Toto & Team
+              </Link>
+              <Link onClick={onClose} href='/about/feedback'>
+                Feedback
+              </Link>
+              <Link onClick={onClose} href='/about/sustainability'>
+                Nachhaltigkeit
+              </Link>
+              <Link onClick={onClose} href='/about/faqs'>
+                FAQ
+              </Link>
+            </VStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Box>
   );
 };
 

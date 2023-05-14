@@ -146,7 +146,7 @@ function FormikEmailAndPassword() {
 
 export function SignInForm() {
   return (
-    <Menu>
+    <Menu gutter={10}>
       <MenuButtonFull text='Sign In' />
       <MenuListBrand>
         <Stack py={4} px={4} minW='20vw'>

@@ -31,7 +31,7 @@ export const LanguagesButtonNackt = () => {
           pt='0.1rem'
           pb='0.18rem'
           //padding={'0.1em'}
-          px={4}
+          px={5}
           rounded={6}
           bgColor={useColorModeValue('transparent', 'transparent')}
           color={useColorModeValue(
