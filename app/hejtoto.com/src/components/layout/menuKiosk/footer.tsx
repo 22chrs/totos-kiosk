@@ -1,8 +1,8 @@
-import {
-  LanguagesButtonSymbol,
-  LanguagesTabsKiosk,
-} from '@/components/buttons/LanguagesKiosk';
+import { LanguagesTabsKiosk } from '@/components/buttons/LanguagesKiosk';
+import { MagicLink } from '@/components/links/CustomLink';
+import LogoKiosk from '@/components/logo/LogoKiosk';
 import { Box, useColorModeValue } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
@@ -67,9 +67,9 @@ export function FooterMainPage() {
 
       w='100%'
     >
-      <Box onClick={(e) => e.stopPropagation()}>
-        <LanguagesButtonSymbol />
-      </Box>
+      <MagicLink href='/' as={NextLink} style={{ textDecoration: 'none' }}>
+        <LogoKiosk height={60} logoType='Logo' top='0' />
+      </MagicLink>
     </Box>
   );
 }

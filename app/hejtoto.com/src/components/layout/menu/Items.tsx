@@ -34,8 +34,8 @@ export const MenuHoverButton = ({ text, link, pr }) => {
           sx={{
             '.MenuHoverButton:hover &': {
               textDecoration: 'underline',
-              textDecorationThickness: '0.15rem',
-              textUnderlineOffset: '0.25rem',
+              textDecorationThickness: '0.2rem',
+              textUnderlineOffset: '0.4rem',
             },
           }}
         >
@@ -68,6 +68,7 @@ export const MenuListDropdown = ({ children, text, pr }) => {
         border='2px'
         padding={4}
         rounded={0}
+        bgColor={mode('menuBGColor.lightMode', 'menuBGColor.darkMode')}
         onMouseEnter={onOpen}
         onMouseLeave={onClose}
         onClick={onClose}
@@ -94,11 +95,18 @@ export const MenuListItem = ({ text, link }) => {
       >
         <Text
           pt='0'
+          as='u'
+          textDecorationColor='transparent'
+          _hover={{ as: 'u' }}
           sx={{
             '.myItem:hover &': {
+              textDecorationColor: mode(
+                'primaryFontColor.lightMode',
+                'primaryFontColor.darkMode'
+              ),
               textDecoratsion: 'underline',
-              textDecorationThickness: '0.08rem',
-              textUnderlineOffset: '0.2rem',
+              textDecorationThickness: '0.11rem',
+              textUnderlineOffset: '0.35rem',
             },
           }}
         >

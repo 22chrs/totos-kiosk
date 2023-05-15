@@ -1,0 +1,84 @@
+{
+  "country": "de-DE",
+  "city": "Leipzig",
+  "location": "home",
+  "currency": "EUR",
+  "products": [
+    {
+      "category": "Kaffee",
+      "items": [
+        {
+          "name": "Americano",
+          "description": "Reicher Espresso mit heißem Wasser, erzeugt eine leichte Crema. Ein nuanciertes Geschmacksprofil.",
+          "price": 2.8,
+          "allergens": ["Mandeln"],
+          "sizes": ["200ml", "300ml", "500ml"],
+          "vegan": true
+        },
+        {
+          "name": "Cappuccino",
+          "description": "Eine cremige Mischung aus kräftigem Espresso und aufgeschäumter Mandelmilch. Ein reicher, tröstender Geschmack.",
+          "price": 3.6,
+          "allergens": ["Mandeln"],
+          "sizes": ["150ml", "300ml"],
+          "vegan": true
+        }
+      ]
+    },
+    {
+      "category": "Schokodrinks",
+      "items": [
+        {
+          "name": "Dunkle Schokolade",
+          "description": "Ein dekadentes Getränk mit 70% dunkler Schokolade und heißer Mandelmilch. Eine Freude für Schokoladenliebhaber.",
+          "price": 3.2,
+          "allergens": ["Mandeln", "Soja"],
+          "sizes": ["200ml", "300ml", "500ml"],
+          "vegan": true
+        },
+        {
+          "name": "Milchschokolade",
+          "description": "Eine cremige heiße Schokolade aus reicher Milchschokolade. Ein verwöhnender, wärmender Genuss.",
+          "price": 3.2,
+          "allergens": ["Mandeln", "Soja"],
+          "sizes": ["200ml", "300ml", "500ml"],
+          "vegan": false
+        }
+      ]
+    },
+    {
+      "category": "Tee",
+      "items": [
+        {
+          "name": "Grüner Tee",
+          "description": "Ein erfrischender grüner Tee mit einer leichten bitteren Note. Ein perfektes, belebendes Getränk.",
+          "price": 2.5,
+          "allergens": [],
+          "sizes": ["250ml"],
+          "vegan": true
+        },
+        {
+          "name": "Schwarzer Tee",
+          "description": "Ein starker, robuster Tee mit einem reichen, vollen Geschmack. Eine klassische, zeitlose Wahl.",
+          "price": 2.5,
+          "allergens": [],
+          "sizes": ["250ml"],
+          "vegan": true
+        }
+      ]
+    },
+    {
+      "category": "Riegel",
+      "items": [
+        {
+          "name": "Schokoladenriegel",
+          "description": "Ein köstlicher veganer Schokoladenriegel mit hochwertigem Kakao. Ein süßer Genuss zum Genießen.",
+          "price": 2.5,
+          "allergens": ["Soja"],
+          "sizes": ["uniform"],
+          "vegan": true
+        }
+      ]
+    }
+  ]
+}

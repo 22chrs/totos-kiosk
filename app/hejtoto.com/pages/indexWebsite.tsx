@@ -42,7 +42,7 @@ const IndexPage = () => {
         pb='8vh'
         child1={
           <Box>
-            <Heading variant='logo'>Hej Toto</Heading>
+            <Heading variant='logo'>Hej Toto!</Heading>
             <br />
             <Divider />
 

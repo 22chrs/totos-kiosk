@@ -52,6 +52,11 @@ export const colors = {
     darkMode: 'black',
   },
 
+  menuBGColor: {
+    lightMode: '#fbf9f6',
+    darkMode: '#2F3747',
+  },
+
   formBGColor: {
     lightMode: 'white',
     darkMode: '#F7FAFC',

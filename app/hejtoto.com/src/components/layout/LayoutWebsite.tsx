@@ -34,24 +34,33 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     function updatePositionElementY() {
-      let yOffset = 0;
-      if (isSafariMobile()) {
-        yOffset = window.visualViewport.height - window.innerHeight;
+      if (!isSafariMobile()) {
+        setPostionElementY(
+          Math.round(
+            window.innerHeight * 0.9 - getElementHeightById('themeButton')
+          )
+        );
       }
-
-      setPostionElementY(
-        Math.round(
-          (window.innerHeight + yOffset) * 0.9 -
-            getElementHeightById('themeButton')
-        )
-      );
+      if (isSafariMobile()) {
+        setPostionElementY(
+          Math.round(
+            window.innerHeight * 0.98 - getElementHeightById('themeButton')
+          )
+        );
+      }
     }
 
-    window.addEventListener('resize', updatePositionElementY);
-    updatePositionElementY(); // update initial position
+    if (!isSafariMobile()) {
+      window.addEventListener('resize', updatePositionElementY);
+    }
+
+    updatePositionElementY();
+    // update initial position
 
     return () => {
-      window.removeEventListener('resize', updatePositionElementY);
+      if (!isSafariMobile()) {
+        window.removeEventListener('resize', updatePositionElementY);
+      }
     };
   }, []);
 

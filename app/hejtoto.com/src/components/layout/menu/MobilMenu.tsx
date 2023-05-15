@@ -51,7 +51,7 @@ const MobilMenu = () => {
         autoFocus={false}
       >
         <ModalOverlay />
-        <ModalContent px='0' minW='50%' w={isMobil ? '90vw' : 'auto'}>
+        <ModalContent px='0' minW='50%' w={isMobil ? '80vw' : 'auto'}>
           <ModalCloseButton pt='5' pr='4' />
 
           <VStack spacing={3} textAlign='left' align='left' px='20%'>
