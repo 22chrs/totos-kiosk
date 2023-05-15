@@ -11,6 +11,8 @@ type PageProps = {
 
 const MotionContainer = motion<ContainerProps>(Container);
 
+const footerheigh = '80vh';
+
 const PageLayout = ({ title, description, children }: PageProps) => {
   const variants: Variants = {
     hidden: {
@@ -75,14 +77,16 @@ const PageLayout = ({ title, description, children }: PageProps) => {
       />
       <MotionContainer
         display='flex'
-        style={{ overflow: 'hidden' }}
+        style={{ overflow: 'visible' }}
+        //style={{ overflowY: 'auto' }}
         maxW='100%'
         w='100%'
-        minH={{ base: 'auto', md: '80vh' }}
+        minH={{ base: 'auto', md: footerheigh }}
         //px={{ base: 4, lg: 8 }}
         px='0'
         initial='hidden'
         animate='enter'
+        height={footerheigh}
         exit='exit'
         variants={variants}
         centerContent

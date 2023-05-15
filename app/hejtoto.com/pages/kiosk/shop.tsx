@@ -5,7 +5,6 @@ import { FooterMainPage } from '@/components/layout/menuKiosk/footer';
 import PageLayout from '@/components/page-layout/pageLayoutKiosk';
 import { DisplayContext } from '@/providers/DisplayContext';
 
-//import { BackgroundImage } from '@/components/images/Backgroundimage';
 import Shop from '@/components/kiosk/shop/Shop';
 import { HeaderMainPage } from '@/components/layout/menuKiosk/header';
 import { useLayoutContext } from '@/providers/LayoutContext';
@@ -23,13 +22,15 @@ const Kiosk = () => {
   }, [setHeader, setFooter]);
 
   return (
-    <PageLayout title={t('kiosk')} description=''>
-      <Shop
-        data={shopData.products}
-        country={shopData.country}
-        currency={shopData.currency}
-      />
-    </PageLayout>
+    <>
+      <PageLayout title={t('kiosk')} description=''>
+        <Shop
+          data={shopData.products}
+          country={shopData.country}
+          currency={shopData.currency}
+        />
+      </PageLayout>
+    </>
   );
 };
 
