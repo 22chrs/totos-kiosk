@@ -10,7 +10,7 @@ const Feedback = () => {
   return (
     <PageLayout title='Feedback' description=''>
       <StandardPage heading='Kritik? Ideen? Feedback? Teile es mit uns!'>
-        <Text>Hallo.</Text>
+        <Text>hej@hejtoto.com</Text>
       </StandardPage>
     </PageLayout>
   );

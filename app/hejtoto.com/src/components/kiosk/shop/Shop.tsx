@@ -159,11 +159,38 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
             src={`/kiosk/products/images/${handleUmlauts(product.name)}.jpg`}
           />
 
-          <CardBody zIndex='10'>
+          <CardBody zIndex='5'>
             <Flex width='100%' justifyContent='flex-start' pt='1' pl='2'>
-              <Heading pb='5' variant='h2_Kiosk' color={cardFontColor}>
-                {product.name}
-              </Heading>
+              <Box pt='0'>
+                <Box
+                  //borderWidth='0.2rem'
+                  // borderColor={useColorModeValue(
+                  //   'primaryHeadingColor.lightMode',
+                  //   'primaryHeadingColor.lightMode'
+                  // )}
+                  // bgColor={useColorModeValue(
+                  //   'footerBGColor.lightMode',
+                  //   'footerBGColor.lightMode'
+                  // )}
+                  pt='1'
+                  pb='1.5'
+                  pr='4'
+                  pl='2'
+                  roundedRight='lg'
+                  //transform='translateX(-2rem)'
+                >
+                  <Heading
+                    // color={useColorModeValue(
+                    //   'primaryHeadingColor.lightMode',
+                    //   'primaryHeadingColor.lightMode'
+                    // )}
+                    variant='h2_Kiosk'
+                    color={cardFontColor}
+                  >
+                    {product.name}
+                  </Heading>
+                </Box>
+              </Box>
             </Flex>
           </CardBody>
 

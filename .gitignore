@@ -31,6 +31,9 @@ app/hejtoto.com/coverage
 app/hejtoto.com/.next/
 app/hejtoto.com/out/
 
+# vercel
+app/hejtoto.com/.vercel
+
 # production
 app/hejtoto.com/build
 

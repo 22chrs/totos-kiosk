@@ -1,7 +1,7 @@
 {
+  "automatenID": "HT_001",
   "country": "de-DE",
-  "city": "Leipzig",
-  "location": "home",
+  "location": "Leipzig, Werkstatt",
   "currency": "EUR",
   "categories": [
     {
@@ -152,7 +152,7 @@
       ]
     },
     {
-      "name": "Snacks",
+      "name": "Schokoriegel",
       "products": [
         {
           "id": "10",

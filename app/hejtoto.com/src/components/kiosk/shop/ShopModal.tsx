@@ -163,9 +163,13 @@ export function ModalProductCard({
             pr='5'
             pt='7'
             fontSize='2xl'
-            _active={{ bgColor: 'transparent' }}
-            _focus={{ bgColor: 'transparent' }}
-            _hover={{ bgColor: 'transparent' }}
+            _active={{ bgColor: 'transparent', borderColor: 'transparent' }}
+            _focus={{
+              outline: 'none',
+              bgColor: 'transparent',
+              borderColor: 'transparent',
+            }}
+            _hover={{ bgColor: 'transparent', borderColor: 'transparent' }}
             isDisabled={payment != 'init'}
           />
         </ModalHeader>

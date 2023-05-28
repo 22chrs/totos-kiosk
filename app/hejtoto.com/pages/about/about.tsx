@@ -11,7 +11,7 @@ const About = () => {
   return (
     <PageLayout title='Impressum' description='Impressum von Hej Toto.'>
       <StandardPage heading='Über uns'>
-        <Text>123</Text>
+        <Text>Comming. Soon.</Text>
       </StandardPage>
     </PageLayout>
   );

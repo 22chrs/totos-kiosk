@@ -13,6 +13,11 @@ import {
 
 import ProgressBar from '@/components/analytics/Progress';
 import { StandardPage } from '@/components/page-layout/padding';
+import {
+  DisplayAutomatData,
+  RefillButton,
+  SendDataButton,
+} from '@/firebase/Test';
 import { useTranslation } from 'react-i18next';
 import { FaCircle } from 'react-icons/fa';
 
@@ -29,6 +34,9 @@ const Telemetrie = () => {
             <MenuItem>Leipzig 2</MenuItem>
           </MenuList>
         </Menu>
+        <SendDataButton />
+        <RefillButton />
+        <DisplayAutomatData />
         <HStack>
           <Icon fontSize='md' color='green.400' as={FaCircle} />
           <Text>Online</Text>

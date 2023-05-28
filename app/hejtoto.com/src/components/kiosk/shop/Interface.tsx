@@ -27,21 +27,3 @@ export type Product = {
   mugs?: string[];
   lids?: string[];
 };
-
-export type TelemetrieProduct = {
-  // for every cartItem
-  product: Product;
-  calculatedPrice: number;
-  choosenSize?: string;
-  choosenSugar?: string;
-  choosenMug?: string;
-  choosenLid?: string;
-  quantity: number;
-  discount: number;
-  // ---
-
-  timeStamp: string; //generate, einmal für den gesamten checkout
-  displayNumber: string; //displayContext
-  city: string; //JSON
-  location: string; //JSON
-};

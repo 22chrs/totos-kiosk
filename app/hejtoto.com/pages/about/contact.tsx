@@ -10,7 +10,7 @@ const Contact = () => {
   return (
     <PageLayout title='Kontakt' description=''>
       <StandardPage heading='Noch Fragen? Kontaktiere uns!'>
-        <Text>Hallo.</Text>
+        <Text>hej@hejtoto.com</Text>
       </StandardPage>
     </PageLayout>
   );

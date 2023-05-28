@@ -24,6 +24,7 @@
       "@/internationalization/*": ["internationalization/*"],
       "@/theme/*": ["src/theme/*"],
       "@/websocket/*": ["src/websocket/*"],
+      "@/firebase/*": ["src/firebase/*"],
       "@/pages/*": ["pages/*"]
     },
     "incremental": true

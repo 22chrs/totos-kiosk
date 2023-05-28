@@ -11,6 +11,11 @@ export const randomImagesBox = () =>
     Math.floor(Math.random() * 33) + 1
   ).padStart(2, '0')}.jpg`;
 
+export const randomImagesBestBox = () =>
+  `/assets/images/BestMidjourney/${String(
+    Math.floor(Math.random() * 8) + 1
+  ).padStart(2, '0')}.jpg`;
+
 export const randomImagesArm = () =>
   `/assets/images/robotarm/${String(Math.floor(Math.random() * 3) + 1).padStart(
     2,
@@ -27,6 +32,40 @@ export const RandomImage = ({ src, alt }) => {
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
   }, [src]);
+
+  return (
+    <MotionBox
+      key={key}
+      boxShadow='xl'
+      initial='initial'
+      animate='animate'
+      variants={fadeIn}
+      borderRadius='1.2rem'
+      bgColor={useColorModeValue(
+        'footerBGColor.lightMode',
+        'footerBGColor.darkMode'
+      )}
+    >
+      <Box borderRadius='1.2rem' overflow='hidden'>
+        <NextImage
+          width='700'
+          height='700'
+          alt={alt}
+          quality={70}
+          src={src}
+          priority
+        />
+      </Box>
+    </MotionBox>
+  );
+};
+
+export const SimpleImage = ({ src, alt }) => {
+  const [key, setKey] = useState(0);
+  const fadeIn = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.3 } },
+  };
 
   return (
     <MotionBox

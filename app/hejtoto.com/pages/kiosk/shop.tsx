@@ -81,7 +81,7 @@ const Kiosk = () => {
     ];
     const resetTimer = () => {
       clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(handlePaymentFinished, 60000);
+      timerRef.current = setTimeout(handlePaymentFinished, 180000);
     };
 
     for (let i in events) {
