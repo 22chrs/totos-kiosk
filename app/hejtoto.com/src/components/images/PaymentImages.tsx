@@ -50,6 +50,29 @@ export const PaymentImages = () => {
         <HStack gap={gap}>
           <Box borderRadius={borderRadius} overflow='hidden'>
             <NextImage
+              src='/assets/images/payment/girocard.png'
+              alt='payment'
+              width={width}
+              height={height}
+              quality={100}
+              placeholder='empty'
+            />
+          </Box>
+          <Box borderRadius={borderRadius} overflow='hidden'>
+            <NextImage
+              src='/assets/images/payment/paypal.png'
+              alt='payment'
+              width={width}
+              height={height}
+              quality={100}
+              placeholder='empty'
+            />
+          </Box>
+        </HStack>
+
+        <HStack gap={gap}>
+          <Box borderRadius={borderRadius} overflow='hidden'>
+            <NextImage
               src='/assets/images/payment/mastercard.png'
               alt='payment'
               width={width}
@@ -96,7 +119,7 @@ export const PaymentImages = () => {
         <HStack gap={gap}>
           <Box borderRadius={borderRadius} overflow='hidden'>
             <NextImage
-              src='/assets/images/payment/visa.png'
+              src='/assets/images/payment/americanexpress.png'
               alt='payment'
               width={width}
               height={height}
@@ -106,7 +129,7 @@ export const PaymentImages = () => {
           </Box>
           <Box borderRadius={borderRadius} overflow='hidden'>
             <NextImage
-              src='/assets/images/payment/paypal.png'
+              src='/assets/images/payment/visa.png'
               alt='payment'
               width={width}
               height={height}

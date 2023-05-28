@@ -1,11 +1,12 @@
+import ar_AR from '@/internationalization/locales/ar/ar_AR.json';
 import de_DE from '@/internationalization/locales/de/de_DE.json';
 import en_US from '@/internationalization/locales/en/en_US.json';
 import es_ES from '@/internationalization/locales/es/es_ES.json';
 import fr_FR from '@/internationalization/locales/fr/fr_FR.json';
 import it_IT from '@/internationalization/locales/it/it_IT.json';
 import nl_NL from '@/internationalization/locales/nl/nl_NL.json';
-import pl_PL from '@/internationalization/locales/pl/pl_PL.json';
 import ru_RU from '@/internationalization/locales/ru/ru_RU.json';
+import tr_TR from '@/internationalization/locales/tr/tr_TR.json';
 import uk_UA from '@/internationalization/locales/uk/uk_UA.json';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
@@ -15,6 +16,11 @@ import { initReactI18next } from 'react-i18next';
 const useWebsocket =
   process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV === 'useWebsocket';
 
+const isKioskDomain =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'kiosk.hejtoto.com' ||
+    window.location.hostname === 'www.kiosk.hejtoto.com');
+
 const resources = {
   Deutsch: {
     translation: de_DE,
@@ -23,7 +29,7 @@ const resources = {
     translation: en_US,
   },
 
-  ...(useWebsocket
+  ...(useWebsocket || isKioskDomain
     ? {
         Français: {
           translation: fr_FR,
@@ -37,20 +43,31 @@ const resources = {
         Italiano: {
           translation: it_IT,
         },
-        Polski: {
-          translation: pl_PL,
-        },
+        // Polski: {
+        //   translation: pl_PL,
+        // },
         Українська: {
           translation: uk_UA,
         },
         Русский: {
           translation: ru_RU,
         },
+        Türk: {
+          translation: tr_TR,
+        },
+        العربية: {
+          translation: ar_AR,
+        },
+        // 中文: {
+        //   translation: zh_CN,
+        // },
       }
     : {}),
 };
 
 export const availableLanguages = Object.keys(resources);
+
+export const standardSprache = 'Deutsch';
 
 const options = {
   order: ['localStorage', 'navigator'],
@@ -64,7 +81,7 @@ i18n
   .init({
     resources,
     lng: undefined, // let detect the language on client side
-    fallbackLng: 'Deutsch',
+    fallbackLng: standardSprache,
     detection: options,
     supportedLngs: availableLanguages,
     interpolation: {

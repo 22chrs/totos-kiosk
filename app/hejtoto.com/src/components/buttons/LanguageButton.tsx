@@ -20,10 +20,12 @@ export const LanguagesButtonNackt = () => {
     <Box>
       <Menu gutter={10}>
         <MenuButton
-          _focusVisible={{
-            //outline: 'none',
-            bgColor: mode('red', 'brandBGColorHover.darkMode'),
-          }}
+          _focusVisible={
+            {
+              //outline: 'none',
+              //bgColor: mode('transparent', 'transparent'),
+            }
+          }
           //as={Button}
           //variant='link'
 

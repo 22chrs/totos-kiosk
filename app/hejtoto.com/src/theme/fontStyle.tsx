@@ -1,7 +1,5 @@
 export const fonts = {
-  //logo; `'noka', sans-serif`,
   heading: `'futura-pt', sans-serif`,
-  //heading: `'Raleway', sans-serif`,
   body: `'futura-pt', sans-serif`,
   logo: `'futura-pt', sans-serif`,
 };

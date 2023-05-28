@@ -7,11 +7,13 @@ import { useRouter } from 'next/router';
 import { ChakraProvider } from '@chakra-ui/react';
 
 // Import the WebSocket provider and hook
+import { CartProvider } from '@/providers/CardContext';
 import { DisplayProvider } from '@/providers/DisplayContext';
-import { WebSocketProvider } from '@/websocket/WebSocketContext';
 import { AnimatePresence } from 'framer-motion';
 
 import { LayoutProvider } from '@/providers/LayoutContext';
+
+import { StepperProvider } from '@/providers/StepperContext';
 import Fonts from '@/theme/fonts';
 import theme from '@/theme/theme';
 import { AppProps } from 'next/app';
@@ -28,7 +30,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (process.env.KIOSK === 'true') {
+    if (process.env.DISABLE_RIGHT_CLICK === 'true') {
       disableRightClick();
     }
   }, []);
@@ -42,8 +44,16 @@ const App = ({ Component, pageProps }: AppProps) => {
     process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV
   );
 
+  const isKioskDomain =
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'kiosk.hejtoto.com' ||
+      window.location.hostname === 'www.kiosk.hejtoto.com');
+
   const renderContent = () => {
-    if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV === 'false') {
+    if (
+      process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV === 'false' &&
+      !isKioskDomain
+    ) {
       console.log('no websocket');
       return (
         <ChakraProvider theme={theme}>
@@ -51,9 +61,11 @@ const App = ({ Component, pageProps }: AppProps) => {
           <DisplayProvider displayNumber={'default'}>
             <LayoutProvider>
               <LayoutWebsite>
-                <AnimatePresence mode='wait' initial={true}>
-                  <Component {...pageProps} key={router.route} />
-                </AnimatePresence>
+                <StepperProvider>
+                  <AnimatePresence mode='wait' initial={true}>
+                    <Component {...pageProps} key={router.route} />
+                  </AnimatePresence>
+                </StepperProvider>
               </LayoutWebsite>
             </LayoutProvider>
           </DisplayProvider>
@@ -68,13 +80,17 @@ const App = ({ Component, pageProps }: AppProps) => {
           <Fonts />
           <DisplayProvider displayNumber={displayQueryParam}>
             <LayoutProvider>
-              <WebSocketProvider>
-                <KioskLayout>
-                  <AnimatePresence mode='wait' initial={true}>
-                    <Component {...pageProps} key={router.route} />
-                  </AnimatePresence>
-                </KioskLayout>
-              </WebSocketProvider>
+              {/* <WebSocketProvider> */}
+              <KioskLayout>
+                <StepperProvider>
+                  <CartProvider>
+                    <AnimatePresence mode='wait' initial={true}>
+                      <Component {...pageProps} key={router.route} />
+                    </AnimatePresence>
+                  </CartProvider>
+                </StepperProvider>
+              </KioskLayout>
+              {/* </WebSocketProvider> */}
             </LayoutProvider>
           </DisplayProvider>
         </ChakraProvider>

@@ -41,3 +41,18 @@ const Fonts = () => (
 export default Fonts;
 
 // https://use.typekit.net/nud8uss.css
+
+// @font-face {
+//   font-family: 'futura-pt';
+//   font-style: normal;
+//   font-weight: 800;
+//   font-display: block;
+//   src: url("https://use.typekit.net/af/0c71d1/000000000000000000010097/27/d?primer=f592e0a4b9356877842506ce344308576437e4f677d7c9b78ca2162e6cad991a&fvd=n8&v=3") format('woff2');
+// }
+// @font-face {
+//   font-family: 'futura-pt';
+//   font-style: italic;
+//   font-weight: 800;
+//   font-display: block;
+//   src: url("https://use.typekit.net/af/648f69/000000000000000000010098/27/a?primer=f592e0a4b9356877842506ce344308576437e4f677d7c9b78ca2162e6cad991a&fvd=i8&v=3") format('woff2');
+// }

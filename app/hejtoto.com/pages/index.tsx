@@ -5,7 +5,16 @@ const IndexPage = () => {
   const isWebsocketEnabled =
     process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV === 'useWebsocket';
 
-  return isWebsocketEnabled ? <IndexPageKiosk /> : <IndexPageWebsite />;
+  const isKioskDomain =
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'kiosk.hejtoto.com' ||
+      window.location.hostname === 'www.kiosk.hejtoto.com');
+
+  return isWebsocketEnabled || isKioskDomain ? (
+    <IndexPageKiosk />
+  ) : (
+    <IndexPageWebsite />
+  );
 };
 
 export default IndexPage;

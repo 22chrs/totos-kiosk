@@ -1,14 +1,14 @@
+import { useRouter } from '@/providers/DisplayContext';
 import { Box, Grid, GridItem, HStack, useColorMode } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 
 import { PaymentImages } from '@/components/images/PaymentImages';
-import LogoKiosk from '@/components/logo/LogoKiosk';
+import LogoUniversalKiosk from '@/components/logo/LogoUniversalKiosk';
 
 // 5 |20-50-20| 5
 export const HeaderStartPage = () => {
   const router = useRouter();
   const handlePageClick = () => {
-    router.push('./kiosk/shop');
+    router.pushWithDisplay('./kiosk/shop');
   };
 
   const { toggleColorMode } = useColorMode();
@@ -23,7 +23,7 @@ export const HeaderStartPage = () => {
       <Grid
         templateColumns='repeat(7, 1fr)'
         templateRows='repeat(1, 1fr)'
-        pt='6vh'
+        pt='10vh'
         as='header'
       >
         <GridItem
@@ -39,7 +39,7 @@ export const HeaderStartPage = () => {
               e.stopPropagation();
             }}
           >
-            <LogoKiosk height={120} logoType='Logo' top='0' />
+            <LogoUniversalKiosk height={140} logoType='Logo' top='0' />
           </Box>
         </GridItem>
 
@@ -54,7 +54,7 @@ export const HeaderStartPage = () => {
 
         <GridItem
           //bgColor='orange.100'
-          w='20vw'
+          w='17vw'
           area={'headerRight'}
           colSpan={1}
           rowSpan={1}

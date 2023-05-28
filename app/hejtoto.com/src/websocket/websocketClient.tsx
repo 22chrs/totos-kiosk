@@ -29,15 +29,15 @@ class WebSocketClient {
 
     // Only connect when serverEnv is not 'local'
     if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV == 'useWebsocket') {
-      console.log('WebSocket connecting ..');
+      //console.log('WebSocket connecting ..');
       this.connect();
     } else {
-      console.log('WebSocket failed');
+      //console.log('WebSocket failed');
     }
   }
 
   connect() {
-    console.log(`Connecting to WebSocket server at ${serverAddress}`);
+    //console.log(`Connecting to WebSocket server at ${serverAddress}`);
     this.ws = new WebSocket(`ws://${serverAddress}`);
 
     this.ws.addEventListener('open', () => {
@@ -50,11 +50,11 @@ class WebSocketClient {
     });
 
     this.ws.addEventListener('error', (error) => {
-      console.log('WebSocket error:', error);
+      //console.log('WebSocket error:', error);
     });
 
     this.ws.addEventListener('close', (event) => {
-      console.log('WebSocket closed:', event);
+      //console.log('WebSocket closed:', event);
       setTimeout(() => this.connect(), this.reconnectInterval);
     });
   }

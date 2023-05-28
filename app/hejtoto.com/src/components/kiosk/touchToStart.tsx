@@ -9,7 +9,6 @@ export const RedBox = () => {
       transform='translateX(-50%)' // Add this property to center horizontally
       width='50vw'
       height='20%'
-      bg='red'
       borderRadius='2rem' // Add this property to create round corners
       display='flex' // Add this property for centering the text
       alignItems='center' // Add this property for centering the text

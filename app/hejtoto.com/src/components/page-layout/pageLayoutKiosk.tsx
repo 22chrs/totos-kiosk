@@ -7,13 +7,17 @@ type PageProps = {
   title: string;
   description?: string;
   children: ReactNode;
+  contentHeight: string;
 };
 
 const MotionContainer = motion<ContainerProps>(Container);
 
-const footerheigh = '80vh';
-
-const PageLayout = ({ title, description, children }: PageProps) => {
+const PageLayout = ({
+  title,
+  description,
+  children,
+  contentHeight,
+}: PageProps) => {
   const variants: Variants = {
     hidden: {
       opacity: 0,
@@ -47,8 +51,8 @@ const PageLayout = ({ title, description, children }: PageProps) => {
   return (
     <>
       <NextSeo
+        nofollow={true}
         title={title + ' | Hej Toto'}
-        description={description}
         twitter={{
           cardType: 'summary_large_image',
           handle: '@hejtoto',
@@ -56,7 +60,6 @@ const PageLayout = ({ title, description, children }: PageProps) => {
         openGraph={{
           url: 'https://www.hejtoto.com',
           title: title + ' | Hej Toto',
-          description: description,
           locale: 'de_DE',
           images: [
             {
@@ -81,12 +84,12 @@ const PageLayout = ({ title, description, children }: PageProps) => {
         //style={{ overflowY: 'auto' }}
         maxW='100%'
         w='100%'
-        minH={{ base: 'auto', md: footerheigh }}
+        minH={{ base: 'auto', md: '100%' }}
         //px={{ base: 4, lg: 8 }}
         px='0'
         initial='hidden'
         animate='enter'
-        height={footerheigh}
+        height={contentHeight}
         exit='exit'
         variants={variants}
         centerContent

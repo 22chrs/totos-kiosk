@@ -1,53 +1,199 @@
-import { Box, Flex, Image, Spacer, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+// Shop. tsx
 
-type Product = {
-  name: string;
-  description: string;
-  price: number;
-  allergens: string[];
-  sizes: string[];
-  vegan: boolean;
-};
+import { ModalProductCard } from '@/components/kiosk/shop/ShopModal';
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Flex,
+  Grid,
+  HStack,
+  Heading,
+  Spacer,
+  Stack,
+  VStack,
+  useColorModeValue,
+  useDisclosure,
+} from '@chakra-ui/react';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  KIOSK_CATEGORY_WIDTH,
+  KIOSK_CONTENT_HEIGHT,
+  KISOK_BORDERRADIUS,
+} from 'src/constants';
 
-type Category = {
-  category: string;
-  items: Product[];
-};
+import {
+  Category,
+  Product,
+  VerticalTabsProps,
+} from '@/components/kiosk/shop/Interface';
+import { handleUmlauts } from '@/components/kiosk/shop/utils';
 
-type VerticalTabsProps = {
-  data: Category[];
-  country: string;
-  currency: string;
-};
+// Kategorien
+function Categories({ title, isSelected, onClick }) {
+  const bgColor = useColorModeValue(
+    'footerBGColor.lightMode',
+    'footerBGColor.darkMode'
+  );
 
-// This would be your 'tab' component
-function Tab({ title, isSelected, onClick }) {
+  const bgColorSelected = useColorModeValue(
+    'footerBGColor.darkMode',
+    'footerBGColor.lightMode'
+  );
+  const borderColor = useColorModeValue(
+    'footerBGColor.lightMode',
+    'footerBGColor.darkMode'
+  );
+
+  const color = useColorModeValue(
+    'primaryHeadingColor.lightMode',
+    'primaryHeadingColor.darkMode'
+  );
+  const colorSelected = useColorModeValue(
+    'primaryHeadingColor.darkMode',
+    'primaryHeadingColor.lightMode'
+  );
+
+  const borderColorSelected = useColorModeValue('transparent', 'transparent');
+
   return (
     <Box
-      height='430px'
-      p={4}
-      borderWidth={1}
-      borderRadius='md'
+      zIndex={10}
+      //shadow={useColorModeValue('md', 'xl')}
+      borderWidth={3}
+      borderRadius={isSelected ? KISOK_BORDERRADIUS : KISOK_BORDERRADIUS}
       cursor='pointer'
-      bg={isSelected ? 'gray.500' : 'transparent'}
+      bg={isSelected ? bgColorSelected : bgColor}
+      borderColor={isSelected ? borderColorSelected : borderColor}
+      color={isSelected ? colorSelected : color}
       onClick={onClick}
-      width='100%'
+      textAlign='left' // Align the text to the left
+      overflow='hidden'
+      width={isSelected ? '100%' : '100%'} // ausufern
     >
-      <Text>{title}</Text>
-      <Text>{title}</Text>
-      <Text>{title}</Text>
-      <Text>{title}</Text>
-      <Text>{title}</Text>
-      <Text>{title}</Text>
-      <Text>{title}</Text>
-      <Text>{title}</Text>
+      <HStack>
+        <Box height='100vh' width='300' overflow='hidden' position='relative'>
+          <Heading
+            position='absolute'
+            p='6'
+            color={isSelected ? colorSelected : color}
+            variant='h2_Kiosk'
+          >
+            {title}
+          </Heading>
+          <Box pl='50'>
+            <Image
+              src={`/kiosk/products/images/${handleUmlauts(title)}.png`}
+              width={160}
+              height={300}
+              alt={title}
+              quality={90}
+            />
+          </Box>
+        </Box>
+      </HStack>
     </Box>
   );
 }
 
-// This would be your main component
-const Shop: React.FC<VerticalTabsProps> = ({ data, country, currency }) => {
+type MainProps = {
+  products: Product[];
+  formatPrice: (price: number) => string;
+  category: Category;
+};
+
+const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
+
+  const cardBGColor = useColorModeValue(
+    'footerBGColor.lightMode',
+    'footerBGColor.darkMode'
+  );
+  const cardFontColor = useColorModeValue(
+    'primaryFontColor.lightMode',
+    'primaryFontColor.darkMode'
+  );
+
+  const shadowCard = useColorModeValue('md', 'xl');
+
+  const handleOpen = (product: Product, category: Category) => {
+    setSelectedProduct(product);
+    setSelectedCategory(category);
+    onOpen();
+  };
+
+  const numRows = Math.ceil(products.length / 3);
+
+  return (
+    <Grid
+      templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }}
+      gap={5}
+      pr='5'
+      height='100%'
+    >
+      {products.map((product) => (
+        <Card
+          onClick={() => handleOpen(product, category)}
+          key={product.name}
+          borderRadius={KISOK_BORDERRADIUS}
+          color={cardFontColor}
+          height={numRows > 1 ? '100%' : 'calc(50% - 1.25rem / 2)'}
+          position='relative'
+          overflow='hidden'
+          cursor='pointer'
+        >
+          <Image
+            alt={`${product.name}`}
+            fill={true}
+            object-fit='contain'
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            style={{ objectFit: 'cover' }}
+            src={`/kiosk/products/images/${handleUmlauts(product.name)}.jpg`}
+          />
+
+          <CardBody zIndex='10'>
+            <Flex width='100%' justifyContent='flex-start' pt='1' pl='2'>
+              <Heading pb='5' variant='h2_Kiosk' color={cardFontColor}>
+                {product.name}
+              </Heading>
+            </Flex>
+          </CardBody>
+
+          <CardFooter zIndex='10'>
+            <Flex width='100%' justifyContent='flex-end' pt='1' pr='2'>
+              <Button variant='kiosk_pricetag_small' color={cardFontColor}>
+                {formatPrice(product.price)}
+              </Button>
+            </Flex>
+          </CardFooter>
+        </Card>
+      ))}
+
+      <ModalProductCard
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedProduct={selectedProduct}
+        selectedCategory={selectedCategory}
+        formatPrice={formatPrice}
+      />
+    </Grid>
+  );
+};
+
+// SHOP
+export const Shop: React.FC<VerticalTabsProps> = ({
+  data,
+  country,
+  currency,
+}) => {
   const [selectedTab, setSelectedTab] = React.useState(0);
 
   // Format the price
@@ -56,52 +202,67 @@ const Shop: React.FC<VerticalTabsProps> = ({ data, country, currency }) => {
       price
     );
 
+  const { i18n } = useTranslation();
   return (
     <Flex>
       <VStack
-        height='100vh'
+        mr={selectedTab !== -1 ? '-1px' : '0'}
+        spacing={5}
+        align='start'
+        pt={5}
+        pb={0}
+        pl={5}
+        pr={5}
+        height={KIOSK_CONTENT_HEIGHT}
+        //height='100vh'
         overflowY='auto'
-        alignItems='start'
-        spacing={4}
-        width='30vw'
-        padding={5}
+        width={KIOSK_CATEGORY_WIDTH}
+        bgColor={useColorModeValue(
+          'pageBGColor.lightMode',
+          'pageBGColor.darkMode'
+        )}
+        color={useColorModeValue(
+          'kioskBGColor.lightMode',
+          'kioskBGColor.darkMode'
+        )}
       >
         {data.map((category, index) => (
-          <Tab
-            key={category.category}
-            title={category.category}
+          <Categories
+            key={category.name}
+            title={category.name}
             isSelected={selectedTab === index}
             onClick={() => setSelectedTab(index)}
           />
         ))}
-        <Spacer /> {/* This is used to push the tabs to the top */}
+        <Spacer />
       </VStack>
-      <Flex
+
+      <Stack
+        // MAIN PAGE SECTION
+        pt={5}
+        pl={0}
+        pr={0}
+        pb={5}
         overflowY='auto'
-        marginLeft={8}
-        width='70vw'
-        justify='center'
-        align='center'
-        borderWidth='5px'
-        height='80vh' //! variable
+        css={{
+          width: `calc(100vw - ${KIOSK_CATEGORY_WIDTH})`,
+        }}
+        height={KIOSK_CONTENT_HEIGHT}
+        bgColor={useColorModeValue(
+          'pageBGColor.lightMode',
+          'pageBGColor.darkMode'
+        )}
+        color={useColorModeValue(
+          'primaryFontColor.lightMode',
+          'primaryFontColor.darkMode'
+        )}
       >
-        {data[selectedTab].items.map((product) => (
-          <Box key={product.name} borderWidth={1} borderRadius='md' p={4}>
-            <Image
-              src={`/kiosk/products/images/${product.name}.png`}
-              alt={product.name}
-              boxSize='200px'
-              objectFit='cover'
-            />
-            <Text fontSize='xl' fontWeight='bold'>
-              {product.name}
-            </Text>
-            <Text fontWeight='bold'>{formatPrice(product.price)}</Text>
-          </Box>
-        ))}
-      </Flex>
+        <Main
+          products={data[selectedTab].products}
+          formatPrice={formatPrice}
+          category={data[selectedTab]}
+        />
+      </Stack>
     </Flex>
   );
 };
-
-export default Shop;

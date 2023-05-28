@@ -3,80 +3,166 @@
   "city": "Leipzig",
   "location": "home",
   "currency": "EUR",
-  "products": [
+  "categories": [
     {
-      "category": "Kaffee",
-      "items": [
+      "name": "Kaffee",
+      "additives": ["sugar"],
+      "mugs": ["disposable", "reusable"],
+      "lids": ["disposable", "reusable"],
+      "products": [
         {
-          "name": "Americano",
+          "id": "1",
+          "name": "Kaffee",
           "description": "Reicher Espresso mit heißem Wasser, erzeugt eine leichte Crema. Ein nuanciertes Geschmacksprofil.",
-          "price": 2.8,
-          "allergens": ["Mandeln"],
-          "sizes": ["200ml", "300ml", "500ml"],
-          "vegan": true
+          "price": 2.79,
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 1.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "allergens": [""],
+          "vegan": true,
+          "glutenfree": true
         },
         {
+          "id": "2",
           "name": "Cappuccino",
+          "description": "",
+          "price": 3.79,
+          "allergens": [""],
+          "sizes": [
+            { "size": "150 ml", "additionalCost": 0.0 },
+            { "size": "200 ml", "additionalCost": 1.0 }
+          ],
+          "vegan": true,
+          "glutenfree": false
+        },
+        {
+          "id": "3",
+          "name": "Latte Macchiato",
           "description": "Eine cremige Mischung aus kräftigem Espresso und aufgeschäumter Mandelmilch. Ein reicher, tröstender Geschmack.",
-          "price": 3.6,
+          "price": 4.19,
           "allergens": ["Mandeln"],
-          "sizes": ["150ml", "300ml"],
-          "vegan": true
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 1.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": false,
+          "glutenfree": true
+        },
+        {
+          "id": "4",
+          "name": "Flat White",
+          "description": "",
+          "price": 4.19,
+          "allergens": ["Mandeln"],
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 1.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": false,
+          "glutenfree": false
+        },
+        {
+          "id": "5",
+          "name": "Black White",
+          "description": "",
+          "price": 4.19,
+          "allergens": ["Mandeln"],
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 1.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": true,
+          "glutenfree": true
         }
       ]
     },
     {
-      "category": "Schokodrinks",
-      "items": [
+      "name": "Schokodrinks",
+      "additives": [""],
+      "mugs": ["disposable", "reusable"],
+      "lids": ["disposable", "reusable"],
+      "products": [
         {
+          "id": "6",
           "name": "Dunkle Schokolade",
           "description": "Ein dekadentes Getränk mit 70% dunkler Schokolade und heißer Mandelmilch. Eine Freude für Schokoladenliebhaber.",
           "price": 3.2,
           "allergens": ["Mandeln", "Soja"],
-          "sizes": ["200ml", "300ml", "500ml"],
-          "vegan": true
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 1.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": true,
+          "glutenfree": true
         },
         {
+          "id": "7",
           "name": "Milchschokolade",
           "description": "Eine cremige heiße Schokolade aus reicher Milchschokolade. Ein verwöhnender, wärmender Genuss.",
           "price": 3.2,
           "allergens": ["Mandeln", "Soja"],
-          "sizes": ["200ml", "300ml", "500ml"],
-          "vegan": false
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 1.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": false,
+          "glutenfree": true
         }
       ]
     },
     {
-      "category": "Tee",
-      "items": [
+      "name": "Tee",
+      "additives": ["sugar"],
+      "mugs": ["disposable", "reusable"],
+      "lids": ["disposable", "reusable"],
+      "products": [
         {
+          "id": "8",
           "name": "Grüner Tee",
           "description": "Ein erfrischender grüner Tee mit einer leichten bitteren Note. Ein perfektes, belebendes Getränk.",
           "price": 2.5,
           "allergens": [],
-          "sizes": ["250ml"],
-          "vegan": true
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": true,
+          "glutenfree": true
         },
         {
+          "id": "9",
           "name": "Schwarzer Tee",
           "description": "Ein starker, robuster Tee mit einem reichen, vollen Geschmack. Eine klassische, zeitlose Wahl.",
           "price": 2.5,
           "allergens": [],
-          "sizes": ["250ml"],
-          "vegan": true
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "500 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": true,
+          "glutenfree": true
         }
       ]
     },
     {
-      "category": "Riegel",
-      "items": [
+      "name": "Snacks",
+      "products": [
         {
+          "id": "10",
           "name": "Schokoladenriegel",
           "description": "Ein köstlicher veganer Schokoladenriegel mit hochwertigem Kakao. Ein süßer Genuss zum Genießen.",
           "price": 2.5,
           "allergens": ["Soja"],
-          "sizes": ["uniform"],
-          "vegan": true
+          "sizes": [{ "size": "200 g", "additionalCost": 0.0 }],
+          "vegan": true,
+          "glutenfree": true
         }
       ]
     }

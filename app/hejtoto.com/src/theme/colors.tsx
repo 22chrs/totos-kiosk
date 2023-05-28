@@ -10,6 +10,59 @@ export const colors = {
     700: '#4b1483',
     800: '#341158',
     900: '#1e0d2d',
+    light: '#ff0000',
+  },
+
+  pink: {
+    50: '#FFF5F7',
+    100: '#FED7E2',
+    200: '#F69EC0',
+    300: '#eb7aa4',
+    400: '#ED64A6',
+    500: '#ee5997',
+    600: '#ee5997',
+    700: '#97266D',
+    800: '#702459',
+    900: '#521B41',
+  },
+
+  // pink: {
+  //   50: '#FFF5F7',
+  //   100: '#FED7E2',
+  //   200: '#FBB6CE',
+  //   300: '#F687B3',
+  //   400: '#ED64A6',
+  //   500: '#ee5997',
+  //   600: '#ee5997',
+  //   700: '#97266D',
+  //   800: '#702459',
+  //   900: '#521B41',
+  // },
+
+  totoAntiGray: {
+    50: '#fff',
+    100: '#fff',
+    200: '#fff',
+    300: '#fff',
+    400: '#fff',
+    500: '#fff',
+    600: '#fff',
+    700: '#fff',
+    800: '#fff',
+    900: '#fff',
+  },
+
+  totoGray: {
+    50: '#fff',
+    100: '#f5f2ed',
+    200: '#f5f2ed',
+    300: '#f5f2ed',
+    400: '#807a77',
+    500: '#2D3748',
+    600: '#2D3748',
+    700: '#171923',
+    800: '#171923',
+    900: '#000',
   },
 
   pageBGColor: {
@@ -22,13 +75,18 @@ export const colors = {
     darkMode: '#cd94ff',
   },
 
-  brandBGColorHover: {
-    lightMode: '#f6e8ff',
-    darkMode: 'transparent',
+  brandBGColor: {
+    lightMode: '#7e31ce',
+    darkMode: '#cd94ff',
+  },
+
+  brandBGColor_Hover: {
+    lightMode: '#9a4ce7',
+    darkMode: '#b46ef7',
   },
 
   primaryHeadingColor: {
-    lightMode: '#2D3748',
+    lightMode: '#2d3142',
     darkMode: '#F7FAFC',
   },
 
@@ -64,6 +122,11 @@ export const colors = {
 
   formBorderColor: {
     lightMode: '#2D3748',
+    darkMode: '#2D3748',
+  },
+
+  kioskBGColorSelected: {
+    lightMode: 'white',
     darkMode: '#2D3748',
   },
 

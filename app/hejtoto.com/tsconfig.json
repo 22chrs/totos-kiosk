@@ -23,7 +23,8 @@
       "@/providers/*": ["src/providers/*"],
       "@/internationalization/*": ["internationalization/*"],
       "@/theme/*": ["src/theme/*"],
-      "@/websocket/*": ["src/websocket/*"]
+      "@/websocket/*": ["src/websocket/*"],
+      "@/pages/*": ["pages/*"]
     },
     "incremental": true
   },
