@@ -1,41 +1,41 @@
 import { db } from '@/firebase/Firebase';
-import { AutomatenDatenLevels, TelemetrieProduct } from '@/firebase/Interface';
+import { Automat } from '@/firebase/Interface';
 
-import { push, ref, set } from 'firebase/database';
+import { ref, set, update } from 'firebase/database';
 
-export const addTelemetrieProduct = async (product: TelemetrieProduct) => {
+export const setAndInitAutomatData = async (automat: Automat) => {
+  const automatRef = ref(
+    db,
+    'automats/' + automat.AutomatConstants.automatenID
+  );
+
   try {
-    await push(ref(db, '/telemetrieProduct'), product);
+    await set(automatRef, automat);
+    console.log('Automat data set and initialized successfully');
   } catch (error) {
-    console.error(error);
+    console.error('Error setting and initializing Automat data: ', error);
   }
 };
-// Rewrite the current status
-export const setAutomatenDaten = async (
-  data: AutomatenDatenLevels,
-  automatenID: string
+
+// Then you can use the function to set and initialize Automat data as follows:
+
+//setAndInitAutomatData(AutomatVariant_1);
+
+export const updateAutomatData = async (
+  automatenID: string,
+  fieldsToUpdate: Partial<Automat>
 ) => {
+  const automatRef = ref(db, 'automats/' + automatenID);
+
   try {
-    await set(ref(db, `/automatenDaten/${automatenID}`), data);
+    await update(automatRef, fieldsToUpdate);
+    console.log('Automat data updated successfully');
   } catch (error) {
-    console.error(error);
+    console.error('Error updating Automat data: ', error);
   }
 };
 
-// Track significant changes or events
-export const addAutomatenDatenHistory = async (data: AutomatenDatenLevels) => {
-  try {
-    await push(ref(db, '/automatenDatenHistory'), data);
-  } catch (error) {
-    console.error(error);
-  }
-};
+// Then you can use the function to update Automat data as follows:
 
-// Delete data at a specific reference
-export const clearData = async (path: string) => {
-  try {
-    await set(ref(db, path), null);
-  } catch (error) {
-    console.error(error);
-  }
-};
+// Example:
+// updateAutomatData('001', { status: 'offline', lastPing: 'just now' });

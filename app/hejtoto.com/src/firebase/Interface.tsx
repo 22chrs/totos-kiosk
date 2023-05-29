@@ -1,101 +1,151 @@
-export type TelemetrieProduct = {
+export type Item = {
   // for every cartItem
-  //product: Product;
-  productName: string; // currentProduct.name
-  productCategory: string; // currentProduct.category
+
+  timeStamp: string; //generate, einmal für den gesamten checkout
+  automatenID: string; //uniqe!! -> Automaten ID
+  orderStatus: string; // success, machineError, userCanceled, paymentError
+
+  name: string; // currentProduct.name
+  category: string; // currentProduct.category
 
   choosenSize?: string;
   choosenSugar?: string;
   choosenMug?: string;
   choosenLid?: string;
   choosenMilc?: string;
-  quantity: number;
   calculatedPrice: number;
-  orderStatus: string; // success, machineError, userCanceled, paymentError
+
   displayNumber: string; //displayContext
   discount: number;
 
-  timeStamp: string; //generate, einmal für den gesamten checkout
-  location: string; //uniqe!! -> Automaten ID
+  quantity: number;
 };
 
-export const AutomatLeipzig = {
-  automatenID: '001',
-  reuseableCup300Capacity: 300,
-  reuseableLidCapacity: 300,
-  disposableCup300Capacity: 300,
-  disposableLidCapacity: 300,
-  coffeeBeansCapacity: 1000,
-  sugarCapacity: 500,
-  almondMilkCapacity: 200,
-  frischWasserCapacity: 5000,
-  abWassserCapacity: 5000,
-  productTea1Capacity: 200,
-  productTea2Capacity: 200,
-  productTea3Capacity: 200,
-  productSnack1Capacity: 100,
-  productSnack2Capacity: 100,
-  productSnack3Capacity: 100,
-};
-
-export type AutomatenDatenEvents = {
-  automatenID: string;
+export type Automat = {
   status: string; // online, error, offline
   lastPing: string; //generate, einmal für den gesamten checkout
+
+  lastRefillDate: string;
+  reuseableCup300: number;
+  reuseableLid: number;
+  disposableCup300: number;
+  disposableLid: number;
+  coffeeBeans: number;
+  sugar: number;
+  almondMilk?: number;
+  freshWater: number;
+  wasteWater: number;
+
+  AutomatConstants: AutomatConstants;
+
+  tee?: Tee[]; // An array of 'Tee' products
+  schokoriegel?: Schokoriegel[]; // An array of 'Schokoriegel' products
 };
 
-export type AutomatenDatenLevels = {
+// Konstanten Automat
+export type AutomatConstants = {
   automatenID: string;
-  lastUpdate: string; //generate, einmal für den gesamten checkout
 
   country: string;
   city: string;
   location: string;
   currency: string;
 
-  // ReCup
-  reuseableCup300: number;
   reuseableCup300Capacity: number;
-  reuseableLid: number;
   reuseableLidCapacity: number;
-
-  // Einwegbecher
-  disposableCup300: number;
   disposableCup300Capacity: number;
-  disposableLid: number;
   disposableLidCapacity: number;
-
-  // Kaffeebohnen
-  coffeeBeans: number;
   coffeeBeansCapacity: number;
-
-  // Zucker
-  sugar: number;
   sugarCapacity: number;
-
-  // Milch
-  almondMilk?: number;
   almondMilkCapacity?: number;
+  freshWaterCapacity: number;
+  wasteWaterCapacity: number;
+};
 
-  // Wasser
-  frischWasser: number;
-  frischWasserCapacity: number;
-  abWassser: number;
-  abWassserCapacity: number;
+/// PRODUKTE ///
 
-  // Tee
-  productTea1?: number;
-  productTea1Capacity?: number;
-  productTea2?: number;
-  productTea2Capacity?: number;
-  productTea3?: number;
-  productTea3Capacity?: number;
+// Tee
 
-  // Snacks
-  productSnack1?: number;
-  productSnack1Capacity?: number;
-  productSnack2?: number;
-  productSnack2Capacity?: number;
-  productSnack3?: number;
-  productSnack3Capacity?: number;
+export type Tee = {
+  name: string;
+  capacity: number;
+  pcs: number;
+};
+
+export const TeeSorte_A: Tee = {
+  name: 'TeeSorte_A',
+  capacity: 150,
+  pcs: 0,
+};
+
+export const TeeSorte_B: Tee = {
+  name: 'TeeSorte_C',
+  capacity: 150,
+  pcs: 0,
+};
+
+export const TeeSorte_C: Tee = {
+  name: 'TeeSorte_A',
+  capacity: 150,
+  pcs: 0,
+};
+
+// Schokoriegel
+
+export type Schokoriegel = {
+  name: string;
+  capacity: number;
+  pcs: number;
+};
+
+export const Schokoriegel_A: Schokoriegel = {
+  name: 'Schokoriegel_A',
+  capacity: 300,
+  pcs: 0,
+};
+
+export const Schokoriegel_B: Schokoriegel = {
+  name: 'Schokoriegel_B',
+  capacity: 300,
+  pcs: 0,
+};
+
+// Konstanten Automat
+
+export const AutomatVariant_1: Automat = {
+  status: 'online',
+  lastPing: 'never',
+
+  lastRefillDate: 'never',
+  reuseableCup300: 100,
+  reuseableLid: 100,
+  disposableCup300: 100,
+  disposableLid: 100,
+  coffeeBeans: 100,
+  sugar: 100,
+  almondMilk: 100,
+  freshWater: 100,
+  wasteWater: 100,
+
+  AutomatConstants: {
+    automatenID: '001',
+
+    country: 'de-DE',
+    city: 'Leipzig',
+    location: 'Leipzig, Werkstatt',
+    currency: 'EUR',
+
+    reuseableCup300Capacity: 100,
+    reuseableLidCapacity: 100,
+    disposableCup300Capacity: 100,
+    disposableLidCapacity: 100,
+    coffeeBeansCapacity: 100,
+    sugarCapacity: 100,
+    almondMilkCapacity: 100,
+    freshWaterCapacity: 100,
+    wasteWaterCapacity: 100,
+  },
+
+  tee: [TeeSorte_A, TeeSorte_B, TeeSorte_C],
+  schokoriegel: [Schokoriegel_A, Schokoriegel_B],
 };

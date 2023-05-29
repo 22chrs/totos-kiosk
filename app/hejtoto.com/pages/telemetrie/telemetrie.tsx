@@ -36,7 +36,7 @@ const Telemetrie = () => {
           </MenuList>
         </Menu>
         <InitializeButton customAutomat={AutomatLeipzig} />
-        <RefillButton />
+        <RefillButton automatConfig={AutomatLeipzig} />
 
         <DisplayAutomatData />
         <HStack>
