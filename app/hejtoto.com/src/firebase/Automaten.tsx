@@ -19,6 +19,7 @@ import { set } from 'firebase/database';
 // Initialize the Automat
 
 export const initializeAutomatenDaten = async (customAutomat) => {
+  console.log(customAutomat);
   const initialData: AutomatenDatenLevels = {
     automatenID: customAutomat.automatenID,
     lastUpdate: formatISO(new Date()),
@@ -97,68 +98,6 @@ export const InitializeButton = ({ customAutomat }) => {
   );
 };
 
-// Display Data
-export const DisplayAutomatData = () => {
-  const [automatData, setAutomatData] = useState<AutomatenDatenLevels | null>(
-    null
-  );
-
-  useEffect(() => {
-    const database = getDatabase();
-    const automatDataRef = ref(database, '/automatenDaten');
-    const q = query(automatDataRef, limitToLast(1));
-
-    const listener = onValue(q, (snapshot) => {
-      let fetchedData: AutomatenDatenLevels | null = null;
-      snapshot.forEach((childSnapshot) => {
-        const data = childSnapshot.val();
-        fetchedData = data;
-      });
-      setAutomatData(fetchedData);
-    });
-  }, []);
-
-  return (
-    <Box
-      p={5}
-      maxW='50rem'
-      borderWidth={2}
-      borderRadius='xl'
-      overflow='auto'
-      maxHeight='70vh'
-      bg='black'
-      color='green.300'
-      fontFamily='monospace'
-    >
-      {automatData && (
-        <VStack spacing='0' align='stretch'>
-          <Text>{`Automaten ID: ${automatData.automatenID}`}</Text>
-          <Text>{`Last update: ${automatData.lastUpdate}`}</Text>
-          <Text>{`Country: ${automatData.country}`}</Text>
-          <Text>{`Location: ${automatData.location}`}</Text>
-          <Text>{`Place: ${automatData.city}`}</Text>
-          <Text>{`Currency: ${automatData.currency}`}</Text>
-          <Text>{`Reusable Cups: ${automatData.reuseableCup300}/${automatData.reuseableCup300Capacity} pcs`}</Text>
-          <Text>{`Reusable Lids: ${automatData.reuseableLid}/${automatData.reuseableLidCapacity} pcs`}</Text>
-          <Text>{`Disposable Cups: ${automatData.disposableCup300}/${automatData.disposableCup300Capacity} pcs`}</Text>
-          <Text>{`Disposable Lids: ${automatData.disposableLid}/${automatData.disposableLidCapacity} pcs`}</Text>
-          <Text>{`Coffee Beans: ${automatData.coffeeBeans}/${automatData.coffeeBeansCapacity} Kilogram`}</Text>
-          <Text>{`Sugar: ${automatData.sugar}/${automatData.sugarCapacity} Kilogram`}</Text>
-          <Text>{`Almond Milk: ${automatData.almondMilk}/${automatData.almondMilkCapacity} Liter`}</Text>
-          <Text>{`Fresh water: ${automatData.frischWasser}/${automatData.frischWasserCapacity} Liter`}</Text>
-          <Text>{`Waste water: ${automatData.abWassser}/${automatData.abWassserCapacity} Liter`}</Text>
-          <Text>{`Product Tea 1: ${automatData.productTea1}/${automatData.productTea1Capacity} pcs`}</Text>
-          <Text>{`Product Tea 2: ${automatData.productTea2}/${automatData.productTea2Capacity} pcs`}</Text>
-          <Text>{`Product Tea 3: ${automatData.productTea3}/${automatData.productTea3Capacity} pcs`}</Text>
-          <Text>{`Product Snack 1: ${automatData.productSnack1}/${automatData.productSnack1Capacity} pcs`}</Text>
-          <Text>{`Product Snack 2: ${automatData.productSnack2}/${automatData.productSnack2Capacity} pcs`}</Text>
-          <Text>{`Product Snack 3: ${automatData.productSnack3}/${automatData.productSnack3Capacity} pcs`}</Text>
-        </VStack>
-      )}
-    </Box>
-  );
-};
-
 export const RefillButton = () => {
   const [automatData, setAutomatData] = useState<AutomatenDatenLevels | null>(
     null
@@ -226,5 +165,67 @@ export const RefillButton = () => {
     >
       Refill Automat
     </Button>
+  );
+};
+
+// Display Data
+export const DisplayAutomatData = () => {
+  const [automatData, setAutomatData] = useState<AutomatenDatenLevels | null>(
+    null
+  );
+
+  useEffect(() => {
+    const database = getDatabase();
+    const automatDataRef = ref(database, '/automatenDaten');
+    const q = query(automatDataRef, limitToLast(1));
+
+    const listener = onValue(q, (snapshot) => {
+      let fetchedData: AutomatenDatenLevels | null = null;
+      snapshot.forEach((childSnapshot) => {
+        const data = childSnapshot.val();
+        fetchedData = data;
+      });
+      setAutomatData(fetchedData);
+    });
+  }, []);
+
+  return (
+    <Box
+      p={5}
+      maxW='50rem'
+      borderWidth={2}
+      borderRadius='xl'
+      overflow='auto'
+      maxHeight='70vh'
+      bg='black'
+      color='green.300'
+      fontFamily='monospace'
+    >
+      {automatData && (
+        <VStack spacing='0' align='stretch'>
+          <Text>{`Automaten ID: ${automatData.automatenID}`}</Text>
+          <Text>{`Last update: ${automatData.lastUpdate}`}</Text>
+          <Text>{`Country: ${automatData.country}`}</Text>
+          <Text>{`Location: ${automatData.location}`}</Text>
+          <Text>{`Place: ${automatData.city}`}</Text>
+          <Text>{`Currency: ${automatData.currency}`}</Text>
+          <Text>{`Reusable Cups: ${automatData.reuseableCup300}/${automatData.reuseableCup300Capacity} pcs`}</Text>
+          <Text>{`Reusable Lids: ${automatData.reuseableLid}/${automatData.reuseableLidCapacity} pcs`}</Text>
+          <Text>{`Disposable Cups: ${automatData.disposableCup300}/${automatData.disposableCup300Capacity} pcs`}</Text>
+          <Text>{`Disposable Lids: ${automatData.disposableLid}/${automatData.disposableLidCapacity} pcs`}</Text>
+          <Text>{`Coffee Beans: ${automatData.coffeeBeans}/${automatData.coffeeBeansCapacity} Kilogram`}</Text>
+          <Text>{`Sugar: ${automatData.sugar}/${automatData.sugarCapacity} Kilogram`}</Text>
+          <Text>{`Almond Milk: ${automatData.almondMilk}/${automatData.almondMilkCapacity} Liter`}</Text>
+          <Text>{`Fresh water: ${automatData.frischWasser}/${automatData.frischWasserCapacity} Liter`}</Text>
+          <Text>{`Waste water: ${automatData.abWassser}/${automatData.abWassserCapacity} Liter`}</Text>
+          <Text>{`Product Tea 1: ${automatData.productTea1}/${automatData.productTea1Capacity} pcs`}</Text>
+          <Text>{`Product Tea 2: ${automatData.productTea2}/${automatData.productTea2Capacity} pcs`}</Text>
+          <Text>{`Product Tea 3: ${automatData.productTea3}/${automatData.productTea3Capacity} pcs`}</Text>
+          <Text>{`Product Snack 1: ${automatData.productSnack1}/${automatData.productSnack1Capacity} pcs`}</Text>
+          <Text>{`Product Snack 2: ${automatData.productSnack2}/${automatData.productSnack2Capacity} pcs`}</Text>
+          <Text>{`Product Snack 3: ${automatData.productSnack3}/${automatData.productSnack3Capacity} pcs`}</Text>
+        </VStack>
+      )}
+    </Box>
   );
 };
