@@ -149,3 +149,45 @@ export const DisplayData = ({ automatenID }) => {
     </Box>
   );
 };
+
+export const DisplayData2 = ({ automatenID }) => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      const newData = await getLastSentData(automatenID);
+      setData(newData);
+    }, 1000);
+
+    return () => clearInterval(intervalId); // Clear interval on unmount
+  }, [automatenID]);
+
+  let teeSorte_A_capacity = data?.tee?.TeeSorte_A?.capacity;
+  let teeSorte_A_pcs = data?.tee?.TeeSorte_A?.pcs;
+  let teeSorte_A_percentage = (teeSorte_A_pcs / teeSorte_A_capacity) * 100;
+
+  let teeSorte_B_capacity = data?.tee?.TeeSorte_B?.capacity;
+  let teeSorte_B_pcs = data?.tee?.TeeSorte_B?.pcs;
+  let teeSorte_B_percentage = (teeSorte_B_pcs / teeSorte_B_capacity) * 100;
+
+  return (
+    <>
+      <Box mt={4}>
+        <Text>
+          Teesorte_A: [{teeSorte_A_pcs}/{teeSorte_A_capacity} pcs]
+        </Text>
+        <Progress colorScheme='teal' value={teeSorte_A_percentage}>
+          TeeSorte_A: {teeSorte_A_pcs}/{teeSorte_A_capacity}
+        </Progress>
+      </Box>
+      <Box mt={4}>
+        <Text>
+          Teesorte_B: [{teeSorte_B_pcs}/{teeSorte_B_capacity} pcs]
+        </Text>
+        <Progress colorScheme='teal' value={teeSorte_B_percentage}>
+          TeeSorte_B: {teeSorte_B_pcs}/{teeSorte_B_capacity}
+        </Progress>
+      </Box>
+    </>
+  );
+};

@@ -5,6 +5,7 @@ import { StandardPage } from '@/components/page-layout/padding';
 import {
   AutomatProgressBarContainer,
   DisplayData,
+  DisplayData2,
   InitButton,
   RefillButton,
 } from '@/firebase/Automaten';
@@ -29,6 +30,7 @@ const Telemetrie = () => {
         <AutomatProgressBarContainer automatenID={'001'} />
 
         <DisplayData automatenID={'001'} />
+        <DisplayData2 automatenID={'001'} />
       </StandardPage>
     </PageLayout>
   );
