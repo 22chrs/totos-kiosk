@@ -1,12 +1,12 @@
 export type Item = {
   // for every cartItem
 
-  timeStamp: string; //generate, einmal für den gesamten checkout
+  timeStampOrder: string; //generate, einmal für den gesamten checkout
   automatenID: string; //uniqe!! -> Automaten ID
   orderStatus: string; // success, machineError, userCanceled, paymentError
 
-  name: string; // currentProduct.name
-  category: string; // currentProduct.category
+  productName: string; // currentProduct.name
+  categoryName: string; // currentProduct.category
 
   choosenSize?: string;
   choosenSugar?: string;
@@ -38,8 +38,8 @@ export type Automat = {
 
   AutomatConstants: AutomatConstants;
 
-  tee?: Tee[]; // An array of 'Tee' products
-  schokoriegel?: Schokoriegel[]; // An array of 'Schokoriegel' products
+  tee?: Record<string, Product>;
+  schokoriegel?: Record<string, Product>;
 };
 
 // Konstanten Automat
@@ -66,66 +66,64 @@ export type AutomatConstants = {
 
 // Tee
 
-export type Tee = {
-  name: string;
+export type Product = {
   capacity: number;
   pcs: number;
 };
 
-export const TeeSorte_A: Tee = {
-  name: 'TeeSorte_A',
-  capacity: 150,
-  pcs: 0,
-};
+export const refillAutomat = (automat: Automat): Automat => {
+  // refill basic elements
+  const refillBasicElements = {
+    ...automat,
+    lastRefillDate: 'updated in function',
+    reuseableCup300: automat.AutomatConstants.reuseableCup300Capacity,
+    reuseableLid: automat.AutomatConstants.reuseableLidCapacity,
+    disposableCup300: automat.AutomatConstants.disposableCup300Capacity,
+    disposableLid: automat.AutomatConstants.disposableLidCapacity,
+    coffeeBeans: automat.AutomatConstants.coffeeBeansCapacity,
+    sugar: automat.AutomatConstants.sugarCapacity,
+    almondMilk: automat.AutomatConstants.almondMilkCapacity,
+    freshWater: automat.AutomatConstants.freshWaterCapacity,
+    wasteWater: automat.AutomatConstants.wasteWaterCapacity,
+  };
 
-export const TeeSorte_B: Tee = {
-  name: 'TeeSorte_C',
-  capacity: 150,
-  pcs: 0,
-};
+  // refill 'tee' products
+  const refilledTee = Object.fromEntries(
+    Object.entries(refillBasicElements.tee || {}).map(([name, product]) => [
+      name,
+      { ...product, pcs: product.capacity },
+    ])
+  );
 
-export const TeeSorte_C: Tee = {
-  name: 'TeeSorte_A',
-  capacity: 150,
-  pcs: 0,
-};
+  // refill 'schokoriegel' products
+  const refilledSchokoriegel = Object.fromEntries(
+    Object.entries(refillBasicElements.schokoriegel || {}).map(
+      ([name, product]) => [name, { ...product, pcs: product.capacity }]
+    )
+  );
 
-// Schokoriegel
-
-export type Schokoriegel = {
-  name: string;
-  capacity: number;
-  pcs: number;
-};
-
-export const Schokoriegel_A: Schokoriegel = {
-  name: 'Schokoriegel_A',
-  capacity: 300,
-  pcs: 0,
-};
-
-export const Schokoriegel_B: Schokoriegel = {
-  name: 'Schokoriegel_B',
-  capacity: 300,
-  pcs: 0,
+  return {
+    ...refillBasicElements,
+    tee: refilledTee,
+    schokoriegel: refilledSchokoriegel,
+  };
 };
 
 // Konstanten Automat
-
 export const AutomatVariant_1: Automat = {
   status: 'online',
   lastPing: 'never',
 
   lastRefillDate: 'never',
-  reuseableCup300: 100,
-  reuseableLid: 100,
-  disposableCup300: 100,
-  disposableLid: 100,
-  coffeeBeans: 100,
-  sugar: 100,
-  almondMilk: 100,
-  freshWater: 100,
-  wasteWater: 100,
+  reuseableCup300: 0,
+  reuseableLid: 0,
+  disposableCup300: 0,
+  disposableLid: 0,
+  coffeeBeans: 0,
+  sugar: 0,
+  almondMilk: 0,
+  freshWater: 0,
+  wasteWater: 0,
 
   AutomatConstants: {
     automatenID: '001',
@@ -146,6 +144,14 @@ export const AutomatVariant_1: Automat = {
     wasteWaterCapacity: 100,
   },
 
-  tee: [TeeSorte_A, TeeSorte_B, TeeSorte_C],
-  schokoriegel: [Schokoriegel_A, Schokoriegel_B],
+  tee: {
+    TeeSorte_A: { capacity: 150, pcs: 0 },
+    TeeSorte_B: { capacity: 150, pcs: 0 },
+    TeeSorte_C: { capacity: 150, pcs: 0 },
+  },
+
+  schokoriegel: {
+    Schokoriegel_A: { capacity: 300, pcs: 0 },
+    Schokoriegel_B: { capacity: 300, pcs: 0 },
+  },
 };

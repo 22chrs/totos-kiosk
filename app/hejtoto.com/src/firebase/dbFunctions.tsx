@@ -1,7 +1,8 @@
 import { db } from '@/firebase/Firebase';
-import { Automat } from '@/firebase/Interface';
+import { Automat, refillAutomat } from '@/firebase/Interface';
+import { formatISO } from 'date-fns';
 
-import { ref, set, update } from 'firebase/database';
+import { get, ref, set, update } from 'firebase/database';
 
 export const setAndInitAutomatData = async (automat: Automat) => {
   const automatRef = ref(
@@ -35,7 +36,29 @@ export const updateAutomatData = async (
   }
 };
 
-// Then you can use the function to update Automat data as follows:
+export const refillAndSendAutomatData = async (automat: Automat) => {
+  const refilledAutomat = refillAutomat(automat);
+  refilledAutomat.lastRefillDate = formatISO(new Date());
+  await updateAutomatData(
+    automat.AutomatConstants.automatenID,
+    refilledAutomat
+  );
+};
 
-// Example:
-// updateAutomatData('001', { status: 'offline', lastPing: 'just now' });
+export const getLastSentData = async (automatenID: string) => {
+  const automatRef = ref(db, 'automats/' + automatenID);
+  let data;
+
+  try {
+    const snapshot = await get(automatRef);
+    if (snapshot.exists()) {
+      data = snapshot.val();
+    } else {
+      console.log('No data available');
+    }
+  } catch (error) {
+    console.error('Error getting data: ', error);
+  }
+
+  return data;
+};
