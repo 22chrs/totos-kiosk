@@ -3,7 +3,6 @@ import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 
 import { StandardPage } from '@/components/page-layout/padding';
 import {
-  AutomatProgressBarContainer,
   DisplayData,
   DisplayData2,
   InitButton,
@@ -27,7 +26,6 @@ const Telemetrie = () => {
 
         <InitButton />
         <RefillButton />
-        <AutomatProgressBarContainer automatenID={'001'} />
 
         <DisplayData automatenID={'001'} />
         <DisplayData2 automatenID={'001'} />

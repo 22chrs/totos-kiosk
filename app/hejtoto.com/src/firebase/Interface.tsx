@@ -24,22 +24,17 @@ export type Item = {
 export type Automat = {
   status: string; // online, error, offline
   lastPing: string; //generate, einmal für den gesamten checkout
-
   lastRefillDate: string;
-  reuseableCup300: number;
-  reuseableLid: number;
-  disposableCup300: number;
-  disposableLid: number;
-  coffeeBeans: number;
-  sugar: number;
-  almondMilk?: number;
-  freshWater: number;
-  wasteWater: number;
 
   AutomatConstants: AutomatConstants;
 
-  tee?: Record<string, Product>;
-  schokoriegel?: Record<string, Product>;
+  Wasser: Record<string, ProductCategory>;
+  Verpackung: Record<string, ProductCategory>;
+  Kaffee: Record<string, ProductCategory>;
+  Milch?: Record<string, ProductCategory>;
+  Additive?: Record<string, ProductCategory>;
+  Tee?: Record<string, ProductCategory>;
+  Schokoriegel?: Record<string, ProductCategory>;
 };
 
 // Konstanten Automat
@@ -50,25 +45,18 @@ export type AutomatConstants = {
   city: string;
   location: string;
   currency: string;
-
-  reuseableCup300Capacity: number;
-  reuseableLidCapacity: number;
-  disposableCup300Capacity: number;
-  disposableLidCapacity: number;
-  coffeeBeansCapacity: number;
-  sugarCapacity: number;
-  almondMilkCapacity?: number;
-  freshWaterCapacity: number;
-  wasteWaterCapacity: number;
 };
 
 /// PRODUKTE ///
 
 // Tee
 
-export type Product = {
+export type ProductCategory = {
+  displayName: string;
   capacity: number;
-  pcs: number;
+  current: number;
+  unit: string;
+  size?: string;
 };
 
 export const refillAutomat = (automat: Automat): Automat => {
@@ -76,36 +64,33 @@ export const refillAutomat = (automat: Automat): Automat => {
   const refillBasicElements = {
     ...automat,
     lastRefillDate: 'updated in function',
-    reuseableCup300: automat.AutomatConstants.reuseableCup300Capacity,
-    reuseableLid: automat.AutomatConstants.reuseableLidCapacity,
-    disposableCup300: automat.AutomatConstants.disposableCup300Capacity,
-    disposableLid: automat.AutomatConstants.disposableLidCapacity,
-    coffeeBeans: automat.AutomatConstants.coffeeBeansCapacity,
-    sugar: automat.AutomatConstants.sugarCapacity,
-    almondMilk: automat.AutomatConstants.almondMilkCapacity,
-    freshWater: automat.AutomatConstants.freshWaterCapacity,
-    wasteWater: automat.AutomatConstants.wasteWaterCapacity,
   };
 
-  // refill 'tee' products
-  const refilledTee = Object.fromEntries(
-    Object.entries(refillBasicElements.tee || {}).map(([name, product]) => [
-      name,
-      { ...product, pcs: product.capacity },
-    ])
-  );
-
-  // refill 'schokoriegel' products
-  const refilledSchokoriegel = Object.fromEntries(
-    Object.entries(refillBasicElements.schokoriegel || {}).map(
-      ([name, product]) => [name, { ...product, pcs: product.capacity }]
-    )
-  );
+  function refillProducts(
+    productName: keyof Automat
+  ): Record<string, ProductCategory> {
+    return Object.fromEntries(
+      Object.entries(refillBasicElements[productName] || {}).map(
+        ([name, productCategory]) => [
+          name,
+          {
+            ...(productCategory as ProductCategory),
+            current: (productCategory as ProductCategory).capacity,
+          },
+        ]
+      )
+    );
+  }
 
   return {
     ...refillBasicElements,
-    tee: refilledTee,
-    schokoriegel: refilledSchokoriegel,
+    Verpackung: refillProducts('Verpackung'),
+    Tee: refillProducts('Tee'),
+    Schokoriegel: refillProducts('Schokoriegel'),
+    Wasser: refillProducts('Wasser'),
+    Additive: refillProducts('Additive'),
+    Milch: refillProducts('Milch'),
+    Kaffee: refillProducts('Kaffee'),
   };
 };
 
@@ -115,15 +100,6 @@ export const AutomatVariant_1: Automat = {
   lastPing: 'never',
 
   lastRefillDate: 'never',
-  reuseableCup300: 0,
-  reuseableLid: 0,
-  disposableCup300: 0,
-  disposableLid: 0,
-  coffeeBeans: 0,
-  sugar: 0,
-  almondMilk: 0,
-  freshWater: 0,
-  wasteWater: 0,
 
   AutomatConstants: {
     automatenID: '001',
@@ -132,26 +108,118 @@ export const AutomatVariant_1: Automat = {
     city: 'Leipzig',
     location: 'Leipzig, Werkstatt',
     currency: 'EUR',
-
-    reuseableCup300Capacity: 100,
-    reuseableLidCapacity: 100,
-    disposableCup300Capacity: 100,
-    disposableLidCapacity: 100,
-    coffeeBeansCapacity: 100,
-    sugarCapacity: 100,
-    almondMilkCapacity: 100,
-    freshWaterCapacity: 100,
-    wasteWaterCapacity: 100,
   },
 
-  tee: {
-    TeeSorte_A: { capacity: 150, pcs: 0 },
-    TeeSorte_B: { capacity: 150, pcs: 0 },
-    TeeSorte_C: { capacity: 150, pcs: 0 },
+  Verpackung: {
+    disposableCup: {
+      displayName: 'Einwegbecher',
+      capacity: 400,
+      current: 0,
+      size: '300 ml',
+      unit: 'Stück',
+    },
+    disposableLid: {
+      displayName: 'Einwegdeckel',
+      capacity: 400,
+      current: 0,
+      unit: 'Stück',
+    },
+    reusableCup: {
+      displayName: 'Mehrwegbecher (300ml)',
+      capacity: 400,
+      current: 0,
+      size: '300 ml',
+      unit: 'Stück',
+    },
+    reusableLid: {
+      displayName: 'Mehrwegdeckel',
+      capacity: 400,
+      current: 0,
+      unit: 'Stück',
+    },
   },
 
-  schokoriegel: {
-    Schokoriegel_A: { capacity: 300, pcs: 0 },
-    Schokoriegel_B: { capacity: 300, pcs: 0 },
+  Kaffee: {
+    Bohnen: {
+      displayName: 'Kaffeebohnen',
+      capacity: 100,
+      current: 0,
+      unit: 'Kilogramm',
+    },
+    Trester: {
+      displayName: 'Kaffee Trester',
+      capacity: 100,
+      current: 0,
+      unit: 'Kilogramm',
+    },
+  },
+
+  Wasser: {
+    Frischwasser: {
+      displayName: 'Frischwasser',
+      capacity: 100,
+      current: 0,
+      unit: 'Liter',
+    },
+    Abwasser: {
+      displayName: 'Abwasser',
+      capacity: 100,
+      current: 0,
+      unit: 'Liter',
+    },
+  },
+
+  Milch: {
+    Mandelmilch: {
+      displayName: 'Mandelmilch',
+      capacity: 100,
+      current: 0,
+      unit: 'Liter',
+    },
+  },
+
+  Additive: {
+    Zucker: {
+      displayName: 'Zucker',
+      capacity: 2000,
+      current: 0,
+      unit: 'Gramm',
+    },
+  },
+
+  Tee: {
+    TeeSorte_A: {
+      displayName: 'TeeSorte A',
+      capacity: 150,
+      current: 0,
+      unit: 'Stück',
+    },
+    TeeSorte_B: {
+      displayName: 'TeeSorte B',
+      capacity: 150,
+      current: 0,
+      unit: 'Stück',
+    },
+    TeeSorte_C: {
+      displayName: 'TeeSorte C',
+      capacity: 150,
+      current: 0,
+      unit: 'Stück',
+    },
+  },
+
+  Schokoriegel: {
+    Schokoriegel_A: {
+      displayName: 'Schokoriegel A',
+      capacity: 300,
+      current: 0,
+      unit: 'Stück',
+    },
+    Schokoriegel_B: {
+      displayName: 'Schokoriegel B',
+      capacity: 300,
+      current: 0,
+      unit: 'Stück',
+    },
   },
 };

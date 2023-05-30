@@ -4,7 +4,7 @@ import {
   refillAndSendAutomatData,
   setAndInitAutomatData,
 } from '@/firebase/dbFunctions';
-import { Box, Button, Progress, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Progress, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 export const InitButton = () => {
@@ -51,73 +51,6 @@ const getAutomatFields = (): {
   { field: 'freshWater', readableName: 'Fresh water', unit: 'litres' },
   { field: 'wasteWater', readableName: 'Waste water', unit: 'litres' },
 ];
-// Then in the component:
-
-const AutomatProgressBar = ({ automat }) => {
-  const automatFields = getAutomatFields();
-
-  return (
-    <VStack spacing={5} align='stretch'>
-      {automatFields.map(({ field, readableName, unit }) => {
-        const capacityField = `${field}Capacity`;
-
-        // Ensure that the field exists and has a corresponding capacity field in AutomatConstants
-        if (
-          automat[field] !== undefined &&
-          automat.AutomatConstants[capacityField] !== undefined
-        ) {
-          const fieldUsagePercentage =
-            (automat[field] / automat.AutomatConstants[capacityField]) * 100;
-
-          return (
-            <Box key={field}>
-              <Text>
-                {readableName}: ({automat[field]} {unit} /{' '}
-                {automat.AutomatConstants[capacityField]} {unit})
-              </Text>
-              <Progress
-                colorScheme='purple'
-                size='md'
-                value={fieldUsagePercentage}
-              />
-            </Box>
-          );
-        }
-
-        // Ignore fields that do not have a corresponding capacity field in AutomatConstants
-        return null;
-      })}
-    </VStack>
-  );
-};
-
-export const AutomatProgressBarContainer = ({ automatenID }) => {
-  // You need to pass the automat ID
-  const [automat, setAutomat] = useState(null);
-
-  useEffect(() => {
-    const fetchAutomatData = async () => {
-      const data = await getLastSentData(automatenID);
-      setAutomat(data);
-    };
-
-    // Call fetchAutomatData once immediately
-    fetchAutomatData();
-
-    // Then set up an interval to call fetchAutomatData every 1000 milliseconds (1 second)
-    const intervalId = setInterval(fetchAutomatData, 1000);
-
-    // Return a cleanup function to clear the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, [automatenID]);
-
-  // Render the AutomatProgressBar component only when the data is fetched
-  return automat ? (
-    <AutomatProgressBar automat={automat} />
-  ) : (
-    <div>Loading...</div>
-  );
-};
 
 export const DisplayData = ({ automatenID }) => {
   const [data, setData] = useState(null);
@@ -162,24 +95,12 @@ export const DisplayData2 = ({ automatenID }) => {
     return () => clearInterval(intervalId); // Clear interval on unmount
   }, [automatenID]);
 
-  let teeSorte_A_capacity = data?.tee?.TeeSorte_A?.capacity;
-  let teeSorte_A_pcs = data?.tee?.TeeSorte_A?.pcs;
-  let teeSorte_A_percentage = (teeSorte_A_pcs / teeSorte_A_capacity) * 100;
-
   let teeSorte_B_capacity = data?.tee?.TeeSorte_B?.capacity;
   let teeSorte_B_pcs = data?.tee?.TeeSorte_B?.pcs;
   let teeSorte_B_percentage = (teeSorte_B_pcs / teeSorte_B_capacity) * 100;
 
   return (
     <>
-      <Box mt={4}>
-        <Text>
-          Teesorte_A: [{teeSorte_A_pcs}/{teeSorte_A_capacity} pcs]
-        </Text>
-        <Progress colorScheme='teal' value={teeSorte_A_percentage}>
-          TeeSorte_A: {teeSorte_A_pcs}/{teeSorte_A_capacity}
-        </Progress>
-      </Box>
       <Box mt={4}>
         <Text>
           Teesorte_B: [{teeSorte_B_pcs}/{teeSorte_B_capacity} pcs]
