@@ -2,7 +2,7 @@ import {
   getLastSentData,
   refillAndSendAutomatData,
   setAndInitAutomatData,
-} from '@/firebase/dbFunctions';
+} from '@/firebase/dbFunctionsAutomaten';
 import {
   Box,
   Button,
@@ -16,30 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
-const getAutomatFields = (): {
-  field: string;
-  readableName: string;
-  unit: string;
-}[] => [
-  { field: 'status', readableName: 'Status', unit: '' },
-  { field: 'lastPing', readableName: 'Last Ping', unit: '' },
-  { field: 'lastRefillDate', readableName: 'Last Refill Date', unit: '' },
-  { field: 'reuseableCup300', readableName: 'Reusable cups', unit: 'pcs' },
-  { field: 'reuseableLid', readableName: 'Reusable lids', unit: 'pcs' },
-  {
-    field: 'disposableCup300',
-    readableName: 'Disposable cups',
-    unit: 'pcs',
-  },
-  { field: 'disposableLid', readableName: 'Disposable lids', unit: 'pcs' },
-  { field: 'coffeeBeans', readableName: 'Coffeebeans', unit: 'kg' },
-  { field: 'sugar', readableName: 'Sugar', unit: 'kg' },
-  { field: 'almondMilk', readableName: 'Almond milk', unit: 'litres' },
-  { field: 'freshWater', readableName: 'Fresh water', unit: 'litres' },
-  { field: 'wasteWater', readableName: 'Waste water', unit: 'litres' },
-];
-
-export const DisplayData = ({ automatenID }) => {
+export const AutomatTerminalData = ({ automatenID }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -52,28 +29,32 @@ export const DisplayData = ({ automatenID }) => {
   }, [automatenID]);
 
   return (
-    <Box
-      color={useColorModeValue(
-        'footerBGColor.lightMode',
-        'footerBGColor.darkMode'
-      )}
-      bgColor={useColorModeValue(
-        'primaryHeadingColor.lightMode',
-        'primaryHeadingColor.darkMode'
-      )}
-      fontSize='0.8rem'
-      borderRadius='lg'
-      whiteSpace='pre-wrap'
-      wordBreak='break-all'
-      overflowX='auto'
-      p='5'
-    >
-      {JSON.stringify(data, null, 2)}
-    </Box>
+    <>
+      <Heading py='5'>Automat raw data:</Heading>
+      <Box
+        color={useColorModeValue(
+          'footerBGColor.lightMode',
+          'primaryFontColor.darkMode'
+        )}
+        bgColor={useColorModeValue(
+          'primaryHeadingColor.lightMode',
+          'footerBGColor.darkMode'
+        )}
+        fontSize='md'
+        borderRadius='lg'
+        whiteSpace='pre-wrap'
+        wordBreak='break-all'
+        height='40vh'
+        overflowX='scroll'
+        p='5'
+      >
+        {JSON.stringify(data, null, 2)}
+      </Box>
+    </>
   );
 };
 
-export const DisplayAllData = ({ automatenID, columns }) => {
+export const AutomatDisplayStats = ({ automatenID, columns }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -96,7 +77,7 @@ export const DisplayAllData = ({ automatenID, columns }) => {
   );
 
   return (
-    <SimpleGrid columns={columns} spacing={5}>
+    <SimpleGrid columns={columns} spacing={6}>
       {data &&
         Object.keys(data).map((category) => {
           if (typeof data[category] === 'object' && data[category] !== null) {
@@ -120,7 +101,6 @@ export const DisplayAllData = ({ automatenID, columns }) => {
                 bgColor={bgColor}
               >
                 <Heading size='md'>{category}</Heading>
-
                 {nonEmptyProducts.map((product) => {
                   let productCapacity = data[category][product].capacity;
                   let productCurrent = data[category][product].current;
@@ -128,7 +108,7 @@ export const DisplayAllData = ({ automatenID, columns }) => {
                     (productCurrent / productCapacity) * 100;
 
                   return (
-                    <Box mt={4} key={product}>
+                    <Box mt={5} key={product}>
                       <Text>
                         {data[category][product].displayName}: [{productCurrent}
                         /{productCapacity} {data[category][product].unit}]
@@ -149,7 +129,36 @@ export const DisplayAllData = ({ automatenID, columns }) => {
   );
 };
 
-export const StatusData = ({ automatenID, automatenVariant }) => {
+export const ButtonsAutomat = ({ automatenVariant }) => {
+  const bgColor = useColorModeValue(
+    'footerBGColor.lightMode',
+    'footerBGColor.darkMode'
+  );
+
+  return (
+    <Box borderRadius='lg' overflow='hidden' p='5' w='100%' bgColor={bgColor}>
+      <Text>Actions</Text>
+      <VStack>
+        <Button
+          colorScheme='purple'
+          w='full'
+          onClick={() => setAndInitAutomatData(automatenVariant)}
+        >
+          Initialize Automat
+        </Button>
+        <Button
+          colorScheme='purple'
+          w='full'
+          onClick={() => refillAndSendAutomatData(automatenVariant)}
+        >
+          Refill Automat
+        </Button>
+      </VStack>
+    </Box>
+  );
+};
+
+export const AutomatStatusData = ({ automatenID }) => {
   const [data, setData] = useState(null);
 
   // const color = useColorModeValue(
@@ -176,42 +185,22 @@ export const StatusData = ({ automatenID, automatenVariant }) => {
   }
 
   return (
-    <Box borderRadius='lg' overflow='hidden' p='5' bgColor={bgColor}>
-      <HStack spacing={0}>
-        <VStack alignItems='start' spacing='0' flex={1}>
-          <Text>ID Automat: {data.AutomatConstants.automatenID}</Text>
-          <HStack>
-            <Text>
-              Location: {data.AutomatConstants.country} (
-              {data.AutomatConstants.currency}
-              ),
-              {data.AutomatConstants.city}, {data.AutomatConstants.location}
-            </Text>
-          </HStack>
-          <HStack>
-            <Text> Status: {data.status},</Text>
-            <Text>(Last ping: {data.lastPing})</Text>
-          </HStack>
-          <Text>Error messages: {data.error}</Text>
-          <Text>Last Refill: {data.lastRefillDate}</Text>
-        </VStack>
-        <VStack>
-          <Button
-            colorScheme='purple'
-            w='full'
-            onClick={() => setAndInitAutomatData(automatenVariant)}
-          >
-            Initialize Automat
-          </Button>
-          <Button
-            colorScheme='purple'
-            w='full'
-            onClick={() => refillAndSendAutomatData(automatenVariant)}
-          >
-            Refill Automat
-          </Button>
-        </VStack>
+    <Box borderRadius='lg' overflow='hidden' p='5' w='100%' bgColor={bgColor}>
+      <Text>ID Automat: {data.AutomatConstants.automatenID}</Text>
+      <HStack>
+        <Text>
+          Location: {data.AutomatConstants.country} (
+          {data.AutomatConstants.currency}
+          ),
+          {data.AutomatConstants.city}, {data.AutomatConstants.location}
+        </Text>
       </HStack>
+      <HStack>
+        <Text> Status: {data.status},</Text>
+        <Text>(Last ping: {data.lastPing})</Text>
+      </HStack>
+      <Text>Error messages: {data.error}</Text>
+      <Text>Last Refill: {data.lastRefillDate}</Text>
     </Box>
   );
 };

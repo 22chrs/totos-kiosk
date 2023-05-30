@@ -26,6 +26,7 @@ export type Automat = {
   lastPing: string; //generate, einmal für den gesamten checkout
   error: string; // error message
   lastRefillDate: string;
+  lastValidOrder?: string;
 
   AutomatConstants: AutomatConstants;
 
@@ -41,7 +42,6 @@ export type Automat = {
 // Konstanten Automat
 export type AutomatConstants = {
   automatenID: string;
-
   country: string;
   city: string;
   location: string;
@@ -96,130 +96,132 @@ export const refillAutomat = (automat: Automat): Automat => {
 };
 
 // Konstanten Automat
-export const AutomatVariant_1: Automat = {
-  status: 'online',
-  lastPing: 'never',
-  error: 'never connected',
-  lastRefillDate: 'never',
+export const AutomatVariant_1 = (automatenID: string): Automat => {
+  return {
+    status: 'online',
+    lastPing: 'never',
+    error: 'never connected',
+    lastRefillDate: 'never',
 
-  AutomatConstants: {
-    automatenID: '001',
-    country: 'de-DE',
-    city: 'Leipzig',
-    location: 'Leipzig, Werkstatt',
-    currency: 'EUR',
-  },
+    AutomatConstants: {
+      automatenID: automatenID,
+      country: 'de-DE',
+      city: 'Leipzig',
+      location: 'Leipzig, Werkstatt',
+      currency: 'EUR',
+    },
 
-  Verpackungen: {
-    disposableCup: {
-      displayName: 'Einwegbecher',
-      capacity: 400,
-      current: 0,
-      size: '300 ml',
-      unit: 'Stück',
+    Verpackungen: {
+      disposableCup: {
+        displayName: 'Einwegbecher',
+        capacity: 400,
+        current: 0,
+        size: '300 ml',
+        unit: 'Stück',
+      },
+      disposableLid: {
+        displayName: 'Einwegdeckel',
+        capacity: 400,
+        current: 0,
+        unit: 'Stück',
+      },
+      reusableCup: {
+        displayName: 'Mehrwegbecher (300ml)',
+        capacity: 400,
+        current: 0,
+        size: '300 ml',
+        unit: 'Stück',
+      },
+      reusableLid: {
+        displayName: 'Mehrwegdeckel',
+        capacity: 400,
+        current: 0,
+        unit: 'Stück',
+      },
     },
-    disposableLid: {
-      displayName: 'Einwegdeckel',
-      capacity: 400,
-      current: 0,
-      unit: 'Stück',
-    },
-    reusableCup: {
-      displayName: 'Mehrwegbecher (300ml)',
-      capacity: 400,
-      current: 0,
-      size: '300 ml',
-      unit: 'Stück',
-    },
-    reusableLid: {
-      displayName: 'Mehrwegdeckel',
-      capacity: 400,
-      current: 0,
-      unit: 'Stück',
-    },
-  },
 
-  Kaffee: {
-    Bohnen: {
-      displayName: 'Kaffeebohnen',
-      capacity: 100,
-      current: 0,
-      unit: 'Kilogramm',
+    Kaffee: {
+      Bohnen: {
+        displayName: 'Kaffeebohnen',
+        capacity: 100,
+        current: 0,
+        unit: 'Kilogramm',
+      },
+      Trester: {
+        displayName: 'Kaffee Trester',
+        capacity: 100,
+        current: 0,
+        unit: 'Kilogramm',
+      },
     },
-    Trester: {
-      displayName: 'Kaffee Trester',
-      capacity: 100,
-      current: 0,
-      unit: 'Kilogramm',
-    },
-  },
 
-  Wasser: {
-    Frischwasser: {
-      displayName: 'Frischwasser',
-      capacity: 100,
-      current: 0,
-      unit: 'Liter',
+    Wasser: {
+      Frischwasser: {
+        displayName: 'Frischwasser',
+        capacity: 100,
+        current: 0,
+        unit: 'Liter',
+      },
+      Abwasser: {
+        displayName: 'Abwasser',
+        capacity: 100,
+        current: 0,
+        unit: 'Liter',
+      },
     },
-    Abwasser: {
-      displayName: 'Abwasser',
-      capacity: 100,
-      current: 0,
-      unit: 'Liter',
-    },
-  },
 
-  Milch: {
-    Mandelmilch: {
-      displayName: 'Mandelmilch',
-      capacity: 100,
-      current: 0,
-      unit: 'Liter',
+    Milch: {
+      Mandelmilch: {
+        displayName: 'Mandelmilch',
+        capacity: 100,
+        current: 0,
+        unit: 'Liter',
+      },
     },
-  },
 
-  Additive: {
-    Zucker: {
-      displayName: 'Zucker',
-      capacity: 2000,
-      current: 0,
-      unit: 'Gramm',
+    Additive: {
+      Zucker: {
+        displayName: 'Zucker',
+        capacity: 2000,
+        current: 0,
+        unit: 'Gramm',
+      },
     },
-  },
 
-  Tee: {
-    TeeSorte_A: {
-      displayName: 'TeeSorte A',
-      capacity: 150,
-      current: 0,
-      unit: 'Stück',
+    Tee: {
+      TeeSorte_A: {
+        displayName: 'TeeSorte A',
+        capacity: 150,
+        current: 0,
+        unit: 'Stück',
+      },
+      TeeSorte_B: {
+        displayName: 'TeeSorte B',
+        capacity: 150,
+        current: 0,
+        unit: 'Stück',
+      },
+      TeeSorte_C: {
+        displayName: 'TeeSorte C',
+        capacity: 150,
+        current: 0,
+        unit: 'Stück',
+      },
     },
-    TeeSorte_B: {
-      displayName: 'TeeSorte B',
-      capacity: 150,
-      current: 0,
-      unit: 'Stück',
-    },
-    TeeSorte_C: {
-      displayName: 'TeeSorte C',
-      capacity: 150,
-      current: 0,
-      unit: 'Stück',
-    },
-  },
 
-  Schokoriegel: {
-    Schokoriegel_A: {
-      displayName: 'Schokoriegel A',
-      capacity: 300,
-      current: 0,
-      unit: 'Stück',
+    Schokoriegel: {
+      Schokoriegel_A: {
+        displayName: 'Schokoriegel A',
+        capacity: 300,
+        current: 0,
+        unit: 'Stück',
+      },
+      Schokoriegel_B: {
+        displayName: 'Schokoriegel B',
+        capacity: 300,
+        current: 0,
+        unit: 'Stück',
+      },
     },
-    Schokoriegel_B: {
-      displayName: 'Schokoriegel B',
-      capacity: 300,
-      current: 0,
-      unit: 'Stück',
-    },
-  },
+  };
 };
