@@ -24,12 +24,13 @@ export type Item = {
 export type Automat = {
   status: string; // online, error, offline
   lastPing: string; //generate, einmal für den gesamten checkout
+  error: string; // error message
   lastRefillDate: string;
 
   AutomatConstants: AutomatConstants;
 
   Wasser: Record<string, ProductCategory>;
-  Verpackung: Record<string, ProductCategory>;
+  Verpackungen: Record<string, ProductCategory>;
   Kaffee: Record<string, ProductCategory>;
   Milch?: Record<string, ProductCategory>;
   Additive?: Record<string, ProductCategory>;
@@ -84,7 +85,7 @@ export const refillAutomat = (automat: Automat): Automat => {
 
   return {
     ...refillBasicElements,
-    Verpackung: refillProducts('Verpackung'),
+    Verpackungen: refillProducts('Verpackungen'),
     Tee: refillProducts('Tee'),
     Schokoriegel: refillProducts('Schokoriegel'),
     Wasser: refillProducts('Wasser'),
@@ -98,19 +99,18 @@ export const refillAutomat = (automat: Automat): Automat => {
 export const AutomatVariant_1: Automat = {
   status: 'online',
   lastPing: 'never',
-
+  error: 'never connected',
   lastRefillDate: 'never',
 
   AutomatConstants: {
     automatenID: '001',
-
     country: 'de-DE',
     city: 'Leipzig',
     location: 'Leipzig, Werkstatt',
     currency: 'EUR',
   },
 
-  Verpackung: {
+  Verpackungen: {
     disposableCup: {
       displayName: 'Einwegbecher',
       capacity: 400,

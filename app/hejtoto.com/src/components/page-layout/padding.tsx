@@ -22,7 +22,7 @@ export const StandardPage = ({ children, heading }) => {
     xl: false,
   });
   return (
-    <Box>
+    <Box w='100%'>
       <Box pt='20vh'></Box>
       <Stack
         px={isMobil ? '5vw' : isTablet ? '5vw' : '15vw'}

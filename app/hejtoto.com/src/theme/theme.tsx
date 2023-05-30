@@ -304,6 +304,17 @@ const components = {
     },
   },
 
+  Progress: {
+    baseStyle: (props) => ({
+      track: {
+        bg:
+          props.colorMode === 'light'
+            ? colors.pageBGColor.lightMode
+            : colors.pageBGColor.darkMode,
+      },
+    }),
+  },
+
   MenuButton: {
     variants: {
       MenuButton: (props) => ({
