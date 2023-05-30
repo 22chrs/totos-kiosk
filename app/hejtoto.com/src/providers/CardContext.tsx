@@ -1,4 +1,5 @@
 import { Product } from '@/components/kiosk/shop/Interface';
+import { formatISO } from 'date-fns';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export type ProductCart = {
@@ -27,6 +28,22 @@ type CartContextType = {
   clearCart: () => void;
   payment: string;
   setPayment: React.Dispatch<React.SetStateAction<string>>;
+  bestellung: () => {
+    timeStamp: string;
+    automatenID: string;
+    orderStatus: string;
+    displayNumber: string;
+    products: {
+      productName: string;
+      calculatedPrice?: number;
+      choosenSize?: string;
+      choosenSugar?: string;
+      choosenMug?: string;
+      choosenLid?: string;
+      quantity?: number;
+      discount?: number;
+    }[];
+  }; // Changed from array of objects to a single object
 };
 
 const CartContext = createContext<CartContextType>({
@@ -41,6 +58,7 @@ const CartContext = createContext<CartContextType>({
   clearCart: () => {},
   payment: 'init',
   setPayment: () => {},
+  bestellung: () => [],
 });
 
 export const useCart = () => {
@@ -183,10 +201,31 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return parseFloat(totalPfand.toFixed(2));
   };
 
+  const bestellung = () => {
+    const timeStamp = formatISO(new Date()); // create the timestamp here
+
+    const products = cart.map((item) => {
+      const { idCart, product, ...rest } = item;
+
+      // create a new object excluding null properties
+      const filteredRest = Object.fromEntries(
+        Object.entries(rest).filter(([key, value]) => value !== null)
+      );
+
+      return {
+        ...filteredRest,
+        productName: product.name, // only add the name of the product
+      };
+    });
+
+    return { timeStamp, products };
+  };
+
   return (
     <CartContext.Provider
       value={{
         cart,
+
         addToCart,
         removeFromCart,
         updateItemInCart,
@@ -197,6 +236,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         clearCart,
         payment,
         setPayment,
+        bestellung,
       }}
     >
       {children}

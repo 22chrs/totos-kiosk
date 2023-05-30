@@ -35,6 +35,7 @@ function ShopModalStep3({ herkunft, onClose }) {
     getCartTotalPfand,
     clearCart,
     payment,
+    bestellung,
     setPayment,
   } = useCart();
 
@@ -75,6 +76,11 @@ function ShopModalStep3({ herkunft, onClose }) {
   };
 
   const handlePaymentFinished = () => {
+    const bestellungAufgegeben = bestellung();
+    console.log('Aaaaaaaaaaaaaaaaaaaaaa');
+    console.log(bestellungAufgegeben);
+    console.log('Aaaaaaaaaaaaaaaaaaaaaa');
+
     clearCart();
     setPayment('init');
     onClose();
