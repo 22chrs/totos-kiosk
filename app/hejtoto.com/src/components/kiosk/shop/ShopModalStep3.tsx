@@ -4,6 +4,7 @@ import {
 } from '@/components/icons/icons';
 import { PaymentImages } from '@/components/images/PaymentImages';
 import { formatPrice } from '@/components/kiosk/shop/utils';
+import { addNewOrder } from '@/firebase/dbFunctionsBestellungen';
 import i18n, { standardSprache } from '@/internationalization/i18n';
 import { useCart } from '@/providers/CardContext';
 import { useRouter } from '@/providers/DisplayContext';
@@ -75,11 +76,12 @@ function ShopModalStep3({ herkunft, onClose }) {
     };
   };
 
-  const handlePaymentFinished = () => {
-    const bestellungAufgegeben = bestellung();
-    console.log('Aaaaaaaaaaaaaaaaaaaaaa');
-    console.log(bestellungAufgegeben);
-    console.log('Aaaaaaaaaaaaaaaaaaaaaa');
+  const handlePaymentFinished = async () => {
+    const orderData = bestellung('success');
+    await addNewOrder('001', orderData);
+    // console.log('Aaaaaaaaaaaaaaaaaaaaaa');
+    // console.log(orderData);
+    // console.log('Aaaaaaaaaaaaaaaaaaaaaa');
 
     clearCart();
     setPayment('init');

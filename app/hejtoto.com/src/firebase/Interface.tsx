@@ -13,10 +13,10 @@ export type Item = {
   choosenMug?: string;
   choosenLid?: string;
   choosenMilc?: string;
+  discount?: number;
   calculatedPrice: number;
 
   displayNumber: string; //displayContext
-  discount: number;
 
   quantity: number;
 };
@@ -104,7 +104,7 @@ export const AutomatVariant_1 = (automatenID: string): Automat => {
     lastRefillDate: 'never',
 
     AutomatConstants: {
-      automatenID: automatenID,
+      automatenID: automatenID, // const automatenID = shopData.automatenID;
       country: 'de-DE',
       city: 'Leipzig',
       location: 'Leipzig, Werkstatt',

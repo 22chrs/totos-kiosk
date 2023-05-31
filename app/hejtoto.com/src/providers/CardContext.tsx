@@ -1,5 +1,6 @@
 import { Product } from '@/components/kiosk/shop/Interface';
 import { formatISO } from 'date-fns';
+import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export type ProductCart = {
@@ -13,7 +14,23 @@ export type ProductCart = {
   quantity: number;
 };
 
-type CartContextType = {
+export type Bestellung = {
+  timeStamp: string;
+  orderStatus: string;
+  displayNumber: string;
+  products: {
+    productName: string;
+    calculatedPrice?: number;
+    choosenSize?: string;
+    choosenSugar?: string;
+    choosenMug?: string;
+    choosenLid?: string;
+    quantity?: number;
+    discount?: number;
+  }[];
+};
+
+export type CartContextType = {
   cart: ProductCart[];
   addToCart: (item: ProductCart) => void;
   removeFromCart: (productId: string) => void;
@@ -28,22 +45,7 @@ type CartContextType = {
   clearCart: () => void;
   payment: string;
   setPayment: React.Dispatch<React.SetStateAction<string>>;
-  bestellung: () => {
-    timeStamp: string;
-    automatenID: string;
-    orderStatus: string;
-    displayNumber: string;
-    products: {
-      productName: string;
-      calculatedPrice?: number;
-      choosenSize?: string;
-      choosenSugar?: string;
-      choosenMug?: string;
-      choosenLid?: string;
-      quantity?: number;
-      discount?: number;
-    }[];
-  }; // Changed from array of objects to a single object
+  bestellung: (orderStatusInput: string) => Bestellung;
 };
 
 const CartContext = createContext<CartContextType>({
@@ -58,7 +60,12 @@ const CartContext = createContext<CartContextType>({
   clearCart: () => {},
   payment: 'init',
   setPayment: () => {},
-  bestellung: () => [],
+  bestellung: () => ({
+    timeStamp: '',
+    orderStatus: '',
+    displayNumber: '',
+    products: [],
+  }),
 });
 
 export const useCart = () => {
@@ -70,6 +77,8 @@ type CartProviderProps = {
 };
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+  const router = useRouter();
+
   // Initialize state from local storage or with an empty array if nothing is stored yet
   const [cart, setCart] = useState<ProductCart[]>(() =>
     typeof window !== 'undefined'
@@ -201,8 +210,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return parseFloat(totalPfand.toFixed(2));
   };
 
-  const bestellung = () => {
+  const bestellung = (orderStatusInput: string) => {
     const timeStamp = formatISO(new Date()); // create the timestamp here
+    const orderStatus = orderStatusInput;
+    const displayNumber = router.query.display as string;
 
     const products = cart.map((item) => {
       const { idCart, product, ...rest } = item;
@@ -218,7 +229,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       };
     });
 
-    return { timeStamp, products };
+    return { timeStamp, orderStatus, displayNumber, products };
   };
 
   return (

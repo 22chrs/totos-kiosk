@@ -3,7 +3,7 @@ import { formatISO } from 'date-fns';
 
 import { Box, Button, useColorModeValue } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { addNewOrder, getLastOrder } from './dbFunctionsBestellungen';
+import { getLastOrder } from './dbFunctionsBestellungen';
 
 // Order data
 const orderData: Item = {
@@ -50,7 +50,7 @@ export const FakeOrderButton = ({ automatenID }) => {
 
       quantity: 1,
     };
-    await addNewOrder(automatenID, orderData);
+    //await addNewOrder(automatenID, orderData);
   };
 
   return (
