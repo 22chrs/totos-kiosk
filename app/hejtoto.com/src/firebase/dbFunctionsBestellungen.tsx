@@ -12,6 +12,7 @@ import {
 } from 'firebase/database';
 
 import { format } from 'date-fns';
+import { getRefillData } from './dbFunctionsAutomaten';
 
 export const addNewOrder = async (automatenID, order: Bestellung) => {
   //const timeStamp = formatISO(new Date()); // create the timestamp here
@@ -65,3 +66,21 @@ export const getOrdersFrom = async (automatenID, fromTimeStamp) => {
     return null;
   }
 };
+
+export async function getOrdersSinceRefill(automatenID: string) {
+  try {
+    // Use 'await' before calling getRefillData to wait for the Promise to resolve
+    let fromTimeStamp = await getRefillData(automatenID); // Use let instead of const
+
+    // Ensure fromTimeStamp is a string (if it's not already)
+    fromTimeStamp = String(fromTimeStamp);
+
+    if (fromTimeStamp) {
+      // Now call getOrdersFrom with the resolved fromTimeStamp
+      const orders = await getOrdersFrom(automatenID, fromTimeStamp);
+      console.log('Orders: ', orders);
+    }
+  } catch (error) {
+    console.error('Error getting orders: ', error);
+  }
+}
