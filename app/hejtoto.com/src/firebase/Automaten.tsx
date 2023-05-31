@@ -1,6 +1,5 @@
 import {
   getLastSentData,
-  getRefillData,
   refillAndSendAutomatData,
   setAndInitAutomatData,
 } from '@/firebase/dbFunctionsAutomaten';
@@ -16,7 +15,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { getOrdersFromDate } from './dbFunctionsBestellungen';
+import { getOrdersFrom } from './dbFunctionsBestellungen';
 
 export const AutomatTerminalData = ({ automatenID }) => {
   const [data, setData] = useState(null);
@@ -131,6 +130,15 @@ export const AutomatDisplayStats = ({ automatenID, columns }) => {
   );
 };
 
+function getOrders() {
+  const fromTimeStamp = '20230531144427'; // Replace with the timestamp you need
+  getOrdersFrom('001', fromTimeStamp).then((orders) => {
+    if (orders) {
+      console.log(orders);
+    }
+  });
+}
+
 export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
   const bgColor = useColorModeValue(
     'footerBGColor.lightMode',
@@ -154,15 +162,9 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
           onClick={() => refillAndSendAutomatData(automatenVariant)}
         >
           Refill Automat
-        </Button>{' '}
-        <Button
-          colorScheme='purple'
-          w='full'
-          onClick={() =>
-            getOrdersFromDate(autmatenID, getRefillData(autmatenID))
-          }
-        >
-          Refill Automat
+        </Button>
+        <Button colorScheme='purple' w='full' onClick={() => getOrders()}>
+          Experiment Button
         </Button>
       </VStack>
     </Box>

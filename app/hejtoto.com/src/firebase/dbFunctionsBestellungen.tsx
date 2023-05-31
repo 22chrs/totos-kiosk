@@ -11,19 +11,14 @@ import {
   startAt,
 } from 'firebase/database';
 
-import shopData from '@/public/kiosk/products/leipzig.json';
-import { formatISO, parseISO } from 'date-fns';
-const automatenID = shopData.automatenID;
+import { format } from 'date-fns';
 
 export const addNewOrder = async (automatenID, order: Bestellung) => {
-  // Convert timeStampOrder to a format that can be used as a Firebase key
-  // Replace ":" and "." with "-", and "Z" with nothing, to ensure compatibility with Firebase keys
-  //let timeStampOrderKey = order.timeStamp.replace(/[\:\.Z]/g, '-');
+  //const timeStamp = formatISO(new Date()); // create the timestamp here
+  const timeStamp = format(new Date(), 'yyyyMMddHHmmss');
+  //let timeStampOrderKey = timeStamp.replace(/[\:\.Z]/g, '-');
 
-  const timeStamp = formatISO(new Date()); // create the timestamp here
-  let timeStampOrderKey = timeStamp.replace(/[\:\.Z]/g, '-');
-
-  const orderRef = ref(db, `orders/${automatenID}/${timeStampOrderKey}`);
+  const orderRef = ref(db, `orders/${automatenID}/${timeStamp}`);
 
   try {
     await set(orderRef, order);
@@ -52,29 +47,15 @@ export const getLastOrder = async (automatenID) => {
     return null;
   }
 };
-export const getOrdersFromDate = async (automatenID, startDateString) => {
-  // Use date-fns to parse the string into a Date object
-  const startDate = parseISO(startDateString);
 
-  // Use ISO string of the date for comparison
-  const startDateISOString = startDate.toISOString();
-
-  // Reference to the orders of the specific automatenID
+export const getOrdersFrom = async (automatenID, fromTimeStamp) => {
   const ordersRef = ref(db, `orders/${automatenID}`);
-
-  // Construct the query
-  const q = query(ordersRef, orderByKey(), startAt(startDateISOString));
+  const q = query(ordersRef, orderByKey(), startAt(fromTimeStamp));
 
   try {
     const snapshot = await get(q);
     if (snapshot.exists()) {
-      const data = snapshot.val();
-      let result = {};
-      Object.keys(data).forEach((key) => {
-        const value = data[key];
-        result[key] = value;
-      });
-      return result;
+      return snapshot.val();
     } else {
       console.log('No data available');
       return null;

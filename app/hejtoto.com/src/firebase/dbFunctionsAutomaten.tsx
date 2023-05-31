@@ -1,7 +1,7 @@
 import { db } from '@/firebase/Firebase';
 import { Automat, refillAutomat } from '@/firebase/Interface';
-import { formatISO } from 'date-fns';
 
+import { format } from 'date-fns';
 import { get, ref, set, update } from 'firebase/database';
 
 export const setAndInitAutomatData = async (automat: Automat) => {
@@ -34,7 +34,7 @@ export const updateAutomatData = async (
 
 export const refillAndSendAutomatData = async (automat: Automat) => {
   const refilledAutomat = refillAutomat(automat);
-  refilledAutomat.lastRefillDate = formatISO(new Date());
+  refilledAutomat.lastRefillDate = format(new Date(), 'yyyyMMddHHmmss');
   await updateAutomatData(
     automat.AutomatConstants.automatenID,
     refilledAutomat
@@ -67,11 +67,13 @@ export const getRefillData = async (automatenID: string) => {
     if (snapshot.exists()) {
       const automatData = snapshot.val();
       const refillData = automatData.lastRefillDate; // Adjust the field according to your data structure
-      console.log('Refill data:', refillData);
+      return refillData; // return refill data directly
     } else {
       console.log('No data available');
+      return null;
     }
   } catch (error) {
     console.error('Error getting data: ', error);
+    return null;
   }
 };
