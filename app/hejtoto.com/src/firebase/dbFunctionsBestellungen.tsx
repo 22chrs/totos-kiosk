@@ -1,6 +1,6 @@
 import { db } from '@/firebase/Firebase';
 import { Bestellung } from '@/providers/CardContext';
-import shopData from '@/public/kiosk/products/leipzig.json';
+
 import {
   get,
   limitToLast,
@@ -10,34 +10,17 @@ import {
   set,
 } from 'firebase/database';
 
+import shopData from '@/public/kiosk/products/leipzig.json';
+import { formatISO } from 'date-fns';
 const automatenID = shopData.automatenID;
-
-// export const addNewOrder = async (
-//   automatenID: string,
-//   bestellung: (status: string) => void,
-//   orderStatusInput: string,
-//   cartContext: CartContextType // This is your context, passed as an argument
-// ) => {
-//   const order = cartContext.bestellung(orderStatusInput);
-
-//   // Convert timeStampOrder to a format that can be used as a Firebase key
-//   // Replace ":" and "." with "-", and "Z" with nothing, to ensure compatibility with Firebase keys
-//   let timeStampOrderKey = order.timeStamp.replace(/[\:\.Z]/g, '-');
-
-//   const orderRef = ref(db, `orders/${automatenID}/${timeStampOrderKey}`);
-
-//   try {
-//     await set(orderRef, order);
-//     console.log('New order added successfully');
-//   } catch (error) {
-//     console.error('Error adding new order: ', error);
-//   }
-// };
 
 export const addNewOrder = async (automatenID, order: Bestellung) => {
   // Convert timeStampOrder to a format that can be used as a Firebase key
   // Replace ":" and "." with "-", and "Z" with nothing, to ensure compatibility with Firebase keys
-  let timeStampOrderKey = order.timeStamp.replace(/[\:\.Z]/g, '-');
+  //let timeStampOrderKey = order.timeStamp.replace(/[\:\.Z]/g, '-');
+
+  const timeStamp = formatISO(new Date()); // create the timestamp here
+  let timeStampOrderKey = timeStamp.replace(/[\:\.Z]/g, '-');
 
   const orderRef = ref(db, `orders/${automatenID}/${timeStampOrderKey}`);
 

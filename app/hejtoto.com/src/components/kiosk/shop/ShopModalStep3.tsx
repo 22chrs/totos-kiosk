@@ -26,6 +26,9 @@ import {
 import { useEffect, useState } from 'react';
 import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 
+import shopData from '@/public/kiosk/products/leipzig.json';
+const automatenID = shopData.automatenID;
+
 const Video = chakra('video');
 
 let paymentErrorTimeout;
@@ -78,10 +81,7 @@ function ShopModalStep3({ herkunft, onClose }) {
 
   const handlePaymentFinished = async () => {
     const orderData = bestellung('success');
-    await addNewOrder('001', orderData);
-    // console.log('Aaaaaaaaaaaaaaaaaaaaaa');
-    // console.log(orderData);
-    // console.log('Aaaaaaaaaaaaaaaaaaaaaa');
+    await addNewOrder(automatenID, orderData);
 
     clearCart();
     setPayment('init');

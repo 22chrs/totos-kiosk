@@ -1,26 +1,3 @@
-export type Item = {
-  // for every cartItem
-
-  timeStampOrder: string; //generate, einmal für den gesamten checkout
-  automatenID: string; //uniqe!! -> Automaten ID
-  orderStatus: string; // success, machineError, userCanceled, paymentError
-
-  productName: string; // currentProduct.name
-  categoryName: string; // currentProduct.category
-
-  choosenSize?: string;
-  choosenSugar?: string;
-  choosenMug?: string;
-  choosenLid?: string;
-  choosenMilc?: string;
-  discount?: number;
-  calculatedPrice: number;
-
-  displayNumber: string; //displayContext
-
-  quantity: number;
-};
-
 export type Automat = {
   status: string; // online, error, offline
   lastPing: string; //generate, einmal für den gesamten checkout

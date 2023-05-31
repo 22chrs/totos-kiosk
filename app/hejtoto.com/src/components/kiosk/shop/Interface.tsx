@@ -26,4 +26,5 @@ export type Product = {
   additives?: string[];
   mugs?: string[];
   lids?: string[];
+  category?: string;
 };

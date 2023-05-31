@@ -1,25 +1,26 @@
 import { Product } from '@/components/kiosk/shop/Interface';
-import { formatISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export type ProductCart = {
-  product: Product;
   idCart?: string;
+  product: Product;
+  productCategory: string;
   calculatedPrice: number;
   choosenSize?: string;
   choosenSugar?: string;
   choosenMug?: string;
   choosenLid?: string;
   quantity: number;
+  discount?: number;
 };
 
 export type Bestellung = {
-  timeStamp: string;
   orderStatus: string;
   displayNumber: string;
   products: {
     productName: string;
+    productCategory?: string;
     calculatedPrice?: number;
     choosenSize?: string;
     choosenSugar?: string;
@@ -61,7 +62,6 @@ const CartContext = createContext<CartContextType>({
   payment: 'init',
   setPayment: () => {},
   bestellung: () => ({
-    timeStamp: '',
     orderStatus: '',
     displayNumber: '',
     products: [],
@@ -211,7 +211,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const bestellung = (orderStatusInput: string) => {
-    const timeStamp = formatISO(new Date()); // create the timestamp here
+    //const timeStamp = formatISO(new Date()); // create the timestamp here
     const orderStatus = orderStatusInput;
     const displayNumber = router.query.display as string;
 
@@ -226,10 +226,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       return {
         ...filteredRest,
         productName: product.name, // only add the name of the product
+        //productCategory: productCategory, // only add the name of the product
       };
     });
 
-    return { timeStamp, orderStatus, displayNumber, products };
+    return { orderStatus, displayNumber, products };
   };
 
   return (

@@ -44,6 +44,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
   const handleAddToCart = () => {
     const productCart = {
       product: selectedProduct,
+      productCategory: selectedCategory.name,
       // we dont want to add the idCart, because the handleAddToCart should generate it for us
       calculatedPrice:
         selectedProduct.price +
