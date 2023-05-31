@@ -16,6 +16,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { getOrdersFromDate } from './dbFunctionsBestellungen';
 
 export const AutomatTerminalData = ({ automatenID }) => {
   const [data, setData] = useState(null);
@@ -157,7 +158,9 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
         <Button
           colorScheme='purple'
           w='full'
-          onClick={() => getRefillData(autmatenID)}
+          onClick={() =>
+            getOrdersFromDate(autmatenID, getRefillData(autmatenID))
+          }
         >
           Refill Automat
         </Button>
