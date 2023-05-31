@@ -33,6 +33,7 @@ const Telemetrie = () => {
             <HStack p='0' gap='5' pb='5'>
               <ButtonsAutomat
                 automatenVariant={AutomatVariant_1(automatenID)}
+                autmatenID={automatenID}
               />
             </HStack>
             <DisplayLatestOrderRawData automatenID={automatenID} />

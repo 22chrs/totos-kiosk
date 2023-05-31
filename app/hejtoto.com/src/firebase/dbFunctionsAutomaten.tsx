@@ -58,3 +58,20 @@ export const getLastSentData = async (automatenID: string) => {
 
   return data;
 };
+
+export const getRefillData = async (automatenID: string) => {
+  const automatRef = ref(db, 'automats/' + automatenID);
+
+  try {
+    const snapshot = await get(automatRef);
+    if (snapshot.exists()) {
+      const automatData = snapshot.val();
+      const refillData = automatData.lastRefillDate; // Adjust the field according to your data structure
+      console.log('Refill data:', refillData);
+    } else {
+      console.log('No data available');
+    }
+  } catch (error) {
+    console.error('Error getting data: ', error);
+  }
+};

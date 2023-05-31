@@ -1,5 +1,6 @@
 import {
   getLastSentData,
+  getRefillData,
   refillAndSendAutomatData,
   setAndInitAutomatData,
 } from '@/firebase/dbFunctionsAutomaten';
@@ -129,7 +130,7 @@ export const AutomatDisplayStats = ({ automatenID, columns }) => {
   );
 };
 
-export const ButtonsAutomat = ({ automatenVariant }) => {
+export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
   const bgColor = useColorModeValue(
     'footerBGColor.lightMode',
     'footerBGColor.darkMode'
@@ -150,6 +151,13 @@ export const ButtonsAutomat = ({ automatenVariant }) => {
           colorScheme='purple'
           w='full'
           onClick={() => refillAndSendAutomatData(automatenVariant)}
+        >
+          Refill Automat
+        </Button>{' '}
+        <Button
+          colorScheme='purple'
+          w='full'
+          onClick={() => getRefillData(autmatenID)}
         >
           Refill Automat
         </Button>
