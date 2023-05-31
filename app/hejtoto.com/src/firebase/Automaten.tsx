@@ -169,11 +169,6 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
 export const AutomatStatusData = ({ automatenID }) => {
   const [data, setData] = useState(null);
 
-  // const color = useColorModeValue(
-  //   'primaryHeadingColor.darkMode',
-  //   'primaryHeadingColor.lightMode'
-  // );
-
   const bgColor = useColorModeValue(
     'footerBGColor.lightMode',
     'footerBGColor.darkMode'

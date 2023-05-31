@@ -67,18 +67,78 @@ export const getOrdersFrom = async (automatenID, fromTimeStamp) => {
   }
 };
 
+export const countPropertyTypes = (
+  orders: {
+    [timestamp: string]: Bestellung;
+  },
+  property: string
+) => {
+  const count: { [type: string]: number } = {};
+
+  Object.values(orders).forEach((order) => {
+    order.products.forEach((product) => {
+      const type = product[property];
+      const quantity = product.quantity || 0; // Get the quantity, default to 0 if undefined
+      if (type) {
+        if (!count[type]) {
+          count[type] = quantity;
+        } else {
+          count[type] += quantity;
+        }
+      }
+    });
+  });
+
+  return count;
+};
+
+export const countProductTypes = (orders: {
+  [timestamp: string]: Bestellung;
+}) => {
+  const productCount: { [name: string]: { [size: string]: number } } = {};
+
+  Object.values(orders).forEach((order) => {
+    order.products.forEach((product) => {
+      const productName = product.productName;
+      const productSize = product.choosenSize || 'unknownSize';
+      const quantity = product.quantity || 0;
+      if (productName) {
+        if (!productCount[productName]) {
+          productCount[productName] = { [productSize]: quantity };
+        } else if (!productCount[productName][productSize]) {
+          productCount[productName][productSize] = quantity;
+        } else {
+          productCount[productName][productSize] += quantity;
+        }
+      }
+    });
+  });
+
+  return productCount;
+};
+
 export async function getOrdersSinceRefill(automatenID: string) {
   try {
-    // Use 'await' before calling getRefillData to wait for the Promise to resolve
-    let fromTimeStamp = await getRefillData(automatenID); // Use let instead of const
+    let fromTimeStamp = await getRefillData(automatenID);
 
-    // Ensure fromTimeStamp is a string (if it's not already)
     fromTimeStamp = String(fromTimeStamp);
 
     if (fromTimeStamp) {
-      // Now call getOrdersFrom with the resolved fromTimeStamp
       const orders = await getOrdersFrom(automatenID, fromTimeStamp);
       console.log('Orders: ', orders);
+
+      // Count mug types
+      const mugsCount = countPropertyTypes(orders, 'choosenMug');
+      const lidsCount = countPropertyTypes(orders, 'choosenLid');
+      const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
+      const productCategory = countPropertyTypes(orders, 'productCategory');
+      const productsCount = countProductTypes(orders);
+
+      console.log('choosenMug count: ', mugsCount);
+      console.log('choosenLid count: ', lidsCount);
+      console.log('choosenSugar count: ', sugarsCount);
+      console.log('productCategory count: ', productCategory);
+      console.log('Product counts: ', productsCount);
     }
   } catch (error) {
     console.error('Error getting orders: ', error);
