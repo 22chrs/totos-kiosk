@@ -1,3 +1,5 @@
+// https://console.firebase.google.com/project/hej-toto/database/hej-toto-default-rtdb/rules
+
 import { getApps, initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 

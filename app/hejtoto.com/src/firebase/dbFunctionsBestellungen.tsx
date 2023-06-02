@@ -1,5 +1,6 @@
 import { db } from '@/firebase/Firebase';
 import { Bestellung } from '@/providers/CardContext';
+import shopData from '@/public/kiosk/products/leipzig.json';
 
 import {
   get,
@@ -187,6 +188,58 @@ const countLidTypes = (orders: { [timestamp: string]: Bestellung }) => {
   return lidCount;
 };
 
+const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
+  const mugCount: { [mugType: string]: { [size: string]: number } } = {
+    reusableMugs: {},
+    disposableMugs: {},
+  };
+
+  const availableSizesMugsDisposable = shopData.stock[0].mugsDisposable
+    .map((mug) => parseInt(mug.size))
+    .sort((a, b) => a - b);
+  const availableSizesMugsReusable = shopData.stock[0].mugsReusable
+    .map((mug) => parseInt(mug.size))
+    .sort((a, b) => a - b);
+
+  Object.values(orders).forEach((order) => {
+    order.products.forEach((product) => {
+      const mugType =
+        product.choosenMug === 'mehrwegVariable'
+          ? 'reusableMugs'
+          : 'disposableMugs';
+      const mugSize = parseInt(product.choosenSize);
+      const quantity = product.quantity || 0;
+
+      // Skip the product if the size is not defined
+      if (!mugSize) {
+        return;
+      }
+
+      let targetSize;
+
+      if (mugType === 'disposableMugs') {
+        targetSize = availableSizesMugsDisposable.find(
+          (availableSize) => availableSize >= mugSize
+        );
+      } else if (mugType === 'reusableMugs') {
+        targetSize = availableSizesMugsReusable.find(
+          (availableSize) => availableSize >= mugSize
+        );
+      }
+
+      if (targetSize !== undefined) {
+        mugCount[mugType][targetSize] =
+          (mugCount[mugType][targetSize] || 0) + quantity;
+      }
+    });
+  });
+
+  // Logging mugCount before returning
+  console.log('Mug count: ', mugCount);
+
+  return mugCount;
+};
+
 export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
@@ -195,7 +248,7 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
     if (fromTimeStamp) {
       const orders = await getOrdersFrom(automatenID, fromTimeStamp);
-      console.log('Orders: ', orders);
+      //console.log('Orders: ', orders);
 
       if (orders) {
         // Count mug types
@@ -210,16 +263,21 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         currentState.lastRefillDate = fromTimeStamp;
         currentState.lastOrderDate = format(new Date(), 'yyyyMMddHHmmss');
-        currentState.Verpackungen.disposableCup.capacity = 444;
-        //currentState.Verpackungen.disposableCup.current = mugsCount;
 
-        updateAutomatData(automatenID, currentState);
+        //const sizes = shopData.stock.mugsDisposable.size
+
+        //currentState.Verpackungen.disposableCup.capacity = 444;
+        //currentState.Verpackungen.disposableCup.current = mugsCount;
 
         console.log('Becher: ', mugCount);
         console.log('disposable lids: ', lidsCount['disposableLids']);
         console.log('reusable lids: ', lidsCount['reusableLids']);
         console.log('choosenSugar count: ', sugarsCount);
         console.log('Product counts: ', productsCount);
+
+        countMugTypesJSON(orders);
+
+        updateAutomatData(automatenID, currentState);
       } else {
         console.log('No orders found from timestamp: ', fromTimeStamp);
       }
