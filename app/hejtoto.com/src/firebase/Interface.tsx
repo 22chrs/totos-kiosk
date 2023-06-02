@@ -8,6 +8,7 @@ export type Automat = {
   lastPing: string; //generate, einmal für den gesamten checkout
   error: string; // error message
   lastRefillDate: string;
+  lastOrderDate: string;
   lastValidOrder?: string;
 
   AutomatConstants: AutomatConstants;
@@ -120,6 +121,7 @@ export const AutomatVariant_1 = (): Automat => {
     lastPing: 'never',
     error: 'never connected',
     lastRefillDate: 'never',
+    lastOrderDate: 'never',
 
     AutomatConstants: getAutomatConstantsFromJson(shopData),
 
@@ -127,7 +129,7 @@ export const AutomatVariant_1 = (): Automat => {
       disposableCup: {
         displayName: 'Einwegbecher',
         capacity: 400,
-        current: 0,
+        current: 22,
         size: '300 ml',
         unit: 'Stück',
       },

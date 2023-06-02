@@ -1,8 +1,11 @@
 import { db } from '@/firebase/Firebase';
-import { Automat, AutomatVariant_1, refillAutomat } from '@/firebase/Interface';
+import { Automat, refillAutomat } from '@/firebase/Interface';
 
 import { format } from 'date-fns';
 import { get, ref, set, update } from 'firebase/database';
+
+// Update automat data
+export let currentState: Automat | null = null;
 
 export const setAndInitAutomatData = async (automat: Automat) => {
   const automatRef = ref(
@@ -33,12 +36,16 @@ export const updateAutomatData = async (
 };
 
 export const refillAndSendAutomatData = async (automat: Automat) => {
+  const timeStamp = format(new Date(), 'yyyyMMddHHmmss');
+  console.log('Automat refill init.');
   const refilledAutomat = refillAutomat(automat);
-  refilledAutomat.lastRefillDate = format(new Date(), 'yyyyMMddHHmmss');
+  refilledAutomat.lastRefillDate = timeStamp;
   await updateAutomatData(
     automat.AutomatConstants.automatenID,
     refilledAutomat
   );
+  currentState = refillAutomat(automat);
+  currentState.lastRefillDate = timeStamp;
 };
 
 export const getLastSentData = async (automatenID: string) => {
@@ -59,6 +66,26 @@ export const getLastSentData = async (automatenID: string) => {
   return data;
 };
 
+export const getCurrentAutomatDataAndUpdateState = async (
+  automatenID: string
+) => {
+  const automatRef = ref(db, 'automats/' + automatenID);
+
+  try {
+    const snapshot = await get(automatRef);
+    if (snapshot.exists()) {
+      const automatData = snapshot.val();
+      currentState = automatData;
+    } else {
+      console.log('No data available for this Automat');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting Automat data: ', error);
+    return null;
+  }
+};
+
 export const getRefillData = async (automatenID: string) => {
   const automatRef = ref(db, 'automats/' + automatenID);
 
@@ -77,40 +104,3 @@ export const getRefillData = async (automatenID: string) => {
     return null;
   }
 };
-
-// Update automat data in memory
-
-let currentState: Automat | null = null;
-
-export const getCurrentState = (automatenID: string): Automat => {
-  if (currentState === null) {
-    currentState = AutomatVariant_1();
-  }
-
-  return currentState;
-};
-
-export const updateAutomatPropertyLocally = (
-  propertyPath: string[],
-  newValue: any
-) => {
-  let tempState = { ...currentState };
-
-  propertyPath.reduce((object, key, index) => {
-    if (index === propertyPath.length - 1) {
-      object[key] = newValue;
-    } else {
-      if (!object[key]) {
-        object[key] = {};
-      }
-    }
-    return object[key];
-  }, tempState);
-
-  currentState = tempState;
-};
-
-updateAutomatPropertyLocally(
-  ['Verpackungen', 'disposableCup', 'capacity'],
-  500
-);

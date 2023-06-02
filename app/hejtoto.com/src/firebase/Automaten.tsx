@@ -2,7 +2,6 @@ import {
   getLastSentData,
   refillAndSendAutomatData,
   setAndInitAutomatData,
-  updateAutomatPropertyLocally,
 } from '@/firebase/dbFunctionsAutomaten';
 import {
   Box,
@@ -16,6 +15,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { saveOrdersToAutomat } from './dbFunctionsBestellungen';
 
 export const AutomatTerminalData = ({ automatenID }) => {
   const [data, setData] = useState(null);
@@ -137,10 +137,9 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
   );
 
   const onClickHandler = () => {
-    updateAutomatPropertyLocally(
-      ['Verpackungen', 'disposableCup', 'capacity'],
-      500
-    );
+    saveOrdersToAutomat(autmatenID);
+    //refillAndSendAutomatData(currentState);
+
     // If currentState is not null, update the automat data in Firebase
   };
 

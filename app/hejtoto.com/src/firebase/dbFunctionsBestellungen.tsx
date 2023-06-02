@@ -12,7 +12,12 @@ import {
 } from 'firebase/database';
 
 import { format } from 'date-fns';
-import { getRefillData } from './dbFunctionsAutomaten';
+import {
+  currentState,
+  getCurrentAutomatDataAndUpdateState,
+  getRefillData,
+  updateAutomatData,
+} from './dbFunctionsAutomaten';
 
 export const addNewOrder = async (automatenID, order: Bestellung) => {
   //const timeStamp = formatISO(new Date()); // create the timestamp here
@@ -117,7 +122,7 @@ export const countProductTypes = (orders: {
   return productCount;
 };
 
-export async function getOrdersSinceRefill(automatenID: string) {
+export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
 
@@ -128,11 +133,25 @@ export async function getOrdersSinceRefill(automatenID: string) {
       console.log('Orders: ', orders);
 
       // Count mug types
-      const mugsCount = countPropertyTypes(orders, 'choosenMug');
+      const mugsCount = countPropertyTypes(
+        orders,
+        'choosenMug.mehrwegVariable'
+      );
       const lidsCount = countPropertyTypes(orders, 'choosenLid');
       const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
       const productCategory = countPropertyTypes(orders, 'productCategory');
       const productsCount = countProductTypes(orders);
+
+      if (currentState === null) {
+        getCurrentAutomatDataAndUpdateState(automatenID);
+      }
+
+      currentState.lastRefillDate = fromTimeStamp;
+      currentState.lastOrderDate = format(new Date(), 'yyyyMMddHHmmss');
+      currentState.Verpackungen.disposableCup.capacity = 444;
+      //currentState.Verpackungen.disposableCup.current = mugsCount;
+
+      updateAutomatData(automatenID, currentState);
 
       console.log('choosenMug count: ', mugsCount);
       console.log('choosenLid count: ', lidsCount);
