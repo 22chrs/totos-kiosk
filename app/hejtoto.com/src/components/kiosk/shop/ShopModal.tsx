@@ -118,7 +118,7 @@ export function ModalProductCard({
   useEffect(() => {
     if (isOpen && selectedProduct?.sizes.length > 0) {
       setSelectedSizeOption(selectedProduct.sizes[0]);
-      setSelectedSugarOption('0');
+      setSelectedSugarOption('zero');
     }
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 

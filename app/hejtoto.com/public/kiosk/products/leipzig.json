@@ -20,7 +20,7 @@
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
             { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "allergens": [""],
           "vegan": true,
@@ -28,13 +28,13 @@
         },
         {
           "id": "2",
-          "name": "Cappuccino",
+          "name": "Expresso",
           "description": "",
-          "price": 3.79,
+          "price": 1.79,
           "allergens": [""],
           "sizes": [
-            { "size": "150 ml", "additionalCost": 0.0 },
-            { "size": "200 ml", "additionalCost": 1.0 }
+            { "size": "35 ml", "additionalCost": 0.0 },
+            { "size": "50 ml", "additionalCost": 0.7 }
           ],
           "vegan": true,
           "glutenfree": false
@@ -48,7 +48,7 @@
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
             { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": false,
           "glutenfree": true
@@ -62,7 +62,7 @@
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
             { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": false,
           "glutenfree": false
@@ -76,7 +76,7 @@
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
             { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
           "glutenfree": true
@@ -99,7 +99,7 @@
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
             { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
           "glutenfree": true
@@ -113,7 +113,7 @@
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
             { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": false,
           "glutenfree": true
@@ -135,7 +135,7 @@
           "allergens": [],
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "300 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
           "glutenfree": true,
@@ -149,7 +149,7 @@
           "allergens": [],
           "sizes": [
             { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "500 ml", "additionalCost": 2.0 }
+            { "size": "300 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
           "glutenfree": true,
@@ -177,10 +177,48 @@
   ],
   "stock": [
     {
-      "mugsDisposable": ["300ml", "100ml"],
-      "mugsReusable": ["300ml", "100ml"],
-      "lidsDisposable": ["onesize"],
-      "lidsReusable": ["onesize"],
+      "mugsDisposable": [
+        {
+          "displayName": "Einwegbecher 200 ml",
+          "size": "200 ml",
+          "capacity": 100
+        },
+        {
+          "displayName": "Einwegbecher 300 ml",
+          "size": "300 ml",
+          "capacity": 200
+        },
+        {
+          "displayName": "Einwegbecher 400 ml",
+          "size": "400 ml",
+          "capacity": 50
+        }
+      ],
+      "mugsReusable": [
+        {
+          "displayName": "Mehrwegbecher 200 ml",
+          "size": "200 ml",
+          "capacity": 100
+        },
+        {
+          "displayName": "Mehrwegbecher 300 ml",
+          "size": "300 ml",
+          "capacity": 200
+        },
+        {
+          "displayName": "Mehrwegbecher 400 ml",
+          "size": "400 ml",
+          "capacity": 50
+        }
+      ],
+
+      "lidsDisposable": [
+        { "displayName": "Einwegdeckel", "size": "unisize", "capacity": 200 }
+      ],
+      "lidsReusable": [
+        { "displayName": "Mehrwegdeckel", "size": "unisize", "capacity": 350 }
+      ],
+
       "milc": ["almond", "oat"]
     }
   ]

@@ -114,6 +114,41 @@ function getProductCategoryFromJson(
   };
 }
 
+function getVerpackungenFromJson(data: any): Record<string, ProductCategory> {
+  const stockData = data.stock[0];
+  const verpackungen: Record<string, ProductCategory> = {};
+
+  // Map mugs
+  const mugTypes = ['mugsDisposable', 'mugsReusable'];
+  mugTypes.forEach((mugType) => {
+    stockData[mugType].forEach((mug: any) => {
+      verpackungen[`${mugType}_${mug.size.replace(' ', '')}`] = {
+        displayName: mug.displayName,
+        capacity: mug.capacity,
+        current: 0,
+        unit: 'Stück',
+        size: mug.size,
+      };
+    });
+  });
+
+  // Map lids
+  const lidTypes = ['lidsDisposable', 'lidsReusable'];
+  lidTypes.forEach((lidType) => {
+    stockData[lidType].forEach((lid: any) => {
+      verpackungen[`${lidType}_${lid.size}`] = {
+        displayName: lid.displayName,
+        capacity: lid.capacity,
+        current: 0,
+        unit: 'Stück',
+        size: lid.size,
+      };
+    });
+  });
+
+  return verpackungen;
+}
+
 // Konstanten Automat
 export const AutomatVariant_1 = (): Automat => {
   return {
@@ -125,34 +160,36 @@ export const AutomatVariant_1 = (): Automat => {
 
     AutomatConstants: getAutomatConstantsFromJson(shopData),
 
-    Verpackungen: {
-      disposableCup: {
-        displayName: 'Einwegbecher',
-        capacity: 400,
-        current: 0,
-        size: '300 ml',
-        unit: 'Stück',
-      },
-      disposableLid: {
-        displayName: 'Einwegdeckel',
-        capacity: 400,
-        current: 0,
-        unit: 'Stück',
-      },
-      reusableCup: {
-        displayName: 'Mehrwegbecher (300ml)',
-        capacity: 400,
-        current: 0,
-        size: '300 ml',
-        unit: 'Stück',
-      },
-      reusableLid: {
-        displayName: 'Mehrwegdeckel',
-        capacity: 400,
-        current: 0,
-        unit: 'Stück',
-      },
-    },
+    Verpackungen: getVerpackungenFromJson(shopData),
+
+    // Verpackungen: {
+    //   disposableCup: {
+    //     displayName: 'Einwegbecher',
+    //     capacity: 400,
+    //     current: 0,
+    //     size: '300 ml',
+    //     unit: 'Stück',
+    //   },
+    //   disposableLid: {
+    //     displayName: 'Einwegdeckel',
+    //     capacity: 400,
+    //     current: 0,
+    //     unit: 'Stück',
+    //   },
+    //   reusableCup: {
+    //     displayName: 'Mehrwegbecher (300ml)',
+    //     capacity: 400,
+    //     current: 0,
+    //     size: '300 ml',
+    //     unit: 'Stück',
+    //   },
+    //   reusableLid: {
+    //     displayName: 'Mehrwegdeckel',
+    //     capacity: 400,
+    //     current: 0,
+    //     unit: 'Stück',
+    //   },
+    // },
 
     Kaffee: {
       Bohnen: {

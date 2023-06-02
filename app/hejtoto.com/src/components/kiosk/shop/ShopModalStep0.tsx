@@ -25,10 +25,7 @@ import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 import { handleUmlauts } from './utils';
 
 function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
-  // Initialize selected size state
-  //const [selectedSize, setSelectedSize] = useState(null);
-  const sugarLevels = ['0', '1', '2', '3'];
-  //const [sugarLevel, setSugarLevel] = useState(null);
+  const sugarLevels = ['zero', 's', 'm', 'l'];
 
   const {
     activeStep,
@@ -180,19 +177,19 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                           >
                             {level === selectedSugarOption && (
                               <>
-                                {level === '0' && (
+                                {level === 'zero' && (
                                   <Icon boxSize={6} as={BanRegular} />
                                 )}
-                                {level === '1' && (
+                                {level === 's' && (
                                   <Icon boxSize={6} as={RxCube} />
                                 )}
-                                {level === '2' && (
+                                {level === 'm' && (
                                   <>
                                     <Icon boxSize={6} as={RxCube} />
                                     <Icon boxSize={6} as={RxCube} />
                                   </>
                                 )}
-                                {level === '3' && (
+                                {level === 'l' && (
                                   <>
                                     <Icon boxSize={6} as={RxCube} />
                                     <Icon boxSize={6} as={RxCube} />
@@ -202,13 +199,13 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                               </>
                             )}
                             <Box pl={level === selectedSugarOption ? 2 : 0}>
-                              {level === '0'
+                              {level === 'zero'
                                 ? 'Kein Zucker'
-                                : level === '1'
+                                : level === 's'
                                 ? 'Wenig'
-                                : level === '2'
+                                : level === 'm'
                                 ? 'Mittel'
-                                : level === '3'
+                                : level === 'l'
                                 ? 'Viel'
                                 : ''}
                             </Box>

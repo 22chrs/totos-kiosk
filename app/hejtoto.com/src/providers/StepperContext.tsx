@@ -34,7 +34,7 @@ export const StepperProvider: React.FC<{ children: React.ReactNode }> = ({
     additionalCost: number;
   } | null>(null);
 
-  const [selectedSugarOption, setSelectedSugarOption] = useState('0');
+  const [selectedSugarOption, setSelectedSugarOption] = useState('zero');
 
   return (
     <StepperContext.Provider
