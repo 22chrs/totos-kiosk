@@ -38,7 +38,7 @@ export const useRouter = () => {
         const hrefWithDisplay = `${path}?display=${displayNumber}`;
         await router.push(hrefWithDisplay);
         setIsNavigating(false);
-      }, 300);
+      }, 100);
     }
   };
 

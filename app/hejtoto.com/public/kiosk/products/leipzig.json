@@ -1,11 +1,13 @@
 {
   "automatenID": "001",
+  "Automat": "AutomatVariant_1",
   "country": "de-DE",
   "location": "Leipzig, Werkstatt",
   "currency": "EUR",
   "categories": [
     {
       "name": "Kaffee",
+      "unit": "ml",
       "additives": ["sugar"],
       "mugs": ["disposable", "reusable"],
       "lids": ["disposable", "reusable"],
@@ -83,6 +85,7 @@
     },
     {
       "name": "Schokodrinks",
+      "unit": "ml",
       "additives": [""],
       "mugs": ["disposable", "reusable"],
       "lids": ["disposable", "reusable"],
@@ -119,6 +122,7 @@
     },
     {
       "name": "Tee",
+      "unit": "Stück",
       "additives": ["sugar"],
       "mugs": ["disposable", "reusable"],
       "lids": ["disposable", "reusable"],
@@ -134,7 +138,8 @@
             { "size": "500 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
-          "glutenfree": true
+          "glutenfree": true,
+          "capacity": 100
         },
         {
           "id": "9",
@@ -147,12 +152,14 @@
             { "size": "500 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
-          "glutenfree": true
+          "glutenfree": true,
+          "capacity": 120
         }
       ]
     },
     {
       "name": "Schokoriegel",
+      "unit": "Stück",
       "products": [
         {
           "id": "10",
@@ -162,7 +169,8 @@
           "allergens": ["Soja"],
           "sizes": [{ "size": "200 g", "additionalCost": 0.0 }],
           "vegan": true,
-          "glutenfree": true
+          "glutenfree": true,
+          "capacity": 99
         }
       ]
     }

@@ -2,6 +2,7 @@ import {
   getLastSentData,
   refillAndSendAutomatData,
   setAndInitAutomatData,
+  updateAutomatPropertyLocally,
 } from '@/firebase/dbFunctionsAutomaten';
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { getOrdersSinceRefill } from './dbFunctionsBestellungen';
 
 export const AutomatTerminalData = ({ automatenID }) => {
   const [data, setData] = useState(null);
@@ -136,6 +136,14 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
     'footerBGColor.darkMode'
   );
 
+  const onClickHandler = () => {
+    updateAutomatPropertyLocally(
+      ['Verpackungen', 'disposableCup', 'capacity'],
+      500
+    );
+    // If currentState is not null, update the automat data in Firebase
+  };
+
   return (
     <Box borderRadius='lg' overflow='hidden' p='5' w='100%' bgColor={bgColor}>
       <Text>Actions</Text>
@@ -154,11 +162,7 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
         >
           Refill Automat
         </Button>
-        <Button
-          colorScheme='purple'
-          w='full'
-          onClick={() => getOrdersSinceRefill('001')}
-        >
+        <Button colorScheme='purple' w='full' onClick={onClickHandler}>
           Experiment Button
         </Button>
       </VStack>

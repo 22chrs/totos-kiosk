@@ -1,3 +1,8 @@
+import shopData from '@/public/kiosk/products/leipzig.json';
+const teeCategory = shopData.categories.find(
+  (category) => category.name === 'Tee'
+);
+
 export type Automat = {
   status: string; // online, error, offline
   lastPing: string; //generate, einmal für den gesamten checkout
@@ -72,21 +77,51 @@ export const refillAutomat = (automat: Automat): Automat => {
   };
 };
 
+function getAutomatConstantsFromJson(data: any): AutomatConstants {
+  return {
+    automatenID: data.automatenID,
+    country: data.country,
+    city: data.location.split(',')[0].trim(),
+    location: data.location,
+    currency: data.currency,
+  };
+}
+
+function getProductCategoryFromJson(
+  product: string
+): Record<string, Record<string, ProductCategory>> {
+  const productCategory = shopData.categories.find(
+    (category) => category.name === product
+  );
+
+  if (!productCategory) {
+    return {};
+  }
+
+  return {
+    [product]: Object.fromEntries(
+      productCategory.products.map((product) => [
+        `${product.id}`,
+        {
+          displayName: product.name,
+          capacity: product.capacity, // use capacity from JSON
+          current: 0, // replace with actual data if available
+          unit: productCategory.unit, // replace with actual data if available
+        },
+      ])
+    ),
+  };
+}
+
 // Konstanten Automat
-export const AutomatVariant_1 = (automatenID: string): Automat => {
+export const AutomatVariant_1 = (): Automat => {
   return {
     status: 'online',
     lastPing: 'never',
     error: 'never connected',
     lastRefillDate: 'never',
 
-    AutomatConstants: {
-      automatenID: automatenID, // const automatenID = shopData.automatenID;
-      country: 'de-DE',
-      city: 'Leipzig',
-      location: 'Leipzig, Werkstatt',
-      currency: 'EUR',
-    },
+    AutomatConstants: getAutomatConstantsFromJson(shopData),
 
     Verpackungen: {
       disposableCup: {
@@ -165,40 +200,7 @@ export const AutomatVariant_1 = (automatenID: string): Automat => {
       },
     },
 
-    Tee: {
-      TeeSorte_A: {
-        displayName: 'TeeSorte A',
-        capacity: 150,
-        current: 0,
-        unit: 'Stück',
-      },
-      TeeSorte_B: {
-        displayName: 'TeeSorte B',
-        capacity: 150,
-        current: 0,
-        unit: 'Stück',
-      },
-      TeeSorte_C: {
-        displayName: 'TeeSorte C',
-        capacity: 150,
-        current: 0,
-        unit: 'Stück',
-      },
-    },
-
-    Schokoriegel: {
-      Schokoriegel_A: {
-        displayName: 'Schokoriegel A',
-        capacity: 300,
-        current: 0,
-        unit: 'Stück',
-      },
-      Schokoriegel_B: {
-        displayName: 'Schokoriegel B',
-        capacity: 300,
-        current: 0,
-        unit: 'Stück',
-      },
-    },
+    ...getProductCategoryFromJson('Tee'),
+    ...getProductCategoryFromJson('Schokoriegel'),
   };
 };

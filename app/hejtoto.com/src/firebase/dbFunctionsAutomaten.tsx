@@ -1,5 +1,5 @@
 import { db } from '@/firebase/Firebase';
-import { Automat, refillAutomat } from '@/firebase/Interface';
+import { Automat, AutomatVariant_1, refillAutomat } from '@/firebase/Interface';
 
 import { format } from 'date-fns';
 import { get, ref, set, update } from 'firebase/database';
@@ -77,3 +77,40 @@ export const getRefillData = async (automatenID: string) => {
     return null;
   }
 };
+
+// Update automat data in memory
+
+let currentState: Automat | null = null;
+
+export const getCurrentState = (automatenID: string): Automat => {
+  if (currentState === null) {
+    currentState = AutomatVariant_1();
+  }
+
+  return currentState;
+};
+
+export const updateAutomatPropertyLocally = (
+  propertyPath: string[],
+  newValue: any
+) => {
+  let tempState = { ...currentState };
+
+  propertyPath.reduce((object, key, index) => {
+    if (index === propertyPath.length - 1) {
+      object[key] = newValue;
+    } else {
+      if (!object[key]) {
+        object[key] = {};
+      }
+    }
+    return object[key];
+  }, tempState);
+
+  currentState = tempState;
+};
+
+updateAutomatPropertyLocally(
+  ['Verpackungen', 'disposableCup', 'capacity'],
+  500
+);

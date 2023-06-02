@@ -35,7 +35,7 @@ const Kiosk = () => {
   }, [setHeader]);
 
   const handlePageClick = () => {
-    router.pushWithDisplay('./kiosk/shop');
+    router.pushWithDisplay('/kiosk/shop');
   };
 
   return (
