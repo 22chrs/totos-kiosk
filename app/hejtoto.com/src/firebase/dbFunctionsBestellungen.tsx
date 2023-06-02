@@ -150,7 +150,8 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         updateAutomatData(automatenID, currentState);
 
-        console.log('choosenMug count: ', mugsCount);
+        console.log('Einwegbecher count: ', mugsCount['einwegVariable']);
+        console.log('Mehrwegbecher count: ', mugsCount['mehrwegVariable']);
         console.log('choosenLid count: ', lidsCount['inklusiveDeckel']);
         console.log('choosenSugar count: ', sugarsCount);
         console.log('productCategory count: ', productCategory);

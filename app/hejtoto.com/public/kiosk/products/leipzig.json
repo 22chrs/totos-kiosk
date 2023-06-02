@@ -174,5 +174,14 @@
         }
       ]
     }
+  ],
+  "stock": [
+    {
+      "mugsDisposable": ["300ml", "100ml"],
+      "mugsReusable": ["300ml", "100ml"],
+      "lidsDisposable": ["onesize"],
+      "lidsReusable": ["onesize"],
+      "milc": ["almond", "oat"]
+    }
   ]
 }
