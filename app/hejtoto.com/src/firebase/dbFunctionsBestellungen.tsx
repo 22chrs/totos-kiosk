@@ -240,6 +240,19 @@ const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
   return mugCount;
 };
 
+const setVerpackungenCurrentValues = (newValue: number) => {
+  if (currentState && currentState.Verpackungen) {
+    Object.keys(currentState.Verpackungen).forEach((key) => {
+      currentState.Verpackungen[key].current = newValue;
+    });
+    console.log('Verpackungen current values updated successfully');
+  } else {
+    console.error(
+      'Error: currentState or currentState.Verpackungen is not defined'
+    );
+  }
+};
+
 export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
@@ -267,8 +280,6 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         //const sizes = shopData.stock.mugsDisposable.size
 
-        //currentState.Verpackungen.disposableCup.current = mugsCount;
-
         console.log('Becher: ', mugCount);
         console.log('disposable lids: ', lidsCount['disposableLids']);
         console.log('reusable lids: ', lidsCount['reusableLids']);
@@ -277,7 +288,7 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         countMugTypesJSON(orders);
 
-        currentState.Verpackungen.disposableCup.current;
+        setVerpackungenCurrentValues(111); // set all "current" values to 10
 
         updateAutomatData(automatenID, currentState);
       } else {
