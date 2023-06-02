@@ -195,11 +195,11 @@ const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
   };
 
   const availableSizesMugsDisposable = shopData.stock[0].mugsDisposable
-    .map((mug) => parseInt(mug.size))
-    .sort((a, b) => a - b);
+    .map((mug) => mug.size)
+    .sort((a, b) => parseInt(a) - parseInt(b));
   const availableSizesMugsReusable = shopData.stock[0].mugsReusable
-    .map((mug) => parseInt(mug.size))
-    .sort((a, b) => a - b);
+    .map((mug) => mug.size)
+    .sort((a, b) => parseInt(a) - parseInt(b));
 
   Object.values(orders).forEach((order) => {
     order.products.forEach((product) => {
@@ -207,7 +207,7 @@ const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
         product.choosenMug === 'mehrwegVariable'
           ? 'reusableMugs'
           : 'disposableMugs';
-      const mugSize = parseInt(product.choosenSize);
+      const mugSize = product.choosenSize;
       const quantity = product.quantity || 0;
 
       // Skip the product if the size is not defined
@@ -219,11 +219,11 @@ const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
 
       if (mugType === 'disposableMugs') {
         targetSize = availableSizesMugsDisposable.find(
-          (availableSize) => availableSize >= mugSize
+          (availableSize) => parseInt(availableSize) >= parseInt(mugSize)
         );
       } else if (mugType === 'reusableMugs') {
         targetSize = availableSizesMugsReusable.find(
-          (availableSize) => availableSize >= mugSize
+          (availableSize) => parseInt(availableSize) >= parseInt(mugSize)
         );
       }
 
@@ -252,7 +252,8 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
       if (orders) {
         // Count mug types
-        const mugCount = countMugTypes(orders);
+        const mugCount = countMugTypesJSON(orders);
+        //const mugCount = countMugTypes(orders);
         const lidsCount = countLidTypes(orders);
         const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
         const productsCount = countProductTypes(orders);
@@ -266,7 +267,6 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         //const sizes = shopData.stock.mugsDisposable.size
 
-        //currentState.Verpackungen.disposableCup.capacity = 444;
         //currentState.Verpackungen.disposableCup.current = mugsCount;
 
         console.log('Becher: ', mugCount);
@@ -276,6 +276,8 @@ export async function saveOrdersToAutomat(automatenID: string) {
         console.log('Product counts: ', productsCount);
 
         countMugTypesJSON(orders);
+
+        currentState.Verpackungen.disposableCup.current;
 
         updateAutomatData(automatenID, currentState);
       } else {

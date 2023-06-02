@@ -162,34 +162,64 @@ export const AutomatVariant_1 = (): Automat => {
 
     Verpackungen: getVerpackungenFromJson(shopData),
 
-    // Verpackungen: {
-    //   disposableCup: {
-    //     displayName: 'Einwegbecher',
-    //     capacity: 400,
-    //     current: 0,
-    //     size: '300 ml',
-    //     unit: 'Stück',
+    // {
+    //   "mugsDisposable_200ml": {
+    //     "displayName": "Einwegbecher 200 ml",
+    //     "capacity": 100,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "200 ml"
     //   },
-    //   disposableLid: {
-    //     displayName: 'Einwegdeckel',
-    //     capacity: 400,
-    //     current: 0,
-    //     unit: 'Stück',
+    //   "mugsDisposable_300ml": {
+    //     "displayName": "Einwegbecher 300 ml",
+    //     "capacity": 200,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "300 ml"
     //   },
-    //   reusableCup: {
-    //     displayName: 'Mehrwegbecher (300ml)',
-    //     capacity: 400,
-    //     current: 0,
-    //     size: '300 ml',
-    //     unit: 'Stück',
+    //   "mugsDisposable_400ml": {
+    //     "displayName": "Einwegbecher 400 ml",
+    //     "capacity": 50,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "400 ml"
     //   },
-    //   reusableLid: {
-    //     displayName: 'Mehrwegdeckel',
-    //     capacity: 400,
-    //     current: 0,
-    //     unit: 'Stück',
+    //   "mugsReusable_200ml": {
+    //     "displayName": "Mehrwegbecher 200 ml",
+    //     "capacity": 100,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "200 ml"
     //   },
-    // },
+    //   "mugsReusable_300ml": {
+    //     "displayName": "Mehrwegbecher 300 ml",
+    //     "capacity": 200,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "300 ml"
+    //   },
+    //   "mugsReusable_400ml": {
+    //     "displayName": "Mehrwegbecher 400 ml",
+    //     "capacity": 50,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "400 ml"
+    //   },
+    //   "lidsDisposable_unisize": {
+    //     "displayName": "Einwegdeckel",
+    //     "capacity": 200,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "unisize"
+    //   },
+    //   "lidsReusable_unisize": {
+    //     "displayName": "Mehrwegdeckel",
+    //     "capacity": 350,
+    //     "current": 0,
+    //     "unit": "Stück",
+    //     "size": "unisize"
+    //   }
+    // }
 
     Kaffee: {
       Bohnen: {
