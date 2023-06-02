@@ -129,7 +129,7 @@ export const AutomatVariant_1 = (): Automat => {
       disposableCup: {
         displayName: 'Einwegbecher',
         capacity: 400,
-        current: 22,
+        current: 0,
         size: '300 ml',
         unit: 'Stück',
       },

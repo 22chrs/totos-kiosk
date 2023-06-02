@@ -121,7 +121,6 @@ export const countProductTypes = (orders: {
 
   return productCount;
 };
-
 export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
@@ -132,32 +131,33 @@ export async function saveOrdersToAutomat(automatenID: string) {
       const orders = await getOrdersFrom(automatenID, fromTimeStamp);
       console.log('Orders: ', orders);
 
-      // Count mug types
-      const mugsCount = countPropertyTypes(
-        orders,
-        'choosenMug.mehrwegVariable'
-      );
-      const lidsCount = countPropertyTypes(orders, 'choosenLid');
-      const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
-      const productCategory = countPropertyTypes(orders, 'productCategory');
-      const productsCount = countProductTypes(orders);
+      if (orders) {
+        // Count mug types
+        const mugsCount = countPropertyTypes(orders, 'choosenMug');
+        const lidsCount = countPropertyTypes(orders, 'choosenLid');
+        const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
+        const productCategory = countPropertyTypes(orders, 'productCategory');
+        const productsCount = countProductTypes(orders);
 
-      if (currentState === null) {
-        getCurrentAutomatDataAndUpdateState(automatenID);
+        if (currentState === null) {
+          getCurrentAutomatDataAndUpdateState(automatenID);
+        }
+
+        currentState.lastRefillDate = fromTimeStamp;
+        currentState.lastOrderDate = format(new Date(), 'yyyyMMddHHmmss');
+        currentState.Verpackungen.disposableCup.capacity = 444;
+        //currentState.Verpackungen.disposableCup.current = mugsCount;
+
+        updateAutomatData(automatenID, currentState);
+
+        console.log('choosenMug count: ', mugsCount);
+        console.log('choosenLid count: ', lidsCount['inklusiveDeckel']);
+        console.log('choosenSugar count: ', sugarsCount);
+        console.log('productCategory count: ', productCategory);
+        console.log('Product counts: ', productsCount);
+      } else {
+        console.log('No orders found from timestamp: ', fromTimeStamp);
       }
-
-      currentState.lastRefillDate = fromTimeStamp;
-      currentState.lastOrderDate = format(new Date(), 'yyyyMMddHHmmss');
-      currentState.Verpackungen.disposableCup.capacity = 444;
-      //currentState.Verpackungen.disposableCup.current = mugsCount;
-
-      updateAutomatData(automatenID, currentState);
-
-      console.log('choosenMug count: ', mugsCount);
-      console.log('choosenLid count: ', lidsCount);
-      console.log('choosenSugar count: ', sugarsCount);
-      console.log('productCategory count: ', productCategory);
-      console.log('Product counts: ', productsCount);
     }
   } catch (error) {
     console.error('Error getting orders: ', error);
