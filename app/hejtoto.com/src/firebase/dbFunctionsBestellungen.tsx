@@ -140,7 +140,7 @@ export async function saveOrdersToAutomat(automatenID: string) {
         const productsCount = countProductTypes(orders);
 
         if (currentState === null) {
-          getCurrentAutomatDataAndUpdateState(automatenID);
+          await getCurrentAutomatDataAndUpdateState(automatenID);
         }
 
         currentState.lastRefillDate = fromTimeStamp;
