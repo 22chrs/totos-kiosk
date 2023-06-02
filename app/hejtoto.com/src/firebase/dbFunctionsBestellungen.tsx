@@ -72,7 +72,8 @@ export const getOrdersFrom = async (automatenID, fromTimeStamp) => {
   }
 };
 
-export const countPropertyTypes = (
+// Anzahl Additive zählen, z.B. Zucker
+const countPropertyTypes = (
   orders: {
     [timestamp: string]: Bestellung;
   },
@@ -97,16 +98,21 @@ export const countPropertyTypes = (
   return count;
 };
 
-export const countProductTypes = (orders: {
-  [timestamp: string]: Bestellung;
-}) => {
+// Produkte in unterschiedlichen Größen zählen
+const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
   const productCount: { [name: string]: { [size: string]: number } } = {};
 
   Object.values(orders).forEach((order) => {
     order.products.forEach((product) => {
       const productName = product.productName;
-      const productSize = product.choosenSize || 'unknownSize';
+      const productSize = product.choosenSize;
       const quantity = product.quantity || 0;
+
+      // Skip the product if the size is not defined
+      if (!productSize) {
+        return;
+      }
+
       if (productName) {
         if (!productCount[productName]) {
           productCount[productName] = { [productSize]: quantity };
@@ -121,6 +127,66 @@ export const countProductTypes = (orders: {
 
   return productCount;
 };
+
+// Ein- und Mehrwegbecher in unterschiedlichen Größen zählen
+const countMugTypes = (orders: { [timestamp: string]: Bestellung }) => {
+  const mugCount: { [mugType: string]: { [size: string]: number } } = {
+    reusableMugs: {},
+    disposableMugs: {},
+  };
+
+  Object.values(orders).forEach((order) => {
+    order.products.forEach((product) => {
+      const mugType =
+        product.choosenMug === 'mehrwegVariable'
+          ? 'reusableMugs'
+          : 'disposableMugs';
+      const mugSize = product.choosenSize;
+      const quantity = product.quantity || 0;
+
+      // Skip the product if the size is not defined
+      if (!mugSize) {
+        return;
+      }
+
+      if (mugType) {
+        if (!mugCount[mugType][mugSize]) {
+          mugCount[mugType][mugSize] = quantity;
+        } else {
+          mugCount[mugType][mugSize] += quantity;
+        }
+      }
+    });
+  });
+
+  return mugCount;
+};
+
+// Ein- und Mehrwegdeckel zählen
+const countLidTypes = (orders: { [timestamp: string]: Bestellung }) => {
+  const lidCount: { [lidType: string]: number } = {
+    reusableLids: 0,
+    disposableLids: 0,
+  };
+
+  Object.values(orders).forEach((order) => {
+    order.products.forEach((product) => {
+      if (product.choosenLid === 'inklusiveDeckel') {
+        const lidType =
+          product.choosenMug === 'mehrwegVariable'
+            ? 'reusableLids'
+            : 'disposableLids';
+        const quantity = product.quantity || 0;
+
+        // Increase the lid count of the corresponding type
+        lidCount[lidType] += quantity;
+      }
+    });
+  });
+
+  return lidCount;
+};
+
 export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
@@ -133,10 +199,9 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
       if (orders) {
         // Count mug types
-        const mugsCount = countPropertyTypes(orders, 'choosenMug');
-        const lidsCount = countPropertyTypes(orders, 'choosenLid');
+        const mugCount = countMugTypes(orders);
+        const lidsCount = countLidTypes(orders);
         const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
-        const productCategory = countPropertyTypes(orders, 'productCategory');
         const productsCount = countProductTypes(orders);
 
         if (currentState === null) {
@@ -150,11 +215,10 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         updateAutomatData(automatenID, currentState);
 
-        console.log('Einwegbecher count: ', mugsCount['einwegVariable']);
-        console.log('Mehrwegbecher count: ', mugsCount['mehrwegVariable']);
-        console.log('choosenLid count: ', lidsCount['inklusiveDeckel']);
+        console.log('Becher: ', mugCount);
+        console.log('disposable lids: ', lidsCount['disposableLids']);
+        console.log('reusable lids: ', lidsCount['reusableLids']);
         console.log('choosenSugar count: ', sugarsCount);
-        console.log('productCategory count: ', productCategory);
         console.log('Product counts: ', productsCount);
       } else {
         console.log('No orders found from timestamp: ', fromTimeStamp);
