@@ -13,11 +13,9 @@ export type Automat = {
 
   AutomatConstants: AutomatConstants;
 
-  Wasser: Record<string, ProductCategory>;
   Verpackungen: Record<string, ProductCategory>;
-  Kaffee: Record<string, ProductCategory>;
-  Milch?: Record<string, ProductCategory>;
-  Additive?: Record<string, ProductCategory>;
+
+  Additive: Record<string, ProductCategory>;
   Tee?: Record<string, ProductCategory>;
   Schokoriegel?: Record<string, ProductCategory>;
 };
@@ -71,10 +69,8 @@ export const refillAutomat = (automat: Automat): Automat => {
     Verpackungen: refillProducts('Verpackungen'),
     Tee: refillProducts('Tee'),
     Schokoriegel: refillProducts('Schokoriegel'),
-    Wasser: refillProducts('Wasser'),
+
     Additive: refillProducts('Additive'),
-    Milch: refillProducts('Milch'),
-    Kaffee: refillProducts('Kaffee'),
   };
 };
 
@@ -149,6 +145,23 @@ function getVerpackungenFromJson(data: any): Record<string, ProductCategory> {
   return verpackungen;
 }
 
+function getAdditiveFromJson(data: any): Record<string, ProductCategory> {
+  const stockData = data.stock[0];
+  const additives: Record<string, ProductCategory> = {};
+
+  // Map additives
+  stockData.additives.forEach((additive: any) => {
+    additives[`${additive.name}`] = {
+      displayName: additive.displayName,
+      capacity: additive.capacity,
+      current: 0,
+      unit: additive.unit,
+    };
+  });
+
+  return additives;
+}
+
 // Konstanten Automat
 export const AutomatVariant_1 = (): Automat => {
   return {
@@ -160,57 +173,10 @@ export const AutomatVariant_1 = (): Automat => {
 
     AutomatConstants: getAutomatConstantsFromJson(shopData),
     Verpackungen: getVerpackungenFromJson(shopData),
+
     ...getProductCategoryFromJson('Tee'),
     ...getProductCategoryFromJson('Schokoriegel'),
 
-    Additive: getVerpackungenFromJson(shopData),
-
-    Kaffee: {
-      Bohnen: {
-        displayName: 'Kaffeebohnen',
-        capacity: 100,
-        current: 0,
-        unit: 'Kilogramm',
-      },
-      Trester: {
-        displayName: 'Kaffee Trester',
-        capacity: 100,
-        current: 0,
-        unit: 'Kilogramm',
-      },
-    },
-
-    Wasser: {
-      Frischwasser: {
-        displayName: 'Frischwasser',
-        capacity: 100,
-        current: 0,
-        unit: 'Liter',
-      },
-      Abwasser: {
-        displayName: 'Abwasser',
-        capacity: 100,
-        current: 0,
-        unit: 'Liter',
-      },
-    },
-
-    Milch: {
-      Mandelmilch: {
-        displayName: 'Mandelmilch',
-        capacity: 100,
-        current: 0,
-        unit: 'Liter',
-      },
-    },
-
-    Additive: {
-      Zucker: {
-        displayName: 'Zucker',
-        capacity: 2000,
-        current: 0,
-        unit: 'Gramm',
-      },
-    },
+    Additive: getAdditiveFromJson(shopData),
   };
 };
