@@ -267,37 +267,37 @@
           "name": "milk",
           "displayName": "Mandelmilch",
           "unit": "Milliliter",
-          "capacity": 30
+          "capacity": 30000
         },
         {
           "name": "freshWater",
           "displayName": "Frischwasser",
           "unit": "Milliliter",
-          "capacity": 80
+          "capacity": 80000
         },
         {
           "name": "wasteWater",
           "displayName": "Abwasser",
           "unit": "Milliliter",
-          "capacity": 50
+          "capacity": 50000
         },
         {
           "name": "coffeBeansStrong",
           "displayName": "Karibu Kaffeebohnen",
           "unit": "Gramm",
-          "capacity": 15
+          "capacity": 15000
         },
         {
           "name": "coffeBeansMild",
           "displayName": "Totoastische Kaffeebohnen",
           "unit": "Gramm",
-          "capacity": 20
+          "capacity": 20000
         },
         {
           "name": "coffeePomace",
           "displayName": "Kaffee Trester",
           "unit": "Gramm",
-          "capacity": 25
+          "capacity": 25000
         }
       ]
     }

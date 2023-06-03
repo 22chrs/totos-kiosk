@@ -57,7 +57,7 @@ export const refillAutomat = (automat: Automat): Automat => {
           name,
           {
             ...(productCategory as ProductCategory),
-            current: (productCategory as ProductCategory).capacity,
+            current: 0, //(productCategory as ProductCategory).capacity,
           },
         ]
       )
