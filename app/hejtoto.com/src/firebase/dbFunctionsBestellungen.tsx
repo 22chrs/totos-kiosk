@@ -287,6 +287,92 @@ const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
   return productCount;
 };
 
+// Produkte in unterschiedlichen Größen zählen
+// const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
+//   const productCount: { [name: string]: { [size: string]: number } } = {};
+
+//   Object.values(orders).forEach((order) => {
+//     order.products.forEach((product) => {
+//       const productName = product.productName;
+//       // If the productSize is not defined, consider it as 'oneSize'
+//       const productSize = product.choosenSize || 'oneSize';
+//       const quantity = product.quantity || 0;
+
+//       if (productName) {
+//         if (!productCount[productName]) {
+//           productCount[productName] = { [productSize]: quantity };
+//         } else if (!productCount[productName][productSize]) {
+//           productCount[productName][productSize] = quantity;
+//         } else {
+//           productCount[productName][productSize] += quantity;
+//         }
+//       }
+//     });
+//   });
+
+//   return productCount;
+// };
+
+// Function to calculate total fresh water needed
+const calculateTotalFreshWater = (productCount, shopData) => {
+  let totalFreshWater = 0;
+
+  // Iterate through all categories
+  for (const category of shopData.categories) {
+    // Iterate through all products in each category
+    for (const product of category.products) {
+      const productName = product.name;
+      const freshWaterRatio = product.freshWaterRatio;
+
+      // Check if we have count for this product
+      if (productCount[productName]) {
+        // Iterate through each size of this product
+        for (const size in productCount[productName]) {
+          // Parse the size as an integer (removing " ml" from the end)
+          const parsedSize = parseInt(size);
+          // Calculate the quantity of this size for this product
+          const quantity = productCount[productName][size];
+
+          // Add to the total fresh water, accounting for fresh water ratio, size and quantity
+          totalFreshWater += freshWaterRatio * parsedSize * quantity;
+        }
+      }
+    }
+  }
+
+  return Math.round(totalFreshWater);
+};
+
+// Function to calculate total fresh water needed
+const calculateTotalWasteWater = (productCount, shopData) => {
+  let totalwasteWater = 0;
+
+  // Iterate through all categories
+  for (const category of shopData.categories) {
+    // Iterate through all products in each category
+    for (const product of category.products) {
+      const productName = product.name;
+      const wasteWaterRatio = product.wasteWaterRatio;
+
+      // Check if we have count for this product
+      if (productCount[productName]) {
+        // Iterate through each size of this product
+        for (const size in productCount[productName]) {
+          // Parse the size as an integer (removing " ml" from the end)
+          const parsedSize = parseInt(size);
+          // Calculate the quantity of this size for this product
+          const quantity = productCount[productName][size];
+
+          // Add to the total waste water, accounting for waste water ratio, size and quantity
+          totalwasteWater += wasteWaterRatio * parsedSize * quantity;
+        }
+      }
+    }
+  }
+
+  return Math.round(totalwasteWater);
+};
+
 export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
@@ -325,11 +411,15 @@ export async function saveOrdersToAutomat(automatenID: string) {
         // setAdditiveCurrentValues(currentState, {
         //   Zucker: sugarsCount.sugar, // or sugarsCount.Zucker if your sugar property is named "Zucker"
         // });
+        const totalFreshWater = calculateTotalFreshWater(
+          productsCount,
+          shopData
+        );
 
         setAdditiveCurrentValues(currentState, {
           sugar: 21,
           almondMilk: 10,
-          freshWater: 10,
+          freshWater: totalFreshWater,
         });
 
         updateAutomatData(automatenID, currentState);
