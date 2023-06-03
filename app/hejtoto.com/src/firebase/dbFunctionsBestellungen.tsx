@@ -304,6 +304,7 @@ export async function saveOrdersToAutomat(automatenID: string) {
         // Update Ein- und Mehrwegbecher
         setVerpackungenCurrentValues(currentState, countMugTypesJSON(orders));
         setLidsCurrentValues(currentState, countLidTypes(orders));
+        //currentState.Additive if there is Zucker = sugarsCount.sugar;
 
         updateAutomatData(automatenID, currentState);
       } else {

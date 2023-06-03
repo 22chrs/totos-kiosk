@@ -219,7 +219,50 @@
         { "displayName": "Mehrwegdeckel", "size": "unisize", "capacity": 350 }
       ],
 
-      "milc": ["almond", "oat"]
+      "additives": [
+        {
+          "name": "Zucker",
+          "displayName": "Zucker",
+          "unit": "Gramm",
+          "capacity": 2000
+        },
+        {
+          "name": "almondMilk",
+          "displayName": "Mandelmilch",
+          "unit": "Liter",
+          "capacity": 30
+        },
+        {
+          "name": "freshWater",
+          "displayName": "Frischwasser",
+          "unit": "Liter",
+          "capacity": 80
+        },
+        {
+          "name": "wasteWater",
+          "displayName": "Abwasser",
+          "unit": "Liter",
+          "capacity": 50
+        },
+        {
+          "name": "coffeBeansStrong",
+          "displayName": "Karibu Kaffeebohnen",
+          "unit": "Kilogranm",
+          "capacity": 15
+        },
+        {
+          "name": "coffeBeansMild",
+          "displayName": "Totoastische Kaffeebohnen",
+          "unit": "Kilogranm",
+          "capacity": 20
+        },
+        {
+          "name": "coffeePomace",
+          "displayName": "Kaffee Trester",
+          "unit": "Kilogranm",
+          "capacity": 25
+        }
+      ]
     }
   ]
 }

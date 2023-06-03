@@ -159,67 +159,11 @@ export const AutomatVariant_1 = (): Automat => {
     lastOrderDate: 'never',
 
     AutomatConstants: getAutomatConstantsFromJson(shopData),
-
     Verpackungen: getVerpackungenFromJson(shopData),
+    ...getProductCategoryFromJson('Tee'),
+    ...getProductCategoryFromJson('Schokoriegel'),
 
-    // {
-    //   "mugsDisposable_200ml": {
-    //     "displayName": "Einwegbecher 200 ml",
-    //     "capacity": 100,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "200 ml"
-    //   },
-    //   "mugsDisposable_300ml": {
-    //     "displayName": "Einwegbecher 300 ml",
-    //     "capacity": 200,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "300 ml"
-    //   },
-    //   "mugsDisposable_400ml": {
-    //     "displayName": "Einwegbecher 400 ml",
-    //     "capacity": 50,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "400 ml"
-    //   },
-    //   "mugsReusable_200ml": {
-    //     "displayName": "Mehrwegbecher 200 ml",
-    //     "capacity": 100,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "200 ml"
-    //   },
-    //   "mugsReusable_300ml": {
-    //     "displayName": "Mehrwegbecher 300 ml",
-    //     "capacity": 200,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "300 ml"
-    //   },
-    //   "mugsReusable_400ml": {
-    //     "displayName": "Mehrwegbecher 400 ml",
-    //     "capacity": 50,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "400 ml"
-    //   },
-    //   "lidsDisposable_unisize": {
-    //     "displayName": "Einwegdeckel",
-    //     "capacity": 200,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "unisize"
-    //   },
-    //   "lidsReusable_unisize": {
-    //     "displayName": "Mehrwegdeckel",
-    //     "capacity": 350,
-    //     "current": 0,
-    //     "unit": "Stück",
-    //     "size": "unisize"
-    //   }
-    // }
+    Additive: getVerpackungenFromJson(shopData),
 
     Kaffee: {
       Bohnen: {
@@ -268,8 +212,5 @@ export const AutomatVariant_1 = (): Automat => {
         unit: 'Gramm',
       },
     },
-
-    ...getProductCategoryFromJson('Tee'),
-    ...getProductCategoryFromJson('Schokoriegel'),
   };
 };
