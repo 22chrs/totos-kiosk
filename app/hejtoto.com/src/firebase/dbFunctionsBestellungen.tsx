@@ -130,40 +130,6 @@ const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
   return productCount;
 };
 
-// Ein- und Mehrwegbecher in unterschiedlichen Größen zählen
-const countMugTypes = (orders: { [timestamp: string]: Bestellung }) => {
-  const mugCount: { [mugType: string]: { [size: string]: number } } = {
-    reusableMugs: {},
-    disposableMugs: {},
-  };
-
-  Object.values(orders).forEach((order) => {
-    order.products.forEach((product) => {
-      const mugType =
-        product.choosenMug === 'mehrwegVariable'
-          ? 'reusableMugs'
-          : 'disposableMugs';
-      const mugSize = product.choosenSize;
-      const quantity = product.quantity || 0;
-
-      // Skip the product if the size is not defined
-      if (!mugSize) {
-        return;
-      }
-
-      if (mugType) {
-        if (!mugCount[mugType][mugSize]) {
-          mugCount[mugType][mugSize] = quantity;
-        } else {
-          mugCount[mugType][mugSize] += quantity;
-        }
-      }
-    });
-  });
-
-  return mugCount;
-};
-
 // Ein- und Mehrwegdeckel zählen
 const countLidTypes = (orders: { [timestamp: string]: Bestellung }) => {
   const lidCount: { [lidType: string]: number } = {
@@ -212,18 +178,26 @@ const setLidsCurrentValues = (
   }
 };
 
+// Ein- und Mehrwegbecher in unterschiedlichen Größen zählen
 const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
-  const mugCount: { [mugType: string]: { [size: string]: number } } = {
-    reusableMugs: {},
-    disposableMugs: {},
-  };
-
   const availableSizesMugsDisposable = shopData.stock[0].disposableMugs
     .map((mug) => mug.size)
     .sort((a, b) => parseInt(a) - parseInt(b));
   const availableSizesMugsReusable = shopData.stock[0].reusableMugs
     .map((mug) => mug.size)
     .sort((a, b) => parseInt(a) - parseInt(b));
+
+  // Initialize counts for each size to 0
+  const mugCount: { [mugType: string]: { [size: string]: number } } = {
+    reusableMugs: availableSizesMugsReusable.reduce(
+      (acc, size) => ({ ...acc, [size]: 0 }),
+      {}
+    ),
+    disposableMugs: availableSizesMugsDisposable.reduce(
+      (acc, size) => ({ ...acc, [size]: 0 }),
+      {}
+    ),
+  };
 
   Object.values(orders).forEach((order) => {
     order.products.forEach((product) => {
@@ -252,17 +226,14 @@ const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
       }
 
       if (targetSize !== undefined) {
-        mugCount[mugType][targetSize] =
-          (mugCount[mugType][targetSize] || 0) + quantity;
+        mugCount[mugType][targetSize] += quantity;
       }
     });
   });
 
-  // Logging mugCount before returning
-  console.log('Mug count: ', mugCount);
-
   return mugCount;
 };
+
 const setVerpackungenCurrentValues = (
   currentState: Automat,
   mugCount: { [mugType: string]: { [size: string]: number } }
@@ -314,7 +285,7 @@ export async function saveOrdersToAutomat(automatenID: string) {
         // Count mug types
 
         //const mugCount = countMugTypes(orders);
-        const lidsCount = countLidTypes(orders);
+
         const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
         const productsCount = countProductTypes(orders);
 
@@ -327,8 +298,6 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         //const sizes = shopData.stock.mugsDisposable.size
 
-        console.log('disposable lids: ', lidsCount['disposableLids']);
-        console.log('reusable lids: ', lidsCount['reusableLids']);
         console.log('choosenSugar count: ', sugarsCount);
         console.log('Product counts: ', productsCount);
 
