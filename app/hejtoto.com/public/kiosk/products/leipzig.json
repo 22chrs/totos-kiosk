@@ -27,7 +27,7 @@
           "glutenfree": true,
           "freshWaterRatio": 1.2,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 0,
+          "milkRatio": 0,
           "coffeBeansMildRatio": 0.2,
           "coffeePomaceRatio": 0.2
         },
@@ -45,7 +45,7 @@
           "glutenfree": false,
           "freshWaterRatio": 1.2,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 0,
+          "milkRatio": 0,
           "coffeBeansMildRatio": 0.2,
           "coffeePomaceRatio": 0.2
         },
@@ -64,7 +64,7 @@
           "glutenfree": true,
           "freshWaterRatio": 0.7,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 0.5,
+          "milkRatio": 0.5,
           "coffeBeansMildRatio": 0.2,
           "coffeePomaceRatio": 0.2
         },
@@ -83,7 +83,7 @@
           "glutenfree": false,
           "freshWaterRatio": 0.4,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 0,
+          "milkRatio": 0,
           "coffeBeansMildRatio": 0.2,
           "coffeePomaceRatio": 0.2
         },
@@ -102,7 +102,7 @@
           "glutenfree": true,
           "freshWaterRatio": 0.5,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 0.5,
+          "milkRatio": 0.5,
           "coffeBeansMildRatio": 0.2,
           "coffeePomaceRatio": 0.2
         }
@@ -130,7 +130,7 @@
           "glutenfree": true,
           "freshWaterRatio": 0.2,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 1
+          "milkRatio": 1
         },
         {
           "id": "7",
@@ -147,7 +147,7 @@
           "glutenfree": true,
           "freshWaterRatio": 0.2,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 1
+          "milkRatio": 1
         }
       ]
     },
@@ -173,7 +173,7 @@
           "capacity": 100,
           "freshWaterRatio": 1.2,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 0
+          "milkRatio": 0
         },
         {
           "id": "9",
@@ -190,7 +190,7 @@
           "capacity": 120,
           "freshWaterRatio": 1.2,
           "wasteWaterRatio": 0.2,
-          "milcRatio": 0
+          "milkRatio": 0
         }
       ]
     },
@@ -264,7 +264,7 @@
           "capacity": 2000
         },
         {
-          "name": "almondMilk",
+          "name": "milk",
           "displayName": "Mandelmilch",
           "unit": "Milliliter",
           "capacity": 30

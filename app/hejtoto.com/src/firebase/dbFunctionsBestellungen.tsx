@@ -257,20 +257,16 @@ const setAdditiveCurrentValues = (
   }
 };
 
-// Produkte in unterschiedlichen Größen zählen
+//Produkte in unterschiedlichen Größen zählen
 const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
   const productCount: { [name: string]: { [size: string]: number } } = {};
 
   Object.values(orders).forEach((order) => {
     order.products.forEach((product) => {
       const productName = product.productName;
-      const productSize = product.choosenSize;
+      // If the productSize is not defined, consider it as 'oneSize'
+      const productSize = product.choosenSize || 'oneSize';
       const quantity = product.quantity || 0;
-
-      // Skip the product if the size is not defined
-      if (!productSize) {
-        return;
-      }
 
       if (productName) {
         if (!productCount[productName]) {
@@ -287,33 +283,6 @@ const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
   return productCount;
 };
 
-// Produkte in unterschiedlichen Größen zählen
-// const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
-//   const productCount: { [name: string]: { [size: string]: number } } = {};
-
-//   Object.values(orders).forEach((order) => {
-//     order.products.forEach((product) => {
-//       const productName = product.productName;
-//       // If the productSize is not defined, consider it as 'oneSize'
-//       const productSize = product.choosenSize || 'oneSize';
-//       const quantity = product.quantity || 0;
-
-//       if (productName) {
-//         if (!productCount[productName]) {
-//           productCount[productName] = { [productSize]: quantity };
-//         } else if (!productCount[productName][productSize]) {
-//           productCount[productName][productSize] = quantity;
-//         } else {
-//           productCount[productName][productSize] += quantity;
-//         }
-//       }
-//     });
-//   });
-
-//   return productCount;
-// };
-
-// Function to calculate total fresh water needed
 const calculateTotalFreshWater = (productCount, shopData) => {
   let totalFreshWater = 0;
 
@@ -328,6 +297,9 @@ const calculateTotalFreshWater = (productCount, shopData) => {
       if (productCount[productName]) {
         // Iterate through each size of this product
         for (const size in productCount[productName]) {
+          // Skip if the size is "oneSize"
+          if (size === 'oneSize') continue;
+
           // Parse the size as an integer (removing " ml" from the end)
           const parsedSize = parseInt(size);
           // Calculate the quantity of this size for this product
@@ -343,9 +315,9 @@ const calculateTotalFreshWater = (productCount, shopData) => {
   return Math.round(totalFreshWater);
 };
 
-// Function to calculate total fresh water needed
+// Function to calculate total Waste water needed
 const calculateTotalWasteWater = (productCount, shopData) => {
-  let totalwasteWater = 0;
+  let totalWasteWater = 0;
 
   // Iterate through all categories
   for (const category of shopData.categories) {
@@ -358,19 +330,54 @@ const calculateTotalWasteWater = (productCount, shopData) => {
       if (productCount[productName]) {
         // Iterate through each size of this product
         for (const size in productCount[productName]) {
+          // Skip if the size is "oneSize"
+          if (size === 'oneSize') continue;
+
           // Parse the size as an integer (removing " ml" from the end)
           const parsedSize = parseInt(size);
           // Calculate the quantity of this size for this product
           const quantity = productCount[productName][size];
 
-          // Add to the total waste water, accounting for waste water ratio, size and quantity
-          totalwasteWater += wasteWaterRatio * parsedSize * quantity;
+          // Add to the total fresh water, accounting for fresh water ratio, size and quantity
+          totalWasteWater += wasteWaterRatio * parsedSize * quantity;
         }
       }
     }
   }
 
-  return Math.round(totalwasteWater);
+  return Math.round(totalWasteWater);
+};
+
+const calculateTotalLiquidBased = (productCount, shopData, liquidType) => {
+  let totalLiquid = 0;
+
+  // Iterate through all categories
+  for (const category of shopData.categories) {
+    // Iterate through all products in each category
+    for (const product of category.products) {
+      const productName = product.name;
+      const liquidRatio = product[liquidType + 'Ratio']; // e.g. 'freshWaterRatio', 'wasteWaterRatio', 'milkRatio', etc.
+
+      // Check if we have count for this product
+      if (productCount[productName]) {
+        // Iterate through each size of this product
+        for (const size in productCount[productName]) {
+          // Skip if the size is "oneSize"
+          if (size === 'oneSize') continue;
+
+          // Parse the size as an integer (removing " ml" from the end)
+          const parsedSize = parseInt(size);
+          // Calculate the quantity of this size for this product
+          const quantity = productCount[productName][size];
+
+          // Add to the total liquid, accounting for liquid ratio, size and quantity
+          totalLiquid += liquidRatio * parsedSize * quantity;
+        }
+      }
+    }
+  }
+
+  return Math.round(totalLiquid);
 };
 
 export async function saveOrdersToAutomat(automatenID: string) {
@@ -411,15 +418,35 @@ export async function saveOrdersToAutomat(automatenID: string) {
         // setAdditiveCurrentValues(currentState, {
         //   Zucker: sugarsCount.sugar, // or sugarsCount.Zucker if your sugar property is named "Zucker"
         // });
-        const totalFreshWater = calculateTotalFreshWater(
-          productsCount,
-          shopData
-        );
 
         setAdditiveCurrentValues(currentState, {
           sugar: 21,
-          almondMilk: 10,
-          freshWater: totalFreshWater,
+          milk: calculateTotalLiquidBased(productsCount, shopData, 'milk'),
+          freshWater: calculateTotalLiquidBased(
+            productsCount,
+            shopData,
+            'freshWater'
+          ),
+          wasteWater: calculateTotalLiquidBased(
+            productsCount,
+            shopData,
+            'wasteWater'
+          ),
+          coffeBeansMild: calculateTotalLiquidBased(
+            productsCount,
+            shopData,
+            'coffeBeansMild'
+          ),
+          // coffeBeansStrong: calculateTotalLiquidBased(
+          //   productsCount,
+          //   shopData,
+          //   'coffeBeansStrong'
+          // ),
+          // coffeePomace: calculateTotalLiquidBased(
+          //   productsCount,
+          //   shopData,
+          //   'coffeePomace'
+          // ),
         });
 
         updateAutomatData(automatenID, currentState);
