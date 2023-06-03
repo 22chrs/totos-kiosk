@@ -119,7 +119,7 @@ function getVerpackungenFromJson(data: any): Record<string, ProductCategory> {
   const verpackungen: Record<string, ProductCategory> = {};
 
   // Map mugs
-  const mugTypes = ['mugsDisposable', 'mugsReusable'];
+  const mugTypes = ['disposableMugs', 'reusableMugs'];
   mugTypes.forEach((mugType) => {
     stockData[mugType].forEach((mug: any) => {
       verpackungen[`${mugType}_${mug.size.replace(' ', '')}`] = {
@@ -133,7 +133,7 @@ function getVerpackungenFromJson(data: any): Record<string, ProductCategory> {
   });
 
   // Map lids
-  const lidTypes = ['lidsDisposable', 'lidsReusable'];
+  const lidTypes = ['disposableLids', 'reusableLids'];
   lidTypes.forEach((lidType) => {
     stockData[lidType].forEach((lid: any) => {
       verpackungen[`${lidType}_${lid.size}`] = {

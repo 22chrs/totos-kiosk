@@ -177,7 +177,7 @@
   ],
   "stock": [
     {
-      "mugsDisposable": [
+      "disposableMugs": [
         {
           "displayName": "Einwegbecher 200 ml",
           "size": "200 ml",
@@ -194,7 +194,7 @@
           "capacity": 50
         }
       ],
-      "mugsReusable": [
+      "reusableMugs": [
         {
           "displayName": "Mehrwegbecher 200 ml",
           "size": "200 ml",
@@ -212,10 +212,10 @@
         }
       ],
 
-      "lidsDisposable": [
+      "disposableLids": [
         { "displayName": "Einwegdeckel", "size": "unisize", "capacity": 200 }
       ],
-      "lidsReusable": [
+      "reusableLids": [
         { "displayName": "Mehrwegdeckel", "size": "unisize", "capacity": 350 }
       ],
 

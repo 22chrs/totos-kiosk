@@ -13,6 +13,7 @@ import {
 } from 'firebase/database';
 
 import { format } from 'date-fns';
+import { Automat } from './Interface';
 import {
   currentState,
   getCurrentAutomatDataAndUpdateState,
@@ -188,16 +189,39 @@ const countLidTypes = (orders: { [timestamp: string]: Bestellung }) => {
   return lidCount;
 };
 
+const setLidsCurrentValues = (
+  currentState: Automat,
+  lidCount: { [lidType: string]: number }
+) => {
+  if (currentState && currentState.Verpackungen) {
+    Object.keys(currentState.Verpackungen).forEach((key) => {
+      // Check if the product is of type 'disposableLids'
+      if (key.startsWith('disposableLids')) {
+        currentState.Verpackungen[key].current = lidCount.disposableLids;
+      }
+      // Check if the product is of type 'reusableLids'
+      else if (key.startsWith('reusableLids')) {
+        currentState.Verpackungen[key].current = lidCount.reusableLids;
+      }
+    });
+    console.log('Verpackungen current values updated successfully');
+  } else {
+    console.error(
+      'Error: currentState or currentState.Verpackungen is not defined'
+    );
+  }
+};
+
 const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
   const mugCount: { [mugType: string]: { [size: string]: number } } = {
     reusableMugs: {},
     disposableMugs: {},
   };
 
-  const availableSizesMugsDisposable = shopData.stock[0].mugsDisposable
+  const availableSizesMugsDisposable = shopData.stock[0].disposableMugs
     .map((mug) => mug.size)
     .sort((a, b) => parseInt(a) - parseInt(b));
-  const availableSizesMugsReusable = shopData.stock[0].mugsReusable
+  const availableSizesMugsReusable = shopData.stock[0].reusableMugs
     .map((mug) => mug.size)
     .sort((a, b) => parseInt(a) - parseInt(b));
 
@@ -239,11 +263,34 @@ const countMugTypesJSON = (orders: { [timestamp: string]: Bestellung }) => {
 
   return mugCount;
 };
-
-const setVerpackungenCurrentValues = (newValue: number) => {
+const setVerpackungenCurrentValues = (
+  currentState: Automat,
+  mugCount: { [mugType: string]: { [size: string]: number } }
+) => {
   if (currentState && currentState.Verpackungen) {
+    // Get list of available sizes from mugCount
+    const availableSizesMugsDisposable = Object.keys(mugCount.disposableMugs);
+    const availableSizesMugsReusable = Object.keys(mugCount.reusableMugs);
+
     Object.keys(currentState.Verpackungen).forEach((key) => {
-      currentState.Verpackungen[key].current = newValue;
+      // Check if the product is of type 'disposableMugs' and its size is available in mugCount
+      if (
+        key.startsWith('disposableMugs') &&
+        availableSizesMugsDisposable.includes(
+          currentState.Verpackungen[key].size
+        )
+      ) {
+        currentState.Verpackungen[key].current =
+          mugCount.disposableMugs[currentState.Verpackungen[key].size];
+      }
+      // Check if the product is of type 'reusableMugs' and its size is available in mugCount
+      else if (
+        key.startsWith('reusableMugs') &&
+        availableSizesMugsReusable.includes(currentState.Verpackungen[key].size)
+      ) {
+        currentState.Verpackungen[key].current =
+          mugCount.reusableMugs[currentState.Verpackungen[key].size];
+      }
     });
     console.log('Verpackungen current values updated successfully');
   } else {
@@ -265,7 +312,7 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
       if (orders) {
         // Count mug types
-        const mugCount = countMugTypesJSON(orders);
+
         //const mugCount = countMugTypes(orders);
         const lidsCount = countLidTypes(orders);
         const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
@@ -280,15 +327,14 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
         //const sizes = shopData.stock.mugsDisposable.size
 
-        console.log('Becher: ', mugCount);
         console.log('disposable lids: ', lidsCount['disposableLids']);
         console.log('reusable lids: ', lidsCount['reusableLids']);
         console.log('choosenSugar count: ', sugarsCount);
         console.log('Product counts: ', productsCount);
 
-        countMugTypesJSON(orders);
-
-        setVerpackungenCurrentValues(111); // set all "current" values to 10
+        // Update Ein- und Mehrwegbecher
+        setVerpackungenCurrentValues(currentState, countMugTypesJSON(orders));
+        setLidsCurrentValues(currentState, countLidTypes(orders));
 
         updateAutomatData(automatenID, currentState);
       } else {
