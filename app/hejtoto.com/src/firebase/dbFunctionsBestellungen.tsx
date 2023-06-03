@@ -271,6 +271,25 @@ const setVerpackungenCurrentValues = (
   }
 };
 
+const setAdditiveCurrentValues = (
+  currentState: Automat,
+  additiveCount: Record<string, number>
+) => {
+  if (currentState && currentState.Additive) {
+    Object.keys(currentState.Additive).forEach((key) => {
+      // Check if the additive exists in additiveCount, if so, update its current value
+      if (additiveCount.hasOwnProperty(key)) {
+        currentState.Additive[key].current = additiveCount[key];
+      }
+    });
+    console.log('Additives current values updated successfully');
+  } else {
+    console.error(
+      'Error: currentState or currentState.Additive is not defined'
+    );
+  }
+};
+
 export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
@@ -305,6 +324,16 @@ export async function saveOrdersToAutomat(automatenID: string) {
         setVerpackungenCurrentValues(currentState, countMugTypesJSON(orders));
         setLidsCurrentValues(currentState, countLidTypes(orders));
         //currentState.Additive if there is Zucker = sugarsCount.sugar;
+
+        // setAdditiveCurrentValues(currentState, {
+        //   Zucker: sugarsCount.sugar, // or sugarsCount.Zucker if your sugar property is named "Zucker"
+        // });
+
+        setAdditiveCurrentValues(currentState, {
+          sugar: 21,
+          almondMilk: 10,
+          freshWater: 10,
+        });
 
         updateAutomatData(automatenID, currentState);
       } else {

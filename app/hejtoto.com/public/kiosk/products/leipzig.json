@@ -24,7 +24,12 @@
           ],
           "allergens": [""],
           "vegan": true,
-          "glutenfree": true
+          "glutenfree": true,
+          "freshWater": 1.2,
+          "wasteWater": 0.2,
+          "milc": 0,
+          "coffeBeansMild": 0.2,
+          "coffeePomace": 0.2
         },
         {
           "id": "2",
@@ -37,7 +42,12 @@
             { "size": "50 ml", "additionalCost": 0.7 }
           ],
           "vegan": true,
-          "glutenfree": false
+          "glutenfree": false,
+          "freshWater": 1.2,
+          "wasteWater": 0.2,
+          "milc": 0,
+          "coffeBeansMild": 0.2,
+          "coffeePomace": 0.2
         },
         {
           "id": "3",
@@ -51,7 +61,12 @@
             { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": false,
-          "glutenfree": true
+          "glutenfree": true,
+          "freshWater": 0.7,
+          "wasteWater": 0.2,
+          "milc": 0.5,
+          "coffeBeansMild": 0.2,
+          "coffeePomace": 0.2
         },
         {
           "id": "4",
@@ -65,7 +80,12 @@
             { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": false,
-          "glutenfree": false
+          "glutenfree": false,
+          "freshWater": 0.4,
+          "wasteWater": 0.2,
+          "milc": 0,
+          "coffeBeansMild": 0.2,
+          "coffeePomace": 0.2
         },
         {
           "id": "5",
@@ -79,7 +99,12 @@
             { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
-          "glutenfree": true
+          "glutenfree": true,
+          "freshWater": 0.5,
+          "wasteWater": 0.2,
+          "milc": 0.5,
+          "coffeBeansMild": 0.2,
+          "coffeePomace": 0.2
         }
       ]
     },
@@ -102,7 +127,10 @@
             { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
-          "glutenfree": true
+          "glutenfree": true,
+          "freshWater": 0.2,
+          "wasteWater": 0.2,
+          "milc": 1
         },
         {
           "id": "7",
@@ -116,7 +144,10 @@
             { "size": "400 ml", "additionalCost": 2.0 }
           ],
           "vegan": false,
-          "glutenfree": true
+          "glutenfree": true,
+          "freshWater": 0.2,
+          "wasteWater": 0.2,
+          "milc": 1
         }
       ]
     },
@@ -139,7 +170,10 @@
           ],
           "vegan": true,
           "glutenfree": true,
-          "capacity": 100
+          "capacity": 100,
+          "freshWater": 1.2,
+          "wasteWater": 0.2,
+          "milc": 0
         },
         {
           "id": "9",
@@ -153,7 +187,10 @@
           ],
           "vegan": true,
           "glutenfree": true,
-          "capacity": 120
+          "capacity": 120,
+          "freshWater": 1.2,
+          "wasteWater": 0.2,
+          "milc": 0
         }
       ]
     },
@@ -170,7 +207,10 @@
           "sizes": [{ "size": "200 g", "additionalCost": 0.0 }],
           "vegan": true,
           "glutenfree": true,
-          "capacity": 99
+          "capacity": 99,
+          "freshWater": 0,
+          "wasteWater": 0,
+          "milc": 0
         }
       ]
     }
@@ -221,7 +261,7 @@
 
       "additives": [
         {
-          "name": "Zucker",
+          "name": "sugar",
           "displayName": "Zucker",
           "unit": "Gramm",
           "capacity": 2000
@@ -229,37 +269,37 @@
         {
           "name": "almondMilk",
           "displayName": "Mandelmilch",
-          "unit": "Liter",
+          "unit": "Milliliter",
           "capacity": 30
         },
         {
           "name": "freshWater",
           "displayName": "Frischwasser",
-          "unit": "Liter",
+          "unit": "Milliliter",
           "capacity": 80
         },
         {
           "name": "wasteWater",
           "displayName": "Abwasser",
-          "unit": "Liter",
+          "unit": "Milliliter",
           "capacity": 50
         },
         {
           "name": "coffeBeansStrong",
           "displayName": "Karibu Kaffeebohnen",
-          "unit": "Kilogranm",
+          "unit": "Gramm",
           "capacity": 15
         },
         {
           "name": "coffeBeansMild",
           "displayName": "Totoastische Kaffeebohnen",
-          "unit": "Kilogranm",
+          "unit": "Gramm",
           "capacity": 20
         },
         {
           "name": "coffeePomace",
           "displayName": "Kaffee Trester",
-          "unit": "Kilogranm",
+          "unit": "Gramm",
           "capacity": 25
         }
       ]
