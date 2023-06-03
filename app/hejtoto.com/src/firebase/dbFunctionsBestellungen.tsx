@@ -283,71 +283,6 @@ const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
   return productCount;
 };
 
-const calculateTotalFreshWater = (productCount, shopData) => {
-  let totalFreshWater = 0;
-
-  // Iterate through all categories
-  for (const category of shopData.categories) {
-    // Iterate through all products in each category
-    for (const product of category.products) {
-      const productName = product.name;
-      const freshWaterRatio = product.freshWaterRatio;
-
-      // Check if we have count for this product
-      if (productCount[productName]) {
-        // Iterate through each size of this product
-        for (const size in productCount[productName]) {
-          // Skip if the size is "oneSize"
-          if (size === 'oneSize') continue;
-
-          // Parse the size as an integer (removing " ml" from the end)
-          const parsedSize = parseInt(size);
-          // Calculate the quantity of this size for this product
-          const quantity = productCount[productName][size];
-
-          // Add to the total fresh water, accounting for fresh water ratio, size and quantity
-          totalFreshWater += freshWaterRatio * parsedSize * quantity;
-        }
-      }
-    }
-  }
-
-  return Math.round(totalFreshWater);
-};
-
-// Function to calculate total Waste water needed
-const calculateTotalWasteWater = (productCount, shopData) => {
-  let totalWasteWater = 0;
-
-  // Iterate through all categories
-  for (const category of shopData.categories) {
-    // Iterate through all products in each category
-    for (const product of category.products) {
-      const productName = product.name;
-      const wasteWaterRatio = product.wasteWaterRatio;
-
-      // Check if we have count for this product
-      if (productCount[productName]) {
-        // Iterate through each size of this product
-        for (const size in productCount[productName]) {
-          // Skip if the size is "oneSize"
-          if (size === 'oneSize') continue;
-
-          // Parse the size as an integer (removing " ml" from the end)
-          const parsedSize = parseInt(size);
-          // Calculate the quantity of this size for this product
-          const quantity = productCount[productName][size];
-
-          // Add to the total fresh water, accounting for fresh water ratio, size and quantity
-          totalWasteWater += wasteWaterRatio * parsedSize * quantity;
-        }
-      }
-    }
-  }
-
-  return Math.round(totalWasteWater);
-};
-
 const calculateTotalLiquidBased = (productCount, shopData, liquidType) => {
   let totalLiquid = 0;
 
@@ -357,6 +292,9 @@ const calculateTotalLiquidBased = (productCount, shopData, liquidType) => {
     for (const product of category.products) {
       const productName = product.name;
       const liquidRatio = product[liquidType + 'Ratio']; // e.g. 'freshWaterRatio', 'wasteWaterRatio', 'milkRatio', etc.
+
+      // Skip if this product does not have specific liquidType
+      if (!liquidRatio) continue;
 
       // Check if we have count for this product
       if (productCount[productName]) {
@@ -378,6 +316,40 @@ const calculateTotalLiquidBased = (productCount, shopData, liquidType) => {
   }
 
   return Math.round(totalLiquid);
+};
+
+const calculateTotalProductCounts = (productCount, shopData) => {
+  let countSummary = {};
+
+  // Iterate through all categories
+  for (const category of shopData.categories) {
+    // Check if the category's unit is either "Stück" or "pcs"
+    if (category.unit === 'Stück' || category.unit === 'pcs') {
+      // Iterate through all products in this category
+      for (const product of category.products) {
+        const productName = product.name;
+
+        // Check if we have count for this product
+        if (productCount[productName]) {
+          // If the product is not in countSummary, add it
+          if (!countSummary[productName]) countSummary[productName] = 0;
+
+          // Iterate through each size of this product
+          for (const size in productCount[productName]) {
+            // Calculate the quantity of this size for this product
+            const quantity = productCount[productName][size];
+
+            // Add to the product's count in countSummary
+            countSummary[productName] += quantity;
+          }
+        }
+      }
+    }
+  }
+
+  console.log('countSummary: ', countSummary);
+
+  return countSummary;
 };
 
 export async function saveOrdersToAutomat(automatenID: string) {
@@ -437,17 +409,19 @@ export async function saveOrdersToAutomat(automatenID: string) {
             shopData,
             'coffeBeansMild'
           ),
-          // coffeBeansStrong: calculateTotalLiquidBased(
-          //   productsCount,
-          //   shopData,
-          //   'coffeBeansStrong'
-          // ),
-          // coffeePomace: calculateTotalLiquidBased(
-          //   productsCount,
-          //   shopData,
-          //   'coffeePomace'
-          // ),
+          coffeBeansStrong: calculateTotalLiquidBased(
+            productsCount,
+            shopData,
+            'coffeBeansStrong'
+          ),
+          coffeePomace: calculateTotalLiquidBased(
+            productsCount,
+            shopData,
+            'coffeePomace'
+          ),
         });
+
+        calculateTotalProductCounts(productsCount, shopData);
 
         updateAutomatData(automatenID, currentState);
       } else {
