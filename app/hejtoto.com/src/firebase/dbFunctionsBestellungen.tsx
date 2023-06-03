@@ -100,36 +100,6 @@ const countPropertyTypes = (
   return count;
 };
 
-// Produkte in unterschiedlichen Größen zählen
-const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
-  const productCount: { [name: string]: { [size: string]: number } } = {};
-
-  Object.values(orders).forEach((order) => {
-    order.products.forEach((product) => {
-      const productName = product.productName;
-      const productSize = product.choosenSize;
-      const quantity = product.quantity || 0;
-
-      // Skip the product if the size is not defined
-      if (!productSize) {
-        return;
-      }
-
-      if (productName) {
-        if (!productCount[productName]) {
-          productCount[productName] = { [productSize]: quantity };
-        } else if (!productCount[productName][productSize]) {
-          productCount[productName][productSize] = quantity;
-        } else {
-          productCount[productName][productSize] += quantity;
-        }
-      }
-    });
-  });
-
-  return productCount;
-};
-
 // Ein- und Mehrwegdeckel zählen
 const countLidTypes = (orders: { [timestamp: string]: Bestellung }) => {
   const lidCount: { [lidType: string]: number } = {
@@ -170,7 +140,6 @@ const setLidsCurrentValues = (
         currentState.Verpackungen[key].current = lidCount.reusableLids;
       }
     });
-    console.log('Verpackungen current values updated successfully');
   } else {
     console.error(
       'Error: currentState or currentState.Verpackungen is not defined'
@@ -263,7 +232,6 @@ const setVerpackungenCurrentValues = (
           mugCount.reusableMugs[currentState.Verpackungen[key].size];
       }
     });
-    console.log('Verpackungen current values updated successfully');
   } else {
     console.error(
       'Error: currentState or currentState.Verpackungen is not defined'
@@ -282,12 +250,41 @@ const setAdditiveCurrentValues = (
         currentState.Additive[key].current = additiveCount[key];
       }
     });
-    console.log('Additives current values updated successfully');
   } else {
     console.error(
       'Error: currentState or currentState.Additive is not defined'
     );
   }
+};
+
+// Produkte in unterschiedlichen Größen zählen
+const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
+  const productCount: { [name: string]: { [size: string]: number } } = {};
+
+  Object.values(orders).forEach((order) => {
+    order.products.forEach((product) => {
+      const productName = product.productName;
+      const productSize = product.choosenSize;
+      const quantity = product.quantity || 0;
+
+      // Skip the product if the size is not defined
+      if (!productSize) {
+        return;
+      }
+
+      if (productName) {
+        if (!productCount[productName]) {
+          productCount[productName] = { [productSize]: quantity };
+        } else if (!productCount[productName][productSize]) {
+          productCount[productName][productSize] = quantity;
+        } else {
+          productCount[productName][productSize] += quantity;
+        }
+      }
+    });
+  });
+
+  return productCount;
 };
 
 export async function saveOrdersToAutomat(automatenID: string) {
