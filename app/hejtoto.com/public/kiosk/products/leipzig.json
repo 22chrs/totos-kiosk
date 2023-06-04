@@ -261,7 +261,13 @@
           "name": "sugar",
           "displayName": "Zucker",
           "unit": "Gramm",
-          "capacity": 2000
+          "capacity": 2000,
+          "gPer100ml": {
+            "zero": 0,
+            "s": 5,
+            "m": 8,
+            "l": 12
+          }
         },
         {
           "name": "milk",

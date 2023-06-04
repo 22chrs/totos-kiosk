@@ -378,6 +378,62 @@ const calculateTotalProductCounts = (productCount, shopData) => {
   return countSummary;
 };
 
+const getSugarQuantities = (data) => {
+  let sugarQuantities = null;
+
+  // Assuming the first element in the stock array contains the additives
+  const additives = data.stock[0].additives;
+
+  // Iterate over the additives to find sugar
+  for (const additive of additives) {
+    if (additive.name === 'sugar') {
+      sugarQuantities = additive.gPer100ml;
+      break;
+    }
+  }
+
+  return sugarQuantities;
+};
+
+const countPropertyTypesSugar = (
+  orders: {
+    [timestamp: string]: Bestellung;
+  },
+  property: string,
+  sugarQuantities: { [type: string]: number }
+) => {
+  const count: { [type: string]: { [size: string]: number } } = {};
+  let totalSugar = 0; // Initialize the total sugar quantity
+
+  Object.values(orders).forEach((order) => {
+    order.products.forEach((product) => {
+      const type = product[property];
+      const size = product.choosenSize;
+      const quantity = product.quantity || 0; // Get the quantity, default to 0 if undefined
+      if (type) {
+        if (!count[type]) {
+          count[type] = { [size]: quantity };
+        } else if (!count[type][size]) {
+          count[type][size] = quantity;
+        } else {
+          count[type][size] += quantity;
+        }
+
+        // Calculate total sugar quantity
+        // Assume size is given in ml and convert it to a number
+        const sizeInMl = Number(size.replace(' ml', ''));
+        // Find the corresponding sugar quantity
+        const sugarQuantity = sugarQuantities[type] || 0;
+        // Calculate total sugar for this product and add to the total sugar quantity
+        totalSugar += (sugarQuantity / 100) * sizeInMl * quantity;
+      }
+    });
+  });
+
+  // return { count, totalSugar }; // Return the count and total sugar quantity
+  return Math.round(totalSugar); // Return the total sugar quantity
+};
+
 export async function saveOrdersToAutomat(automatenID: string) {
   try {
     let fromTimeStamp = await getRefillData(automatenID);
@@ -386,16 +442,9 @@ export async function saveOrdersToAutomat(automatenID: string) {
 
     if (fromTimeStamp) {
       const orders = await getOrdersFrom(automatenID, fromTimeStamp);
-      //console.log('Orders: ', orders);
+      console.log('Orders: ', orders);
 
       if (orders) {
-        // Count mug types
-
-        //const mugCount = countMugTypes(orders);
-
-        const sugarsCount = countPropertyTypes(orders, 'choosenSugar');
-        const productsCount = countProductTypes(orders);
-
         if (currentState === null) {
           await getCurrentAutomatDataAndUpdateState(automatenID);
         }
@@ -403,22 +452,19 @@ export async function saveOrdersToAutomat(automatenID: string) {
         currentState.lastRefillDate = fromTimeStamp;
         currentState.lastOrderDate = format(new Date(), 'yyyyMMddHHmmss');
 
-        //const sizes = shopData.stock.mugsDisposable.size
-
-        console.log('choosenSugar count: ', sugarsCount);
-        console.log('Product counts: ', productsCount);
-
         // Update Ein- und Mehrwegbecher
         setVerpackungenCurrentValues(currentState, countMugTypesJSON(orders));
         setLidsCurrentValues(currentState, countLidTypes(orders));
-        //currentState.Additive if there is Zucker = sugarsCount.sugar;
 
-        // setAdditiveCurrentValues(currentState, {
-        //   Zucker: sugarsCount.sugar, // or sugarsCount.Zucker if your sugar property is named "Zucker"
-        // });
+        const productsCount = countProductTypes(orders);
+        console.log('Product counts: ', productsCount);
 
         setAdditiveCurrentValues(currentState, {
-          sugar: 21,
+          sugar: countPropertyTypesSugar(
+            orders,
+            'choosenSugar',
+            getSugarQuantities(shopData)
+          ),
           milk: calculateTotalLiquidBased(productsCount, shopData, 'milk'),
           freshWater: calculateTotalLiquidBased(
             productsCount,
