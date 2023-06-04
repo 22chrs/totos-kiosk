@@ -32,7 +32,7 @@ const Telemetrie = () => {
           <Box flex='1'>
             <HStack p='0' gap='5' pb='5'>
               <ButtonsAutomat
-                automatenVariant={AutomatVariant_1(automatenID)}
+                automatenVariant={AutomatVariant_1()}
                 autmatenID={automatenID}
               />
             </HStack>

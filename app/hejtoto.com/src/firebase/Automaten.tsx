@@ -159,7 +159,7 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
           w='full'
           onClick={() => refillAndSendAutomatData(automatenVariant)}
         >
-          Refill Automat
+          Refill & Messure Automat
         </Button>
         <Button colorScheme='purple' w='full' onClick={onClickHandler}>
           Experiment Button
