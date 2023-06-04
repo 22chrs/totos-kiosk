@@ -283,6 +283,32 @@ const countProductTypes = (orders: { [timestamp: string]: Bestellung }) => {
   return productCount;
 };
 
+const setCalculateTotalProductCounts = (
+  currentState: Automat,
+  productCounts: { [productName: string]: number }
+) => {
+  if (currentState) {
+    // Iterate through all categories in the currentState
+    for (const categoryKey in currentState) {
+      const category = currentState[categoryKey];
+      // Ensure that the category is not AutomatConstants and it's a product category
+      if (categoryKey !== 'AutomatConstants' && typeof category === 'object') {
+        // Iterate through all products in the category
+        for (const productKey in category) {
+          const product = category[productKey];
+          // If the product's displayName exists in productCounts
+          if (productCounts[product.displayName]) {
+            // Set the product's current field to its count in productCounts
+            product.current = productCounts[product.displayName];
+          }
+        }
+      }
+    }
+  } else {
+    console.error('Error: currentState is not defined');
+  }
+};
+
 const calculateTotalLiquidBased = (productCount, shopData, liquidType) => {
   let totalLiquid = 0;
 
@@ -421,7 +447,10 @@ export async function saveOrdersToAutomat(automatenID: string) {
           ),
         });
 
-        calculateTotalProductCounts(productsCount, shopData);
+        setCalculateTotalProductCounts(
+          currentState,
+          calculateTotalProductCounts(productsCount, shopData)
+        );
 
         updateAutomatData(automatenID, currentState);
       } else {

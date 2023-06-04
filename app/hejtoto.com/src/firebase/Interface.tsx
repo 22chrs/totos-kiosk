@@ -47,7 +47,6 @@ export const refillAutomat = (automat: Automat): Automat => {
     ...automat,
     lastRefillDate: 'updated in function',
   };
-
   function refillProducts(
     productName: keyof Automat
   ): Record<string, ProductCategory> {
@@ -63,7 +62,6 @@ export const refillAutomat = (automat: Automat): Automat => {
       )
     );
   }
-
   return {
     ...refillBasicElements,
     Verpackungen: refillProducts('Verpackungen'),
