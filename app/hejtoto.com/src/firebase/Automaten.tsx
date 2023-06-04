@@ -144,28 +144,32 @@ export const ButtonsAutomat = ({ automatenVariant, autmatenID }) => {
   };
 
   return (
-    <Box borderRadius='lg' overflow='hidden' p='5' w='100%' bgColor={bgColor}>
-      <Text>Actions</Text>
-      <VStack>
-        <Button
-          colorScheme='purple'
-          w='full'
-          onClick={() => setAndInitAutomatData(automatenVariant)}
-        >
-          Initialize Automat
-        </Button>
-        <Button
-          colorScheme='purple'
-          w='full'
-          onClick={() => refillAndSendAutomatData(automatenVariant)}
-        >
-          Refill & Messure Automat
-        </Button>
-        <Button colorScheme='purple' w='full' onClick={onClickHandler}>
-          Experiment Button
-        </Button>
-      </VStack>
-    </Box>
+    <VStack
+      borderRadius='lg'
+      overflow='hidden'
+      p='5'
+      h='100%'
+      w='100%'
+      bgColor={bgColor}
+    >
+      <Button
+        colorScheme='purple'
+        w='full'
+        onClick={() => setAndInitAutomatData(automatenVariant)}
+      >
+        Initialize Automat
+      </Button>
+      <Button
+        colorScheme='purple'
+        w='full'
+        onClick={() => refillAndSendAutomatData(automatenVariant)}
+      >
+        Refill & Messure Automat
+      </Button>
+      <Button colorScheme='purple' w='full' onClick={onClickHandler}>
+        Get orders from database
+      </Button>
+    </VStack>
   );
 };
 

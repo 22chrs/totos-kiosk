@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, useColorModeValue } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { getLastOrder } from './dbFunctionsBestellungen';
 
@@ -15,23 +15,26 @@ export const DisplayLatestOrderRawData = ({ automatenID }) => {
   }, [automatenID]); // Only re-run the effect if automatenID changes
 
   return (
-    <Box
-      color={useColorModeValue(
-        'footerBGColor.lightMode',
-        'footerBGColor.darkMode'
-      )}
-      bgColor={useColorModeValue(
-        'primaryHeadingColor.lightMode',
-        'primaryHeadingColor.darkMode'
-      )}
-      fontSize='0.8rem'
-      borderRadius='lg'
-      whiteSpace='pre-wrap'
-      wordBreak='break-all'
-      overflowX='auto'
-      p='5'
-    >
-      {JSON.stringify(order, null, 2)}
-    </Box>
+    <>
+      <Heading py='5'>Last order:</Heading>{' '}
+      <Box
+        color={useColorModeValue(
+          'footerBGColor.lightMode',
+          'footerBGColor.darkMode'
+        )}
+        bgColor={useColorModeValue(
+          'primaryHeadingColor.lightMode',
+          'primaryHeadingColor.darkMode'
+        )}
+        fontSize='0.8rem'
+        borderRadius='lg'
+        whiteSpace='pre-wrap'
+        wordBreak='break-all'
+        overflowX='auto'
+        p='5'
+      >
+        {JSON.stringify(order, null, 2)}
+      </Box>
+    </>
   );
 };

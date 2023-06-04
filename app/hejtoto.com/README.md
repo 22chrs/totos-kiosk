@@ -5,3 +5,4 @@ ToDo
 - Prdoukte im Warenkorb größer
 - zurück Button
 - Bilder
+- Auth user and pc
