@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
+import ImageAndText from '@/components/cards/ImageList';
 import PageLayout from '@/components/page-layout';
-import { Heading, ListItem, Stack, UnorderedList } from '@chakra-ui/react';
+import { Heading, Stack } from '@chakra-ui/react';
 
 type Props = {
   title: string;
@@ -12,6 +13,8 @@ type Props = {
 
 const headingpt = '12';
 const headingpb = '5';
+
+const imageHeight = '15rem'; //5.5rem
 
 const Barista = () => {
   const { t } = useTranslation();
@@ -60,189 +63,162 @@ const Barista = () => {
         <Heading pt={headingpt} pb={headingpb} variant='h1'>
           Technologisch Innovativ
         </Heading>
-        <Heading variant='h2'>Barista Roboterarm Toto</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Implementierung mittels 6-Achsen-Roboterarms mit großem visuellen
-            Anreiz
-          </ListItem>
-          <ListItem>
-            Faszination durch menschenähnliche Bewegungscharakteristik des
-            Roboterarms
-          </ListItem>
-          <ListItem>
-            Mittels Facetracking wird eine echte Interaktion mit den Kund:innen
-            geschaffen (DSGVO konform)
-          </ListItem>
-        </UnorderedList>
 
-        <Heading variant='h2'>24/7 Automatisierung</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>Autonomer Betrieb ohne Personal</ListItem>
-          <ListItem>
-            Optimierung des Automaten auf Geschwindigkeit und Qualität
-          </ListItem>
-          <ListItem>
-            Intelligente Ansteuerung und Beleuchtung lockt Kund:innen an und
-            spart Ressourcen
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/03.png`}
+          title='Barista Roboterarm Toto'
+          listItems={[
+            '6-Achsen-Roboterarm schafft visuellen Anreiz',
+            'Faszination durch menschenähnliche Bewegungscharakteristik des Roboterarms',
+            'Sensorik erfasst Kund:innen, um echte Interaktion zu schaffen',
+            'Gesamter Automat reagiert und interagiert mit Kund:innen und steigert Showeffekt',
+          ]}
+        />
+
+        <ImageAndText
+          imageUrl={`/assets/images/midjourney/01.jpg`}
+          title='24/7 Automatisierung'
+          listItems={[
+            'Kein Personal notwenidig',
+            'Optimierung auf Geschwindigkeit und Qualität',
+            'Intelligente Ansteuerung spart Ressourcen',
+          ]}
+        />
 
         <Heading pt={headingpt} pb={headingpb} variant='h1'>
           Premium Sortiment
         </Heading>
-        <Heading variant='h2'>Getränke</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Heißgetränke wie Tee und Kaffee in Barista Qualität
-          </ListItem>
-          <ListItem>Verwendung von pflanzlichen Milchalternativen</ListItem>
-          <ListItem>Ausgabe in Einweg- und Mehrwegbechern</ListItem>
-          <ListItem>
-            Kundenspezifische Individualisierungsmöglichkeiten
-          </ListItem>
-        </UnorderedList>
 
-        <Heading variant='h2'>Speisen</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Bereitstellung von nachhaltigen und veganen Snackoptionen
-          </ListItem>
-          <ListItem>Transparente Kommunikation von Allergenen</ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/coffee/03.png`}
+          title='Getränke'
+          listItems={[
+            'Heißgetränke wie Tee und Kaffee in Barista Qualität',
+            'Verwendung von pflanzlichen Milchalternativen',
+            'Ausgabe in Einweg- und Mehrwegbechern',
+          ]}
+        />
+
+        <ImageAndText
+          imageUrl={`/assets/images/01.png`}
+          title='Speisen'
+          listItems={[
+            'Bereitstellung von nachhaltigen und veganen Snackoptionen',
+            'Upselling durch live Performance des Roboters',
+          ]}
+        />
 
         <Heading pt={headingpt} pb={headingpb} variant='h1'>
           Kund:innenorientiert
         </Heading>
 
-        <Heading variant='h2'>Zielgruppe</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Premium Kaffee- und Teeliebhaber:innen mit hohen Ansprüchen
-          </ListItem>
-          <ListItem>Menschen mit wenig Zeit</ListItem>
-          <ListItem>Nachhaltige und vegane Ernährung</ListItem>
-          <ListItem>
-            Spannede Neuheit bietet Raum für Social-Media Interaktionen durch
-            Kund:innen
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/05.png`}
+          title='Zielgruppe'
+          listItems={[
+            'Premium Kaffee- und Teeliebhaber:innen mit hohen Ansprüchen',
+            'Menschen mit wenig Zeit',
+            'Automat bietet sich als Objekt für Social-Media Interaktionen dar',
+          ]}
+        />
 
-        <Heading variant='h2'>Zugänglich</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Bereitstellung einer mehrsprachigen Benutzeroberfläche
-          </ListItem>
-          <ListItem>Gewährleistung eines barrierefreien Zugangs</ListItem>
-          <ListItem>
-            Intuitives Design ermöglichst einfache Bestellungen auch mehrerer
-            Produkte gleichzeitig
-          </ListItem>
-          <ListItem>
-            Zwei Terminals pro Automat zur Minimierung der Wartezeit
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/06.png`}
+          title='Zugänglich'
+          listItems={[
+            'Bereitstellung einer mehrsprachigen Benutzeroberfläche',
+            'Gewährleistung eines barrierefreien Zugangs',
+            'Zwei Terminals pro Automat zur Minimierung von Wartezeiten',
+          ]}
+        />
 
         <Heading pt={headingpt} pb={headingpb} variant='h1'>
           Kompakt
         </Heading>
-        <Heading variant='h2'>Design</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Vandalismusgeschützte Konstruktion für den Einsatz im öffentlichen
-          </ListItem>
 
-          <ListItem>
-            Wahlweise autonomer Betrieb – unabhängig von Frisch- und Abwasser
-          </ListItem>
-          <ListItem>
-            Kein Starkstromanschluss für den Betrieb notwendig
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/07.png`}
+          title='Design'
+          listItems={[
+            'Vandalismusgeschützte Konstruktion für den Einsatz im öffentlichen Raum',
+            'Off-GridBetrieb – unabhängig von Frisch- und Abwasser',
+            'Kein Starkstromanschluss für den Betrieb notwendig',
+          ]}
+        />
 
-        <Heading variant='h2'>Transport</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Kompakte Maße für einfache Platzierung und Transport
-          </ListItem>
-          <ListItem>Transport per Standard Spedition möglich</ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/08.png`}
+          title='Transport'
+          listItems={[
+            'Kompakte Maße für einfache Platzierung und Transport',
+            'Transport per Standard Spedition möglich',
+          ]}
+        />
 
-        <Heading variant='h2'>Modular</Heading>
-
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>Zugänglich für Reperaturen und einfache Wartung</ListItem>
-          <ListItem>
-            Erweiterung des Angebots durch weitere Module möglich
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/09.png`}
+          title='Modular'
+          listItems={[
+            'Zugänglich für Reperaturen und einfache Wartung',
+            'Erweiterung des Angebots durch weitere Module möglich',
+          ]}
+        />
 
         <Heading pt={headingpt} pb={headingpb} variant='h1'>
           Prozessoptimiert
         </Heading>
 
-        <Heading variant='h2'>Telemetriedaten</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Ausgestattet mit einem LTE Modem für ständige Konnektivität und
-            Fernüberwachung
-          </ListItem>
-          <ListItem>
-            Proaktive Reaktion auf Nachfüll- und Wartungsbedarf durch
-            Integration von Telemetrie
-          </ListItem>
-          <ListItem>Zugriff auf Telemetriedaten über Webanwendung</ListItem>
-          <ListItem>
-            Flexible Anpassung von Angebot und Preisen ebenfalls möglich
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/04.png`}
+          title='Telemetrieanbindung'
+          listItems={[
+            'Ausgestattet mit einem LTE Modem für ständige Konnektivität und Fernüberwachung',
+            'Proaktive Reaktion auf Nachfüll- und Wartungsbedarf durch Integration von Telemetrie',
+            'Zugriff auf Telemetriedaten über Webanwendung',
+            'Flexible Anpassung von Angebot und Preisen jederzeit möglich',
+          ]}
+        />
 
-        <Heading variant='h2'>Wiederbefüllung</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Warenbestand für 400 Heißgetränkge und 200 Snacks pro Befüllung
-          </ListItem>
-          <ListItem>
-            Mitarbeitende ohne spezielle technische Kenntnisse können den
-            Befüllvorgang druchführen
-          </ListItem>
-          <ListItem>
-            Sensorik erfasst aktuellen Befüllstand und verhindert
-            Fehlbedienungen oder Eingaben
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/robotarm/02.jpg`}
+          title='Wiederbefüllung'
+          listItems={[
+            'Warenbestand für 400 Heißgetränkge und 200 Snacks pro Befüllung',
+            'Mitarbeitende ohne spezielle technische Kenntnisse können den Befüllvorgang druchführen',
+            'Sensorik erfasst aktuellen Befüllstand und verhindert Fehlbedienungen oder Eingaben',
+          ]}
+        />
 
-        <Heading variant='h2'>Reinigung und Wartung</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Tägliche autonome Reinigungsfunktion gewährleistet Hygienestandards
-          </ListItem>
-          <ListItem>
-            Zusätzliche manuelle Reinigung nur einmal monatlich erforderlich
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/01.png`}
+          title='Reinigung und Wartung'
+          listItems={[
+            'Tägliche autonome Reinigungsfunktion gewährleistet Hygienestandards',
+            'Zusätzliche manuelle Reinigung nur einmal monatlich erforderlich',
+          ]}
+        />
 
         <Heading pt={headingpt} pb={headingpb} variant='h1'>
           Markt
         </Heading>
-        <Heading variant='h2'>Fester Standort</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Ideal für fest installierte Standorte mit hohem Besucheraufkommen
-          </ListItem>
 
-          <ListItem>
-            Potential für zusätzliche Einnahmen durch Produktverkauf und
-            Markenpräsentation
-          </ListItem>
-        </UnorderedList>
-        <Heading variant='h2'>Flexibler Standort</Heading>
-        <UnorderedList spacing={1} pl='10'>
-          <ListItem>
-            Geeignet zum temporären Einsatz für Veranstaltungen, Events und
-            Messen
-          </ListItem>
-        </UnorderedList>
+        <ImageAndText
+          imageUrl={`/assets/images/02.png`}
+          title='Fester Standort'
+          listItems={[
+            'Ideal für fest installierte Standorte mit hohem Besucheraufkommen',
+            'Potential für zusätzliche Einnahmen durch Produktverkauf und Markenpräsentation',
+          ]}
+        />
+
+        <ImageAndText
+          imageUrl={`/assets/images/midjourney/egal.jpg`}
+          title='Flexibler Standort'
+          listItems={[
+            'Geeignet zum temporären Einsatz für Veranstaltungen, Events und Messen',
+            'Bequem Buchbar über unsere Webseite',
+          ]}
+        />
       </Stack>
     </PageLayout>
   );
