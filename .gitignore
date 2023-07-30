@@ -60,3 +60,4 @@ app/hejtoto.com/package-lock.json
 
 # VSCode
 #.vscode/
+.DS_Store
