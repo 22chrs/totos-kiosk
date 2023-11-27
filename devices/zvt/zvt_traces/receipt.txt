@@ -1,0 +1,68 @@
+<-PT|    K-U-N-D-E-N-B-E-L-E-G     |
+<-PT|                              |
+<-PT|                              |
+<-PT|LAVEGO                        |
+<-PT|PackagePay                    |
+<-PT|Zielstattstrasse 10a, Rückgebä|
+<-PT|München                       |
+<-PT|                              |
+<-PT|                              |
+<-PT|     Bezahlung MC CREDIT      |
+<-PT|                              |
+<-PT|Betrag               11,00 EUR|
+<-PT|                              |
+<-PT|10.05.2023               13:11|
+<-PT|Terminal-ID           52500236|
+<-PT|TA-Nr. 000131   Beleg-Nr. 0277|
+<-PT|Kartennr.     ############0036|
+<-PT|K.folg.Nr                 0001|
+<-PT|Kontaktlos Chip         Online|
+<-PT|VU-Nummer      9999           |
+<-PT|Autorisierungsnummer    424242|
+<-PT|Autorisierungsantwortcode   00|
+<-PT|                              |
+<-PT|AID             A0000000041010|
+<-PT|                              |
+<-PT|TVR                 0000008001|
+<-PT|ATC                       0228|
+<-PT|                              |
+<-PT|UPN                   1686A617|
+<-PT|IAD                           |
+<-PT|0110A0400322000000000000000000|
+<-PT|            0000FF            |
+<-PT|AC            3745E0537D38F392|
+<-PT|                              |
+<-PT|AS-Proc-Code= 00 075 00       |
+<-PT|Capt.-Ref.= 0000              |
+<-PT|                              |
+<-PT|**     Zahlung erfolgt      **|
+----------------
+<-PT|LAVEGO                        |
+<-PT|PackagePay                    |
+<-PT|Zielstattstrasse 10a, Rückgebä|
+<-PT|München                       |
+<-PT|                              |
+<-PT|                              |
+<-PT|        Tagesabschluss        |
+<-PT|                              |
+<-PT|10.05.2023               13:11|
+<-PT|Terminal-ID           52500236|
+<-PT|TA-Nr.                  000132|
+<-PT|                              |
+<-PT|Beleg-Nr. von: 0277  bis: 0277|
+<-PT|                              |
+<-PT|          Summen EUR          |
+<-PT|Z-System     Anzahl     Betrag|
+<-PT|------------------------------|
+<-PT|MasterCard Online             |
+<-PT| Kauf        0001        11,00|
+<-PT| Summe      00001        11,00|
+<-PT|------------------------------|
+<-PT|MasterCard  00001        11,00|
+<-PT|                              |
+<-PT|                              |
+<-PT|------------------------------|
+<-PT|Summe       00001        11,00|
+<-PT|                              |
+<-PT|**         Gebucht          **|
+----------------

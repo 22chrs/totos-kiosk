@@ -1,0 +1,132 @@
+%ah@dev ~ λ zvt++ endOfDay fg
+apply_settings: name=c60
+apply_settings: host=172.16.2.70
+apply_settings: port=20007
+apply_settings: name=fnext
+apply_settings: host=172.16.2.73
+apply_settings: port=20007
+apply_settings: name=base
+apply_settings: host=172.16.2.71
+apply_settings: port=20007
+apply_settings: name=fg
+apply_settings: host=172.16.2.72
+apply_settings: port=22000
+!!!Zvt cash register to poi/pos!!!
+
+argv 0 λ zvt++
+argv 1 λ endOfDay
+argv 2 λ fg
+Socket created: 172.16.2.72:22000
+
+option: fg
+->PT: 06 00 14 01 02 03 96 09 78 06 0c 12 01 30 27 03 14 01 fe 40 02 b0 b0
+<-PT* Ack (8000) size (3)
+<-PT$ 80 00 00
+<-PT: received 20 from 20
+<-PT* Completion (060F) size (20)
+<-PT$ 06 0f 11 19 10 29 52 50 02 31 49 09 78 06 05 27 03 14 01 fe
+->PT: 80 00 00
+<-PT| from cmd 0600
+<-PT| tid      --> 52500231
+<-PT| status   --> 00010000
+<-PT| currency --> 978
+Tag: 27__  λ ...3   14 01 fe
+     14__  λ ...1   fe
+
+->PT: 05 01 07 01 02 03 03 05 06 00
+<-PT* Ack (8000) size (3)
+<-PT$ 80 00 00
+<-PT: received 136 from 136
+<-PT* Completion (060F) size (136)
+<-PT$ 06 0f 85 f0 f4 f0 47 45 52 2d 41 50 50 2d 76 32 2e 30 2e 35 3b 63 53 30 32 2e 30 31 2e 30 30 2d 31 30 2e 33 34 2d 32 2d 32 3b 43 43 32 36 00 06 57 1f 44 04 52 50 02 31 e4 3f 1f 40 0a 63 56 45 4e 44 20 62 6f 78 2b 1f 41 28 47 45 52 2d 41 50 50 2d 76 32 2e 30 2e 35 3b 63 53 30 32 2e 30 31 2e 30 30 2d 31 30 2e 33 34 2d 32 2d 32 3b 43 43 32 36 1f 42 04 17 f0 85 4a 34 0d 1f 0e 04 20 21 10 01 1f 0f 03 17 15 34
+->PT: 80 00 00
+->PT: 06 50 03 01 02 03
+<-PT* Ack (8000) size (3)
+<-PT$ 80 00 00
+<-PT: received 777 from 777
+<-PT* BlockReceipt (06D3) size (777)
+<-PT$ 06 d3 ff 04 03 06 82 03 00 1f 07 01 03 25 82 02 f8 07 00 07 00 07 1e 4c 41 56 45 47 4f 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 07 1e 50 61 63 6b 61 67 65 50 61 79 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 07 1e 5a 69 65 6c 73 74 61 74 74 73 74 72 61 73 73 65 20 31 30 61 2c 20 20 20 20 20 20 20 20 20 07 20 52 c3 bc 63 6b 67 65 62 c3 a4 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 07 1f 4d c3 bc 6e 63 68 65 6e 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 07 00 07 1e 20 20 20 20 20 2a 2a 20 4b 61 73 73 65 6e 73 63 68 6e 69 74 74 20 2a 2a 20 20 20 20 20 20 07 00 07 1e 30 31 2e 31 30 2e 32 30 32 31 20 20 20 20 20 20 20 20 20 20 20 20 31 37 3a 31 34 3a 33 36 07 1e 54 65 72 6d 69 6e 61 6c 2d 49 44 3a 20 20 20 20 20 20 20 20 20 20 35 32 35 30 30 32 33 31 07 1e 54 41 2d 4e 72 2e 3a 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 30 30 30 31 32 33 07 1e 56 6f 72 67 61 6e 67 73 2d 4e 72 2e 3a 20 20 20 20 20 20 20 20 20 20 20 20 20 36 36 37 34 07 00 07 1e 41 62 20 42 65 6c 65 67 6e 72 2e 3a 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 35 38 07 1e 42 69 73 20 42 65 6c 65 67 6e 72 2e 3a 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 36 31 07 00 07 1e 6e 61 63 68 20 4b 61 72 74 65 6e 61 72 74 3a 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 07 1e 4b 61 72 74 65 6e 6e 61 6d 65 20 20 20 20 20 41 6e 7a 61 68 6c 20 20 20 20 5b 45 55 52 5d 07 1e 67 69 72 6f 63 61 72 64 20 20 20 20 20 20 20 20 20 20 20 20 30 20 20 20 20 20 30 2c 30 30 07 1e 4d 61 73 74 65 72 43 61 72 64 20 20 20 20 20 20 20 20 20 20 30 20 20 20 20 20 30 2c 30 30 07 1e 56 49 53 41 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 34 20 20 20 20 35 30 2c 30 30 07 1e 4d 61 65 73 74 72 6f 20 20 20 20 20 20 20 20 20 20 20 20 20 30 20 20 20 20 20 30 2c 30 30 07 1e 56 50 41 59 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 30 20 20 20 20 20 30 2c 30 30 07 1e 56 49 53 41 20 65 6c 65 63 74 72 6f 6e 20 20 20 20 20 20 20 30 20 20 20 20 20 30 2c 30 30 07 00 07 1e 47 65 73 61 6d 74 61 6e 7a 61 68 6c 3a 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 34 07 1e 47 65 73 61 6d 74 3a 20 20 20 20 20 20 20 20 20 20 20 20 20 20 35 30 2c 30 30 20 45 55 52 07 00 07 00 07 1e 20 20 20 20 20 20 20 20 20 45 72 66 6f 6c 67 72 65 69 63 68 20 20 20 20 20 20 20 20 20 20 09 01 ff
+<-PT: BlockReceipt (06D3)
+<-PT: is_merchant      : 0
+<-PT: is_customer      : 0
+<-PT: is_administration: 1
+<-PT:
+<-PT||
+<-PT||
+<-PT|LAVEGO                        |
+<-PT|PackagePay                    |
+<-PT|Zielstattstrasse 10a,         |
+<-PT|Rückgebä                      |
+<-PT|München                       |
+<-PT||
+<-PT|     ** Kassenschnitt **      |
+<-PT||
+<-PT|01.10.2021            17:14:36|
+<-PT|Terminal-ID:          52500231|
+<-PT|TA-Nr.:                 000123|
+<-PT|Vorgangs-Nr.:             6674|
+<-PT||
+<-PT|Ab Belegnr.:                58|
+<-PT|Bis Belegnr.:               61|
+<-PT||
+<-PT|nach Kartenart:               |
+<-PT|Kartenname     Anzahl    [EUR]|
+<-PT|girocard            0     0,00|
+<-PT|MasterCard          0     0,00|
+<-PT|VISA                4    50,00|
+<-PT|Maestro             0     0,00|
+<-PT|VPAY                0     0,00|
+<-PT|VISA electron       0     0,00|
+<-PT||
+<-PT|Gesamtanzahl:                4|
+<-PT|Gesamt:              50,00 EUR|
+<-PT||
+<-PT||
+<-PT|         Erfolgreich          |
+
+->PT: 80 00 00
+<-PT: received 80 from 80
+<-PT* StatusInfo (040F) size (80)
+<-PT$ 04 0f 4d 27 00 04 00 00 00 00 50 00 0b 00 01 23 0d 10 01 0c 17 14 38 60 f0 f5 f3 00 58 00 61 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00 50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+<-PT| status                   00
+<-PT| payment_type             00
+<-PT| card_type                00
+<-PT| card_type_net_op         00
+<-PT| result_code              ff
+<-PT| currency                 978
+<-PT| aid
+<-PT| amount in cent           5000
+<-PT| card_name
+<-PT| date                     1001
+<-PT| expiry_date
+<-PT| original_trace           0
+<-PT| receipt_number           0
+<-PT| sequence_number          0
+<-PT| tid                      0
+<-PT| time                     171438
+<-PT| trace                    123
+<-PT| pan
+<-PT| vu_number
+<-PT| additional_text
+<-PT| receipt_from             58
+<-PT| receipt_to               61
+<-PT| number_girocard          0
+<-PT| total_girocard_in_cent   0
+<-PT| number_jcb               0
+<-PT| total_jcb_in_cent        0
+<-PT| number_eurocard          0
+<-PT| total_eurocard_in_cent   0
+<-PT| number_amex              0
+<-PT| total_amex_in_cent       0
+<-PT| number_visa              4
+<-PT| total_visa_in_cent       5000
+<-PT| number_diners            0
+<-PT| total_diners_in_cent     0
+<-PT| number_others            0
+<-PT| total_others_in_cent     0
+->PT: 80 00 00
+<-PT* Completion (060F) size (3)
+<-PT$ 06 0f 00
+->PT: 80 00 00
+%ah@dev ~ λ
+
