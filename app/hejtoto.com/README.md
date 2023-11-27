@@ -6,3 +6,6 @@ ToDo
 - zurück Button
 - Bilder
 - Auth user and pc
+
+
+// Update dependencies: https://www.freecodecamp.org/news/how-to-update-npm-dependencies/
