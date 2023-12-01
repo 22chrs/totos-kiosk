@@ -1,5 +1,7 @@
+# .dockerignore
+
 ### DEVICES
-devices/env/lib
+devices/env/
 devices/CODE-teensy
 
 ### ORCHESTER
