@@ -1,0 +1,9 @@
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/zvt++.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/shared-zvt++.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/static-zvt++.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/edit_cache.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/rebuild_cache.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/list_install_components.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/install.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/install/local.dir
+/Users/chris/Documents/Git/totos-kiosk/devices/zvt/CMakeFiles/install/strip.dir
