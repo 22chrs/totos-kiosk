@@ -32,7 +32,6 @@ services:
   browser:
     image: bh.cr/balenalabs/browser-<arch> # where <arch> is one of aarch64, arm32 or amd64
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
-    network_mode: host
     ports:
         - '5011' # management API (optional)
         - '35173' # Chromium debugging port (optional)
@@ -47,7 +46,6 @@ services:
   browser:
     image: bh.cr/balenalabs/browser-<arch>/<version>
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
-    network_mode: host
     ports:
         - '5011' # management API (optional)
         - '35173' # Chromium debugging port (optional)
@@ -83,7 +81,8 @@ The following environment variables allow configuration of the `browser` block:
 |`LOCAL_HTTP_DELAY`|Number (seconds)|0|Number of seconds to wait for a local HTTP service to start before trying to detect it|
 |`KIOSK`|`0`, `1`|`0`|Run in kiosk mode with no menus or status bars. <br/> `0` = off, `1` = on|
 |`SHOW_CURSOR`|`0`, `1`|`0`|Enables/disables the cursor when in kiosk mode<br/> `0` = off, `1` = on|
-|`FLAGS`|[many!](https://peter.sh/experiments/chromium-command-line-switches/)|N/A|Overrides the flags chromium is started with. Enter a space (\' \') separated list of flags (e.g. `--noerrdialogs --disable-session-crashed-bubble`) <br/> **Use with caution!**|
+|`FLAGS`|[many!](https://peter.sh/experiments/chromium-command-line-switches/)|N/A|**Replaces** the flags chromium is started with. Enter a space (\' \') separated list of flags (e.g. `--noerrdialogs --disable-session-crashed-bubble`) <br/> **Use with caution!**|
+|`EXTRA_FLAGS`|[many!](https://peter.sh/experiments/chromium-command-line-switches/)|N/A|Adds **additional** flags chromium is started with. Enter a space (\' \') separated list of flags (e.g. `--audio-buffer-size=2048 --audio-output-channels=8`)|
 |`PERSISTENT`|`0`, `1`|`0`|Enables/disables user profile data being stored on the device. **Note: you'll need to create a settings volume. See example above** <br/> `0` = off, `1` = on|
 |`ROTATE_DISPLAY`|`normal`, `left`, `right`, `inverted`|`normal`|Rotates the display|
 |`TOUCHSCREEN`|`string`|N\A|Name of Touch Input to rotate|
@@ -107,14 +106,12 @@ services:
   browser:
     restart: always
     image: bh.cr/balenalabs/browser-<arch>
-    network_mode: host
     privileged: true
     volumes:
       - 'settings:/data'
   grafana:
     restart: always
     build: ./grafana
-    network_mode: host
     ports:
       - "80"
 ```
@@ -129,7 +126,6 @@ In this example we add the `audio` block and route the `browser` audio to the Ra
 services:
   browser:
     image: bh.cr/balenalabs/browser-<arch>
-    network_mode: host
   audio:
     image: bh.cr/balenalabs/audio-<arch>
     privileged: true

@@ -1,0 +1,13 @@
+# used on website
+
+NEXT_PUBLIC_WEBSOCKET_SERVER_ENV=false
+NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV=false
+DISABLE_RIGHT_CLICK=false
+
+NEXT_PUBLIC_KIOSKMODE_ENV=false
+
+
+baseURL="https://hejtoto.com/"
+siteName="Hej Toto"
+
+
