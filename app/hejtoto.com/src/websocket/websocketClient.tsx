@@ -28,7 +28,7 @@ class WebSocketClient {
     this.reconnectInterval = 2000; // Reconnect every 2 secondss
 
     // Only connect when serverEnv is not 'local'
-    if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV == 'useWebsocket') {
+    if (process.env.NEXT_PUBLIC_WEBSOCKET_SERVICE_ENV === 'useWebsocket') {
       //console.log('WebSocket connecting ..');
       this.connect();
     } else {
