@@ -1,7 +1,7 @@
 # Dockerfile (toto)
 
 ARG PYTHON_VERSION="3.11.2"
-ARG DEBIAN_VERSION="bullseye"
+ARG DEBIAN_VERSION="bookworm"
 FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-python:${PYTHON_VERSION}-${DEBIAN_VERSION}-run
 WORKDIR /opt/
 

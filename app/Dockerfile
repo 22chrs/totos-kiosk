@@ -3,7 +3,7 @@
 ######################################
 
 # base image
-FROM balenalib/generic-amd64-debian-node:18-bullseye-build AS base_image
+FROM balenalib/generic-amd64-debian-node:19-bookworm-build AS base_image
 
 WORKDIR /opt/
 
@@ -22,7 +22,7 @@ RUN npm run build
 ## Puts it all together
 ######################################
 
-FROM balenalib/generic-amd64-debian-node:18-bullseye-run
+FROM balenalib/generic-amd64-debian-node:19-bookworm-run
 
 WORKDIR /opt/
 

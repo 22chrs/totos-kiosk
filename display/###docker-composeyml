@@ -1,6 +1,7 @@
 version: '2'
 
 services:
+
   display:
     build: .
     privileged: true
