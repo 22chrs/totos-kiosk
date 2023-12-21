@@ -119,9 +119,11 @@ class PaymentTerminal:
         # Process each line
         for line in lines:
             if "** Kundenbeleg **" in line:
+                kundenbeleg += line + '\n'  # Start appending from this line
                 in_kundenbeleg = True
                 in_haendlerbeleg = False
             elif "** Händlerbeleg **" in line:
+                haendlerbeleg += line + '\n'  # Start appending from this line
                 in_haendlerbeleg = True
                 in_kundenbeleg = False
             elif in_kundenbeleg or in_haendlerbeleg:
