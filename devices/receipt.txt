@@ -1091,3 +1091,268 @@
 <-PT|           Geheimzahl falsch            |
 <-PT|          ####################          |
 ----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  18:25:44 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000104|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0072|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          55 Geheimzahl falsch          |
+<-PT|           Geheimzahl falsch            |
+<-PT|               ( AC 55 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  18:25:44 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000104|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0072|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|020300/0000040001                       |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|           Geheimzahl falsch            |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:22:31 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000105|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0073|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          55 Geheimzahl falsch          |
+<-PT|           Geheimzahl falsch            |
+<-PT|               ( AC 55 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:22:31 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000105|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0073|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|020300/0000040001                       |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|           Geheimzahl falsch            |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:24:19 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000106|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0074|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          55 Geheimzahl falsch          |
+<-PT|           Geheimzahl falsch            |
+<-PT|               ( AC 55 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:24:19 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000106|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0074|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|020300/0000040001                       |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|           Geheimzahl falsch            |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:25:04 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000107|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0075|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          55 Geheimzahl falsch          |
+<-PT|           Geheimzahl falsch            |
+<-PT|               ( AC 55 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:25:04 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000107|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0075|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|020300/0000040001                       |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|           Geheimzahl falsch            |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:25:49 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000108|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0076|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          55 Geheimzahl falsch          |
+<-PT|           Geheimzahl falsch            |
+<-PT|               ( AC 55 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  21:25:49 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000108|
+<-PT|Beleg-Nr.:                          0023|
+<-PT|Vorgangs-Nr.:                       0076|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|020300/0000040001                       |
+<-PT||
+<-PT|Betrag:               EUR 2,55          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|           Geheimzahl falsch            |
+<-PT|          ####################          |
+----------------
