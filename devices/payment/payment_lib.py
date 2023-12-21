@@ -118,29 +118,38 @@ class PaymentTerminal:
 
         # Process each line
         for line in lines:
-            if "** Kundenbeleg **" in line:
-                kundenbeleg += line + '\n'  # Start appending from this line
+            # Remove the "<-PT|" from the start and "|" from the end of the line
+            clean_line = line.replace('<-PT|', '').rstrip('|').strip()
+
+            if "** Kundenbeleg **" in clean_line:
+                kundenbeleg += clean_line + '\n'  # Start appending from this line
                 in_kundenbeleg = True
                 in_haendlerbeleg = False
-            elif "** Händlerbeleg **" in line:
-                haendlerbeleg += line + '\n'  # Start appending from this line
+                continue
+            elif "** Händlerbeleg **" in clean_line:
+                haendlerbeleg += clean_line + '\n'  # Start appending from this line
                 in_haendlerbeleg = True
                 in_kundenbeleg = False
-            elif in_kundenbeleg or in_haendlerbeleg:
-                if line.strip() == "":  # Empty line indicates end of a section
-                    in_kundenbeleg = False
-                    in_haendlerbeleg = False
-                else:
-                    if in_kundenbeleg:
-                        kundenbeleg += line + '\n'
-                    if in_haendlerbeleg:
-                        haendlerbeleg += line + '\n'
+                continue
+
+            if in_kundenbeleg or in_haendlerbeleg:
+                # Add the clean line to the respective receipt
+                if in_kundenbeleg:
+                    kundenbeleg += clean_line + '\n'
+                    if "Zahlung erfolgt" in clean_line:
+                        in_kundenbeleg = False  # Stop appending after "Zahlung erfolgt"
+                elif in_haendlerbeleg:
+                    haendlerbeleg += clean_line + '\n'
+                    if "Zahlung erfolgt" in clean_line:
+                        in_haendlerbeleg = False  # Stop appending after "Zahlung erfolgt"
 
         # Save the receipts if they exist
         if kundenbeleg:
             self.save_receipt_to_file(kundenbeleg, "Kundenbeleg")
         if haendlerbeleg:
             self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg")
+
+
 
     def save_receipt_to_file(self, receipt, receipt_type):
         # Create a timestamp

@@ -1,0 +1,29 @@
+** Kundenbeleg **
+
+Bezahlung girocard
+
+21.12.2023                  23:38:56 CET
+Terminal-ID:                    52500038
+TA-Nr.:                           000167
+Beleg-Nr.:                          0049
+Vorgangs-Nr.:                       0119
+VU-Nummer:                      14698003
+App-ID:             A0000003591010028001
+Kartenfolge-Nr.:                      01
+Konto-Nr.:           xxxxxxxxxxxxxxx2103
+Erfassungsart:                Kontaktlos
+Autor-Nr.:                        424242
+EMV-DATA:
+020300/0000040001
+
+Betrag:               EUR 1,11
+
+
+Zahlung erfolgt
+
+
+->PT: 80 00 00
+<-PT* Completion (060F) size (3)
+<-PT$ 06 0f 00
+->PT: 80 00 00
+
