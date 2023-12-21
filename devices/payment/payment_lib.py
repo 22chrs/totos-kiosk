@@ -108,9 +108,11 @@ class PaymentTerminal:
         # Split output into lines
         lines = output.split('\n')
 
-        # Initialize variables to hold the receipts
+        # Initialize variables to hold the receipts, beleg number, and payment status
         kundenbeleg = ""
         haendlerbeleg = ""
+        beleg_nr = ""
+        payment_successful = False
 
         # Flags to identify which section we're currently reading
         in_kundenbeleg = False
@@ -121,13 +123,17 @@ class PaymentTerminal:
             # Remove the "<-PT|" from the start and "|" from the end of the line
             clean_line = line.replace('<-PT|', '').rstrip('|').strip()
 
+            # Extract Beleg-Nr. when it is encountered
+            if "Beleg-Nr.:" in clean_line:
+                beleg_nr = clean_line.split(":")[1].strip()
+
             if "** Kundenbeleg **" in clean_line:
-                kundenbeleg += clean_line + '\n'  # Start appending from this line
+                kundenbeleg += clean_line + '\n'
                 in_kundenbeleg = True
                 in_haendlerbeleg = False
                 continue
             elif "** Händlerbeleg **" in clean_line:
-                haendlerbeleg += clean_line + '\n'  # Start appending from this line
+                haendlerbeleg += clean_line + '\n'
                 in_haendlerbeleg = True
                 in_kundenbeleg = False
                 continue
@@ -137,27 +143,29 @@ class PaymentTerminal:
                 if in_kundenbeleg:
                     kundenbeleg += clean_line + '\n'
                     if "Zahlung erfolgt" in clean_line:
-                        in_kundenbeleg = False  # Stop appending after "Zahlung erfolgt"
+                        payment_successful = True
+                        in_kundenbeleg = False
                 elif in_haendlerbeleg:
                     haendlerbeleg += clean_line + '\n'
                     if "Zahlung erfolgt" in clean_line:
-                        in_haendlerbeleg = False  # Stop appending after "Zahlung erfolgt"
+                        payment_successful = True
+                        in_haendlerbeleg = False
 
         # Save the receipts if they exist
         if kundenbeleg:
-            self.save_receipt_to_file(kundenbeleg, "Kundenbeleg")
+            self.save_receipt_to_file(kundenbeleg, "Kundenbeleg", beleg_nr, payment_successful)
         if haendlerbeleg:
-            self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg")
+            self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful)
 
-
-
-    def save_receipt_to_file(self, receipt, receipt_type):
+    def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful):
         # Create a timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
         # Define directory and file path
         receipt_dir = "payment/receipts"
-        receipt_path = os.path.join(receipt_dir, f"{timestamp}_{receipt_type}.txt")
+        err_suffix = "" if payment_successful else "_ERR"
+        receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}{err_suffix}.txt"
+        receipt_path = os.path.join(receipt_dir, receipt_filename)
 
         # Check if the directory exists, if not, create it
         if not os.path.exists(receipt_dir):
