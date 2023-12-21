@@ -59,10 +59,30 @@ class PaymentTerminal:
 
         # Check if more than 3 seconds have elapsed and the specific message is not in the output
         if time.time() - start_time > 3 and "Bitte Karte vorhalten" not in output:
+            self.write_error_file("-2 Terminal nicht erreichbar", self.ip_address_terminal)
             return "-2 Terminal nicht erreichbar"
 
         # Parse the output and return the result
         return self.parse_terminal_output(output)
+
+    def write_error_file(self, error_message, ip_address):
+        # Create a timestamp
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        # Define directory and file path for the error file
+        error_dir = "payment/receipts"  # Change to 'payment/errors' if you want to separate error logs
+        error_path = os.path.join(error_dir, f"{timestamp}_ERR.txt")
+
+        # Check if the directory exists, if not, create it
+        if not os.path.exists(error_dir):
+            os.makedirs(error_dir)
+
+        # Compose the full error message including the IP address
+        full_error_message = f"Error: {error_message}\nTerminal IP: {ip_address}"
+
+        # Write the error message to a file
+        with open(error_path, "w", encoding="utf-8") as file:
+            file.write(full_error_message)
 
     
 
