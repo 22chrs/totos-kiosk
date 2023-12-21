@@ -9,8 +9,8 @@ paymentTerminalFront = PaymentTerminal("192.168.188.21")
 def on_press(key):
     try:
         if key.char == '1':
-            print("Initiating a 1 Euro payment...")
-            result = paymentTerminalFront.auth_payment_debug(255)
+            print("Initiating payment...")
+            result = paymentTerminalFront.auth_payment(111)
             print(f"Payment result: {result}")
     except AttributeError:
         pass

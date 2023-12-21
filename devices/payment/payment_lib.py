@@ -1,6 +1,8 @@
 import os
 import subprocess
 import re
+import time
+import datetime
 
 class PaymentTerminal:
     def __init__(self, ip_address_terminal, executable_name='zvt++'):
@@ -41,19 +43,33 @@ class PaymentTerminal:
         # Ensure the zvt++ executable is executable
         os.chmod(self.executable_path, 0o755)
 
-        # Running the external zvt++ program with the necessary arguments and capturing output
+        # Running the external zvt++ program
         process = subprocess.Popen([self.executable_path, "auth", self.ip_address_terminal, str(amount)],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
+
+        # Start the timer right before reading the output
+        start_time = time.time()
+
+        # Reading the output
         stdout, stderr = process.communicate()
 
         # Decode output for processing
         output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
+        # Check if more than 3 seconds have elapsed and the specific message is not in the output
+        if time.time() - start_time > 3 and "Bitte Karte vorhalten" not in output:
+            return "-2 Terminal nicht erreichbar"
+
         # Parse the output and return the result
         return self.parse_terminal_output(output)
 
+    
+
     def parse_terminal_output(self, output):
+        # Split and save the receipts
+        self.save_receipts(output)
+
         # Check for success message
         if "Zahlung erfolgt" in output:
             return "00 Zahlung erfolgreich"  # Success code
@@ -87,3 +103,55 @@ class PaymentTerminal:
 
         # Default return if no specific pattern is matched
         return "Unknown Error"
+    
+    def save_receipts(self, output):
+        # Split output into lines
+        lines = output.split('\n')
+
+        # Initialize variables to hold the receipts
+        kundenbeleg = ""
+        haendlerbeleg = ""
+
+        # Flags to identify which section we're currently reading
+        in_kundenbeleg = False
+        in_haendlerbeleg = False
+
+        # Process each line
+        for line in lines:
+            if "** Kundenbeleg **" in line:
+                in_kundenbeleg = True
+                in_haendlerbeleg = False
+            elif "** Händlerbeleg **" in line:
+                in_haendlerbeleg = True
+                in_kundenbeleg = False
+            elif in_kundenbeleg or in_haendlerbeleg:
+                if line.strip() == "":  # Empty line indicates end of a section
+                    in_kundenbeleg = False
+                    in_haendlerbeleg = False
+                else:
+                    if in_kundenbeleg:
+                        kundenbeleg += line + '\n'
+                    if in_haendlerbeleg:
+                        haendlerbeleg += line + '\n'
+
+        # Save the receipts if they exist
+        if kundenbeleg:
+            self.save_receipt_to_file(kundenbeleg, "Kundenbeleg")
+        if haendlerbeleg:
+            self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg")
+
+    def save_receipt_to_file(self, receipt, receipt_type):
+        # Create a timestamp
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        # Define directory and file path
+        receipt_dir = "payment/receipts"
+        receipt_path = os.path.join(receipt_dir, f"{timestamp}_{receipt_type}.txt")
+
+        # Check if the directory exists, if not, create it
+        if not os.path.exists(receipt_dir):
+            os.makedirs(receipt_dir)
+
+        # Write the receipt to a file
+        with open(receipt_path, "w", encoding="utf-8") as file:
+            file.write(receipt)
