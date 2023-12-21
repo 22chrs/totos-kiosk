@@ -10,7 +10,7 @@ def on_press(key):
     try:
         if key.char == '1':
             print("Initiating a 1 Euro payment...")
-            result = paymentTerminalFront.auth_payment(255)
+            result = paymentTerminalFront.auth_payment_debug(255)
             print(f"Payment result: {result}")
     except AttributeError:
         pass

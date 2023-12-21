@@ -14,6 +14,25 @@ class PaymentTerminal:
         # Construct the absolute path to the executable
         return os.path.join(dir_path, executable_name, executable_name)
 
+    def auth_payment_debug(self, amount):
+        # Input validation
+        if not isinstance(amount, int) or amount < 0:
+            raise ValueError("Amount must be a non-negative integer representing cents.")
+
+        # Ensure the zvt++ executable is executable
+        os.chmod(self.executable_path, 0o755)
+
+        # Running the external zvt++ program with the necessary arguments
+        # Here, instead of capturing the output, we let it be displayed directly on the terminal
+        process = subprocess.Popen([self.executable_path, "auth", self.ip_address_terminal, str(amount)])
+
+        # Wait for the process to complete and get the exit code
+        exit_code = process.wait()
+
+        # Return the exit code (0 for success, non-zero for errors)
+        return exit_code
+    
+
     def auth_payment(self, amount):
         # Input validation
         if not isinstance(amount, int) or amount < 0:
@@ -37,7 +56,11 @@ class PaymentTerminal:
     def parse_terminal_output(self, output):
         # Check for success message
         if "Zahlung erfolgt" in output:
-            return "00"  # Success code
+            return "00 Zahlung erfolgreich"  # Success code
+
+        # Check for "Zeit zum Kartenlesen überschritten" error
+        if "Zeit zum Kartenlesen überschritten" in output:
+            return "-1 Zeit zum Kartenlesen überschritten"  # Specific error message
 
         # Search for the Händlerbeleg section
         haendlerbeleg_start = output.find("** Händlerbeleg **")
@@ -63,4 +86,4 @@ class PaymentTerminal:
                         return match.group(1)  # Return the matched group containing the error code and message
 
         # Default return if no specific pattern is matched
-        return "Unknown"
+        return "Unknown Error"
