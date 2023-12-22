@@ -12,6 +12,16 @@ def on_press(key):
             print("Initiating payment...")
             result = paymentTerminalFront.auth_payment(111)
             print(f"Payment result: {result}")
+        elif key.char == '2':
+            print("Initiating payment reversal...")
+            result = paymentTerminalFront.reversal_payment_debug("0056")
+            print(f"Payment reversal result: {result}")
+        elif key.char == '3':
+            print("Test ...")
+            paymentTerminalFront.configuration()
+        elif key.char == '4':
+            print("Displaying 'Hej Toto' on terminal...")
+            paymentTerminalFront.display_text(13, "Hej Toto")  # Display 'Hello World' for 3 seconds
     except AttributeError:
         pass
 
@@ -19,6 +29,6 @@ def on_release(key):
     if key == Key.esc:
         return False
 
-print("Press '1' to initiate a 1 Euro payment, or 'esc' to exit.")
+print("Press '1' to initiate a 1 Euro payment, '2' for payment reversal (Belegnummer 44), or 'esc' to exit.")
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()

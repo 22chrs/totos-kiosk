@@ -15,6 +15,42 @@ class PaymentTerminal:
         dir_path = os.path.dirname(os.path.abspath(__file__))
         # Construct the absolute path to the executable
         return os.path.join(dir_path, executable_name, executable_name)
+    
+    ####
+    def configuration(self):
+        # Ensure the zvt++ executable is executable
+        os.chmod(self.executable_path, 0o755)
+
+        # Running the external zvt++ program with the necessary arguments for help line
+        # Here, instead of capturing the output, we let it be displayed directly on the terminal
+        process = subprocess.Popen([self.executable_path, "printSysConfig", self.ip_address_terminal])
+
+        # Wait for the process to complete and get the exit code
+        exit_code = process.wait()
+
+        # Return the exit code (0 for success, non-zero for errors)
+        return exit_code
+    
+
+    def display_text(self, duration, ascii_string):
+        # Input validation for duration and ascii_string
+        if not isinstance(duration, int) or duration < 0:
+            raise ValueError("Duration must be a non-negative integer representing seconds.")
+        if not isinstance(ascii_string, str) or not ascii_string:
+            raise ValueError("ASCII string must be a non-empty string.")
+
+        # Ensure the zvt++ executable is executable
+        os.chmod(self.executable_path, 0o755)
+
+        # Running the external zvt++ program with the necessary arguments for displaying text
+        process = subprocess.Popen([self.executable_path, "display", self.ip_address_terminal, str(duration), ascii_string])
+
+        # Wait for the process to complete and get the exit code
+        exit_code = process.wait()
+
+        # Return the exit code (0 for success, non-zero for errors)
+        return exit_code
+    
 
     def auth_payment_debug(self, amount):
         # Input validation
@@ -64,6 +100,26 @@ class PaymentTerminal:
 
         # Parse the output and return the result
         return self.parse_terminal_output(output)
+
+
+    def reversal_payment_debug(self, receipt_no):
+        # Input validation for receipt number
+        if not isinstance(receipt_no, str) or not receipt_no:
+            raise ValueError("Receipt number must be a non-empty string.")
+
+        # Ensure the zvt++ executable is executable
+        os.chmod(self.executable_path, 0o755)
+
+        # Running the external zvt++ program with the necessary arguments for reversal
+        # Here, instead of capturing the output, we let it be displayed directly on the terminal
+        process = subprocess.Popen([self.executable_path, "reversal", self.ip_address_terminal, receipt_no])
+
+        # Wait for the process to complete and get the exit code
+        exit_code = process.wait()
+
+        # Return the exit code (0 for success, non-zero for errors)
+        return exit_code
+    
 
     def write_error_file(self, error_message, ip_address):
         # Create a timestamp

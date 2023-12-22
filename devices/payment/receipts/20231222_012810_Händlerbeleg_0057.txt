@@ -2,11 +2,11 @@
 
 Bezahlung girocard
 
-21.12.2023                  23:53:49 CET
+22.12.2023                  01:27:50 CET
 Terminal-ID:                    52500038
-TA-Nr.:                           000173
-Beleg-Nr.:                          0051
-Vorgangs-Nr.:                       0124
+TA-Nr.:                           000200
+Beleg-Nr.:                          0057
+Vorgangs-Nr.:                       0148
 VU-Nummer:                      14698003
 App-ID:             A0000003591010028001
 Kartenfolge-Nr.:                      01
