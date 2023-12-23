@@ -1,0 +1,22 @@
+** Händlerbeleg **
+
+Bezahlung Mastercard
+
+23.12.2023                  01:48:43 CET
+Terminal-ID:                    52500038
+TA-Nr.:                           000202
+Beleg-Nr.:                          0058
+Vorgangs-Nr.:                       0153
+VU-Nummer:                          9999
+App-ID:                   A0000000041010
+Karten-Nr.:             xxxxxxxxxxxx5901
+Kartenfolge-Nr.:                      00
+Erfassungsart:                Kontaktlos
+Autor-Nr.:                        424242
+EMV-DATA:
+0000048001//420300///00
+
+Betrag:               EUR 1,11
+
+
+Zahlung erfolgt

@@ -1,22 +1,24 @@
-** Kundenbeleg **
+** Händlerbeleg **
 
 Bezahlung girocard
 
-22.12.2023                  01:27:50 CET
+21.12.2023                  23:20:57 CET
 Terminal-ID:                    52500038
-TA-Nr.:                           000200
-Beleg-Nr.:                          0057
-Vorgangs-Nr.:                       0148
+TA-Nr.:                           000157
+Beleg-Nr.:                          0044
+Vorgangs-Nr.:                       0114
 VU-Nummer:                      14698003
 App-ID:             A0000003591010028001
 Kartenfolge-Nr.:                      01
-Konto-Nr.:           xxxxxxxxxxxxxxx2103
+Konto-Nr.:           6725904411002022103
+Karte gültig bis:                  12/26
 Erfassungsart:                Kontaktlos
 Autor-Nr.:                        424242
 EMV-DATA:
-020300/0000040001
+/0000040001//A000000359/020300/
 
 Betrag:               EUR 1,11
 
 
+####################
 Zahlung erfolgt
