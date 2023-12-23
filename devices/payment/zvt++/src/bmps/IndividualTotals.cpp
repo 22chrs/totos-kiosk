@@ -37,30 +37,30 @@ void Bmp::IndividualTotals::strip_of(const std::vector<unsigned char> bmp)
 	// we expect lllvar with 3-byte length) + 53-byte follows
 	if (this->get().size() == 56 && this->bmp() == 0x60)
 	{
-		std::vector<unsigned char> bmp60 = Zvt::lllvar_data(Zvt::copyRange(this->get(), 0, this->get().size() - 1));
+		std::vector<unsigned char> bmp60 = LLVar::lllvar_data(LLVar::copyRange(this->get(), 0, this->get().size() - 1));
 
-		this->_receipt_from = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 0, 1));
-		this->_receipt_to = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 2, 3));
+		this->_receipt_from = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 0, 1));
+		this->_receipt_to = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 2, 3));
 
-		this->_number_girocard = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 4, 4));
-		this->_total_girocard_in_cent = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 5, 10));
+		this->_number_girocard = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 4, 4));
+		this->_total_girocard_in_cent = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 5, 10));
 
-		this->_number_jcb = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 11, 11));
-		this->_total_jcb_in_cent = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 12, 17));
+		this->_number_jcb = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 11, 11));
+		this->_total_jcb_in_cent = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 12, 17));
 
-		this->_number_eurocard = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 18, 18));
-		this->_total_eurocard_in_cent = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 19, 24));
+		this->_number_eurocard = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 18, 18));
+		this->_total_eurocard_in_cent = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 19, 24));
 
-		this->_number_amex = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 25, 25));
-		this->_total_amex_in_cent = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 26, 31));
+		this->_number_amex = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 25, 25));
+		this->_total_amex_in_cent = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 26, 31));
 
-		this->_number_visa = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 32, 32));
-		this->_total_visa_in_cent = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 33, 38));
+		this->_number_visa = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 32, 32));
+		this->_total_visa_in_cent = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 33, 38));
 
-		this->_number_diners = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 39, 39));
-		this->_total_diners_in_cent = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 40, 45));
-		this->_number_others = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 46, 46));
-		this->_total_others_in_cent = Zvt::Bmp::BCDToNumber(Zvt::copyRange(bmp60, 47, 52));
+		this->_number_diners = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 39, 39));
+		this->_total_diners_in_cent = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 40, 45));
+		this->_number_others = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 46, 46));
+		this->_total_others_in_cent = Zvt::Bmp::BCDToNumber(LLVar::copyRange(bmp60, 47, 52));
 	}
 	else if (this->get().size() == 3 && this->get()[0] == 0xf0 && this->get()[1] == 0xf0 && this->get()[2] == 0xf0)
 	{

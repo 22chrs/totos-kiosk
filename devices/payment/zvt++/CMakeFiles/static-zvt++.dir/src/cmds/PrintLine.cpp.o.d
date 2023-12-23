@@ -1,5 +1,5 @@
 CMakeFiles/static-zvt++.dir/src/cmds/PrintLine.cpp.o: \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintLine.cpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintLine.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/fstream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/max.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/comp.h \
@@ -809,15 +809,17 @@ CMakeFiles/static-zvt++.dir/src/cmds/PrintLine.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintLine.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Apdu.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/HexToByte.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintLine.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Apdu.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/HexToByte.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/iostream \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Bmp.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Bmp.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/sstream \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Utils.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tlv.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tag.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Utils.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tlv.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tag.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/map \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__tree \
   /opt/homebrew/include/boost/algorithm/hex.hpp \
   /opt/homebrew/include/boost/config.hpp \
   /opt/homebrew/include/boost/config/user.hpp \
@@ -1047,8 +1049,6 @@ CMakeFiles/static-zvt++.dir/src/cmds/PrintLine.cpp.o: \
   /opt/homebrew/include/boost/smart_ptr/detail/operator_bool.hpp \
   /opt/homebrew/include/boost/smart_ptr/detail/local_sp_deleter.hpp \
   /opt/homebrew/include/boost/smart_ptr/detail/local_counted_base.hpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/map \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__tree \
   /opt/homebrew/include/boost/type_traits/is_integral.hpp \
   /opt/homebrew/include/boost/json.hpp \
   /opt/homebrew/include/boost/json/detail/config.hpp \
@@ -1225,7 +1225,7 @@ CMakeFiles/static-zvt++.dir/src/cmds/PrintLine.cpp.o: \
   /opt/homebrew/include/boost/describe/enum_from_string.hpp \
   /opt/homebrew/include/boost/json/visit.hpp \
   /opt/homebrew/include/boost/json/impl/visit.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/TagValueConverter.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/TagValueConverter.hpp \
   /opt/homebrew/include/boost/algorithm/string.hpp \
   /opt/homebrew/include/boost/algorithm/string/std_containers_traits.hpp \
   /opt/homebrew/include/boost/algorithm/string/std/string_traits.hpp \
@@ -2230,4 +2230,5 @@ CMakeFiles/static-zvt++.dir/src/cmds/PrintLine.cpp.o: \
   /opt/homebrew/include/boost/archive/iterators/binary_from_base64.hpp \
   /opt/homebrew/include/boost/serialization/throw_exception.hpp \
   /opt/homebrew/include/boost/archive/iterators/insert_linebreaks.hpp \
-  /opt/homebrew/include/boost/archive/iterators/transform_width.hpp
+  /opt/homebrew/include/boost/archive/iterators/transform_width.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/LLVar.hpp

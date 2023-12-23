@@ -32,7 +32,7 @@ void Zvt::Bmp::strip_of(std::vector<unsigned char> bmp_data)
 
 		if (bmp_data.size() > 1)
 		{
-			this->_data = Zvt::copyRange(bmp_data, 1, bmp_data.size() - 1);
+			this->_data = LLVar::copyRange(bmp_data, 1, bmp_data.size() - 1);
 		}
 	}
 }

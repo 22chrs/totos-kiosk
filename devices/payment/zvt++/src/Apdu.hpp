@@ -14,6 +14,7 @@
 #include "HexToByte.hpp"
 #include "Bmp.hpp"
 #include "Utils.hpp"
+#include <LLVar.hpp>
 
 namespace Zvt
 {
@@ -227,160 +228,6 @@ inline static TerminalStatusCode statusCode(unsigned char status)
     }
 }
 
-inline static std::vector<unsigned char> copyRange(std::vector<unsigned char> data, int from, int to)
-{
-    std::vector<unsigned char> range_vector;
-
-    if (from >= 0 && from < data.size() && to >= 0 && to < data.size())
-    {
-        for (int idx = from; idx <= to; ++idx)
-        {
-            range_vector.push_back(data[idx]);
-        }
-    }
-    else
-    {
-        std::cerr << "Error copy sub-vector with args from=" << from << ", to=" << to << ", data.size=" << data.size() << std::endl;
-        Utils::log("Error: ", data);
-    }
-
-    return range_vector;
-}
-
-/**
- * We did not know the data length of the llvar/lllvar.
- *
- * Give Zvt::llvar_data()/Zvt::lllvar_data() the complete rest of the tag/bmp.
- *
- * The method return a vector only with the data. IF the length is reached the method returns immediately...
- */
-inline std::vector<unsigned char> llvar_data(std::vector<unsigned char> data)
-{
-    if (data.size() > 1)
-    {
-        std::stringstream ss;
-        std::bitset<8> byte(data[0]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-
-        byte = std::bitset<8>(data[1]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-        return Zvt::copyRange(data, 2, std::stoi(ss.str()) + 2 - 1);
-    }
-
-    return std::vector<unsigned char>();
-}
-
-/**
- * We did not know the data length of the llvar/lllvar.
- *
- * Give Zvt::llvar_data()/Zvt::lllvar_data() the complete rest of the tag/bmp.
- *
- * The methode return a vector only wth the data. IF the length is reached the method returns immediately...
- */
-inline int llvar_length(std::vector<unsigned char> data)
-{
-    if (data.size() > 1)
-    {
-        std::stringstream ss;
-        std::bitset<8> byte(data[0]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-
-        byte = std::bitset<8>(data[1]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-        return std::stoi(ss.str());
-    }
-
-    return 0;
-}
-
-inline std::vector<unsigned char> lllvar_data(std::vector<unsigned char> data)
-{
-    if (data.size() > 2)
-    {
-        std::stringstream ss;
-        std::bitset<8> byte(data[0]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-
-        byte = std::bitset<8>(data[1]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-
-        byte = std::bitset<8>(data[2]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-        return Zvt::copyRange(data, 3, std::stoi(ss.str()) + 3 - 1);
-    }
-
-    return std::vector<unsigned char>();
-}
-
-inline int lllvar_length(std::vector<unsigned char> data)
-{
-    if (data.size() > 2)
-    {
-        std::stringstream ss;
-        std::bitset<8> byte(data[0]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-
-        byte = std::bitset<8>(data[1]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-
-        byte = std::bitset<8>(data[2]);
-
-        byte.set(7, 0);
-        byte.set(6, 0);
-        byte.set(5, 0);
-        byte.set(4, 0);
-        ss << byte.to_ulong();
-        return std::stoi(ss.str());
-    }
-
-    return 0;
-}
-
 /**
  * APDU class is the complete container of BMPs. BMPs did not have a length-byte i all cases.
  *
@@ -588,7 +435,7 @@ public:
 
     inline std::vector<unsigned char> copyRange(int from, int to) const
     {
-        return Zvt::copyRange(this->vdata, from, to);
+        return LLVar::copyRange(this->vdata, from, to);
     }
 
     inline void set(const unsigned char *buffer, const int length)

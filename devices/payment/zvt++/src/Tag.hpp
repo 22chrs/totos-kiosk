@@ -11,6 +11,7 @@
 #include <iostream>
 #include <bitset>
 #include <vector>
+#include <map>
 
 #include <boost/algorithm/hex.hpp>
 #include <boost/json.hpp>
@@ -84,6 +85,8 @@ public:
 
     virtual ~Tag();
 
+    typedef std::map<std::string, Tag> TagMap;
+
     inline bool isPrimitive()
     { return this->tag_bytes.size() <= 0 || !this->tag_bytes.at(0).test(5); }
 
@@ -131,6 +134,7 @@ public:
     std::string data_as_hex();
     std::vector<unsigned char> get();
     std::vector<Zvt::Tag> subtags();
+    Zvt::Tag::TagMap subtags_as_map();
     std::vector<Zvt::Tag> find(const std::vector<unsigned char> tag);
     std::vector<Zvt::Tag> find(const unsigned char byte1, const unsigned char byte2);
     Zvt::Tag find_first(const std::vector<unsigned char> tag, const std::vector<unsigned char> default_value);

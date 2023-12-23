@@ -4,7 +4,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 CXX_DEFINES = -DBOOST_CHRONO_NO_LIB -DBOOST_CONTAINER_NO_LIB -DBOOST_JSON_NO_LIB -DBOOST_SYSTEM_NO_LIB -DBOOST_THREAD_NO_LIB -Dshared_zvt___EXPORTS
 
-CXX_INCLUDES = -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/bmps -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/error -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/json -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/gicc -I/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/nexo -isystem /opt/homebrew/include
+CXX_INCLUDES = -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/bmps -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/error -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/json -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc -I/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/nexo -isystem /opt/homebrew/include
 
 CXX_FLAGSarm64 = -O2 -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.0 -fPIC
 

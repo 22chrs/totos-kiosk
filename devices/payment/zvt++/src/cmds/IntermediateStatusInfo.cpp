@@ -74,12 +74,12 @@ std::vector<Zvt::Bmp> Cmd::IntermediateStatusInfo::parse(void)
 		else if (this->data()[idx] == Zvt::BMP_06)
 		{
 			// must be the first size byte
-			this->tlv_container.strip_of(Zvt::copyRange(this->data(), idx, this->data().size() - 1));
+			this->tlv_container.strip_of(LLVar::copyRange(this->data(), idx, this->data().size() - 1));
 			bmps.push_back(tlv_container);
 			// jump to the end...
 			idx = this->data().size();
 		}
-		else Utils::log("Not implemented, check 04FF intermediate status command ", Zvt::copyRange(this->data(), idx, this->data().size()));
+		else Utils::log("Not implemented, check 04FF intermediate status command ", LLVar::copyRange(this->data(), idx, this->data().size()));
 	}
 
 	return bmps;

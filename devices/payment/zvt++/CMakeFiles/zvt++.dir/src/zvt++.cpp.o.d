@@ -1,6 +1,6 @@
 CMakeFiles/zvt++.dir/src/zvt++.cpp.o: \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/zvt++.cpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/zvt++.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/zvt++.cpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/zvt++.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__config \
@@ -2725,13 +2725,13 @@ CMakeFiles/zvt++.dir/src/zvt++.cpp.o: \
   /opt/homebrew/include/boost/property_tree/detail/ptree_implementation.hpp \
   /opt/homebrew/include/boost/property_tree/ini_parser.hpp \
   /opt/homebrew/include/boost/property_tree/detail/file_parser_error.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Apdu.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/HexToByte.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Bmp.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Utils.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tlv.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tag.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/TagValueConverter.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Apdu.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/HexToByte.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Bmp.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Utils.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tlv.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tag.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/TagValueConverter.hpp \
   /opt/homebrew/include/boost/beast/core/detail/base64.hpp \
   /opt/homebrew/include/boost/beast/core/string.hpp \
   /opt/homebrew/include/boost/beast/core/detail/config.hpp \
@@ -2745,36 +2745,38 @@ CMakeFiles/zvt++.dir/src/zvt++.cpp.o: \
   /opt/homebrew/include/boost/serialization/throw_exception.hpp \
   /opt/homebrew/include/boost/archive/iterators/insert_linebreaks.hpp \
   /opt/homebrew/include/boost/archive/iterators/transform_width.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/bmps/IndividualTotals.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Register.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/FeigRegister.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Ack.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Status.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForRegister.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForStatus.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Auth.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/StatusInfo.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/IntermediateStatusInfo.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BlockReceipt.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintLine.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/EndOfDay.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Diagnosis.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/ConfigFeig.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Initialisation.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PPAuth.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintSystemConfig.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/RepeatReceipt.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/TurnoverTotals.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Reversal.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Abort.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/json/Host.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/EmvTagConverter.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tests.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/LogOff.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/error/RegisterErrorCategory.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/error/StatusEnquiryErrorCategory.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/error/StatusErrorCategory.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/error/NAckErrorCategory.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/DisplayText.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BookTotal.hpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/gicc/Bmp55.hpp
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/LLVar.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/bmps/IndividualTotals.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Register.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/FeigRegister.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Ack.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Status.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForRegister.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForStatus.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Auth.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/StatusInfo.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/IntermediateStatusInfo.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BlockReceipt.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintLine.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/EndOfDay.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Diagnosis.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/ConfigFeig.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Initialisation.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PPAuth.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintSystemConfig.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/RepeatReceipt.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/TurnoverTotals.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reversal.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Abort.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/json/Host.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/EmvTagConverter.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tests.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/LogOff.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/error/RegisterErrorCategory.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/error/StatusEnquiryErrorCategory.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/error/StatusErrorCategory.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/error/NAckErrorCategory.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/DisplayText.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BookTotal.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reservation.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc/Bmp55.hpp

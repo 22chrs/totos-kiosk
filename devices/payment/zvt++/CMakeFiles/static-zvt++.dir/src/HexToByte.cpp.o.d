@@ -1,6 +1,6 @@
 CMakeFiles/static-zvt++.dir/src/HexToByte.cpp.o: \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/HexToByte.cpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/HexToByte.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/HexToByte.cpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/HexToByte.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__config \

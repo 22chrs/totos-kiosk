@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : zvt++.cpp
-// Author      : 
+// Author      :
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
@@ -10,15 +10,13 @@
 
 using namespace std;
 
-inline void print_help_line(const std::string first, const std::string second, const std::string third)
-{
+inline void print_help_line(const std::string first, const std::string second, const std::string third) {
     cout << setw(7) << left << setfill(' ') << first
          << setw(25) << left << setfill(' ') << second
          << third << endl;
 }
 
-inline int help()
-{
+inline int help() {
     print_help_line("Usage:", "zvt++ command params", "\n");
     print_help_line("", "test", "");
     print_help_line("", "auth", "<PT IP[:PT_PORT]> [amount in cent] default amount is 100 cent");
@@ -41,6 +39,7 @@ inline int help()
     print_help_line("", "apdu", "<PT IP[:PT_PORT]> <hex string>");
     print_help_line("", "open_pre_auths", "<PT IP[:PT_PORT]>");
     print_help_line("", "book_total", "<PT IP[:PT_PORT]> <receiptNo> [amount in cent]");
+    print_help_line("", "reservation", "<PT IP[:PT_PORT]> [amount in cent]");
     print_help_line("", "single_apdu", "<PT IP[:PT_PORT]> <hex string>");
     print_help_line("", "apdu_ctls_wait_loop", "<PT IP[:PT_PORT]> <hex string>");
     print_help_line("", "display", "<PT IP[:PT_PORT]> <duration> <ascii string>");
@@ -69,8 +68,7 @@ inline int help()
     return 0;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     /**
      * zvt++ command 	options_for_command
      *
@@ -82,16 +80,15 @@ int main(int argc, char *argv[])
     vector<std::string> options;
     filesystem::path settings = filesystem::path(getenv("HOME")) / filesystem::path(".zvt++/hosts.json");
     vector<Json::Host> hosts = apply_settings(settings);
-    cout << "!!!Zvt cash register to poi/pos!!!" << endl << endl;  // prints !!!Hello World!!!
+    cout << "!!!Zvt cash register to poi/pos!!!" << endl
+         << endl;  // prints !!!Hello World!!!
 
-    for (int idx = 0; idx < argc; ++idx)
-    {
+    for (int idx = 0; idx < argc; ++idx) {
         std::string arg(argv[idx]);
         cout << "argv " << idx << " λ " << arg << endl;
         cout.clear();
 
-        switch (idx)
-        {
+        switch (idx) {
             case 0:
                 self = arg;
                 break;
@@ -106,88 +103,29 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (!command.empty())
-    {
-        //without sockets
-        if (command == "test") return test();
-        else if ((command == "auth" && options.size() < 1)
-                 || (command == "auth_with_04ff" && options.size() < 1)
-                 || (command == "auth_ctls_wait" && options.size() < 1)
-                 || (command == "auth_pp" && options.size() < 3)
-                 || (command == "endOfDay" && (options.size() < 1 || options.size() > 2))
-                 || (command == "lineDiagnosis" && options.size() != 1)
-                 || (command == "extendedDiagnosis" && options.size() != 1)
-                 || (command == "configuration" && options.size() != 1)
-                 || (command == "printSysConfig" && options.size() != 1)
-                 || (command == "repeatReceipt" && options.size() != 1)
-                 || (command == "totals" && options.size() != 1)
-                 || (command == "emvConfiguration" && options.size() != 1)
-                 || (command == "ep2Configuration" && options.size() != 1)
-                 || (command == "reversal" && options.size() < 2)
-                 || (command == "init" && options.size() < 1)
-                 || (command == "apdu" && options.size() != 2)
-                 || (command == "book_total" && options.size() != 3)
-                 || (command == "open_pre_auths" && options.size() != 1)
-                 || (command == "single_apdu" && options.size() != 2)
-                 || (command == "apdu_ctls_wait_loop" && options.size() != 2)
-                 || (command == "configFeig" && options.size() != 4)
-                 || (command == "emv" && options.size() != 1)
-                 || (command == "gicc55" && options.size() != 1)
-                 || (command == "display" && options.size() != 3)
-                 || (command == "emv_build_nexo" && options.size() < 1))
+    if (!command.empty()) {
+        // without sockets
+        if (command == "test")
+            return test();
+        else if ((command == "auth" && options.size() < 1) || (command == "auth_with_04ff" && options.size() < 1) || (command == "auth_ctls_wait" && options.size() < 1) || (command == "auth_pp" && options.size() < 3) || (command == "endOfDay" && (options.size() < 1 || options.size() > 2)) || (command == "lineDiagnosis" && options.size() != 1) || (command == "extendedDiagnosis" && options.size() != 1) || (command == "configuration" && options.size() != 1) || (command == "printSysConfig" && options.size() != 1) || (command == "repeatReceipt" && options.size() != 1) || (command == "totals" && options.size() != 1) || (command == "emvConfiguration" && options.size() != 1) || (command == "ep2Configuration" && options.size() != 1) || (command == "reversal" && options.size() < 2) || (command == "init" && options.size() < 1) || (command == "apdu" && options.size() != 2) || (command == "reservation" && options.size() != 2) || (command == "book_total" && options.size() != 3) || (command == "open_pre_auths" && options.size() != 1) || (command == "single_apdu" && options.size() != 2) || (command == "apdu_ctls_wait_loop" && options.size() != 2) || (command == "configFeig" && options.size() != 4) || (command == "emv" && options.size() != 1) || (command == "gicc55" && options.size() != 1) || (command == "display" && options.size() != 3) || (command == "emv_build_nexo" && options.size() < 1))
             return help();
-        else if (command != "test"
-                 && command != "auth"
-                 && command != "auth_pp"
-                 && command != "auth_with_04ff"
-                 && command != "auth_ctls_wait"
-                 && command != "endOfDay"
-                 && command != "lineDiagnosis"
-                 && command != "extendedDiagnosis"
-                 && command != "configuration"
-                 && command != "emvConfiguration"
-                 && command != "ep2Configuration"
-                 && command != "printSysConfig"
-                 && command != "repeatReceipt"
-                 && command != "totals"
-                 && command != "init"
-                 && command != "apdu"
-                 && command != "open_pre_auths"
-                 && command != "book_total"
-                 && command != "single_apdu"
-                 && command != "apdu_ctls_wait_loop"
-                 && command != "emv"
-                 && command != "display"
-                 && command != "gicc55"
-                 && command != "emv_build_nexo"
-                 && command != "reversal"
-                 && command != "configFeig")
+        else if (command != "test" && command != "auth" && command != "auth_pp" && command != "auth_with_04ff" && command != "auth_ctls_wait" && command != "endOfDay" && command != "lineDiagnosis" && command != "extendedDiagnosis" && command != "configuration" && command != "emvConfiguration" && command != "ep2Configuration" && command != "printSysConfig" && command != "repeatReceipt" && command != "totals" && command != "init" && command != "apdu" && command != "open_pre_auths" && command != "book_total" && command != "reservation" && command != "single_apdu" && command != "apdu_ctls_wait_loop" && command != "emv" && command != "display" && command != "gicc55" && command != "emv_build_nexo" && command != "reversal" && command != "configFeig")
             return help();
-    }
-    else
-    {
+    } else {
         return help();
     }
 
-    try
-    {
-        if (command == "emv")
-        {
+    try {
+        if (command == "emv") {
             cout << "emv parsing..." << endl;
 
             parse_emv(options[0]);
-        }
-        else if (command == "emv_build_nexo")
-        {
+        } else if (command == "emv_build_nexo") {
             cout << "parsing ini file and create BER-TLV EMV data" << endl;
             parse_emv_build_nexo(options[0], options.size() > 1 ? options[1] : string());
-        }
-        else if (command == "gicc55")
-        {
+        } else if (command == "gicc55") {
             parse_gicc55(options[0]);
-        }
-        else
-        {
+        } else {
             boost::asio::io_context io_context;
             boost::asio::socket_base::receive_buffer_size option(1024);
             boost::asio::ip::tcp::socket socket(io_context);
@@ -197,38 +135,36 @@ int main(int argc, char *argv[])
 
             string tname = "";
 
-            for (const auto &host: hosts)
-            {
-                if (host.name() == ip)
-                {
+            for (const auto &host : hosts) {
+                if (host.name() == ip) {
                     tname = ip;
                     ip = string(host.host()).append(":").append(to_string(host.port()));
                     password = host.password();
-                    //if (tname == "vfone") password = "000000";
+                    // if (tname == "vfone") password = "000000";
                     break;
                 }
             }
 
-            if (ip.find(":") != std::string::npos)
-            {
+            if (ip.find(":") != std::string::npos) {
                 istringstream f(ip);
                 string s;
 
-                while (getline(f, s, ':'))
-                {
-                    if (s.find('.') != std::string::npos) ip = s;
-                    else port = std::stoi(s);
+                while (getline(f, s, ':')) {
+                    if (s.find('.') != std::string::npos)
+                        ip = s;
+                    else
+                        port = std::stoi(s);
                 }
             }
 
             boost::asio::ip::tcp::endpoint endpoint(address::from_string(ip), port);
 
-            cout << "Socket created: " << endpoint.address().to_string() << ":" << endpoint.port() << endl << endl;
+            cout << "Socket created: " << endpoint.address().to_string() << ":" << endpoint.port() << endl
+                 << endl;
 
             socket.connect(endpoint);
 
-            if (socket.is_open())
-            {
+            if (socket.is_open()) {
                 boost::system::error_code ec;
                 socket.set_option(option, ec);
                 cout << "socket option: " << option.value() << ", set with ec {" << ec.value() << "}" << endl;
@@ -239,15 +175,14 @@ int main(int argc, char *argv[])
 
             cout << "socket option: get value is " << getOption.value() << endl;
 
-            for (const auto &item: options)
+            for (const auto &item : options)
                 cout << "option: " << item << endl;
 
             bool running = true;
             Zvt::Command current_command_flow = Zvt::CMD_UNKNOWN;
 
             // TODO Use boost::program_options
-            while (running)
-            {
+            while (running) {
                 if (command == "auth" && options.size() == 1)
                     auth_flow(100, current_command_flow, socket, running);
                 else if (command == "auth" && options.size() == 2)
@@ -264,33 +199,27 @@ int main(int argc, char *argv[])
                     auth_flow_with_04ff(std::stoul(options[1]), current_command_flow, socket, running);
                 else if (command == "auth_with_04ff" && options.size() == 2)
                     feig_auth_flow_with_04ff(std::stoul(options[1]), current_command_flow, socket, running);
-                else if (command == "auth_ctls_wait" && options.size() == 2)
-                {
-                    try
-                    {
+                else if (command == "auth_ctls_wait" && options.size() == 2) {
+                    try {
                         ctls_card_wait_flow(current_command_flow, std::stoi(options[1]), socket, running);
-                    }
-                    catch (exception e)
-                    {
-                        std::cerr << "Cannot convert string {" << options[1] << "} to integer!" << endl << e.what() << endl;
+                    } catch (exception e) {
+                        std::cerr << "Cannot convert string {" << options[1] << "} to integer!" << endl
+                                  << e.what() << endl;
                         return 0;
                     }
-                }
-                else if (command == "endOfDay")
-                {
-                    if (options.size() == 1)
-                    {
+                } else if (command == "endOfDay") {
+                    if (options.size() == 1) {
                         end_of_day_flow(Cmd::EndOfDay::NORMAL, current_command_flow, socket, running);
-                    }
-                    else if (options.size() == 2)
-                    {
+                    } else if (options.size() == 2) {
                         std::string mode = Utils::lower(options[1]);
-                        if (mode == "normal") end_of_day_flow(Cmd::EndOfDay::NORMAL, current_command_flow, socket, running);
-                        else if (mode == "force") end_of_day_flow(Cmd::EndOfDay::FORCE, current_command_flow, socket, running);
-                        else if (mode == "auto") end_of_day_flow(Cmd::EndOfDay::AUTO, current_command_flow, socket, running);
+                        if (mode == "normal")
+                            end_of_day_flow(Cmd::EndOfDay::NORMAL, current_command_flow, socket, running);
+                        else if (mode == "force")
+                            end_of_day_flow(Cmd::EndOfDay::FORCE, current_command_flow, socket, running);
+                        else if (mode == "auto")
+                            end_of_day_flow(Cmd::EndOfDay::AUTO, current_command_flow, socket, running);
                     }
-                }
-                else if (command == "lineDiagnosis")
+                } else if (command == "lineDiagnosis")
                     diagnosis_flow(Zvt::LineDiagnosis, current_command_flow, socket, running);
                 else if (command == "extendedDiagnosis")
                     diagnosis_flow(Zvt::ExtendedDiagnosis, current_command_flow, socket, running);
@@ -314,30 +243,29 @@ int main(int argc, char *argv[])
                     single_apdu_from_hex(options[1], current_command_flow, socket, running);
                 else if (command == "apdu")
                     apdu_from_hex(options[1], current_command_flow, socket, running);
-                else if (command == "book_total")
-                {
-                    Cmd::BookTotal bookTotal_3(Zvt::Bmp::NumberToBCD(std::stoul(options[1]), 2)
-                                               , Zvt::Bmp::NumberToBCD(std::stoul(options[2]), 6));
+                else if (command == "book_total") {
+                    Cmd::BookTotal bookTotal_3(Zvt::Bmp::NumberToBCD(std::stoul(options[1]), 2), Zvt::Bmp::NumberToBCD(std::stoul(options[2]), 6));
 
                     basic_register_with_status_flow(bookTotal_3, current_command_flow, socket, running);
-                    //return 0; //apdu_from_hex(hex_apdu, current_command_flow, socket, running);
-                }
-                else if (command == "open_pre_auths")
+                    // return 0; //apdu_from_hex(hex_apdu, current_command_flow, socket, running);
+                } else if (command == "reservation") {
+                    Cmd::Reservation reservation(std::stoul(options[1]));
+
+                    basic_register_with_status_flow(reservation, current_command_flow, socket, running);
+                    // return 0; //apdu_from_hex(hex_apdu, current_command_flow, socket, running);
+                } else if (command == "open_pre_auths")
                     apdu_from_hex("0623 03 87FFFF", current_command_flow, socket, running);
                 else if (command == "apdu_ctls_wait_loop")
                     apdu_ctls_wait_loop(options[1], true, current_command_flow, socket, running);
                 else if (command == "reversal")
                     reversal_flow(Cmd::Reversal(std::stol(options[1]), password), current_command_flow, socket, running);
-                else if (command == "display")
-                {
+                else if (command == "display") {
                     basic_register_with_status_flow(Cmd::DisplayText(std::stoi(options[1]), options[2]), current_command_flow, socket, running);
-                }
-                else return 0;
+                } else
+                    return 0;
             }
         }
-    }
-    catch (std::exception &e)
-    {
+    } catch (std::exception &e) {
         cerr << e.what() << std::endl;
     }
 

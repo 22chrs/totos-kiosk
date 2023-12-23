@@ -98,18 +98,18 @@ Zvt::Tag::Tag(const std::vector<unsigned char> tag_data)
     {
         int start_idx = 0;
         // calculate the tag length and stores them into tag_bytes vector
-        this->tag_bytes = Zvt::Tag::tag_length(Zvt::copyRange(tag_data, start_idx, tag_data.size() - 1));
+        this->tag_bytes = Zvt::Tag::tag_length(LLVar::copyRange(tag_data, start_idx, tag_data.size() - 1));
         // calculate
         int offset = Zvt::Tlv::calculateSizeOffset(tag_data[this->tag_bytes.size()]);
         int from = this->tag_bytes.size();
         int to = this->tag_bytes.size() + offset - 1;
-        int length = Zvt::Tlv::calculateSize(Zvt::copyRange(tag_data, from, to));
+        int length = Zvt::Tlv::calculateSize(LLVar::copyRange(tag_data, from, to));
 
         if (length > 0)
         {
             from = start_idx + this->tag_bytes.size() + offset;
             to = start_idx + this->tag_bytes.size() + offset + length - 1;
-            this->tag_data = Zvt::copyRange(tag_data, from, to);
+            this->tag_data = LLVar::copyRange(tag_data, from, to);
         }
     }
 }
@@ -134,7 +134,7 @@ std::string Zvt::Tag::data_as_hex()
 {
     std::vector<unsigned char> t = this->data();
     std::string result;
-    if(t.size() > 0)
+    if (t.size() > 0)
     {
         boost::algorithm::hex(t.begin(), t.end(), std::back_inserter(result));
     }
@@ -213,7 +213,7 @@ std::vector<Zvt::Tag> Zvt::Tag::subtags()
 
                 // calculate the tag length
                 std::vector<Zvt::TagByte> tbs = Zvt::Tag::tag_length(
-                        Zvt::copyRange(this->data(), start_idx, this->data().size() - 1));
+                        LLVar::copyRange(this->data(), start_idx, this->data().size() - 1));
                 //std::cout << "Zvt::Tag::subtags() tbs.size=" << tbs.size() << std::endl;
                 // calculate
                 int from = start_idx + tbs.size();
@@ -222,13 +222,13 @@ std::vector<Zvt::Tag> Zvt::Tag::subtags()
                 //std::cout << "Zvt::Tag::subtags() offset=" << offset << std::endl;
                 int to = start_idx + tbs.size() + offset - 1;
                 //std::cout << "Zvt::Tag::subtags() to=" << to << std::endl;
-                int length = Zvt::Tlv::calculateSize(Zvt::copyRange(this->data(), from, to));
+                int length = Zvt::Tlv::calculateSize(LLVar::copyRange(this->data(), from, to));
                 //std::cout << "Zvt::Tag::subtags() length=" << length << std::endl;
 
                 if (length > 0) to = start_idx + tbs.size() + offset + length - 1;
                 else to = start_idx + tbs.size();
 
-                Zvt::Tag tag = Zvt::Tag(Zvt::copyRange(this->data(), start_idx, to));
+                Zvt::Tag tag = Zvt::Tag(LLVar::copyRange(this->data(), start_idx, to));
                 tags.push_back(isAscii(tag));
 
                 //std::cout << "Zvt::Tag::subtags() next to=" << to << std::endl;
@@ -239,6 +239,16 @@ std::vector<Zvt::Tag> Zvt::Tag::subtags()
     }
 
     return tags;
+}
+
+Zvt::Tag::TagMap Zvt::Tag::subtags_as_map()
+{
+    std::map<std::string, Zvt::Tag> map;
+
+    for(Zvt::Tag tag : subtags())
+        map.insert(std::make_pair(tag.tag_str(),tag));
+
+    return map;
 }
 
 Zvt::Tag::~Tag()
@@ -298,7 +308,7 @@ Zvt::Tag Zvt::Tag::find_first(const std::vector<unsigned char> tag, const std::v
         case 2:
             return Zvt::Tag(default_value[0], default_value[1], {});
         default:
-            return Zvt::Tag(0x00, 0x00, {} );
+            return Zvt::Tag(0x00, 0x00, {});
     }
 }
 

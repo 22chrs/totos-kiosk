@@ -49,12 +49,12 @@ std::vector<Zvt::Bmp> Cmd::Abort::parse(void)
          */
         if (this->dataSize() > 1)
         {
-            std::vector<unsigned char> bytes = Zvt::copyRange(this->data(), 1, this->dataSize() - 1);
+            std::vector<unsigned char> bytes = LLVar::copyRange(this->data(), 1, this->dataSize() - 1);
 
             if (bytes[0] == Zvt::BMP_06)
             {
                 Zvt::Tlv tlv;
-                tlv.strip_of(Zvt::copyRange(bytes, 0, bytes.size() - 1));
+                tlv.strip_of(LLVar::copyRange(bytes, 0, bytes.size() - 1));
 
                 if (!tlv.get().empty())
                 {
@@ -93,7 +93,7 @@ std::vector<Zvt::Bmp> Cmd::Abort::parse(void)
             {
                 if (bytes[1] != 0xff)
                 {
-                    std::string receiptNo = Utils::upper(Zvt::Bmp::BCDToString(Zvt::copyRange(bytes, 1, bytes.size() - 1)));
+                    std::string receiptNo = Utils::upper(Zvt::Bmp::BCDToString(LLVar::copyRange(bytes, 1, bytes.size() - 1)));
 
                     if (receiptNo != "" && receiptNo != "FFFF")
                         this->_receipt_numbers.push_back(receiptNo);

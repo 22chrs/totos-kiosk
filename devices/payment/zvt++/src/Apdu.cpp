@@ -300,6 +300,9 @@ void Zvt::Apdu::print()
         case Zvt::CMD_06D1:
             shortname = "PrintLine";
             break;
+        case Zvt::CMD_0601:
+            shortname = "Authorisation/Payment";
+            break;
         case Zvt::CMD_8400:
         case Zvt::CMD_849A:
         case Zvt::CMD_849C:

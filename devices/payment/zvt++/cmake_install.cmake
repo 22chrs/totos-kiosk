@@ -1,4 +1,4 @@
-# Install script for directory: /Users/chris/Documents/Git/totos-kiosk/devices/zvt++
+# Install script for directory: /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -37,79 +37,6 @@ if(NOT DEFINED CMAKE_OBJDUMP)
   set(CMAKE_OBJDUMP "/Library/Developer/CommandLineTools/usr/bin/objdump")
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/Users/chris/bin/zvt++")
-  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  file(INSTALL DESTINATION "/Users/chris/bin" TYPE EXECUTABLE FILES "/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/zvt++")
-  if(EXISTS "$ENV{DESTDIR}/Users/chris/bin/zvt++" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/Users/chris/bin/zvt++")
-    execute_process(COMMAND /usr/bin/install_name_tool
-      -delete_rpath "/opt/homebrew/lib"
-      "$ENV{DESTDIR}/Users/chris/bin/zvt++")
-    if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/Library/Developer/CommandLineTools/usr/bin/strip" -u -r "$ENV{DESTDIR}/Users/chris/bin/zvt++")
-    endif()
-  endif()
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/Users/chris/lib/libshared-zvt++.dylib")
-  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  file(INSTALL DESTINATION "/Users/chris/lib" TYPE SHARED_LIBRARY FILES "/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/libshared-zvt++.dylib")
-  if(EXISTS "$ENV{DESTDIR}/Users/chris/lib/libshared-zvt++.dylib" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/Users/chris/lib/libshared-zvt++.dylib")
-    execute_process(COMMAND /usr/bin/install_name_tool
-      -delete_rpath "/opt/homebrew/lib"
-      "$ENV{DESTDIR}/Users/chris/lib/libshared-zvt++.dylib")
-    if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/Library/Developer/CommandLineTools/usr/bin/strip" -x "$ENV{DESTDIR}/Users/chris/lib/libshared-zvt++.dylib")
-    endif()
-  endif()
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/Users/chris/lib/static/libstatic-zvt++.a")
-  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  file(INSTALL DESTINATION "/Users/chris/lib/static" TYPE STATIC_LIBRARY FILES "/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/libstatic-zvt++.a")
-  if(EXISTS "$ENV{DESTDIR}/Users/chris/lib/static/libstatic-zvt++.a" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/Users/chris/lib/static/libstatic-zvt++.a")
-    execute_process(COMMAND "/Library/Developer/CommandLineTools/usr/bin/ranlib" "$ENV{DESTDIR}/Users/chris/lib/static/libstatic-zvt++.a")
-  endif()
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "~/include/src")
-  if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
-    message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
-  endif()
-  file(INSTALL DESTINATION "~/include" TYPE DIRECTORY FILES "/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src" FILES_MATCHING REGEX "/[^/]*\\.hpp$")
-endif()
-
 if(CMAKE_INSTALL_COMPONENT)
   set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
 else()
@@ -118,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

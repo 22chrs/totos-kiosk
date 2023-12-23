@@ -53,10 +53,10 @@ RM = /opt/homebrew/Cellar/cmake/3.27.8/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/chris/Documents/Git/totos-kiosk/devices/zvt++
+CMAKE_SOURCE_DIR = /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/chris/Documents/Git/totos-kiosk/devices/zvt++
+CMAKE_BINARY_DIR = /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++
 
 # Include any dependencies generated for this target.
 include CMakeFiles/zvt++.dir/depend.make
@@ -72,520 +72,548 @@ include CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o: src/cmds/Abort.cpp
 CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Abort.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Abort.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Abort.cpp > CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Abort.cpp > CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Abort.cpp -o CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Abort.cpp -o CMakeFiles/zvt++.dir/src/cmds/Abort.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o: src/cmds/Ack.cpp
 CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Ack.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Ack.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Ack.cpp > CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Ack.cpp > CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Ack.cpp -o CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Ack.cpp -o CMakeFiles/zvt++.dir/src/cmds/Ack.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o: src/cmds/Auth.cpp
 CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Auth.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Auth.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Auth.cpp > CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Auth.cpp > CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Auth.cpp -o CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Auth.cpp -o CMakeFiles/zvt++.dir/src/cmds/Auth.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o: src/cmds/BlockReceipt.cpp
 CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BlockReceipt.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BlockReceipt.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BlockReceipt.cpp > CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BlockReceipt.cpp > CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BlockReceipt.cpp -o CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BlockReceipt.cpp -o CMakeFiles/zvt++.dir/src/cmds/BlockReceipt.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o: src/cmds/BookTotal.cpp
 CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BookTotal.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BookTotal.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BookTotal.cpp > CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BookTotal.cpp > CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/BookTotal.cpp -o CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/BookTotal.cpp -o CMakeFiles/zvt++.dir/src/cmds/BookTotal.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o: src/cmds/CompletionForRegister.cpp
 CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForRegister.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForRegister.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForRegister.cpp > CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForRegister.cpp > CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForRegister.cpp -o CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForRegister.cpp -o CMakeFiles/zvt++.dir/src/cmds/CompletionForRegister.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o: src/cmds/CompletionForStatus.cpp
 CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForStatus.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForStatus.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForStatus.cpp > CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForStatus.cpp > CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/CompletionForStatus.cpp -o CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/CompletionForStatus.cpp -o CMakeFiles/zvt++.dir/src/cmds/CompletionForStatus.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o: src/cmds/ConfigFeig.cpp
 CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/ConfigFeig.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/ConfigFeig.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/ConfigFeig.cpp > CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/ConfigFeig.cpp > CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/ConfigFeig.cpp -o CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/ConfigFeig.cpp -o CMakeFiles/zvt++.dir/src/cmds/ConfigFeig.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o: src/cmds/Diagnosis.cpp
 CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Diagnosis.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Diagnosis.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Diagnosis.cpp > CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Diagnosis.cpp > CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Diagnosis.cpp -o CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Diagnosis.cpp -o CMakeFiles/zvt++.dir/src/cmds/Diagnosis.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o: src/cmds/DisplayText.cpp
 CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/DisplayText.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/DisplayText.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/DisplayText.cpp > CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/DisplayText.cpp > CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/DisplayText.cpp -o CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/DisplayText.cpp -o CMakeFiles/zvt++.dir/src/cmds/DisplayText.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o: src/cmds/EndOfDay.cpp
 CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/EndOfDay.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/EndOfDay.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/EndOfDay.cpp > CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/EndOfDay.cpp > CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/EndOfDay.cpp -o CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/EndOfDay.cpp -o CMakeFiles/zvt++.dir/src/cmds/EndOfDay.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o: src/cmds/FeigRegister.cpp
 CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/FeigRegister.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/FeigRegister.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/FeigRegister.cpp > CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/FeigRegister.cpp > CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/FeigRegister.cpp -o CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/FeigRegister.cpp -o CMakeFiles/zvt++.dir/src/cmds/FeigRegister.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o: src/cmds/Initialisation.cpp
 CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Initialisation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Initialisation.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Initialisation.cpp > CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Initialisation.cpp > CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Initialisation.cpp -o CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Initialisation.cpp -o CMakeFiles/zvt++.dir/src/cmds/Initialisation.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o: src/cmds/IntermediateStatusInfo.cpp
 CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/IntermediateStatusInfo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/IntermediateStatusInfo.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/IntermediateStatusInfo.cpp > CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/IntermediateStatusInfo.cpp > CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/IntermediateStatusInfo.cpp -o CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/IntermediateStatusInfo.cpp -o CMakeFiles/zvt++.dir/src/cmds/IntermediateStatusInfo.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o: src/cmds/LogOff.cpp
 CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/LogOff.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/LogOff.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/LogOff.cpp > CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/LogOff.cpp > CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/LogOff.cpp -o CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/LogOff.cpp -o CMakeFiles/zvt++.dir/src/cmds/LogOff.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o: src/cmds/PPAuth.cpp
 CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PPAuth.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PPAuth.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PPAuth.cpp > CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PPAuth.cpp > CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PPAuth.cpp -o CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PPAuth.cpp -o CMakeFiles/zvt++.dir/src/cmds/PPAuth.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o: src/cmds/PrintLine.cpp
 CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintLine.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintLine.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintLine.cpp > CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintLine.cpp > CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintLine.cpp -o CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintLine.cpp -o CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o: src/cmds/PrintSystemConfig.cpp
 CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintSystemConfig.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintSystemConfig.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintSystemConfig.cpp > CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintSystemConfig.cpp > CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/PrintSystemConfig.cpp -o CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/PrintSystemConfig.cpp -o CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o: src/cmds/Register.cpp
 CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Register.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Register.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Register.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Register.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Register.cpp > CMakeFiles/zvt++.dir/src/cmds/Register.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Register.cpp > CMakeFiles/zvt++.dir/src/cmds/Register.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Register.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Register.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Register.cpp -o CMakeFiles/zvt++.dir/src/cmds/Register.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Register.cpp -o CMakeFiles/zvt++.dir/src/cmds/Register.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o: src/cmds/RepeatReceipt.cpp
 CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/RepeatReceipt.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/RepeatReceipt.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/RepeatReceipt.cpp > CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/RepeatReceipt.cpp > CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/RepeatReceipt.cpp -o CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/RepeatReceipt.cpp -o CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.s
+
+CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o: CMakeFiles/zvt++.dir/flags.make
+CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o: src/cmds/Reservation.cpp
+CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reservation.cpp
+
+CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reservation.cpp > CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.i
+
+CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reservation.cpp -o CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o: src/cmds/Reversal.cpp
 CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Reversal.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reversal.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Reversal.cpp > CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reversal.cpp > CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Reversal.cpp -o CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Reversal.cpp -o CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o: src/cmds/Status.cpp
 CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Status.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Status.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/Status.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/Status.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Status.cpp > CMakeFiles/zvt++.dir/src/cmds/Status.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Status.cpp > CMakeFiles/zvt++.dir/src/cmds/Status.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/Status.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/Status.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/Status.cpp -o CMakeFiles/zvt++.dir/src/cmds/Status.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/Status.cpp -o CMakeFiles/zvt++.dir/src/cmds/Status.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o: src/cmds/StatusInfo.cpp
 CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/StatusInfo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/StatusInfo.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/StatusInfo.cpp > CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/StatusInfo.cpp > CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/StatusInfo.cpp -o CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/StatusInfo.cpp -o CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.s
 
 CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o: src/cmds/TurnoverTotals.cpp
 CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/TurnoverTotals.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o -MF CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o.d -o CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/TurnoverTotals.cpp
 
 CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/TurnoverTotals.cpp > CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/TurnoverTotals.cpp > CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.i
 
 CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/cmds/TurnoverTotals.cpp -o CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/cmds/TurnoverTotals.cpp -o CMakeFiles/zvt++.dir/src/cmds/TurnoverTotals.cpp.s
 
 CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o: src/bmps/IndividualTotals.cpp
 CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o -MF CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o.d -o CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/bmps/IndividualTotals.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o -MF CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o.d -o CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/bmps/IndividualTotals.cpp
 
 CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/bmps/IndividualTotals.cpp > CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/bmps/IndividualTotals.cpp > CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.i
 
 CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/bmps/IndividualTotals.cpp -o CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/bmps/IndividualTotals.cpp -o CMakeFiles/zvt++.dir/src/bmps/IndividualTotals.cpp.s
 
 CMakeFiles/zvt++.dir/src/Apdu.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/Apdu.cpp.o: src/Apdu.cpp
 CMakeFiles/zvt++.dir/src/Apdu.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/zvt++.dir/src/Apdu.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Apdu.cpp.o -MF CMakeFiles/zvt++.dir/src/Apdu.cpp.o.d -o CMakeFiles/zvt++.dir/src/Apdu.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Apdu.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/zvt++.dir/src/Apdu.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Apdu.cpp.o -MF CMakeFiles/zvt++.dir/src/Apdu.cpp.o.d -o CMakeFiles/zvt++.dir/src/Apdu.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Apdu.cpp
 
 CMakeFiles/zvt++.dir/src/Apdu.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/Apdu.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Apdu.cpp > CMakeFiles/zvt++.dir/src/Apdu.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Apdu.cpp > CMakeFiles/zvt++.dir/src/Apdu.cpp.i
 
 CMakeFiles/zvt++.dir/src/Apdu.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/Apdu.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Apdu.cpp -o CMakeFiles/zvt++.dir/src/Apdu.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Apdu.cpp -o CMakeFiles/zvt++.dir/src/Apdu.cpp.s
 
 CMakeFiles/zvt++.dir/src/Bmp.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/Bmp.cpp.o: src/Bmp.cpp
 CMakeFiles/zvt++.dir/src/Bmp.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/zvt++.dir/src/Bmp.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Bmp.cpp.o -MF CMakeFiles/zvt++.dir/src/Bmp.cpp.o.d -o CMakeFiles/zvt++.dir/src/Bmp.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Bmp.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/zvt++.dir/src/Bmp.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Bmp.cpp.o -MF CMakeFiles/zvt++.dir/src/Bmp.cpp.o.d -o CMakeFiles/zvt++.dir/src/Bmp.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Bmp.cpp
 
 CMakeFiles/zvt++.dir/src/Bmp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/Bmp.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Bmp.cpp > CMakeFiles/zvt++.dir/src/Bmp.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Bmp.cpp > CMakeFiles/zvt++.dir/src/Bmp.cpp.i
 
 CMakeFiles/zvt++.dir/src/Bmp.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/Bmp.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Bmp.cpp -o CMakeFiles/zvt++.dir/src/Bmp.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Bmp.cpp -o CMakeFiles/zvt++.dir/src/Bmp.cpp.s
 
 CMakeFiles/zvt++.dir/src/HexToByte.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/HexToByte.cpp.o: src/HexToByte.cpp
 CMakeFiles/zvt++.dir/src/HexToByte.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/zvt++.dir/src/HexToByte.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/HexToByte.cpp.o -MF CMakeFiles/zvt++.dir/src/HexToByte.cpp.o.d -o CMakeFiles/zvt++.dir/src/HexToByte.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/HexToByte.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/zvt++.dir/src/HexToByte.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/HexToByte.cpp.o -MF CMakeFiles/zvt++.dir/src/HexToByte.cpp.o.d -o CMakeFiles/zvt++.dir/src/HexToByte.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/HexToByte.cpp
 
 CMakeFiles/zvt++.dir/src/HexToByte.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/HexToByte.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/HexToByte.cpp > CMakeFiles/zvt++.dir/src/HexToByte.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/HexToByte.cpp > CMakeFiles/zvt++.dir/src/HexToByte.cpp.i
 
 CMakeFiles/zvt++.dir/src/HexToByte.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/HexToByte.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/HexToByte.cpp -o CMakeFiles/zvt++.dir/src/HexToByte.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/HexToByte.cpp -o CMakeFiles/zvt++.dir/src/HexToByte.cpp.s
 
 CMakeFiles/zvt++.dir/src/Tag.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/Tag.cpp.o: src/Tag.cpp
 CMakeFiles/zvt++.dir/src/Tag.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/zvt++.dir/src/Tag.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Tag.cpp.o -MF CMakeFiles/zvt++.dir/src/Tag.cpp.o.d -o CMakeFiles/zvt++.dir/src/Tag.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tag.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/zvt++.dir/src/Tag.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Tag.cpp.o -MF CMakeFiles/zvt++.dir/src/Tag.cpp.o.d -o CMakeFiles/zvt++.dir/src/Tag.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tag.cpp
 
 CMakeFiles/zvt++.dir/src/Tag.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/Tag.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tag.cpp > CMakeFiles/zvt++.dir/src/Tag.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tag.cpp > CMakeFiles/zvt++.dir/src/Tag.cpp.i
 
 CMakeFiles/zvt++.dir/src/Tag.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/Tag.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tag.cpp -o CMakeFiles/zvt++.dir/src/Tag.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tag.cpp -o CMakeFiles/zvt++.dir/src/Tag.cpp.s
 
 CMakeFiles/zvt++.dir/src/Tests.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/Tests.cpp.o: src/Tests.cpp
 CMakeFiles/zvt++.dir/src/Tests.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/zvt++.dir/src/Tests.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Tests.cpp.o -MF CMakeFiles/zvt++.dir/src/Tests.cpp.o.d -o CMakeFiles/zvt++.dir/src/Tests.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tests.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/zvt++.dir/src/Tests.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Tests.cpp.o -MF CMakeFiles/zvt++.dir/src/Tests.cpp.o.d -o CMakeFiles/zvt++.dir/src/Tests.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tests.cpp
 
 CMakeFiles/zvt++.dir/src/Tests.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/Tests.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tests.cpp > CMakeFiles/zvt++.dir/src/Tests.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tests.cpp > CMakeFiles/zvt++.dir/src/Tests.cpp.i
 
 CMakeFiles/zvt++.dir/src/Tests.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/Tests.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tests.cpp -o CMakeFiles/zvt++.dir/src/Tests.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tests.cpp -o CMakeFiles/zvt++.dir/src/Tests.cpp.s
 
 CMakeFiles/zvt++.dir/src/Tlv.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/Tlv.cpp.o: src/Tlv.cpp
 CMakeFiles/zvt++.dir/src/Tlv.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/zvt++.dir/src/Tlv.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Tlv.cpp.o -MF CMakeFiles/zvt++.dir/src/Tlv.cpp.o.d -o CMakeFiles/zvt++.dir/src/Tlv.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tlv.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/zvt++.dir/src/Tlv.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/Tlv.cpp.o -MF CMakeFiles/zvt++.dir/src/Tlv.cpp.o.d -o CMakeFiles/zvt++.dir/src/Tlv.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tlv.cpp
 
 CMakeFiles/zvt++.dir/src/Tlv.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/Tlv.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tlv.cpp > CMakeFiles/zvt++.dir/src/Tlv.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tlv.cpp > CMakeFiles/zvt++.dir/src/Tlv.cpp.i
 
 CMakeFiles/zvt++.dir/src/Tlv.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/Tlv.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/Tlv.cpp -o CMakeFiles/zvt++.dir/src/Tlv.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/Tlv.cpp -o CMakeFiles/zvt++.dir/src/Tlv.cpp.s
 
 CMakeFiles/zvt++.dir/src/zvt++.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/zvt++.cpp.o: src/zvt++.cpp
 CMakeFiles/zvt++.dir/src/zvt++.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/zvt++.dir/src/zvt++.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/zvt++.cpp.o -MF CMakeFiles/zvt++.dir/src/zvt++.cpp.o.d -o CMakeFiles/zvt++.dir/src/zvt++.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/zvt++.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/zvt++.dir/src/zvt++.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/zvt++.cpp.o -MF CMakeFiles/zvt++.dir/src/zvt++.cpp.o.d -o CMakeFiles/zvt++.dir/src/zvt++.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/zvt++.cpp
 
 CMakeFiles/zvt++.dir/src/zvt++.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/zvt++.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/zvt++.cpp > CMakeFiles/zvt++.dir/src/zvt++.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/zvt++.cpp > CMakeFiles/zvt++.dir/src/zvt++.cpp.i
 
 CMakeFiles/zvt++.dir/src/zvt++.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/zvt++.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/zvt++.cpp -o CMakeFiles/zvt++.dir/src/zvt++.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/zvt++.cpp -o CMakeFiles/zvt++.dir/src/zvt++.cpp.s
 
 CMakeFiles/zvt++.dir/src/json/Host.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/json/Host.cpp.o: src/json/Host.cpp
 CMakeFiles/zvt++.dir/src/json/Host.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/zvt++.dir/src/json/Host.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/json/Host.cpp.o -MF CMakeFiles/zvt++.dir/src/json/Host.cpp.o.d -o CMakeFiles/zvt++.dir/src/json/Host.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/json/Host.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/zvt++.dir/src/json/Host.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/json/Host.cpp.o -MF CMakeFiles/zvt++.dir/src/json/Host.cpp.o.d -o CMakeFiles/zvt++.dir/src/json/Host.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/json/Host.cpp
 
 CMakeFiles/zvt++.dir/src/json/Host.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/json/Host.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/json/Host.cpp > CMakeFiles/zvt++.dir/src/json/Host.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/json/Host.cpp > CMakeFiles/zvt++.dir/src/json/Host.cpp.i
 
 CMakeFiles/zvt++.dir/src/json/Host.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/json/Host.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/json/Host.cpp -o CMakeFiles/zvt++.dir/src/json/Host.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/json/Host.cpp -o CMakeFiles/zvt++.dir/src/json/Host.cpp.s
 
 CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o: src/converter/TagValueConverter.cpp
 CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o -MF CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o.d -o CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/TagValueConverter.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o -MF CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o.d -o CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/TagValueConverter.cpp
 
 CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/TagValueConverter.cpp > CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/TagValueConverter.cpp > CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.i
 
 CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/TagValueConverter.cpp -o CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/TagValueConverter.cpp -o CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.s
 
 CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o: src/converter/EmvTagConverter.cpp
 CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o -MF CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o.d -o CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/EmvTagConverter.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o -MF CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o.d -o CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/EmvTagConverter.cpp
 
 CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/EmvTagConverter.cpp > CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/EmvTagConverter.cpp > CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.i
 
 CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/converter/EmvTagConverter.cpp -o CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/converter/EmvTagConverter.cpp -o CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.s
 
 CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o: src/gicc/Bmp55.cpp
 CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o -MF CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o.d -o CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/gicc/Bmp55.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o -MF CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o.d -o CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc/Bmp55.cpp
 
 CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/gicc/Bmp55.cpp > CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc/Bmp55.cpp > CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.i
 
 CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/gicc/Bmp55.cpp -o CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc/Bmp55.cpp -o CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.s
 
 CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o: CMakeFiles/zvt++.dir/flags.make
 CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o: src/nexo/SupportedServices.cpp
 CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o -MF CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o.d -o CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/nexo/SupportedServices.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o -MF CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o.d -o CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/nexo/SupportedServices.cpp
 
 CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/nexo/SupportedServices.cpp > CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/nexo/SupportedServices.cpp > CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.i
 
 CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/nexo/SupportedServices.cpp -o CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/nexo/SupportedServices.cpp -o CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.s
+
+CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o: CMakeFiles/zvt++.dir/flags.make
+CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o: src/gicc/Gicc.cpp
+CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o: CMakeFiles/zvt++.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o -MF CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o.d -o CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o -c /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc/Gicc.cpp
+
+CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc/Gicc.cpp > CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.i
+
+CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/gicc/Gicc.cpp -o CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.s
 
 # Object files for target zvt++
 zvt_______OBJECTS = \
@@ -609,6 +637,7 @@ zvt_______OBJECTS = \
 "CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o" \
 "CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o" \
 "CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o" \
+"CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o" \
 "CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o" \
 "CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o" \
 "CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o" \
@@ -625,7 +654,8 @@ zvt_______OBJECTS = \
 "CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o" \
 "CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o" \
 "CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o" \
-"CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o"
+"CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o" \
+"CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o"
 
 # External object files for target zvt++
 zvt_______EXTERNAL_OBJECTS =
@@ -650,6 +680,7 @@ zvt++: CMakeFiles/zvt++.dir/src/cmds/PrintLine.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/cmds/PrintSystemConfig.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/cmds/Register.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/cmds/RepeatReceipt.cpp.o
+zvt++: CMakeFiles/zvt++.dir/src/cmds/Reservation.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/cmds/Reversal.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/cmds/Status.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/cmds/StatusInfo.cpp.o
@@ -667,6 +698,7 @@ zvt++: CMakeFiles/zvt++.dir/src/converter/TagValueConverter.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/converter/EmvTagConverter.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/gicc/Bmp55.cpp.o
 zvt++: CMakeFiles/zvt++.dir/src/nexo/SupportedServices.cpp.o
+zvt++: CMakeFiles/zvt++.dir/src/gicc/Gicc.cpp.o
 zvt++: CMakeFiles/zvt++.dir/build.make
 zvt++: /opt/homebrew/lib/libboost_system-mt.a
 zvt++: /opt/homebrew/lib/libboost_thread-mt.a
@@ -674,7 +706,7 @@ zvt++: /opt/homebrew/lib/libboost_json-mt.a
 zvt++: /opt/homebrew/lib/libboost_chrono-mt.a
 zvt++: /opt/homebrew/lib/libboost_container-mt.a
 zvt++: CMakeFiles/zvt++.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Linking CXX executable zvt++"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Linking CXX executable zvt++"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/zvt++.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -686,6 +718,6 @@ CMakeFiles/zvt++.dir/clean:
 .PHONY : CMakeFiles/zvt++.dir/clean
 
 CMakeFiles/zvt++.dir/depend:
-	cd /Users/chris/Documents/Git/totos-kiosk/devices/zvt++ && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/chris/Documents/Git/totos-kiosk/devices/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/CMakeFiles/zvt++.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++ && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++ /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles/zvt++.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/zvt++.dir/depend
 

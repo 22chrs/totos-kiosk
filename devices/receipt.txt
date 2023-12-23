@@ -2365,3 +2365,2593 @@
 <-PT|CL. Trx.-Limit(OnDev):      000099999999|
 <-PT||
 ----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|23.12.2023                  01:48:43 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000202|
+<-PT|Beleg-Nr.:                          0058|
+<-PT|Vorgangs-Nr.:                       0153|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,11          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|23.12.2023                  01:48:43 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000202|
+<-PT|Beleg-Nr.:                          0058|
+<-PT|Vorgangs-Nr.:                       0153|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,11          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT|          ** Konfiguration **           |
+<-PT|23.12.2023                  02:02:03 CET|
+<-PT|PIN-Pad Status:         Activated Closed|
+<-PT|PIN-Pad Software:             SeW-700.03|
+<-PT|PIN-Pad Release:               000.00000|
+<-PT||
+<-PT||
+<-PT|RFID-Leser Ver.:          FECLR-03.00.00|
+<-PT|Firmware:           pR02.05.00-00.06-2-2|
+<-PT|SDK:                         02.05.00.06|
+<-PT|Terminal Version:         GER-APP-v2.2.3|
+<-PT|                               000.00002|
+<-PT|Allg. Texte Version:         02.02.00.00|
+<-PT|UI-Texte Version:            02.02.00.00|
+<-PT|Belegtexte Version:          02.02.00.00|
+<-PT|Terminal Serien-Nr.:            1809F5CB|
+<-PT|Hardware:                 cVEND PIN solo|
+<-PT|Ext. Board:                       pinpad|
+<-PT|Batteriespannung (V):               2.82|
+<-PT|Modultemperatur (C):                27.6|
+<-PT|Gültigkeit Clnt-Auth-                   |
+<-PT|Cert:                         08.07.2033|
+<-PT|Gültigkeit Srv-Auth-                    |
+<-PT|Cert:                         08.07.2033|
+<-PT||
+<-PT||
+<-PT|        ** Host-Konfiguration **        |
+<-PT|Betreibername                  PaySphere|
+<-PT|Betreiber-ID                      eccash|
+<-PT|Terminal-ID                     52500038|
+<-PT|BMP3:                               3204|
+<-PT||
+<-PT|LAVEGO                                  |
+<-PT||
+<-PT|Offline-Zähler                      0001|
+<-PT|Max. Nachbuchungen                  0005|
+<-PT|HostProtokoll-ID                     000|
+<-PT|Währung:                             EUR|
+<-PT||
+<-PT|           ** Kartenlimits **           |
+<-PT|Karte                                   |
+<-PT|Von            Offline               Bis|
+<-PT||
+<-PT|girocard(0000)                          |
+<-PT|0                             Kein Limit|
+<-PT||
+<-PT|MasterCard(0001)                        |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Visa(0003)                              |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Maestro(0015)                           |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|VPay(A0000000032020)                    |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|girocard(A0000003591010028001)          |
+<-PT|0             Kein Limit      Kein Limit|
+<-PT||
+<-PT|MasterCard(A0000000041010)              |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Visa(A0000000031010)                    |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Maestro(A0000000043060)                 |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT||
+<-PT|     ** Kommunikationsparameter **      |
+<-PT|IP:                       213.183.19.105|
+<-PT|Port:                              30401|
+<-PT|SSL:                                  ja|
+<-PT|Msg-Framing:      off, length, prefix, 2|
+<-PT||
+<-PT||
+<-PT|      ** Terminal-Konfiguration **      |
+<-PT|eth0:                           UP, DHCP|
+<-PT|MAC-Adresse:           00:1C:9B:12:1B:71|
+<-PT|Eigene IP-Adresse:        192.168.188.21|
+<-PT|Netzmaske:                 255.255.255.0|
+<-PT|Gateway:                   192.168.188.1|
+<-PT|DNS1:                      192.168.188.1|
+<-PT||
+<-PT|usb0:                         DOWN, DHCP|
+<-PT|MAC-Adresse:           16:0B:61:B0:1C:C6|
+<-PT|Gateway:                   192.168.188.1|
+<-PT|DNS1:                      192.168.188.1|
+<-PT||
+<-PT|Modemkonfiguration:                 nein|
+<-PT||
+<-PT|Service Center:                         |
+<-PT|wss://ol-staging.tms.feig.de:443/locatio|
+<-PT|n-publisher/dev/api/v1                  |
+<-PT||
+<-PT|Bitmap Belegkonfiguration:          C600|
+<-PT|Bitmap Signalisierungsoptionen:     F000|
+<-PT||
+<-PT||
+<-PT|       ** Kassen-Konfiguration **       |
+<-PT|Kassenart                            OPI|
+<-PT|PopID:                                 0|
+<-PT|Server Port:                       20002|
+<-PT|ECR Device:                             |
+<-PT|IP:                              0.0.0.0|
+<-PT|Port:                              20006|
+<-PT||
+<-PT|Kassenart                            OPI|
+<-PT|PopID:                                 1|
+<-PT|Server Port:                       20003|
+<-PT|SSL:                                  ja|
+<-PT|ECR Device:                             |
+<-PT|IP:                              0.0.0.0|
+<-PT|Port:                              20006|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Schnittstelle                   9600 8N2|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Server Port:                       22000|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Server Port:                       22001|
+----------------
+<-PT|SSL:                                  ja|
+<-PT||
+<-PT|Kassenart                            MDB|
+<-PT|MDB Daemon:                          aus|
+<-PT|Geräteadresse:                      0x10|
+<-PT|Master Timeout (0,1*ms):             200|
+<-PT|Interbyte Timeout (0,1*ms):           15|
+<-PT|Poll Idle Interval (ms):            5000|
+<-PT|Polling beim Boot:                    ja|
+<-PT|JUST RESET nach Aufwachen:           ein|
+<-PT|Beantwortete Adressen:              0x10|
+<-PT|Trm Country Code:                 0x1978|
+<-PT|Optionale Funktionen:         0x0000002A|
+<-PT|Max Antwortzeit (Sek.):               70|
+<-PT|Weitere Optionen:             0x00000001|
+<-PT|Höchste MDB Version:                0x83|
+<-PT|Kleinste MDB Version:               0x01|
+<-PT|Skalierungsfaktor Betrag:              1|
+<-PT|Dezimalstellen:                        2|
+<-PT|Max. Aufladebetrag:                    0|
+<-PT|Sonderflags:                  0x00000182|
+<-PT|Altersverifizierung:                0x80|
+<-PT|Enable Mode:                  aus (fest)|
+<-PT|Druckmodus:                            0|
+<-PT|Belegbreite:                          30|
+<-PT|Dummy Credit:                          0|
+<-PT|Aufforderungston:                     ja|
+<-PT|Display Requests:                     ja|
+<-PT|Bestätigungston:                      ja|
+<-PT|Sende MDB Slot Id zum Host:         nein|
+<-PT|Druckmodus:                            0|
+<-PT|Detect&Authorize Modus:      automatisch|
+<-PT|DISPLAY REQUEST Kodierung:          auto|
+<-PT|VEND REQUEST Timeout (Sek.):          30|
+<-PT|VEND SUCCESS Timeout (Sek.):         900|
+<-PT|Immer Buchen (Detect&Authorize):    nein|
+<-PT|Separate Select Modus:       automatisch|
+<-PT|Sende Terminal ID anstatt Device        |
+<-PT|ID:                                 nein|
+<-PT|Sende VMC Informationen zum Host:   nein|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Schnittstelle                   9600 8N2|
+<-PT||
+<-PT||
+<-PT|            ** EMV-Kernel **            |
+<-PT|libemvco_ep.so.1.0.3                    |
+<-PT|EMVCo Book A & B, Version 2.5           |
+<-PT|1.0.3                                   |
+<-PT|2fe204c2                                |
+<-PT||
+<-PT|libemvco_hal.so.1.0.3                   |
+<-PT|1.0.3                                   |
+<-PT||
+<-PT|Kernel ID: 02                           |
+<-PT|libemvco_c2.so.1.2.0                    |
+<-PT|EMVCo Book C-2, Version 2.9             |
+<-PT|Mastercard Contactless Reader           |
+<-PT|Specification, Version 3.1.4            |
+<-PT|1.2.0                                   |
+<-PT|53e240b2                                |
+<-PT||
+<-PT|Kernel ID: 03                           |
+<-PT|libemvco_c3.so.1.2.0                    |
+<-PT|Visa Contactless Payment Specification, |
+<-PT|Version 2.2                             |
+<-PT|1.2.0                                   |
+<-PT|57a8bbff                                |
+<-PT||
+<-PT|Kernel ID: 04                           |
+<-PT|libemvco_c4.so.1.2.0                    |
+<-PT|ExpressPay Specification, Version 4.0.3 |
+<-PT|1.2.0                                   |
+<-PT|b8e0a5d1                                |
+<-PT||
+<-PT|Kernel ID: 05                           |
+<-PT|libemvco_c5.so.1.0.0                    |
+<-PT|JCB Contactless Kernel Specification,   |
+<-PT|Version 1.5                             |
+<-PT|1.0.0                                   |
+<-PT|9650efc0                                |
+<-PT||
+<-PT|Kernel ID: 06                           |
+<-PT|libemvco_c6.so.1.2.0                    |
+<-PT|Discover D-PAS Connect, Version 2.0     |
+<-PT|1.2.0                                   |
+<-PT|1a9af9e0                                |
+<-PT||
+<-PT|Kernel ID: 07                           |
+<-PT|libemvco_c7.so.1.1.0                    |
+<-PT|China Union Pay Contactless Kernel      |
+<-PT|Specification, Version 2021             |
+<-PT|1.1.0                                   |
+<-PT|cdde823c                                |
+<-PT||
+<-PT|Kernel ID: 2A                           |
+<-PT|libemvco_c2a.so.1.0.0                   |
+<-PT|Girocard Kernel Specification, Version  |
+<-PT|1.0 with errata from 06.10.2017         |
+<-PT|1.0.0                                   |
+<-PT|7df52672                                |
+<-PT||
+<-PT|libemvco_ct.so.1.0.1                    |
+<-PT|EMV - Integrated Circuit Card           |
+<-PT|Specifications for Payment Systems,     |
+<-PT|Version 4.3g                            |
+<-PT|1.0.1                                   |
+<-PT|e880614e                                |
+<-PT||
+<-PT|libemvco_ct_hal.so.1.0.1                |
+----------------
+<-PT|1.0.1                                   |
+<-PT||
+----------------
+<-PT||
+<-PT|          ** Konfiguration **           |
+<-PT||
+<-PT|23.12.2023                  02:02:03 CET|
+<-PT|Trm-Type:                             25|
+<-PT|Trm-Capabilities:                 E0F8C8|
+<-PT|Add Capabil.:                 6000F0F001|
+<-PT|Trm Country Code:                    280|
+<-PT|Max Chip Read Actions:                 1|
+<-PT|Max Mag Read Actions:                  1|
+<-PT|Journal-DOL:        DF020F95059B029F3403|
+<-PT|                                    8410|
+<-PT|Trm Risk:                             00|
+<-PT||
+<-PT|Public Key:                 A000000359FE|
+<-PT|Public Key:                 A000000359FF|
+<-PT|Public Key:                 A000000359FD|
+<-PT|Public Key:                 A000000004F3|
+<-PT|Public Key:                 A000000004F8|
+<-PT|Public Key:                 A000000004FA|
+<-PT|Public Key:                 A000000004EF|
+<-PT|Public Key:                 A000000004F1|
+<-PT|Public Key:                 A00000000399|
+<-PT|Public Key:                 A00000000395|
+<-PT|Public Key:                 A00000000392|
+<-PT|Public Key:                 A00000000394|
+<-PT||
+<-PT|Kartenname                      girocard|
+<-PT|App-ID:                             0000|
+<-PT|Karten-ID                              0|
+<-PT|VU-Nummer:                      14698003|
+<-PT|Währung:                            Euro|
+<-PT|AppTrxBMP:                  D3D4F8200040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22100000|
+<-PT|Fallback option:                       0|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Prefix:                         3572|
+<-PT|BIN-Range:               458612...458613|
+<-PT|BIN-Range:               458620...458626|
+<-PT|BIN-Prefix:                       458630|
+<-PT|BIN-Prefix:                       458632|
+<-PT|BIN-Range:               458650...458656|
+<-PT|BIN-Range:               458660...458666|
+<-PT|BIN-Range:               458670...458681|
+<-PT|BIN-Range:               458685...458686|
+<-PT|BIN-Prefix:                       458910|
+<-PT|BIN-Range:               458920...458921|
+<-PT|BIN-Prefix:                       458940|
+<-PT|BIN-Range:               458950...458952|
+<-PT|BIN-Range:               458960...458961|
+<-PT|BIN-Range:               458970...458971|
+<-PT|BIN-Prefix:                       458980|
+<-PT|BIN-Range:               466630...466632|
+<-PT|BIN-Range:               466640...466643|
+<-PT|BIN-Range:               466650...466655|
+<-PT|BIN-Range:               466920...466921|
+<-PT|BIN-Prefix:                       466940|
+<-PT|BIN-Range:               466950...466951|
+<-PT|BIN-Prefix:                       466990|
+<-PT|BIN-Prefix:                         4711|
+<-PT|BIN-Prefix:                         4822|
+<-PT|BIN-Prefix:                         4825|
+<-PT|BIN-Prefix:                          672|
+<-PT|BIN-Prefix:                          680|
+<-PT||
+<-PT|Kartenname                    MasterCard|
+<-PT|App-ID:                             0001|
+<-PT|Karten-ID                              1|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D3D6E0000040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Range:                   2221...2229|
+<-PT|BIN-Range:                     223...229|
+<-PT|BIN-Range:                       23...26|
+<-PT|BIN-Range:                     270...271|
+<-PT|BIN-Prefix:                         2720|
+<-PT|BIN-Prefix:                       360196|
+<-PT|BIN-Prefix:                         5001|
+<-PT|BIN-Range:                       51...55|
+<-PT|BIN-Prefix:                       563077|
+<-PT|BIN-Prefix:                       566573|
+<-PT|BIN-Prefix:                       566621|
+<-PT|BIN-Prefix:                       566920|
+<-PT|BIN-Prefix:                       566941|
+<-PT|BIN-Prefix:                       567753|
+<-PT|BIN-Prefix:                       577258|
+<-PT|BIN-Prefix:                         5854|
+<-PT|BIN-Prefix:                       589296|
+<-PT|BIN-Prefix:                       589437|
+----------------
+<-PT|BIN-Prefix:                       589460|
+<-PT|BIN-Prefix:                       589718|
+<-PT|BIN-Prefix:                       601066|
+<-PT|BIN-Prefix:                       601880|
+<-PT|BIN-Prefix:                       610424|
+<-PT|BIN-Prefix:                       610460|
+<-PT|BIN-Prefix:                       628133|
+<-PT|BIN-Prefix:                       914100|
+<-PT|BIN-Prefix:                       918838|
+<-PT|BIN-Prefix:                       988388|
+<-PT||
+<-PT|Kartenname                          Visa|
+<-PT|App-ID:                             0003|
+<-PT|Karten-ID                              3|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D3D6E0000040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Prefix:                            2|
+<-PT|BIN-Prefix:                            4|
+<-PT|BIN-Prefix:                           49|
+<-PT|BIN-Prefix:                       589274|
+<-PT|BIN-Prefix:                       601281|
+<-PT|BIN-Prefix:                           85|
+<-PT||
+<-PT|Kartenname                       Maestro|
+<-PT|App-ID:                             0015|
+<-PT|Karten-ID                             21|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  C290E8008040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Range:                   5010...5011|
+<-PT|BIN-Range:                   5013...5015|
+<-PT|BIN-Prefix:                       501620|
+<-PT|BIN-Prefix:                       501624|
+<-PT|BIN-Prefix:                        50165|
+<-PT|BIN-Prefix:                        50168|
+<-PT|BIN-Range:                   5017...5018|
+<-PT|BIN-Range:                     502...506|
+<-PT|BIN-Prefix:                          508|
+<-PT|BIN-Range:                       56...64|
+<-PT|BIN-Range:                     670...671|
+<-PT|BIN-Range:                     673...677|
+<-PT|BIN-Prefix:                          679|
+<-PT|BIN-Prefix:                          708|
+<-PT|BIN-Range:          9000000632...9000000|
+<-PT|                                     633|
+<-PT||
+<-PT|Kartenname                          VPay|
+<-PT|App-ID:                   A0000000032020|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                            158|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F824BD40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 20D0C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfPrioritisedAIDs:                  |
+<-PT|App-ID:             A0000003591010028001|
+<-PT|App-ID:                   A0000000031010|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             009E|
+<-PT|CL. Kernel-ID:                        03|
+<-PT|AppTrxBMP:                  D83808080800|
+----------------
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+<-PT|Kartenname                      girocard|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              0|
+<-PT|VU-Nummer:                      14698003|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit               EUR Kein Limit|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22100000|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Online:                       3403DF010F|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Offline Auth:                 3403DF010F|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Offline No Auth               3403DF010F|
+<-PT|Cust. Receipt DOL                       |
+<-PT|Online:                       9F34039505|
+<-PT|Cust. Receipt DOL   DF020F95059B0284059F|
+<-PT|Offline Auth:                 3403DF010F|
+<-PT|Cust. Receipt DOL   DF020F95059B0284059F|
+<-PT|Offline No Auth:              3403DF010F|
+<-PT|TAC default:                  FC50BCA00C|
+<-PT|TAC online:                   FC50BCF80C|
+<-PT|TAC denial:                   0000000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0000|
+<-PT|CL. Kernel-ID:                        2A|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50BCA00C|
+<-PT|TAC online:                   FC50BCF80C|
+<-PT|TAC denial:                   0000000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000099999999|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000099999999|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+<-PT|Kartenname                    MasterCard|
+<-PT|App-ID:                   A0000000041010|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              1|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0001|
+<-PT|CL. Kernel-ID:                        02|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+----------------
+<-PT|Kartenname                          Visa|
+<-PT|App-ID:                   A0000000031010|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              3|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0003|
+<-PT|CL. Kernel-ID:                        03|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT||
+<-PT|Kartenname                       Maestro|
+<-PT|App-ID:                   A0000000043060|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                             21|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F824BD40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    9F26089F27019F10329F|
+<-PT|Offline No Auth     37049F360295059A039C|
+<-PT|                                019F0206|
+<-PT|Cust. Receipt DOL                       |
+<-PT|Online:                       9F34039505|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   9F26089F27019F10329F|
+<-PT|Offline No Auth:    37049F360295059A039C|
+<-PT|                                019F0206|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfPrioritisedAIDs:                  |
+<-PT|App-ID:             A0000003591010028001|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0015|
+<-PT|CL. Kernel-ID:                        02|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+----------------
+<-PT|          ** Konfiguration **           |
+<-PT|23.12.2023                  02:02:05 CET|
+<-PT|PIN-Pad Status:         Activated Closed|
+<-PT|PIN-Pad Software:             SeW-700.03|
+<-PT|PIN-Pad Release:               000.00000|
+<-PT||
+<-PT||
+<-PT|RFID-Leser Ver.:          FECLR-03.00.00|
+<-PT|Firmware:           pR02.05.00-00.06-2-2|
+<-PT|SDK:                         02.05.00.06|
+<-PT|Terminal Version:         GER-APP-v2.2.3|
+<-PT|                               000.00002|
+<-PT|Allg. Texte Version:         02.02.00.00|
+<-PT|UI-Texte Version:            02.02.00.00|
+<-PT|Belegtexte Version:          02.02.00.00|
+<-PT|Terminal Serien-Nr.:            1809F5CB|
+<-PT|Hardware:                 cVEND PIN solo|
+<-PT|Ext. Board:                       pinpad|
+<-PT|Batteriespannung (V):               2.82|
+<-PT|Modultemperatur (C):                27.6|
+<-PT|Gültigkeit Clnt-Auth-                   |
+<-PT|Cert:                         08.07.2033|
+<-PT|Gültigkeit Srv-Auth-                    |
+<-PT|Cert:                         08.07.2033|
+<-PT||
+<-PT||
+<-PT|        ** Host-Konfiguration **        |
+<-PT|Betreibername                  PaySphere|
+<-PT|Betreiber-ID                      eccash|
+<-PT|Terminal-ID                     52500038|
+<-PT|BMP3:                               3204|
+<-PT||
+<-PT|LAVEGO                                  |
+<-PT||
+<-PT|Offline-Zähler                      0001|
+<-PT|Max. Nachbuchungen                  0005|
+<-PT|HostProtokoll-ID                     000|
+<-PT|Währung:                             EUR|
+<-PT||
+<-PT|           ** Kartenlimits **           |
+<-PT|Karte                                   |
+<-PT|Von            Offline               Bis|
+<-PT||
+<-PT|girocard(0000)                          |
+<-PT|0                             Kein Limit|
+<-PT||
+<-PT|MasterCard(0001)                        |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Visa(0003)                              |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Maestro(0015)                           |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|VPay(A0000000032020)                    |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|girocard(A0000003591010028001)          |
+<-PT|0             Kein Limit      Kein Limit|
+<-PT||
+<-PT|MasterCard(A0000000041010)              |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Visa(A0000000031010)                    |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Maestro(A0000000043060)                 |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT||
+<-PT|     ** Kommunikationsparameter **      |
+<-PT|IP:                       213.183.19.105|
+<-PT|Port:                              30401|
+<-PT|SSL:                                  ja|
+<-PT|Msg-Framing:      off, length, prefix, 2|
+<-PT||
+<-PT||
+<-PT|      ** Terminal-Konfiguration **      |
+<-PT|eth0:                           UP, DHCP|
+<-PT|MAC-Adresse:           00:1C:9B:12:1B:71|
+<-PT|Eigene IP-Adresse:        192.168.188.21|
+<-PT|Netzmaske:                 255.255.255.0|
+<-PT|Gateway:                   192.168.188.1|
+<-PT|DNS1:                      192.168.188.1|
+<-PT||
+<-PT|usb0:                         DOWN, DHCP|
+<-PT|MAC-Adresse:           16:0B:61:B0:1C:C6|
+<-PT|Gateway:                   192.168.188.1|
+<-PT|DNS1:                      192.168.188.1|
+<-PT||
+<-PT|Modemkonfiguration:                 nein|
+<-PT||
+<-PT|Service Center:                         |
+<-PT|wss://ol-staging.tms.feig.de:443/locatio|
+<-PT|n-publisher/dev/api/v1                  |
+<-PT||
+<-PT|Bitmap Belegkonfiguration:          C600|
+<-PT|Bitmap Signalisierungsoptionen:     F000|
+<-PT||
+<-PT||
+<-PT|       ** Kassen-Konfiguration **       |
+<-PT|Kassenart                            OPI|
+<-PT|PopID:                                 0|
+<-PT|Server Port:                       20002|
+<-PT|ECR Device:                             |
+<-PT|IP:                              0.0.0.0|
+<-PT|Port:                              20006|
+<-PT||
+<-PT|Kassenart                            OPI|
+<-PT|PopID:                                 1|
+<-PT|Server Port:                       20003|
+<-PT|SSL:                                  ja|
+<-PT|ECR Device:                             |
+<-PT|IP:                              0.0.0.0|
+<-PT|Port:                              20006|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Schnittstelle                   9600 8N2|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Server Port:                       22000|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Server Port:                       22001|
+----------------
+<-PT|SSL:                                  ja|
+<-PT||
+<-PT|Kassenart                            MDB|
+<-PT|MDB Daemon:                          aus|
+<-PT|Geräteadresse:                      0x10|
+<-PT|Master Timeout (0,1*ms):             200|
+<-PT|Interbyte Timeout (0,1*ms):           15|
+<-PT|Poll Idle Interval (ms):            5000|
+<-PT|Polling beim Boot:                    ja|
+<-PT|JUST RESET nach Aufwachen:           ein|
+<-PT|Beantwortete Adressen:              0x10|
+<-PT|Trm Country Code:                 0x1978|
+<-PT|Optionale Funktionen:         0x0000002A|
+<-PT|Max Antwortzeit (Sek.):               70|
+<-PT|Weitere Optionen:             0x00000001|
+<-PT|Höchste MDB Version:                0x83|
+<-PT|Kleinste MDB Version:               0x01|
+<-PT|Skalierungsfaktor Betrag:              1|
+<-PT|Dezimalstellen:                        2|
+<-PT|Max. Aufladebetrag:                    0|
+<-PT|Sonderflags:                  0x00000182|
+<-PT|Altersverifizierung:                0x80|
+<-PT|Enable Mode:                  aus (fest)|
+<-PT|Druckmodus:                            0|
+<-PT|Belegbreite:                          30|
+<-PT|Dummy Credit:                          0|
+<-PT|Aufforderungston:                     ja|
+<-PT|Display Requests:                     ja|
+<-PT|Bestätigungston:                      ja|
+<-PT|Sende MDB Slot Id zum Host:         nein|
+<-PT|Druckmodus:                            0|
+<-PT|Detect&Authorize Modus:      automatisch|
+<-PT|DISPLAY REQUEST Kodierung:          auto|
+<-PT|VEND REQUEST Timeout (Sek.):          30|
+<-PT|VEND SUCCESS Timeout (Sek.):         900|
+<-PT|Immer Buchen (Detect&Authorize):    nein|
+<-PT|Separate Select Modus:       automatisch|
+<-PT|Sende Terminal ID anstatt Device        |
+<-PT|ID:                                 nein|
+<-PT|Sende VMC Informationen zum Host:   nein|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Schnittstelle                   9600 8N2|
+<-PT||
+<-PT||
+<-PT|            ** EMV-Kernel **            |
+<-PT|libemvco_ep.so.1.0.3                    |
+<-PT|EMVCo Book A & B, Version 2.5           |
+<-PT|1.0.3                                   |
+<-PT|2fe204c2                                |
+<-PT||
+<-PT|libemvco_hal.so.1.0.3                   |
+<-PT|1.0.3                                   |
+<-PT||
+<-PT|Kernel ID: 02                           |
+<-PT|libemvco_c2.so.1.2.0                    |
+<-PT|EMVCo Book C-2, Version 2.9             |
+<-PT|Mastercard Contactless Reader           |
+<-PT|Specification, Version 3.1.4            |
+<-PT|1.2.0                                   |
+<-PT|53e240b2                                |
+<-PT||
+<-PT|Kernel ID: 03                           |
+<-PT|libemvco_c3.so.1.2.0                    |
+<-PT|Visa Contactless Payment Specification, |
+<-PT|Version 2.2                             |
+<-PT|1.2.0                                   |
+<-PT|57a8bbff                                |
+<-PT||
+<-PT|Kernel ID: 04                           |
+<-PT|libemvco_c4.so.1.2.0                    |
+<-PT|ExpressPay Specification, Version 4.0.3 |
+<-PT|1.2.0                                   |
+<-PT|b8e0a5d1                                |
+<-PT||
+<-PT|Kernel ID: 05                           |
+<-PT|libemvco_c5.so.1.0.0                    |
+<-PT|JCB Contactless Kernel Specification,   |
+<-PT|Version 1.5                             |
+<-PT|1.0.0                                   |
+<-PT|9650efc0                                |
+<-PT||
+<-PT|Kernel ID: 06                           |
+<-PT|libemvco_c6.so.1.2.0                    |
+<-PT|Discover D-PAS Connect, Version 2.0     |
+<-PT|1.2.0                                   |
+<-PT|1a9af9e0                                |
+<-PT||
+<-PT|Kernel ID: 07                           |
+<-PT|libemvco_c7.so.1.1.0                    |
+<-PT|China Union Pay Contactless Kernel      |
+<-PT|Specification, Version 2021             |
+<-PT|1.1.0                                   |
+<-PT|cdde823c                                |
+<-PT||
+<-PT|Kernel ID: 2A                           |
+<-PT|libemvco_c2a.so.1.0.0                   |
+<-PT|Girocard Kernel Specification, Version  |
+<-PT|1.0 with errata from 06.10.2017         |
+<-PT|1.0.0                                   |
+<-PT|7df52672                                |
+<-PT||
+<-PT|libemvco_ct.so.1.0.1                    |
+<-PT|EMV - Integrated Circuit Card           |
+<-PT|Specifications for Payment Systems,     |
+<-PT|Version 4.3g                            |
+<-PT|1.0.1                                   |
+<-PT|e880614e                                |
+<-PT||
+<-PT|libemvco_ct_hal.so.1.0.1                |
+----------------
+<-PT|1.0.1                                   |
+<-PT||
+----------------
+<-PT||
+<-PT|          ** Konfiguration **           |
+<-PT||
+<-PT|23.12.2023                  02:02:05 CET|
+<-PT|Trm-Type:                             25|
+<-PT|Trm-Capabilities:                 E0F8C8|
+<-PT|Add Capabil.:                 6000F0F001|
+<-PT|Trm Country Code:                    280|
+<-PT|Max Chip Read Actions:                 1|
+<-PT|Max Mag Read Actions:                  1|
+<-PT|Journal-DOL:        DF020F95059B029F3403|
+<-PT|                                    8410|
+<-PT|Trm Risk:                             00|
+<-PT||
+<-PT|Public Key:                 A000000359FE|
+<-PT|Public Key:                 A000000359FF|
+<-PT|Public Key:                 A000000359FD|
+<-PT|Public Key:                 A000000004F3|
+<-PT|Public Key:                 A000000004F8|
+<-PT|Public Key:                 A000000004FA|
+<-PT|Public Key:                 A000000004EF|
+<-PT|Public Key:                 A000000004F1|
+<-PT|Public Key:                 A00000000399|
+<-PT|Public Key:                 A00000000395|
+<-PT|Public Key:                 A00000000392|
+<-PT|Public Key:                 A00000000394|
+<-PT||
+<-PT|Kartenname                      girocard|
+<-PT|App-ID:                             0000|
+<-PT|Karten-ID                              0|
+<-PT|VU-Nummer:                      14698003|
+<-PT|Währung:                            Euro|
+<-PT|AppTrxBMP:                  D3D4F8200040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22100000|
+<-PT|Fallback option:                       0|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Prefix:                         3572|
+<-PT|BIN-Range:               458612...458613|
+<-PT|BIN-Range:               458620...458626|
+<-PT|BIN-Prefix:                       458630|
+<-PT|BIN-Prefix:                       458632|
+<-PT|BIN-Range:               458650...458656|
+<-PT|BIN-Range:               458660...458666|
+<-PT|BIN-Range:               458670...458681|
+<-PT|BIN-Range:               458685...458686|
+<-PT|BIN-Prefix:                       458910|
+<-PT|BIN-Range:               458920...458921|
+<-PT|BIN-Prefix:                       458940|
+<-PT|BIN-Range:               458950...458952|
+<-PT|BIN-Range:               458960...458961|
+<-PT|BIN-Range:               458970...458971|
+<-PT|BIN-Prefix:                       458980|
+<-PT|BIN-Range:               466630...466632|
+<-PT|BIN-Range:               466640...466643|
+<-PT|BIN-Range:               466650...466655|
+<-PT|BIN-Range:               466920...466921|
+<-PT|BIN-Prefix:                       466940|
+<-PT|BIN-Range:               466950...466951|
+<-PT|BIN-Prefix:                       466990|
+<-PT|BIN-Prefix:                         4711|
+<-PT|BIN-Prefix:                         4822|
+<-PT|BIN-Prefix:                         4825|
+<-PT|BIN-Prefix:                          672|
+<-PT|BIN-Prefix:                          680|
+<-PT||
+<-PT|Kartenname                    MasterCard|
+<-PT|App-ID:                             0001|
+<-PT|Karten-ID                              1|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D3D6E0000040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Range:                   2221...2229|
+<-PT|BIN-Range:                     223...229|
+<-PT|BIN-Range:                       23...26|
+<-PT|BIN-Range:                     270...271|
+<-PT|BIN-Prefix:                         2720|
+<-PT|BIN-Prefix:                       360196|
+<-PT|BIN-Prefix:                         5001|
+<-PT|BIN-Range:                       51...55|
+<-PT|BIN-Prefix:                       563077|
+<-PT|BIN-Prefix:                       566573|
+<-PT|BIN-Prefix:                       566621|
+<-PT|BIN-Prefix:                       566920|
+<-PT|BIN-Prefix:                       566941|
+<-PT|BIN-Prefix:                       567753|
+<-PT|BIN-Prefix:                       577258|
+<-PT|BIN-Prefix:                         5854|
+<-PT|BIN-Prefix:                       589296|
+<-PT|BIN-Prefix:                       589437|
+----------------
+<-PT|BIN-Prefix:                       589460|
+<-PT|BIN-Prefix:                       589718|
+<-PT|BIN-Prefix:                       601066|
+<-PT|BIN-Prefix:                       601880|
+<-PT|BIN-Prefix:                       610424|
+<-PT|BIN-Prefix:                       610460|
+<-PT|BIN-Prefix:                       628133|
+<-PT|BIN-Prefix:                       914100|
+<-PT|BIN-Prefix:                       918838|
+<-PT|BIN-Prefix:                       988388|
+<-PT||
+<-PT|Kartenname                          Visa|
+<-PT|App-ID:                             0003|
+<-PT|Karten-ID                              3|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D3D6E0000040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Prefix:                            2|
+<-PT|BIN-Prefix:                            4|
+<-PT|BIN-Prefix:                           49|
+<-PT|BIN-Prefix:                       589274|
+<-PT|BIN-Prefix:                       601281|
+<-PT|BIN-Prefix:                           85|
+<-PT||
+<-PT|Kartenname                       Maestro|
+<-PT|App-ID:                             0015|
+<-PT|Karten-ID                             21|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  C290E8008040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Range:                   5010...5011|
+<-PT|BIN-Range:                   5013...5015|
+<-PT|BIN-Prefix:                       501620|
+<-PT|BIN-Prefix:                       501624|
+<-PT|BIN-Prefix:                        50165|
+<-PT|BIN-Prefix:                        50168|
+<-PT|BIN-Range:                   5017...5018|
+<-PT|BIN-Range:                     502...506|
+<-PT|BIN-Prefix:                          508|
+<-PT|BIN-Range:                       56...64|
+<-PT|BIN-Range:                     670...671|
+<-PT|BIN-Range:                     673...677|
+<-PT|BIN-Prefix:                          679|
+<-PT|BIN-Prefix:                          708|
+<-PT|BIN-Range:          9000000632...9000000|
+<-PT|                                     633|
+<-PT||
+<-PT|Kartenname                          VPay|
+<-PT|App-ID:                   A0000000032020|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                            158|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F824BD40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 20D0C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfPrioritisedAIDs:                  |
+<-PT|App-ID:             A0000003591010028001|
+<-PT|App-ID:                   A0000000031010|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             009E|
+<-PT|CL. Kernel-ID:                        03|
+<-PT|AppTrxBMP:                  D83808080800|
+----------------
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+<-PT|Kartenname                      girocard|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              0|
+<-PT|VU-Nummer:                      14698003|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit               EUR Kein Limit|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22100000|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Online:                       3403DF010F|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Offline Auth:                 3403DF010F|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Offline No Auth               3403DF010F|
+<-PT|Cust. Receipt DOL                       |
+<-PT|Online:                       9F34039505|
+<-PT|Cust. Receipt DOL   DF020F95059B0284059F|
+<-PT|Offline Auth:                 3403DF010F|
+<-PT|Cust. Receipt DOL   DF020F95059B0284059F|
+<-PT|Offline No Auth:              3403DF010F|
+<-PT|TAC default:                  FC50BCA00C|
+<-PT|TAC online:                   FC50BCF80C|
+<-PT|TAC denial:                   0000000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0000|
+<-PT|CL. Kernel-ID:                        2A|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50BCA00C|
+<-PT|TAC online:                   FC50BCF80C|
+<-PT|TAC denial:                   0000000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000099999999|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000099999999|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+<-PT|Kartenname                    MasterCard|
+<-PT|App-ID:                   A0000000041010|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              1|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0001|
+<-PT|CL. Kernel-ID:                        02|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+----------------
+<-PT|Kartenname                          Visa|
+<-PT|App-ID:                   A0000000031010|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              3|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0003|
+<-PT|CL. Kernel-ID:                        03|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT||
+<-PT|Kartenname                       Maestro|
+<-PT|App-ID:                   A0000000043060|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                             21|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F824BD40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    9F26089F27019F10329F|
+<-PT|Offline No Auth     37049F360295059A039C|
+<-PT|                                019F0206|
+<-PT|Cust. Receipt DOL                       |
+<-PT|Online:                       9F34039505|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   9F26089F27019F10329F|
+<-PT|Offline No Auth:    37049F360295059A039C|
+<-PT|                                019F0206|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfPrioritisedAIDs:                  |
+<-PT|App-ID:             A0000003591010028001|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0015|
+<-PT|CL. Kernel-ID:                        02|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|Falsche Belegnummer oder Umsatz bereits |
+<-PT|              'confirmed'               |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|Falsche Belegnummer oder Umsatz bereits |
+<-PT|              'confirmed'               |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|Falsche Belegnummer oder Umsatz bereits |
+<-PT|              'confirmed'               |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|Falsche Belegnummer oder Umsatz bereits |
+<-PT|              'confirmed'               |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  01:54:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000216|
+<-PT|TA-Nr. (alt):                     000214|
+<-PT|Beleg-Nr.:                          0060|
+<-PT|Vorgangs-Nr.:                       0160|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 0,58|
+<-PT|Verfügter Betrag:               EUR 0,33|
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  23:20:57 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000157|
+<-PT|Beleg-Nr.:                          0044|
+<-PT|Vorgangs-Nr.:                       0114|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 1,11          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|Falsche Belegnummer oder Umsatz bereits |
+<-PT|              'confirmed'               |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|21.12.2023                  23:20:57 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000157|
+<-PT|Beleg-Nr.:                          0044|
+<-PT|Vorgangs-Nr.:                       0114|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|020300/0000040001                       |
+<-PT||
+<-PT|Betrag:               EUR 1,11          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|            Zahlung erfolgt             |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|23.12.2023                  02:10:22 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000217|
+<-PT|Beleg-Nr.:                          0061|
+<-PT|Vorgangs-Nr.:                       0161|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 0,58          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|23.12.2023                  02:10:22 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000217|
+<-PT|Beleg-Nr.:                          0061|
+<-PT|Vorgangs-Nr.:                       0161|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 0,58          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|23.12.2023                  02:11:29 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000219|
+<-PT|Beleg-Nr.:                          0062|
+<-PT|Vorgangs-Nr.:                       0162|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 0,58          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|23.12.2023                  02:11:29 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000219|
+<-PT|Beleg-Nr.:                          0062|
+<-PT|Vorgangs-Nr.:                       0162|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 0,58          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  02:38:49 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000221|
+<-PT|Beleg-Nr.:                          0063|
+<-PT|Vorgangs-Nr.:                       0164|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///05                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 2,55|
+<-PT||
+<-PT|          ####################          |
+<-PT|          55 Geheimzahl falsch          |
+<-PT|           Geheimzahl falsch            |
+<-PT|               ( AC 55 )                |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  02:38:49 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000221|
+<-PT|Beleg-Nr.:                          0063|
+<-PT|Vorgangs-Nr.:                       0164|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///05                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 2,55|
+<-PT||
+<-PT|          ####################          |
+<-PT|           Geheimzahl falsch            |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT|          ** Konfiguration **           |
+<-PT|23.12.2023                  02:39:42 CET|
+<-PT|PIN-Pad Status:         Activated Closed|
+<-PT|PIN-Pad Software:             SeW-700.03|
+<-PT|PIN-Pad Release:               000.00000|
+<-PT||
+<-PT||
+<-PT|RFID-Leser Ver.:          FECLR-03.00.00|
+<-PT|Firmware:           pR02.05.00-00.06-2-2|
+<-PT|SDK:                         02.05.00.06|
+<-PT|Terminal Version:         GER-APP-v2.2.3|
+<-PT|                               000.00002|
+<-PT|Allg. Texte Version:         02.02.00.00|
+<-PT|UI-Texte Version:            02.02.00.00|
+<-PT|Belegtexte Version:          02.02.00.00|
+<-PT|Terminal Serien-Nr.:            1809F5CB|
+<-PT|Hardware:                 cVEND PIN solo|
+<-PT|Ext. Board:                       pinpad|
+<-PT|Batteriespannung (V):               2.82|
+<-PT|Modultemperatur (C):                33.1|
+<-PT|Gültigkeit Clnt-Auth-                   |
+<-PT|Cert:                         08.07.2033|
+<-PT|Gültigkeit Srv-Auth-                    |
+<-PT|Cert:                         08.07.2033|
+<-PT||
+<-PT||
+<-PT|        ** Host-Konfiguration **        |
+<-PT|Betreibername                  PaySphere|
+<-PT|Betreiber-ID                      eccash|
+<-PT|Terminal-ID                     52500038|
+<-PT|BMP3:                               3204|
+<-PT||
+<-PT|LAVEGO                                  |
+<-PT||
+<-PT|Offline-Zähler                      0001|
+<-PT|Max. Nachbuchungen                  0005|
+<-PT|HostProtokoll-ID                     000|
+<-PT|Währung:                             EUR|
+<-PT||
+<-PT|           ** Kartenlimits **           |
+<-PT|Karte                                   |
+<-PT|Von            Offline               Bis|
+<-PT||
+<-PT|girocard(0000)                          |
+<-PT|0                             Kein Limit|
+<-PT||
+<-PT|MasterCard(0001)                        |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Visa(0003)                              |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Maestro(0015)                           |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|VPay(A0000000032020)                    |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|girocard(A0000003591010028001)          |
+<-PT|0             Kein Limit      Kein Limit|
+<-PT||
+<-PT|MasterCard(A0000000041010)              |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Visa(A0000000031010)                    |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT|Maestro(A0000000043060)                 |
+<-PT|0                 0           Kein Limit|
+<-PT||
+<-PT||
+<-PT|     ** Kommunikationsparameter **      |
+<-PT|IP:                       213.183.19.105|
+<-PT|Port:                              30401|
+<-PT|SSL:                                  ja|
+<-PT|Msg-Framing:      off, length, prefix, 2|
+<-PT||
+<-PT||
+<-PT|      ** Terminal-Konfiguration **      |
+<-PT|eth0:                           UP, DHCP|
+<-PT|MAC-Adresse:           00:1C:9B:12:1B:71|
+<-PT|Eigene IP-Adresse:        192.168.188.21|
+<-PT|Netzmaske:                 255.255.255.0|
+<-PT|Gateway:                   192.168.188.1|
+<-PT|DNS1:                      192.168.188.1|
+<-PT||
+<-PT|usb0:                         DOWN, DHCP|
+<-PT|MAC-Adresse:           16:0B:61:B0:1C:C6|
+<-PT|Gateway:                   192.168.188.1|
+<-PT|DNS1:                      192.168.188.1|
+<-PT||
+<-PT|Modemkonfiguration:                 nein|
+<-PT||
+<-PT|Service Center:                         |
+<-PT|wss://ol-staging.tms.feig.de:443/locatio|
+<-PT|n-publisher/dev/api/v1                  |
+<-PT||
+<-PT|Bitmap Belegkonfiguration:          C600|
+<-PT|Bitmap Signalisierungsoptionen:     F000|
+<-PT||
+<-PT||
+<-PT|       ** Kassen-Konfiguration **       |
+<-PT|Kassenart                            OPI|
+<-PT|PopID:                                 0|
+<-PT|Server Port:                       20002|
+<-PT|ECR Device:                             |
+<-PT|IP:                              0.0.0.0|
+<-PT|Port:                              20006|
+<-PT||
+<-PT|Kassenart                            OPI|
+<-PT|PopID:                                 1|
+<-PT|Server Port:                       20003|
+<-PT|SSL:                                  ja|
+<-PT|ECR Device:                             |
+<-PT|IP:                              0.0.0.0|
+<-PT|Port:                              20006|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Schnittstelle                   9600 8N2|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Server Port:                       22000|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Server Port:                       22001|
+----------------
+<-PT|SSL:                                  ja|
+<-PT||
+<-PT|Kassenart                            MDB|
+<-PT|MDB Daemon:                          aus|
+<-PT|Geräteadresse:                      0x10|
+<-PT|Master Timeout (0,1*ms):             200|
+<-PT|Interbyte Timeout (0,1*ms):           15|
+<-PT|Poll Idle Interval (ms):            5000|
+<-PT|Polling beim Boot:                    ja|
+<-PT|JUST RESET nach Aufwachen:           ein|
+<-PT|Beantwortete Adressen:              0x10|
+<-PT|Trm Country Code:                 0x1978|
+<-PT|Optionale Funktionen:         0x0000002A|
+<-PT|Max Antwortzeit (Sek.):               70|
+<-PT|Weitere Optionen:             0x00000001|
+<-PT|Höchste MDB Version:                0x83|
+<-PT|Kleinste MDB Version:               0x01|
+<-PT|Skalierungsfaktor Betrag:              1|
+<-PT|Dezimalstellen:                        2|
+<-PT|Max. Aufladebetrag:                    0|
+<-PT|Sonderflags:                  0x00000182|
+<-PT|Altersverifizierung:                0x80|
+<-PT|Enable Mode:                  aus (fest)|
+<-PT|Druckmodus:                            0|
+<-PT|Belegbreite:                          30|
+<-PT|Dummy Credit:                          0|
+<-PT|Aufforderungston:                     ja|
+<-PT|Display Requests:                     ja|
+<-PT|Bestätigungston:                      ja|
+<-PT|Sende MDB Slot Id zum Host:         nein|
+<-PT|Druckmodus:                            0|
+<-PT|Detect&Authorize Modus:      automatisch|
+<-PT|DISPLAY REQUEST Kodierung:          auto|
+<-PT|VEND REQUEST Timeout (Sek.):          30|
+<-PT|VEND SUCCESS Timeout (Sek.):         900|
+<-PT|Immer Buchen (Detect&Authorize):    nein|
+<-PT|Separate Select Modus:       automatisch|
+<-PT|Sende Terminal ID anstatt Device        |
+<-PT|ID:                                 nein|
+<-PT|Sende VMC Informationen zum Host:   nein|
+<-PT||
+<-PT|Kassenart                            ZVT|
+<-PT|Schnittstelle                   9600 8N2|
+<-PT||
+<-PT||
+<-PT|            ** EMV-Kernel **            |
+<-PT|libemvco_ep.so.1.0.3                    |
+<-PT|EMVCo Book A & B, Version 2.5           |
+<-PT|1.0.3                                   |
+<-PT|2fe204c2                                |
+<-PT||
+<-PT|libemvco_hal.so.1.0.3                   |
+<-PT|1.0.3                                   |
+<-PT||
+<-PT|Kernel ID: 02                           |
+<-PT|libemvco_c2.so.1.2.0                    |
+<-PT|EMVCo Book C-2, Version 2.9             |
+<-PT|Mastercard Contactless Reader           |
+<-PT|Specification, Version 3.1.4            |
+<-PT|1.2.0                                   |
+<-PT|53e240b2                                |
+<-PT||
+<-PT|Kernel ID: 03                           |
+<-PT|libemvco_c3.so.1.2.0                    |
+<-PT|Visa Contactless Payment Specification, |
+<-PT|Version 2.2                             |
+<-PT|1.2.0                                   |
+<-PT|57a8bbff                                |
+<-PT||
+<-PT|Kernel ID: 04                           |
+<-PT|libemvco_c4.so.1.2.0                    |
+<-PT|ExpressPay Specification, Version 4.0.3 |
+<-PT|1.2.0                                   |
+<-PT|b8e0a5d1                                |
+<-PT||
+<-PT|Kernel ID: 05                           |
+<-PT|libemvco_c5.so.1.0.0                    |
+<-PT|JCB Contactless Kernel Specification,   |
+<-PT|Version 1.5                             |
+<-PT|1.0.0                                   |
+<-PT|9650efc0                                |
+<-PT||
+<-PT|Kernel ID: 06                           |
+<-PT|libemvco_c6.so.1.2.0                    |
+<-PT|Discover D-PAS Connect, Version 2.0     |
+<-PT|1.2.0                                   |
+<-PT|1a9af9e0                                |
+<-PT||
+<-PT|Kernel ID: 07                           |
+<-PT|libemvco_c7.so.1.1.0                    |
+<-PT|China Union Pay Contactless Kernel      |
+<-PT|Specification, Version 2021             |
+<-PT|1.1.0                                   |
+<-PT|cdde823c                                |
+<-PT||
+<-PT|Kernel ID: 2A                           |
+<-PT|libemvco_c2a.so.1.0.0                   |
+<-PT|Girocard Kernel Specification, Version  |
+<-PT|1.0 with errata from 06.10.2017         |
+<-PT|1.0.0                                   |
+<-PT|7df52672                                |
+<-PT||
+<-PT|libemvco_ct.so.1.0.1                    |
+<-PT|EMV - Integrated Circuit Card           |
+<-PT|Specifications for Payment Systems,     |
+<-PT|Version 4.3g                            |
+<-PT|1.0.1                                   |
+<-PT|e880614e                                |
+<-PT||
+<-PT|libemvco_ct_hal.so.1.0.1                |
+----------------
+<-PT|1.0.1                                   |
+<-PT||
+----------------
+<-PT||
+<-PT|          ** Konfiguration **           |
+<-PT||
+<-PT|23.12.2023                  02:39:42 CET|
+<-PT|Trm-Type:                             25|
+<-PT|Trm-Capabilities:                 E0F8C8|
+<-PT|Add Capabil.:                 6000F0F001|
+<-PT|Trm Country Code:                    280|
+<-PT|Max Chip Read Actions:                 1|
+<-PT|Max Mag Read Actions:                  1|
+<-PT|Journal-DOL:        DF020F95059B029F3403|
+<-PT|                                    8410|
+<-PT|Trm Risk:                             00|
+<-PT||
+<-PT|Public Key:                 A000000359FE|
+<-PT|Public Key:                 A000000359FF|
+<-PT|Public Key:                 A000000359FD|
+<-PT|Public Key:                 A000000004F3|
+<-PT|Public Key:                 A000000004F8|
+<-PT|Public Key:                 A000000004FA|
+<-PT|Public Key:                 A000000004EF|
+<-PT|Public Key:                 A000000004F1|
+<-PT|Public Key:                 A00000000399|
+<-PT|Public Key:                 A00000000395|
+<-PT|Public Key:                 A00000000392|
+<-PT|Public Key:                 A00000000394|
+<-PT||
+<-PT|Kartenname                      girocard|
+<-PT|App-ID:                             0000|
+<-PT|Karten-ID                              0|
+<-PT|VU-Nummer:                      14698003|
+<-PT|Währung:                            Euro|
+<-PT|AppTrxBMP:                  D3D4F8200040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22100000|
+<-PT|Fallback option:                       0|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Prefix:                         3572|
+<-PT|BIN-Range:               458612...458613|
+<-PT|BIN-Range:               458620...458626|
+<-PT|BIN-Prefix:                       458630|
+<-PT|BIN-Prefix:                       458632|
+<-PT|BIN-Range:               458650...458656|
+<-PT|BIN-Range:               458660...458666|
+<-PT|BIN-Range:               458670...458681|
+<-PT|BIN-Range:               458685...458686|
+<-PT|BIN-Prefix:                       458910|
+<-PT|BIN-Range:               458920...458921|
+<-PT|BIN-Prefix:                       458940|
+<-PT|BIN-Range:               458950...458952|
+<-PT|BIN-Range:               458960...458961|
+<-PT|BIN-Range:               458970...458971|
+<-PT|BIN-Prefix:                       458980|
+<-PT|BIN-Range:               466630...466632|
+<-PT|BIN-Range:               466640...466643|
+<-PT|BIN-Range:               466650...466655|
+<-PT|BIN-Range:               466920...466921|
+<-PT|BIN-Prefix:                       466940|
+<-PT|BIN-Range:               466950...466951|
+<-PT|BIN-Prefix:                       466990|
+<-PT|BIN-Prefix:                         4711|
+<-PT|BIN-Prefix:                         4822|
+<-PT|BIN-Prefix:                         4825|
+<-PT|BIN-Prefix:                          672|
+<-PT|BIN-Prefix:                          680|
+<-PT||
+<-PT|Kartenname                    MasterCard|
+<-PT|App-ID:                             0001|
+<-PT|Karten-ID                              1|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D3D6E0000040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Range:                   2221...2229|
+<-PT|BIN-Range:                     223...229|
+<-PT|BIN-Range:                       23...26|
+<-PT|BIN-Range:                     270...271|
+<-PT|BIN-Prefix:                         2720|
+<-PT|BIN-Prefix:                       360196|
+<-PT|BIN-Prefix:                         5001|
+<-PT|BIN-Range:                       51...55|
+<-PT|BIN-Prefix:                       563077|
+<-PT|BIN-Prefix:                       566573|
+<-PT|BIN-Prefix:                       566621|
+<-PT|BIN-Prefix:                       566920|
+<-PT|BIN-Prefix:                       566941|
+<-PT|BIN-Prefix:                       567753|
+<-PT|BIN-Prefix:                       577258|
+<-PT|BIN-Prefix:                         5854|
+<-PT|BIN-Prefix:                       589296|
+<-PT|BIN-Prefix:                       589437|
+----------------
+<-PT|BIN-Prefix:                       589460|
+<-PT|BIN-Prefix:                       589718|
+<-PT|BIN-Prefix:                       601066|
+<-PT|BIN-Prefix:                       601880|
+<-PT|BIN-Prefix:                       610424|
+<-PT|BIN-Prefix:                       610460|
+<-PT|BIN-Prefix:                       628133|
+<-PT|BIN-Prefix:                       914100|
+<-PT|BIN-Prefix:                       918838|
+<-PT|BIN-Prefix:                       988388|
+<-PT||
+<-PT|Kartenname                          Visa|
+<-PT|App-ID:                             0003|
+<-PT|Karten-ID                              3|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D3D6E0000040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Prefix:                            2|
+<-PT|BIN-Prefix:                            4|
+<-PT|BIN-Prefix:                           49|
+<-PT|BIN-Prefix:                       589274|
+<-PT|BIN-Prefix:                       601281|
+<-PT|BIN-Prefix:                           85|
+<-PT||
+<-PT|Kartenname                       Maestro|
+<-PT|App-ID:                             0015|
+<-PT|Karten-ID                             21|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  C290E8008040|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Fallback option:                       4|
+<-PT|Trm Risk:                              -|
+<-PT|BIN-Range:                   5010...5011|
+<-PT|BIN-Range:                   5013...5015|
+<-PT|BIN-Prefix:                       501620|
+<-PT|BIN-Prefix:                       501624|
+<-PT|BIN-Prefix:                        50165|
+<-PT|BIN-Prefix:                        50168|
+<-PT|BIN-Range:                   5017...5018|
+<-PT|BIN-Range:                     502...506|
+<-PT|BIN-Prefix:                          508|
+<-PT|BIN-Range:                       56...64|
+<-PT|BIN-Range:                     670...671|
+<-PT|BIN-Range:                     673...677|
+<-PT|BIN-Prefix:                          679|
+<-PT|BIN-Prefix:                          708|
+<-PT|BIN-Range:          9000000632...9000000|
+<-PT|                                     633|
+<-PT||
+<-PT|Kartenname                          VPay|
+<-PT|App-ID:                   A0000000032020|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                            158|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F824BD40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 20D0C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfPrioritisedAIDs:                  |
+<-PT|App-ID:             A0000003591010028001|
+<-PT|App-ID:                   A0000000031010|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             009E|
+<-PT|CL. Kernel-ID:                        03|
+<-PT|AppTrxBMP:                  D83808080800|
+----------------
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+<-PT|Kartenname                      girocard|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              0|
+<-PT|VU-Nummer:                      14698003|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit               EUR Kein Limit|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22100000|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Online:                       3403DF010F|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Offline Auth:                 3403DF010F|
+<-PT|Att. Receipt DOL    DF020F95059B0284059F|
+<-PT|Offline No Auth               3403DF010F|
+<-PT|Cust. Receipt DOL                       |
+<-PT|Online:                       9F34039505|
+<-PT|Cust. Receipt DOL   DF020F95059B0284059F|
+<-PT|Offline Auth:                 3403DF010F|
+<-PT|Cust. Receipt DOL   DF020F95059B0284059F|
+<-PT|Offline No Auth:              3403DF010F|
+<-PT|TAC default:                  FC50BCA00C|
+<-PT|TAC online:                   FC50BCF80C|
+<-PT|TAC denial:                   0000000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0000|
+<-PT|CL. Kernel-ID:                        2A|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50BCA00C|
+<-PT|TAC online:                   FC50BCF80C|
+<-PT|TAC denial:                   0000000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000099999999|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000099999999|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+<-PT|Kartenname                    MasterCard|
+<-PT|App-ID:                   A0000000041010|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              1|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0001|
+<-PT|CL. Kernel-ID:                        02|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+----------------
+<-PT|Kartenname                          Visa|
+<-PT|App-ID:                   A0000000031010|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                              3|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F8243D40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline No Auth               DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline No Auth:              DF010F8A02|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0003|
+<-PT|CL. Kernel-ID:                        03|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  DC4000F800|
+<-PT|TAC online:                   D84004F800|
+<-PT|TAC denial:                   0410000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT||
+<-PT|Kartenname                       Maestro|
+<-PT|App-ID:                   A0000000043060|
+<-PT|AppSelectionId:                        1|
+<-PT|Karten-ID                             21|
+<-PT|VU-Nummer:                          9999|
+<-PT|Währung:                            Euro|
+<-PT|Offl.-Limit                        EUR 0|
+<-PT|AppTrxBMP:                  D1D4F824BD40|
+<-PT|Transaction                             |
+<-PT|Restrictions:           0030000000000000|
+<-PT|Trm Restrictions:                 E0F8C8|
+<-PT|Add. Trm Restr:                     6000|
+<-PT|Receipt Parameter:              22000000|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Online:                       DF010F8A02|
+<-PT|Att. Receipt DOL    95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Att. Receipt DOL    9F26089F27019F10329F|
+<-PT|Offline No Auth     37049F360295059A039C|
+<-PT|                                019F0206|
+<-PT|Cust. Receipt DOL                       |
+<-PT|Online:                       9F34039505|
+<-PT|Cust. Receipt DOL   95059B029F3403DF020F|
+<-PT|Offline Auth:                 DF010F8A02|
+<-PT|Cust. Receipt DOL   9F26089F27019F10329F|
+<-PT|Offline No Auth:    37049F360295059A039C|
+<-PT|                                019F0206|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|Trm Risk:                              -|
+<-PT|ListOfPrioritisedAIDs:                  |
+<-PT|App-ID:             A0000003591010028001|
+<-PT|ListOfFallbackAIDs:                     |
+<-PT|App-ID:                             0015|
+<-PT|CL. Kernel-ID:                        02|
+<-PT|AppTrxBMP:                  D83808080800|
+<-PT|TAC default:                  FC50ACF800|
+<-PT|TAC online:                   F850ACF800|
+<-PT|TAC denial:                   0400000000|
+<-PT|CL. CVM-Limit(PrePr.):      000000000000|
+<-PT|CL. Floorlimit(PrePr.):     000000000000|
+<-PT|CL. Trx.-Limit(PrePr.):     000099999999|
+<-PT|CL. CVM-Limit:              000000000000|
+<-PT|CL. Floorlimit:             000000000000|
+<-PT|CL. Trx.-Limit:             000099999999|
+<-PT|CL. Trx.-Limit(OnDev):      000099999999|
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  02:38:49 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000221|
+<-PT|Beleg-Nr.:                          0063|
+<-PT|Vorgangs-Nr.:                       0164|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///05                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 2,55|
+<-PT||
+<-PT|          ####################          |
+<-PT|          55 Geheimzahl falsch          |
+<-PT|      Antwortcode vom Host negativ      |
+<-PT|               ( AC 55 )                |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|        Kartenzahlung Mastercard        |
+<-PT||
+<-PT|23.12.2023                  02:38:49 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000221|
+<-PT|Beleg-Nr.:                          0063|
+<-PT|Vorgangs-Nr.:                       0164|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///05                 |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 2,55|
+<-PT||
+<-PT|          ####################          |
+<-PT|           Geheimzahl falsch            |
+<-PT|          ####################          |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 06                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------

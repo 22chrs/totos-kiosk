@@ -79,6 +79,7 @@
 #include <cmds/error/NAckErrorCategory.hpp>
 #include <cmds/DisplayText.hpp>
 #include <cmds/BookTotal.hpp>
+#include <cmds/Reservation.hpp>
 
 #include <gicc/Bmp55.hpp>
 #include "Utils.hpp"
@@ -235,6 +236,7 @@ inline boost::system::error_code write_to_or_close_socket(Zvt::Apdu &apdu, boost
 inline boost::system::error_code basic_register_with_status_flow(unsigned char config, Zvt::Apdu command, Zvt::Command &current_command_flow, boost::asio::ip::tcp::socket &socket, bool &running)
 {
     boost::system::error_code error;
+    static int receipt_number = -1;
 
     if (command.isA(Zvt::CMD_UNKNOWN))
     {
@@ -391,6 +393,11 @@ inline boost::system::error_code basic_register_with_status_flow(unsigned char c
                         }
                     }
                 }
+                else if (current_command_flow == Zvt::CMD_0622)
+                {
+                    cout << "<-PT| " << "receiptNo=" << receipt_number << endl;
+                    stop_and_close_socket(running, current_command_flow, socket);
+                }
                 else
                 {
                     stop_and_close_socket(running, current_command_flow, socket);
@@ -409,6 +416,7 @@ inline boost::system::error_code basic_register_with_status_flow(unsigned char c
             {
                 Cmd::StatusInfo status(from_pt.cmd(), from_pt.size());
                 status.print();
+                receipt_number = status.receipt_number();
                 send_ack(socket);
 
                 if (status.status() != 0x00)

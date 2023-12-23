@@ -4,6 +4,7 @@ file_structure.txt
 
 ### DEVICES
 devices/env/
+orchester/payment/receipts
 
 ### ORCHESTER
 orchester/env/

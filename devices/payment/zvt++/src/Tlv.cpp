@@ -47,7 +47,7 @@ void Zvt::Tlv::strip_of(const std::vector<unsigned char> tlv)
         this->_data.clear();
         this->_bmp = tlv[0];
         this->_format = Zvt::Tlv_Encoded;
-        this->_data = Zvt::copyRange(tlv, offset + 1, tlv.size() - 1);
+        this->_data = LLVar::copyRange(tlv, offset + 1, tlv.size() - 1);
     }
     else
     {
@@ -55,7 +55,7 @@ void Zvt::Tlv::strip_of(const std::vector<unsigned char> tlv)
         this->_data.clear();
         this->_bmp = 0x26;
         this->_format = Zvt::Tlv_Encoded;
-        this->_data = Zvt::copyRange(tlv, offset, tlv.size() - 1);
+        this->_data = LLVar::copyRange(tlv, offset, tlv.size() - 1);
         Utils::log("\nWarning data:\n", tlv);
     }
 }
@@ -90,7 +90,7 @@ std::vector<Zvt::Tag> Zvt::Tlv::tags()
 
         // calulate the length of the tag. may one or more.
         // I did not seen a tag longer as 2-bytes. But according to the zvt docs it could be more...
-        int tag_length = Zvt::Tag::tag_length(Zvt::copyRange(this->get(), start_idx, this->get().size() - 1)).size();
+        int tag_length = Zvt::Tag::tag_length(LLVar::copyRange(this->get(), start_idx, this->get().size() - 1)).size();
         //std::cout << "Zvt::Tlv::tags() tag_length=" << tag_length << std::endl;
         // calculate the length (1-byte, 2-byte, 3-byte).
         // see zvt docs chapter 9
@@ -100,7 +100,7 @@ std::vector<Zvt::Tag> Zvt::Tlv::tags()
         // calculate the length of the data.
         int from = start_idx + tag_length;
         int to = start_idx + tag_length + offset - 1;
-        int length = Zvt::Tlv::calculateSize(Zvt::copyRange(this->get(), from, to));
+        int length = Zvt::Tlv::calculateSize(LLVar::copyRange(this->get(), from, to));
         //std::cout << "Zvt::Tlv::tags() length=" << length << std::endl;
         //std::cout << "Zvt::Tlv::tags() from=" << from << std::endl;
         //std::cout << "Zvt::Tlv::tags() to=" << to << std::endl;
@@ -112,7 +112,7 @@ std::vector<Zvt::Tag> Zvt::Tlv::tags()
         //std::cout << "Zvt::Tlv::tags() next to=" << to << std::endl;
 
         // copy from start_idx to the end of the tag
-        Zvt::Tag tag = Zvt::Tag(Zvt::copyRange(this->get(), from, to));
+        Zvt::Tag tag = Zvt::Tag(LLVar::copyRange(this->get(), from, to));
         tags.push_back(Zvt::Tag::isAscii(tag));
 
         // set the index for the next tag. Or end the loop.

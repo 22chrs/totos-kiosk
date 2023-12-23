@@ -6,6 +6,7 @@
  */
 
 #include <cmds/StatusInfo.hpp>
+#include "Apdu.hpp"
 
 Cmd::StatusInfo::StatusInfo()
         :
@@ -174,7 +175,7 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
             case Zvt::BMP_04:
             {
                 //Utils::log("04: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 6));
-                this->_amount = Zvt::Bmp::BCDToNumber(Zvt::copyRange(this->data(), sidx + 1, sidx + 6));
+                this->_amount = Zvt::Bmp::BCDToNumber(LLVar::copyRange(this->data(), sidx + 1, sidx + 6));
                 idx = sidx + 7;
                 break;
             }
@@ -188,56 +189,56 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
             case Zvt::BMP_29:
             {
                 //Utils::log("29: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 4));
-                this->_tid = Zvt::Bmp::BCDToNumber(Zvt::copyRange(this->data(), sidx + 1, sidx + 4));
+                this->_tid = Zvt::Bmp::BCDToNumber(LLVar::copyRange(this->data(), sidx + 1, sidx + 4));
                 idx = sidx + 5;
                 break;
             }
             case Zvt::BMP_0B:
             {
                 //Utils::log("0B: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 3));
-                this->_trace = Zvt::Bmp::BCDToNumber(Zvt::copyRange(this->data(), sidx + 1, sidx + 3));
+                this->_trace = Zvt::Bmp::BCDToNumber(LLVar::copyRange(this->data(), sidx + 1, sidx + 3));
                 idx = sidx + 4;
                 break;
             }
             case Zvt::BMP_37:
             {
                 //Utils::log("37: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 3));
-                this->_original_trace = Zvt::Bmp::BCDToNumber(Zvt::copyRange(this->data(), sidx + 1, sidx + 3));
+                this->_original_trace = Zvt::Bmp::BCDToNumber(LLVar::copyRange(this->data(), sidx + 1, sidx + 3));
                 idx = sidx + 4;
                 break;
             }
             case Zvt::BMP_0C:
             {
                 //Utils::log("0C: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 3));
-                this->_time = Zvt::Bmp::BCDToString(Zvt::copyRange(this->data(), sidx + 1, sidx + 3));
+                this->_time = Zvt::Bmp::BCDToString(LLVar::copyRange(this->data(), sidx + 1, sidx + 3));
                 idx = sidx + 4;
                 break;
             }
             case Zvt::BMP_0D:
             {
                 //Utils::log("0D: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
-                _date = Zvt::Bmp::BCDToString(Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
+                _date = Zvt::Bmp::BCDToString(LLVar::copyRange(this->data(), sidx + 1, sidx + 2));
                 idx = sidx + 3;
                 break;
             }
             case Zvt::BMP_0E:
             {
                 //Utils::log("0E: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
-                this->_expiry_date = Zvt::Bmp::BCDToString(Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
+                this->_expiry_date = Zvt::Bmp::BCDToString(LLVar::copyRange(this->data(), sidx + 1, sidx + 2));
                 idx = sidx + 3;
                 break;
             }
             case Zvt::BMP_49:
             {
                 //Utils::log("49: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
-                this->_iso_currency = Zvt::Bmp::BCDToNumber(Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
+                this->_iso_currency = Zvt::Bmp::BCDToNumber(LLVar::copyRange(this->data(), sidx + 1, sidx + 2));
                 idx = sidx + 3;
                 break;
             }
             case Zvt::BMP_17:
             {
                 //Utils::log("17: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
-                this->_sequence_number = Zvt::Bmp::BCDToNumber(Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
+                this->_sequence_number = Zvt::Bmp::BCDToNumber(LLVar::copyRange(this->data(), sidx + 1, sidx + 2));
                 idx = sidx + 3;
                 break;
             }
@@ -250,7 +251,7 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
             }
             case Zvt::BMP_22:
             {
-                std::vector<unsigned char> ldata = Zvt::llvar_data(Zvt::copyRange(this->data(), sidx + 1, this->data().size() - 1));
+                std::vector<unsigned char> ldata = LLVar::llvar_data(LLVar::copyRange(this->data(), sidx + 1, this->data().size() - 1));
                 //Utils::log("22: ", ldata);
                 this->_pan = Zvt::Bmp::BytesToHexString(ldata);
                 idx = sidx + ldata.size() + 3;
@@ -259,13 +260,13 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
             case Zvt::BMP_87:
             {
                 //Utils::log("87: ", Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
-                this->_receipt_number = Zvt::Bmp::BCDToNumber(Zvt::copyRange(this->data(), sidx + 1, sidx + 2));
+                this->_receipt_number = Zvt::Bmp::BCDToNumber(LLVar::copyRange(this->data(), sidx + 1, sidx + 2));
                 idx = sidx + 3;
                 break;
             }
             case Zvt::BMP_2A:
             {
-                std::vector<unsigned char> adata = Zvt::copyRange(this->data(), sidx + 1, sidx + 15);
+                std::vector<unsigned char> adata = LLVar::copyRange(this->data(), sidx + 1, sidx + 15);
                 //Utils::log("2A: ", adata);
                 this->_vu_number = Zvt::Bmp::BytesToString(adata);
                 idx = sidx + 16;
@@ -273,7 +274,7 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
             }
             case Zvt::BMP_3B:
             {
-                std::vector<unsigned char> adata = Zvt::copyRange(this->data(), sidx + 1, sidx + 8);
+                std::vector<unsigned char> adata = LLVar::copyRange(this->data(), sidx + 1, sidx + 8);
                 //Utils::log("3B: ", adata);
                 this->_aid = Zvt::Bmp::BytesToString(adata);
                 idx = sidx + 9;
@@ -291,7 +292,7 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
                  * 20 20 3a 20 30 30 20 30 35 33
                  * 20 30 30
                  */
-                std::vector<unsigned char> ldata = Zvt::lllvar_data(Zvt::copyRange(this->data(), sidx + 1, this->data().size() - 1));
+                std::vector<unsigned char> ldata = LLVar::lllvar_data(LLVar::copyRange(this->data(), sidx + 1, this->data().size() - 1));
                 this->_additional_text = Zvt::Bmp::BytesToString(ldata);
                 idx = sidx + ldata.size() + 4;
                 break;
@@ -319,7 +320,7 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
             }
             case Zvt::BMP_8B:
             {
-                std::vector<unsigned char> ldata = Zvt::llvar_data(Zvt::copyRange(this->data(), sidx + 1, this->data().size() - 1));
+                std::vector<unsigned char> ldata = LLVar::llvar_data(LLVar::copyRange(this->data(), sidx + 1, this->data().size() - 1));
                 //Utils::log("8B: ", ldata);
                 this->_card_name = Zvt::Bmp::BytesToString(ldata);
                 idx = sidx + ldata.size() + 3;
@@ -334,7 +335,7 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
                  * Note:
                  * - only sent if Geldkarte-turnover available
                  */
-                std::vector<unsigned char> ldata = Zvt::lllvar_data(Zvt::copyRange(this->data(), sidx + 1, this->data().size() - 1));
+                std::vector<unsigned char> ldata = LLVar::lllvar_data(LLVar::copyRange(this->data(), sidx + 1, this->data().size() - 1));
                 //this->_individual_totals = Zvt::Bmp::BytesToHexString(ldata);
 
                 std::cout << "<-PT| WARN" << std::endl;
@@ -373,10 +374,10 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
                  * 1 byte binary number of remaining cards
                  * 6 byte BCD, total turnover remaining cards
                  */
-                std::vector<unsigned char> ldata = Zvt::lllvar_data(Zvt::copyRange(this->data(), sidx + 1, this->data().size() - 1));
+                std::vector<unsigned char> ldata = LLVar::lllvar_data(LLVar::copyRange(this->data(), sidx + 1, this->data().size() - 1));
 
                 this->_individual_totals = Bmp::IndividualTotals();
-                this->_individual_totals.strip_of(Zvt::copyRange(this->data(), sidx, sidx + 3 + ldata.size()));
+                this->_individual_totals.strip_of(LLVar::copyRange(this->data(), sidx, sidx + 3 + ldata.size()));
 
                 idx = sidx + ldata.size() + 4;
                 break;
@@ -384,13 +385,13 @@ std::vector<Zvt::Bmp> Cmd::StatusInfo::parse(void)
             case Zvt::BMP_06:
             {
                 int offset = Zvt::Tlv::calculateSizeOffset(this->data()[sidx + 1]);
-                int length = Zvt::Tlv::calculateSize(Zvt::copyRange(this->data(), sidx + 1, sidx + offset));
-                this->tlv_container = Zvt::Tlv(Zvt::copyRange(this->data(), sidx, sidx + offset + length));
+                int length = Zvt::Tlv::calculateSize(LLVar::copyRange(this->data(), sidx + 1, sidx + offset));
+                this->tlv_container = Zvt::Tlv(LLVar::copyRange(this->data(), sidx, sidx + offset + length));
                 idx = sidx + offset + length + 1;
                 break;
             }
             default:
-                Utils::log("Not implemented yet", Zvt::copyRange(this->data(), idx, this->data().size() - 1));
+                Utils::log("Not implemented yet", LLVar::copyRange(this->data(), idx, this->data().size() - 1));
                 idx = this->data().size();
                 break;
         }

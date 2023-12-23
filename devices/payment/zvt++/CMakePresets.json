@@ -2,7 +2,7 @@
     "version": 2,
     "configurePresets": [
         {
-            "name": "compileCustomHejToto",
+            "name": "ccc",
             "displayName": "Custom configure preset",
             "description": "Sets Ninja generator, build and install directory",
             "generator": "Ninja",

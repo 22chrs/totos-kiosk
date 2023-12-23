@@ -3,10 +3,11 @@
 ### DEVICES
 devices/env/
 devices/CODE-teensy
+devices/env/
 
 ### ORCHESTER
 orchester/env/
-orchester/venv/
+orchester/payment/receipts
 
 ### TOTO
 toto/env/

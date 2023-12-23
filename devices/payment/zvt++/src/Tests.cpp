@@ -27,6 +27,7 @@
 #include "Bmp.hpp"
 #include "Tlv.hpp"
 #include "Tag.hpp"
+#include "LLVar.hpp"
 
 #include <bmps/IndividualTotals.hpp>
 
@@ -43,6 +44,8 @@
 #include <cmds/Diagnosis.hpp>
 #include <cmds/ConfigFeig.hpp>
 #include <cmds/PPAuth.hpp>
+
+#include <gicc/Gicc.hpp>
 
 #include "Tests.hpp"
 
@@ -309,19 +312,19 @@ void ll_and_lllvars_test()
                                         0x00, 0x01, 0x00, 0x0b, 0x97, 0x80, 0x04,
                                         0x0c, 0x10, 0x04, 0x02, 0x0d, 0x11, 0x25};
 
-    Utils::log("range1   : ", Zvt::copyRange(ll, 2, ll.size() - 1));
-    Utils::log("range2   : ", Zvt::copyRange(lll, 3, lll.size() - 1));
-    Utils::log("range6   : ", Zvt::copyRange(bmp60, 3, bmp60.size() - 1));
+    Utils::log("range1   : ", LLVar::copyRange(ll, 2, ll.size() - 1));
+    Utils::log("range2   : ", LLVar::copyRange(lll, 3, lll.size() - 1));
+    Utils::log("range6   : ", LLVar::copyRange(bmp60, 3, bmp60.size() - 1));
 
-    Utils::log("llvar    : ", Zvt::llvar_data(ll));
-    Utils::log("lllvar   : ", Zvt::lllvar_data(lll));
-    Utils::log("bmp60    : ", Zvt::lllvar_data(bmp60));
+    Utils::log("llvar    : ", LLVar::llvar_data(ll));
+    Utils::log("lllvar   : ", LLVar::lllvar_data(lll));
+    Utils::log("bmp60    : ", LLVar::lllvar_data(bmp60));
 
-    Utils::log("to LLVAR : ", Utils::stringToHexAsLLVar("1F01","0123456789"));
-    Utils::log("to LLVAR : ", Utils::stringToHexAsLLVar("1F02","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-    Utils::log("to LLLVAR: ", Utils::stringToHexAsLLLVar("1F01","0123456789"));
-    Utils::log("to LLLVAR: ", Utils::stringToHexAsLLLVar("1F02","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-    Utils::log("to LLLVAR: ", Utils::stringToHexAsLLLVar("1F03","abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890-------******************************####+++++***"));
+    Utils::log("to LLVAR : ", Utils::stringToHexAsLLVar("1F01", "0123456789"));
+    Utils::log("to LLVAR : ", Utils::stringToHexAsLLVar("1F02", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+    Utils::log("to LLLVAR: ", Utils::stringToHexAsLLLVar("1F01", "0123456789"));
+    Utils::log("to LLLVAR: ", Utils::stringToHexAsLLLVar("1F02", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+    Utils::log("to LLLVAR: ", Utils::stringToHexAsLLLVar("1F03", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890-------******************************####+++++***"));
 
 
 }
@@ -405,12 +408,27 @@ int proprietary_tlv_tags()
     return 0;
 }
 
+void gicc_parse()
+{
+
+    // 0200703c848120e48883f0f85413330089020037000000000000002000000022133909083125120057090500f0f614000900000ff1f754133300890200372512101050930812dff5f2f5f9f1f0f0f0f1f0f2f0f0f3f6f1f1404040404040f4f0d3c1e5c5c7d640e3c5e2e3e3c5d9d4c9d5c1d3e240c6e44040d4e4c5d5c3c8c5d54040404040c4c5f0f0f2f7f009780100000002000000f0f5f8f0f0f0f0f0f5f1f30921615032c3a349517cc8ed17e9e99b508200000000000000000000000000000000c2f0f0f5f2f500000000000000000000000003deb5d665ef5556ca
+    std::string msg(
+            "0200703c848120e48883f0f85413330089020037000000000000002000000022133909083125120057090500f0f614000900000ff1f754133300890200372512101050930812dff5f2f5f9f1f0f0f0f1f0f2f0f0f3f6f1f1404040404040f4f0d3c1e5c5c7d640e3c5e2e3e3c5d9d4c9d5c1d3e240c6e44040d4e4c5d5c3c8c5d54040404040c4c5f0f0f2f7f009780100000002000000f0f5f8f0f0f0f0f0f5f1f30921615032c3a349517cc8ed17e9e99b508200000000000000000000000000000000c2f0f0f5f2f500000000000000000000000003deb5d665ef5556ca");
+    Zvt::HexToByte hexToByte(msg);
+
+    Gicc::GICC gicc(hexToByte.vector());
+
+    gicc.parse();
+    gicc.debug();
+}
+
 int test()
 {
     try
     {
-        proprietary_tlv_tags();
-        ll_and_lllvars_test();
+        //proprietary_tlv_tags();
+        //ll_and_lllvars_test();
+        gicc_parse();
     }
     catch (std::exception &e)
     {

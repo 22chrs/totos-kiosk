@@ -53,7 +53,9 @@ static void log(const unsigned char *, size_t);
 static void log(const std::vector<unsigned char>);
 static void log(const std::string, const std::vector<unsigned char>);
 static void log(const char *, size_t);
+static void log(const std::string);
 static void print_tlv_tags(Zvt::Tlv);
+static void print_tlv_tags(Zvt::Tag);
 static std::string trim(std::string);
 static void crawl_tlv_tags(Zvt::Tlv, TagValueConverter &);
 static void crawl_tlv_tags(Zvt::Tag, int, TagValueConverter &);
@@ -262,6 +264,14 @@ inline static void log(const char *buffer, size_t length)
     log(reinterpret_cast<const unsigned char *>(buffer), length);
 }
 
+inline static void log(const std::string msg)
+{
+    ios oldState(nullptr);
+    oldState.copyfmt(cout);
+    cout << msg << endl;
+    cout.copyfmt(oldState);
+}
+
 inline static void print_tlv_tags(Zvt::Tlv tlv)
 {
     ios oldState(nullptr);
@@ -279,6 +289,36 @@ inline static void print_tlv_tags(Zvt::Tlv tlv)
             Utils::lognl(stag.data());
             cout << endl;
         }
+    }
+
+    cout.copyfmt(oldState);
+}
+
+inline static void print_tlv_tags(Zvt::Tag tag)
+{
+    ios oldState(nullptr);
+    oldState.copyfmt(cout);
+
+    cout << "Tag: " << setw(4) << setfill('_') << left << tag.tag_str() << right << "  λ " << setw(4) << setfill('.') << tag.data().size() << "   ";
+    Utils::lognl(tag.data());
+    cout << endl;
+
+    for (Zvt::Tag stag: tag.subtags())
+    {
+        print_tlv_tags(stag);
+    }
+
+    cout.copyfmt(oldState);
+}
+
+inline static void print_tlv_tags(std::vector<Zvt::Tag> tags)
+{
+    ios oldState(nullptr);
+    oldState.copyfmt(cout);
+
+    for (Zvt::Tag stag: tags)
+    {
+        print_tlv_tags(stag);
     }
 
     cout.copyfmt(oldState);
@@ -398,7 +438,7 @@ inline static std::vector<unsigned char> hex2bytes(std::string hex)
 {
     std::vector<unsigned char> out;
 
-    if(!hex.empty())
+    if (!hex.empty())
     {
         boost::algorithm::replace_all(hex, " ", "");
         boost::algorithm::replace_all(hex, "\n", "");

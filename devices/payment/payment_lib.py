@@ -31,6 +31,20 @@ class PaymentTerminal:
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
     
+    
+    def end_of_day(self):
+        # Ensure the zvt++ executable is executable
+        os.chmod(self.executable_path, 0o755)
+
+        # Running the external zvt++ program with the necessary arguments for end of day
+        process = subprocess.Popen([self.executable_path, "endOfDay", self.ip_address_terminal])
+
+        # Wait for the process to complete and get the exit code
+        exit_code = process.wait()
+
+        # Return the exit code (0 for success, non-zero for errors)
+        return exit_code
+    
 
     def display_text(self, duration, ascii_string):
         # Input validation for duration and ascii_string
@@ -50,6 +64,54 @@ class PaymentTerminal:
 
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
+    
+    def reservation_payment_debug(self, amount):
+        # Input validation
+        if not isinstance(amount, int) or amount < 0:
+            raise ValueError("Amount must be a non-negative integer representing cents.")
+
+        # Ensure the zvt++ executable is executable
+        os.chmod(self.executable_path, 0o755)
+
+        # Running the external zvt++ program with the necessary arguments
+        # Here, instead of capturing the output, we let it be displayed directly on the terminal
+        process = subprocess.Popen([self.executable_path, "reservation", self.ip_address_terminal, str(amount)])
+
+        # Wait for the process to complete and get the exit code
+        exit_code = process.wait()
+
+        # Return the exit code (0 for success, non-zero for errors)
+        return exit_code
+    
+    def book_total(self, receipt_no, amount=None):
+        # Input validation for receipt number and amount
+        if not isinstance(receipt_no, str) or not receipt_no:
+            raise ValueError("Receipt number must be a non-empty string.")
+        if amount is not None and (not isinstance(amount, int) or amount < 0):
+            raise ValueError("Amount must be a non-negative integer representing cents.")
+
+        # Ensure the zvt++ executable is executable
+        os.chmod(self.executable_path, 0o755)
+
+        # Construct the command arguments
+        cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
+        if amount is not None:
+            cmd_args.append(str(amount))
+
+        # Running the external zvt++ program with the necessary arguments
+        process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Reading the output
+        stdout, stderr = process.communicate()
+
+        # Decode output for processing
+        output = stdout.decode('utf-8') + stderr.decode('utf-8')
+
+        # Split and save the receipts
+        self.save_receipts(output)
+
+        # Parse the output and return the result (you can modify this based on your needs)
+        return self.parse_terminal_output(output)
     
 
     def auth_payment_debug(self, amount):
@@ -233,20 +295,70 @@ class PaymentTerminal:
         if haendlerbeleg:
             self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful)
 
+
     def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful):
+        # Retrieve the Balena device name
+        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'toto_development')
+
         # Create a timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        # Define directory and file path
-        receipt_dir = "payment/receipts"
+        # Define the base directory and device-specific directory
+        base_dir = "payment/receipts"
+        device_dir = os.path.join(base_dir, device_name)
+        
+        # Define file path within the device-specific directory
         err_suffix = "" if payment_successful else "_ERR"
         receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}{err_suffix}.txt"
-        receipt_path = os.path.join(receipt_dir, receipt_filename)
+        receipt_path = os.path.join(device_dir, receipt_filename)
 
-        # Check if the directory exists, if not, create it
-        if not os.path.exists(receipt_dir):
-            os.makedirs(receipt_dir)
+        # Check if the device-specific directory exists, if not, create it
+        if not os.path.exists(device_dir):
+            os.makedirs(device_dir)
 
-        # Write the receipt to a file
+        # Write the receipt to a file in the device-specific directory
         with open(receipt_path, "w", encoding="utf-8") as file:
             file.write(receipt)
+
+
+### Sperre Zahlungsfreigabe bzw sage der automat macht gerade einen Kassenschluss und kann Ihre Bestellung in 1 Minute abwickeln.
+    def endOfDay_uploadReceipts(self):
+        # First, call the end of day process
+        if self.end_of_day() != 0:
+            print("End of day process failed.")
+            return
+        
+        # Store the current working directory
+        original_dir = os.getcwd()
+
+        try:
+            # Define the base directory of your receipts
+            base_dir = "payment/receipts"
+
+            # Navigate to the base directory
+            os.chdir(base_dir)
+
+            # Add all new files to the staging area
+            subprocess.run(["git", "add", "."], check=True)
+
+            # Commit the changes
+            commit_message = "Upload receipts"
+            subprocess.run(["git", "commit", "-m", commit_message], check=True)
+
+            # Push to the remote repository
+            push_result = subprocess.run(["git", "push"], check=True)
+
+            # Check if push was successful
+            if push_result.returncode == 0:
+                # If push was successful, delete the files
+                for file in os.listdir('.'):
+                    if file.endswith('.txt'):
+                        os.remove(file)
+                print("Receipts uploaded and local files deleted.")
+            else:
+                print("Failed to push to GitHub.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+        finally:
+            # Revert back to the original directory
+            os.chdir(original_dir)

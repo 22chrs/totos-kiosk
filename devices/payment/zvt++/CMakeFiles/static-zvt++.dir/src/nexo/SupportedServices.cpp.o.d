@@ -1,6 +1,6 @@
 CMakeFiles/static-zvt++.dir/src/nexo/SupportedServices.cpp.o: \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/nexo/SupportedServices.cpp \
-  /Users/chris/Documents/Git/totos-kiosk/devices/zvt++/src/nexo/SupportedServices.hpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/nexo/SupportedServices.cpp \
+  /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/src/nexo/SupportedServices.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/bitset \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/fill.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/fill_n.h \
