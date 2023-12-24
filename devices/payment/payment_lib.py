@@ -4,6 +4,11 @@ import re
 import time
 import datetime
 
+###
+# Fragen
+# Check ob Terminal alles okay ist. Welcher Befehl?
+
+
 class PaymentTerminal:
     def __init__(self, ip_address_terminal, executable_name='zvt++'):
         # Initialize the PaymentTerminal with the path to the zvt++ executable

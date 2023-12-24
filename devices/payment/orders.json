@@ -1,0 +1,19 @@
+{
+    "automatenID": "some-automatenID-value", // via Balena Automatenname gesetzt
+    "orderID": "orderID-string", // via Feig Terminal gesetzt
+    "timeStampOrder": "timeStamp-string", // nach Bezahlvorgang gesetzt
+    "orderStatus": "some-orderStatus-value", // paid, inPreparation, delivered
+    "terminalLocation": "some-terminalLocation-value", // front oder back
+    "totalPrice":  0, 
+    "products": [
+      {
+        "productName": "some-productName-value",
+        "productCategory": "some-productCategory-value",
+        "choosenSize": "some-choosenSize-value",
+        "choosenSugar": "some-choosenSugar-value",
+        "choosenMug": "some-choosenMug-value", // Ein- oder Mehreweg
+        "choosenLid": "some-choosenLid-value", // ja nein (Ein- oder Mehrweg durch choosenMug definiert)
+        "preparationStation": "some-preparationStation-value" // nicht begonnen, Becherstapel hochgefahren, Transport zur Maschine, Befüllvorgang, Transport zum Schlitten, Schlitten, (A,B), Zucker, Deckel. 
+      }
+    ]
+  }
