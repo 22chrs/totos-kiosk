@@ -1,0 +1,3 @@
+[submodule "app/hejtoto.com"]
+	path = app/hejtoto.com
+	url = https://github.com/username/hejtoto.com.git
