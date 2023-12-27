@@ -1,3 +1,4 @@
+import asyncio
 import os
 import subprocess
 import re
@@ -21,20 +22,14 @@ class PaymentTerminal:
         # Construct the absolute path to the executable
         return os.path.join(dir_path, executable_name, executable_name)
     
-    ####
-    def configuration(self):
-        # Ensure the zvt++ executable is executable
+    async def printSysConfig(self):
         os.chmod(self.executable_path, 0o755)
-
-        # Running the external zvt++ program with the necessary arguments for help line
-        # Here, instead of capturing the output, we let it be displayed directly on the terminal
-        process = subprocess.Popen([self.executable_path, "printSysConfig", self.ip_address_terminal])
-
-        # Wait for the process to complete and get the exit code
-        exit_code = process.wait()
-
-        # Return the exit code (0 for success, non-zero for errors)
-        return exit_code
+        process = await asyncio.create_subprocess_exec(
+            self.executable_path, "printSysConfig", self.ip_address_terminal,
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+        )
+        await process.wait()
+        # Include additional logic as needed
     
     
     def end_of_day(self):
@@ -138,35 +133,31 @@ class PaymentTerminal:
         return exit_code
     
 
-    def auth_payment(self, amount):
-        # Input validation
+    async def auth_payment(self, amount):
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
 
         # Ensure the zvt++ executable is executable
         os.chmod(self.executable_path, 0o755)
 
-        # Running the external zvt++ program
-        process = subprocess.Popen([self.executable_path, "auth", self.ip_address_terminal, str(amount)],
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
+        try:
+            # Running the external zvt++ program asynchronously
+            process = await asyncio.create_subprocess_exec(
+                self.executable_path, "auth", self.ip_address_terminal, str(amount),
+                stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+            )
 
-        # Start the timer right before reading the output
-        start_time = time.time()
+            # Read the output
+            stdout, stderr = await process.communicate()
 
-        # Reading the output
-        stdout, stderr = process.communicate()
+            # Decode output for processing
+            output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
-        # Decode output for processing
-        output = stdout.decode('utf-8') + stderr.decode('utf-8')
-
-        # Check if more than 3 seconds have elapsed and the specific message is not in the output
-        if time.time() - start_time > 3 and "Bitte Karte vorhalten" not in output:
-            self.write_error_file("-2 Terminal nicht erreichbar", self.ip_address_terminal)
-            return "-2 Terminal nicht erreichbar"
-
-        # Parse the output and return the result
-        return self.parse_terminal_output(output)
+            # Parse the output and return the result
+            return self.parse_terminal_output(output)
+        
+        except Exception as e:
+            return f"Error during auth_payment: {e}"
 
 
     def reversal_payment_debug(self, receipt_no):
