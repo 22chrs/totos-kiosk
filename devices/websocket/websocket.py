@@ -3,9 +3,8 @@ import os
 import json
 from datetime import datetime
 
-HOST_NAME = 'devices'  # Define a constant for the host name
+HOST_NAME = 'devices'
 
-# Define a custom WebSocket class for clients
 class WebSocketClient:
     def __init__(self, websocket):
         self.websocket = websocket
@@ -13,11 +12,9 @@ class WebSocketClient:
     async def send(self, message):
         await self.websocket.send(message)
 
-# Store WebSocket clients with their aliases
 clients = {}
 
-# Asynchronous function to handle WebSocket connections and messages
-async def echo(websocket, path):
+async def echo(websocket, path, callback):
     client_alias = await websocket.recv()
     clients[client_alias] = WebSocketClient(websocket)
     print(f"New client connected: {client_alias}")
@@ -28,18 +25,14 @@ async def echo(websocket, path):
             try:
                 data = json.loads(message)
                 target_alias = data["target"]
-
                 if target_alias in clients:
-                    # Forward the message to the specified client
                     target = clients[target_alias]
                     await target.send(json.dumps({"from": client_alias, "message": data["message"]}))
                     print(f"Message from {client_alias} to {target_alias}: {data['message']}")
-
             except json.JSONDecodeError:
                 print(f"Invalid JSON received from {client_alias}")
 
-            # Call handle_order regardless of target alias
-            handle_order(message)
+            await callback(websocket, message)
 
     except websockets.ConnectionClosed:
         print("Connection closed gracefully")
@@ -50,17 +43,11 @@ async def echo(websocket, path):
             del clients[client_alias]
             print(f"Client disconnected: {client_alias}")
 
-
-
-# Function to start the WebSocket server as host
-async def start_websocket_server():
+async def start_websocket_server(callback):
     host = '0.0.0.0'
     port = int(os.environ.get('PORT', 8765))
-
     print(f"WebSocket server starting on {host}:{port}")
-
-    start_server = websockets.serve(echo, host, port)
-
+    start_server = websockets.serve(lambda ws, path: echo(ws, path, callback), host, port)
     try:
         await start_server
         print(f"WebSocket server successfully started on {host}:{port}")
@@ -98,36 +85,3 @@ async def check_clients_connected(client_names):
             all_connected_displayed = True  # Set the flag to prevent repeated messages
             return "All specified clients are connected."
         return ""
-
-def handle_order(received_message):
-    try:
-        # Parse the outer JSON layer
-        outer_data = json.loads(received_message)
-        if "message" in outer_data:
-            # Parse the inner JSON message
-            order_data = json.loads(outer_data["message"])
-            
-            # Check if the message is an order (additional checks can be added here)
-            if "orderID" in order_data and "timeStampOrder" in order_data:
-                # Create the orders directory if it doesn't exist
-                os.makedirs('orders', exist_ok=True)
-
-                # Generate a filename based on the timestamp
-                timestamp = order_data["timeStampOrder"].replace(':', '-').replace('.', '-')
-                filename = f'orders/order_{timestamp}.json'
-
-                # Save the order data to a file
-                with open(filename, 'w') as file:
-                    json.dump(order_data, file, indent=4)
-                print(f"Order saved to {filename}")
-
-    except json.JSONDecodeError as e:
-        # Not a JSON message or not an order
-        print("Received message is not a valid JSON order:", e)
-
-
-
-# Entry point for the script
-if __name__ == '__main__':
-    # Call the function to start the WebSocket server
-    start_websocket_server()

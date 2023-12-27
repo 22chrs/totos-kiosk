@@ -41,3 +41,7 @@ Fragen:
 
 zvt++ auth ip betrag | grep '<-PT|'
 filtern
+
+
+tree -I '.vscode|CODE-teensy|zvt++|venv|__pycache__' > file_structure.txt
+

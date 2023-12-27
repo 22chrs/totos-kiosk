@@ -51,13 +51,3 @@ listener_thread.start()
 while True:
     schedule.run_pending()
     time.sleep(1)
-
-
-
-# cam
-# feig
-# feig
-# robo
-# pc
-
-# internet
