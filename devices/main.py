@@ -9,6 +9,7 @@ from websocket.websocket import start_websocket_server, check_clients_connected
 # Global variables
 paymentTerminalIP_Front = "192.168.188.21"
 paymentTerminalIP_Back = "192.168.188.22"
+order_details = None
 
 # Payment Terminal Initialization
 paymentTerminalFront = PaymentTerminal(paymentTerminalIP_Front)
@@ -30,10 +31,11 @@ async def run_scheduled_payment_jobs():
 
 # WebSocket message handler
 async def handle_order(websocket, message):
-    print("handle_order called")  # Debugging print statement
+    global order_details
     try:
-        print("Received message:", message)  # Print the raw message for debugging
         outer_data = json.loads(message)
+        order_details = outer_data
+        print(f"order_details updated in handle_order: {order_details}")  # Diagnostic print
         if "message" in outer_data:
             inner_message = json.loads(outer_data["message"])  # Parse the inner JSON
             if 'whichTerminal' in inner_message and 'totalPrice' in inner_message:
@@ -42,7 +44,7 @@ async def handle_order(websocket, message):
                 # Convert totalPrice to cents
                 total_price_cents = int(round(inner_message['totalPrice'] * 100))
                 terminal = paymentTerminalFront if inner_message['whichTerminal'] == 'front' else paymentTerminalBack
-                await terminal.auth_payment(total_price_cents)
+                await terminal.auth_payment(total_price_cents, order_details)
             else:
                 print("Order data is missing 'whichTerminal' or 'totalPrice'")
         else:

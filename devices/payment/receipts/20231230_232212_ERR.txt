@@ -1,0 +1,2 @@
+Error: Error during auth_payment: name 'last_order_details' is not defined
+Terminal IP: 192.168.188.21

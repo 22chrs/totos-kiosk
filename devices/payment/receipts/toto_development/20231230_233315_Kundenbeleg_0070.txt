@@ -1,0 +1,28 @@
+** Kundenbeleg **
+
+Bezahlung Mastercard
+
+30.12.2023                  23:33:00 CET
+Terminal-ID:                    52500038
+TA-Nr.:                           000243
+Beleg-Nr.:                          0070
+Vorgangs-Nr.:                       0186
+VU-Nummer:                          9999
+App-ID:                   A0000000041010
+Karten-Nr.:             xxxxxxxxxxxx5901
+Kartenfolge-Nr.:                      00
+Erfassungsart:                Kontaktlos
+Autor-Nr.:                        424242
+EMV-DATA:
+0000048001//420300///00
+
+Betrag:               EUR 1,00
+
+
+Zahlung erfolgt
+
+Order Details:
+{
+    "target": "devices",
+    "message": "{\"automatenID\":null,\"whichTerminal\":\"front\",\"orderID\":null,\"orderStatus\":\"unpaid\",\"timeStampOrder\":\"20231230_233305\",\"totalPrice\":1,\"tip\":0,\"products\":[{\"productName\":\"Schwarzer Kaffee\",\"productCategory\":\"Kaffee\",\"calculatedPrice\":1,\"choosenSize\":\"200 ml\",\"choosenSugar\":\"zero\",\"choosenMug\":\"einwegVariable\",\"choosenLid\":\"ohneDeckel\",\"preparationStation\":\"ordered\",\"quantity\":1}]}"
+}

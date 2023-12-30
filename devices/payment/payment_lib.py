@@ -2,7 +2,7 @@ import asyncio
 import os
 import subprocess
 import re
-import time
+import json
 import datetime
 
 ###
@@ -113,27 +113,8 @@ class PaymentTerminal:
         # Parse the output and return the result (you can modify this based on your needs)
         return self.parse_terminal_output(output)
     
-
-    def auth_payment_debug(self, amount):
-        # Input validation
-        if not isinstance(amount, int) or amount < 0:
-            raise ValueError("Amount must be a non-negative integer representing cents.")
-
-        # Ensure the zvt++ executable is executable
-        os.chmod(self.executable_path, 0o755)
-
-        # Running the external zvt++ program with the necessary arguments
-        # Here, instead of capturing the output, we let it be displayed directly on the terminal
-        process = subprocess.Popen([self.executable_path, "auth", self.ip_address_terminal, str(amount)])
-
-        # Wait for the process to complete and get the exit code
-        exit_code = process.wait()
-
-        # Return the exit code (0 for success, non-zero for errors)
-        return exit_code
-    
-
-    async def auth_payment(self, amount):
+        
+    async def auth_payment(self, amount, order_details):
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
 
@@ -141,23 +122,38 @@ class PaymentTerminal:
         os.chmod(self.executable_path, 0o755)
 
         try:
+            # Log start of payment process
+            print(f"Starting auth_payment with amount: {amount}")
+
             # Running the external zvt++ program asynchronously
             process = await asyncio.create_subprocess_exec(
                 self.executable_path, "auth", self.ip_address_terminal, str(amount),
                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )
 
+            # Log subprocess execution
+            print("Subprocess executed, awaiting response...")
+
             # Read the output
             stdout, stderr = await process.communicate()
+
+            # Log outputs for debugging
+            print(f"Subprocess stdout: {stdout.decode('utf-8')}")
+            print(f"Subprocess stderr: {stderr.decode('utf-8')}")
 
             # Decode output for processing
             output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
             # Parse the output and return the result
-            return self.parse_terminal_output(output)
-        
+            parsed_output = self.save_receipts(output, order_details)
+            print(f"Parsed output: {parsed_output}")
+            return parsed_output
+
         except Exception as e:
-            return f"Error during auth_payment: {e}"
+            error_message = f"Error during auth_payment: {e}"
+            print(error_message)
+            self.write_error_file(error_message, self.ip_address_terminal)
+            return error_message
 
 
     def reversal_payment_debug(self, receipt_no):
@@ -200,9 +196,9 @@ class PaymentTerminal:
 
     
 
-    def parse_terminal_output(self, output):
+    def parse_terminal_output(self, output, order_details):
         # Split and save the receipts
-        self.save_receipts(output)
+        self.save_receipts(output, order_details)
 
         # Check for success message
         if "Zahlung erfolgt" in output:
@@ -238,7 +234,7 @@ class PaymentTerminal:
         # Default return if no specific pattern is matched
         return "Unknown Error"
     
-    def save_receipts(self, output):
+    def save_receipts(self, output, order_details):
         # Split output into lines
         lines = output.split('\n')
 
@@ -287,12 +283,18 @@ class PaymentTerminal:
 
         # Save the receipts if they exist
         if kundenbeleg:
-            self.save_receipt_to_file(kundenbeleg, "Kundenbeleg", beleg_nr, payment_successful)
+            print(f"Order details before save_receipt_to_file (Kundenbeleg): {order_details}")  # Diagnostic print
+            self.save_receipt_to_file(kundenbeleg, "Kundenbeleg", beleg_nr, payment_successful, order_details)
         if haendlerbeleg:
-            self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful)
+            print(f"Order details before save_receipt_to_file (Händlerbeleg): {order_details}")  # Diagnostic print
+            self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful, order_details)
 
+    def format_order_details(self, order_details):
+        """Format the order details into a readable string."""
+        order_info = json.dumps(order_details, indent=4)
+        return f"\nOrder Details:\n{order_info}\n"
 
-    def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful):
+    def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful, order_details):
         # Retrieve the Balena device name
         device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'toto_development')
 
@@ -307,6 +309,10 @@ class PaymentTerminal:
         err_suffix = "" if payment_successful else "_ERR"
         receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}{err_suffix}.txt"
         receipt_path = os.path.join(device_dir, receipt_filename)
+
+        # Append the order details to the receipt
+        if order_details:
+            receipt += self.format_order_details(order_details)
 
         # Check if the device-specific directory exists, if not, create it
         if not os.path.exists(device_dir):

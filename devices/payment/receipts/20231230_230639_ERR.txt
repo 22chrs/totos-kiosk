@@ -1,0 +1,2 @@
+Error: Error during auth_payment: save_receipt_to_file() missing 1 required positional argument: 'order_details'
+Terminal IP: 192.168.188.21
