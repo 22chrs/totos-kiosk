@@ -290,9 +290,21 @@ class PaymentTerminal:
             self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful, order_details)
 
     def format_order_details(self, order_details):
-        """Format the order details into a readable string."""
-        order_info = json.dumps(order_details, indent=4)
-        return f"\nOrder Details:\n{order_info}\n"
+        # Check if order_details is a string and convert it to a dictionary
+        if isinstance(order_details, str):
+            try:
+                order_details = json.loads(order_details)
+            except json.JSONDecodeError:
+                raise ValueError("Invalid JSON string in order details.")
+
+        # Set automatenID based on Balena device name or default to 'Testumgebung'
+        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
+        order_details["automatenID"] = device_name
+
+        # Pretty print the JSON with custom formatting for better readability
+        formatted_details = json.dumps(order_details, indent=4, separators=(',', ': '))
+
+        return f"\nOrder Details:\n{formatted_details}\n"
 
     def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful, order_details):
         # Retrieve the Balena device name
