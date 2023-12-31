@@ -257,7 +257,6 @@ class PaymentTerminal:
         # Default return if no specific pattern is matched
         return "Unknown Error"
     
-   
     def save_receipts(self, output, order_details):
         # Split output into lines
         lines = output.split('\n')
@@ -268,7 +267,7 @@ class PaymentTerminal:
         beleg_nr = ""
         payment_successful = False
         trace = ""
-        expiry_date = ""  # Added for expiry date
+        expiry_date = ""
         status = ""
 
         # Flags to identify which section we're currently reading
@@ -298,14 +297,13 @@ class PaymentTerminal:
 
             # Extract trace, expiry_date, and status
             if "trace" in line:
-                trace = line.split()[-1]  # Assuming trace value is the last word in the line
-            if "expiry_date" in line:  # Extract expiry_date when encountered
-                expiry_date = line.split()[-1]  # Assuming expiry_date value is the last word in the line
+                trace = line.split()[-1]
+            if "expiry_date" in line:
+                expiry_date = line.split()[-1]
             if "status" in line:
-                status = line.split()[-1]  # Assuming status value is the last word in the line
+                status = line.split()[-1]
 
             if in_kundenbeleg or in_haendlerbeleg:
-                # Add the clean line to the respective receipt
                 if in_kundenbeleg:
                     kundenbeleg += clean_line + '\n'
                     if "Zahlung erfolgt" in clean_line:
@@ -317,25 +315,21 @@ class PaymentTerminal:
                         payment_successful = True
                         in_haendlerbeleg = False
 
-        # Append trace, expiry_date, and status to the receipts if they exist
-        additional_info = ""
-        if trace:
-            additional_info += f"\nTrace: {trace}\n"
-        if expiry_date:  # Append expiry_date to additional info
-            additional_info += f"Expiry Date: {expiry_date}\n"
-        if status:
-            additional_info += f"Status: {status}\n"
+        # Create a dictionary for payment details
+        payment_details = {
+            'trace': trace,
+            'expiry_date': expiry_date,
+            'status': status
+        }
 
-        if additional_info:
-            kundenbeleg += additional_info
-            haendlerbeleg += additional_info
+        # Append payment details to order_details for formatting
+        order_details['payment'] = payment_details
 
         # Save the receipts if they exist
         if kundenbeleg:
             self.save_receipt_to_file(kundenbeleg, "Kundenbeleg", beleg_nr, payment_successful, order_details)
         if haendlerbeleg:
             self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful, order_details)
-
 
 
     def format_order_details(self, order_details):
@@ -349,10 +343,10 @@ class PaymentTerminal:
         # Set automatenID based on Balena device name or default to 'Testumgebung'
         device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
 
-        # Extract products from message if present
+        # Extract products and payment information from message if present
         products = None
+        payment_info = None
         if 'message' in order_details:
-            # Ensure that message is a dictionary
             if isinstance(order_details['message'], str):
                 try:
                     order_details['message'] = json.loads(order_details['message'])
@@ -362,18 +356,22 @@ class PaymentTerminal:
             if 'products' in order_details['message']:
                 products = order_details['message'].pop('products')
 
-            # Update the automatenID and orderStatus in the message dictionary
             order_details['message']['automatenID'] = device_name
             order_details['message']['orderStatus'] = 'paymentReserved'
 
-        # Reconstruct the order details with products at the same level
+        if 'payment' in order_details:
+            payment_info = order_details.pop('payment')
+
+        # Reconstruct the order details with products and payment at the same level
         new_order_details = {
             'Order Details': order_details['message'] if 'message' in order_details else {}
         }
         if products is not None:
             new_order_details['products'] = products
+        if payment_info is not None:
+            new_order_details['payment'] = payment_info
 
-        # Pretty print the JSON with custom formatting for better readability
+        # Pretty print the JSON with custom formatting
         formatted_details = json.dumps(new_order_details, indent=4, separators=(',', ': '))
 
         return f"\n{formatted_details}\n"
