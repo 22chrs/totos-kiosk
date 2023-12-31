@@ -7,7 +7,8 @@ import datetime
 
 ###
 # Fragen
-# Check ob Terminal alles okay ist. Welcher Befehl?
+# - Check ob Terminal alles okay ist. Welcher Befehl?
+# - Checken ob ich alle richtigen Werte gespeichert habe
 
 
 class PaymentTerminal:
@@ -256,6 +257,7 @@ class PaymentTerminal:
         # Default return if no specific pattern is matched
         return "Unknown Error"
     
+   
     def save_receipts(self, output, order_details):
         # Split output into lines
         lines = output.split('\n')
@@ -266,6 +268,7 @@ class PaymentTerminal:
         beleg_nr = ""
         payment_successful = False
         trace = ""
+        expiry_date = ""  # Added for expiry date
         status = ""
 
         # Flags to identify which section we're currently reading
@@ -281,6 +284,7 @@ class PaymentTerminal:
             if "Beleg-Nr.:" in clean_line:
                 beleg_nr = clean_line.split(":")[1].strip()
 
+            # Detect sections for Kundenbeleg and Haendlerbeleg
             if "** Kundenbeleg **" in clean_line:
                 kundenbeleg += clean_line + '\n'
                 in_kundenbeleg = True
@@ -292,9 +296,11 @@ class PaymentTerminal:
                 in_kundenbeleg = False
                 continue
 
-            # Extract trace and status
+            # Extract trace, expiry_date, and status
             if "trace" in line:
                 trace = line.split()[-1]  # Assuming trace value is the last word in the line
+            if "expiry_date" in line:  # Extract expiry_date when encountered
+                expiry_date = line.split()[-1]  # Assuming expiry_date value is the last word in the line
             if "status" in line:
                 status = line.split()[-1]  # Assuming status value is the last word in the line
 
@@ -311,19 +317,25 @@ class PaymentTerminal:
                         payment_successful = True
                         in_haendlerbeleg = False
 
-        # Append trace and status to the receipts if they exist
-        trace_status_info = f"\nStatus: {status}\nTrace: {trace}\n"
-        if trace and status:
-            kundenbeleg += trace_status_info
-            haendlerbeleg += trace_status_info
+        # Append trace, expiry_date, and status to the receipts if they exist
+        additional_info = ""
+        if trace:
+            additional_info += f"\nTrace: {trace}\n"
+        if expiry_date:  # Append expiry_date to additional info
+            additional_info += f"Expiry Date: {expiry_date}\n"
+        if status:
+            additional_info += f"Status: {status}\n"
+
+        if additional_info:
+            kundenbeleg += additional_info
+            haendlerbeleg += additional_info
 
         # Save the receipts if they exist
         if kundenbeleg:
-            print(f"Order details before save_receipt_to_file (Kundenbeleg): {order_details}")  # Diagnostic print
             self.save_receipt_to_file(kundenbeleg, "Kundenbeleg", beleg_nr, payment_successful, order_details)
         if haendlerbeleg:
-            print(f"Order details before save_receipt_to_file (Händlerbeleg): {order_details}")  # Diagnostic print
             self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful, order_details)
+
 
 
 
