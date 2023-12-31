@@ -2,14 +2,14 @@
 file_structure.txt
 
 
-### DEVICES
-devices/env/
-devices/venv/
-devices/payment/receipts
+**/venv/
+**/env/
 
-### ORCHESTER
-orchester/env/
-orchester/venv/
+### DEVICES
+devices/payment/receipts
+devices/payment/quene.txt
+devices/zvt++/CMakeFiles
+
 
 
 ### TOTO
