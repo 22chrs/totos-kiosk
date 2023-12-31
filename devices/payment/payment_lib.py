@@ -338,8 +338,6 @@ class PaymentTerminal:
 
 
 
-
-
     def format_order_details(self, order_details):
         # Check if order_details is a string and convert it to a dictionary
         if isinstance(order_details, str):
@@ -351,29 +349,34 @@ class PaymentTerminal:
         # Set automatenID based on Balena device name or default to 'Testumgebung'
         device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
 
-        # Process the nested 'message' dictionary
+        # Extract products from message if present
+        products = None
         if 'message' in order_details:
+            # Ensure that message is a dictionary
             if isinstance(order_details['message'], str):
                 try:
-                    message_dict = json.loads(order_details['message'])
+                    order_details['message'] = json.loads(order_details['message'])
                 except json.JSONDecodeError:
-                    print("Warning: 'message' key contains invalid JSON. Leaving as is.")
-                    return json.dumps(order_details, indent=4, separators=(',', ': '))
-            elif isinstance(order_details['message'], dict):
-                message_dict = order_details['message']
-            else:
-                print("Error: 'message' key is neither a string nor a dictionary.")
-                return json.dumps(order_details, indent=4, separators=(',', ': '))
+                    raise ValueError("Invalid JSON string in message details.")
+
+            if 'products' in order_details['message']:
+                products = order_details['message'].pop('products')
 
             # Update the automatenID and orderStatus in the message dictionary
-            message_dict['automatenID'] = device_name
-            message_dict['orderStatus'] = 'paymentReserved'
-            order_details['message'] = message_dict
+            order_details['message']['automatenID'] = device_name
+            order_details['message']['orderStatus'] = 'paymentReserved'
+
+        # Reconstruct the order details with products at the same level
+        new_order_details = {
+            'Order Details': order_details['message'] if 'message' in order_details else {}
+        }
+        if products is not None:
+            new_order_details['products'] = products
 
         # Pretty print the JSON with custom formatting for better readability
-        formatted_details = json.dumps(order_details, indent=4, separators=(',', ': '))
+        formatted_details = json.dumps(new_order_details, indent=4, separators=(',', ': '))
 
-        return f"\nOrder Details:\n{formatted_details}\n"
+        return f"\n{formatted_details}\n"
 
 
 
