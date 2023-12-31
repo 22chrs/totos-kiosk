@@ -1,2 +1,0 @@
-Error: Timeout: No card presented
-Terminal IP: 192.168.188.21

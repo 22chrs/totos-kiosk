@@ -188,7 +188,7 @@ class PaymentTerminal:
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
         # Retrieve the Balena device name
-        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'toto_development')
+        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
 
         # Define the base directory, device-specific directory, and error sub-directory
         base_dir = "payment/receipts"
@@ -368,7 +368,7 @@ class PaymentTerminal:
 
     def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful, order_details):
         # Retrieve the Balena device name
-        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'toto_development')
+        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
 
         # Create a timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")

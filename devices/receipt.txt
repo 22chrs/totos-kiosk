@@ -6771,3 +6771,359 @@
 <-PT|          Vorgang abgebrochen           |
 <-PT|          ####################          |
 ----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  01:59:44 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000272|
+<-PT|Beleg-Nr.:                          0081|
+<-PT|Vorgangs-Nr.:                       0213|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  01:59:44 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000272|
+<-PT|Beleg-Nr.:                          0081|
+<-PT|Vorgangs-Nr.:                       0213|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:00:12 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000274|
+<-PT|Beleg-Nr.:                          0082|
+<-PT|Vorgangs-Nr.:                       0214|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:00:12 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000274|
+<-PT|Beleg-Nr.:                          0082|
+<-PT|Vorgangs-Nr.:                       0214|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:03:35 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000276|
+<-PT|Beleg-Nr.:                          0083|
+<-PT|Vorgangs-Nr.:                       0215|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///Z3                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|           Verbindungsfehler            |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:03:35 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000276|
+<-PT|Beleg-Nr.:                          0083|
+<-PT|Vorgangs-Nr.:                       0215|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///Z3                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:04:13 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000277|
+<-PT|Beleg-Nr.:                          0083|
+<-PT|Vorgangs-Nr.:                       0216|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:04:13 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000277|
+<-PT|Beleg-Nr.:                          0083|
+<-PT|Vorgangs-Nr.:                       0216|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:05:10 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000279|
+<-PT|Beleg-Nr.:                          0084|
+<-PT|Vorgangs-Nr.:                       0217|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:05:10 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000279|
+<-PT|Beleg-Nr.:                          0084|
+<-PT|Vorgangs-Nr.:                       0217|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:05:53 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000281|
+<-PT|Beleg-Nr.:                          0085|
+<-PT|Vorgangs-Nr.:                       0218|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|          Bezahlung Mastercard          |
+<-PT||
+<-PT|31.12.2023                  02:05:53 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000281|
+<-PT|Beleg-Nr.:                          0085|
+<-PT|Vorgangs-Nr.:                       0218|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5901|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|0000048001//420300///00                 |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+<-PT|      ---------------------------       |
+<-PT|Info:                                   |
+<-PT|AS-Proc-Code= 00 075 00                 |
+<-PT|Capt.-Ref.= 0000                        |
+<-PT|      ---------------------------       |
+<-PT||
+----------------
