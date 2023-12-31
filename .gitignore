@@ -10,7 +10,7 @@ file_structure.txt
 
 ### DEVICES
 devices/payment/receipts
-devices/payment/quene.txt
+devices/payment/queue.txt
 
 
 ### TOTO
@@ -50,16 +50,10 @@ app/hejtoto.com/yarn-error.log*
 
 # local env files
 app/hejtoto.com/.env.local
-#app/hejtoto.com/.env.development.local
-#app/hejtoto.com/.env.test.local
-#app/hejtoto.com/.env.production.local
+app/hejtoto.com/.env.production
 
 # vercel
 app/hejtoto.com/.vercel
 
 # package-lock
 app/hejtoto.com/package-lock.json
-
-# VSCode
-#.vscode/
-.DS_Store
