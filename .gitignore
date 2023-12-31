@@ -13,9 +13,7 @@ devices/payment/receipts
 devices/payment/quene.txt
 
 
-
 ### TOTO
-toto/env/
 toto/ur_log/
 toto/robot/URSim_VIRTUAL/
 
@@ -51,7 +49,7 @@ app/hejtoto.com/yarn-debug.log*
 app/hejtoto.com/yarn-error.log*
 
 # local env files
-#app/hejtoto.com/.env.local
+app/hejtoto.com/.env.local
 #app/hejtoto.com/.env.development.local
 #app/hejtoto.com/.env.test.local
 #app/hejtoto.com/.env.production.local
