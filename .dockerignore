@@ -1,9 +1,15 @@
 # .dockerignore
 
+**/venv/
+**/env/
+**/.pytest_cache/
+**/CMakeFiles/
+
 ### DEVICES
-devices/env/
+devices/payment/receipts
+devices/payment/quene.txt
+
 devices/CODE-teensy
-devices/env/
 
 ### ORCHESTER
 orchester/env/

@@ -1,14 +1,14 @@
 .DS_Store
 file_structure.txt
 
-
 **/venv/
 **/env/
+**/.pytest_cache/
+**/CMakeFiles/
 
 ### DEVICES
 devices/payment/receipts
 devices/payment/quene.txt
-devices/zvt++/CMakeFiles
 
 
 
