@@ -113,7 +113,8 @@ class PaymentTerminal:
         # Parse the output and return the result (you can modify this based on your needs)
         return self.parse_terminal_output(output)
     
-        
+       
+       
     async def auth_payment(self, amount, order_details):
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
@@ -144,6 +145,12 @@ class PaymentTerminal:
             # Decode output for processing
             output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
+            # Check for timeout error
+            if "Zeit zum Kartenlesen überschritten" in output:
+                error_message = "Timeout: No card presented"
+                self.write_error_file(error_message, self.ip_address_terminal)
+                return "Timeout Error"
+
             # Parse the output and return the result
             parsed_output = self.save_receipts(output, order_details)
             print(f"Parsed output: {parsed_output}")
@@ -154,6 +161,7 @@ class PaymentTerminal:
             print(error_message)
             self.write_error_file(error_message, self.ip_address_terminal)
             return error_message
+
 
 
     def reversal_payment_debug(self, receipt_no):
@@ -179,20 +187,34 @@ class PaymentTerminal:
         # Create a timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        # Define directory and file path for the error file
-        error_dir = "payment/receipts"  # Change to 'payment/errors' if you want to separate error logs
-        error_path = os.path.join(error_dir, f"{timestamp}_ERR.txt")
+        # Retrieve the Balena device name
+        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'toto_development')
 
-        # Check if the directory exists, if not, create it
+        # Define the base directory, device-specific directory, and error sub-directory
+        base_dir = "payment/receipts"
+        device_dir = os.path.join(base_dir, device_name)
+        error_dir = os.path.join(device_dir, "ERROR")
+
+        # Check if the device-specific directory exists, if not, create it
+        if not os.path.exists(device_dir):
+            os.makedirs(device_dir)
+
+        # Check if the error sub-directory exists, if not, create it
         if not os.path.exists(error_dir):
             os.makedirs(error_dir)
+
+        # Define the file path for the error file in the error sub-directory
+        error_filename = f"{timestamp}_ERR.txt"
+        error_path = os.path.join(error_dir, error_filename)
 
         # Compose the full error message including the IP address
         full_error_message = f"Error: {error_message}\nTerminal IP: {ip_address}"
 
-        # Write the error message to a file
+        # Write the error message to a file in the error sub-directory
         with open(error_path, "w", encoding="utf-8") as file:
             file.write(full_error_message)
+
+
 
     
 
@@ -243,6 +265,8 @@ class PaymentTerminal:
         haendlerbeleg = ""
         beleg_nr = ""
         payment_successful = False
+        trace = ""
+        status = ""
 
         # Flags to identify which section we're currently reading
         in_kundenbeleg = False
@@ -268,6 +292,12 @@ class PaymentTerminal:
                 in_kundenbeleg = False
                 continue
 
+            # Extract trace and status
+            if "trace" in line:
+                trace = line.split()[-1]  # Assuming trace value is the last word in the line
+            if "status" in line:
+                status = line.split()[-1]  # Assuming status value is the last word in the line
+
             if in_kundenbeleg or in_haendlerbeleg:
                 # Add the clean line to the respective receipt
                 if in_kundenbeleg:
@@ -281,6 +311,12 @@ class PaymentTerminal:
                         payment_successful = True
                         in_haendlerbeleg = False
 
+        # Append trace and status to the receipts if they exist
+        trace_status_info = f"\nStatus: {status}\nTrace: {trace}\n"
+        if trace and status:
+            kundenbeleg += trace_status_info
+            haendlerbeleg += trace_status_info
+
         # Save the receipts if they exist
         if kundenbeleg:
             print(f"Order details before save_receipt_to_file (Kundenbeleg): {order_details}")  # Diagnostic print
@@ -288,6 +324,9 @@ class PaymentTerminal:
         if haendlerbeleg:
             print(f"Order details before save_receipt_to_file (Händlerbeleg): {order_details}")  # Diagnostic print
             self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful, order_details)
+
+
+
 
     def format_order_details(self, order_details):
         # Check if order_details is a string and convert it to a dictionary
@@ -299,12 +338,33 @@ class PaymentTerminal:
 
         # Set automatenID based on Balena device name or default to 'Testumgebung'
         device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
-        order_details["automatenID"] = device_name
+
+        # Process the nested 'message' dictionary
+        if 'message' in order_details:
+            if isinstance(order_details['message'], str):
+                try:
+                    message_dict = json.loads(order_details['message'])
+                except json.JSONDecodeError:
+                    print("Warning: 'message' key contains invalid JSON. Leaving as is.")
+                    return json.dumps(order_details, indent=4, separators=(',', ': '))
+            elif isinstance(order_details['message'], dict):
+                message_dict = order_details['message']
+            else:
+                print("Error: 'message' key is neither a string nor a dictionary.")
+                return json.dumps(order_details, indent=4, separators=(',', ': '))
+
+            # Update the automatenID and orderStatus in the message dictionary
+            message_dict['automatenID'] = device_name
+            message_dict['orderStatus'] = 'paymentReserved'
+            order_details['message'] = message_dict
 
         # Pretty print the JSON with custom formatting for better readability
         formatted_details = json.dumps(order_details, indent=4, separators=(',', ': '))
 
         return f"\nOrder Details:\n{formatted_details}\n"
+
+
+
 
     def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful, order_details):
         # Retrieve the Balena device name
@@ -313,26 +373,33 @@ class PaymentTerminal:
         # Create a timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        # Define the base directory and device-specific directory
+        # Define the base directory, device-specific directory, and error sub-directory
         base_dir = "payment/receipts"
         device_dir = os.path.join(base_dir, device_name)
-        
-        # Define file path within the device-specific directory
-        err_suffix = "" if payment_successful else "_ERR"
-        receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}{err_suffix}.txt"
-        receipt_path = os.path.join(device_dir, receipt_filename)
-
-        # Append the order details to the receipt
-        if order_details:
-            receipt += self.format_order_details(order_details)
+        error_dir = os.path.join(device_dir, "ERROR")  # Subdirectory for error files
 
         # Check if the device-specific directory exists, if not, create it
         if not os.path.exists(device_dir):
             os.makedirs(device_dir)
 
-        # Write the receipt to a file in the device-specific directory
+        # Check if the error sub-directory exists, if not, create it
+        if not os.path.exists(error_dir):
+            os.makedirs(error_dir)
+
+        # Define the file path based on whether the transaction was successful
+        err_suffix = "" if payment_successful else "_ERR"
+        folder_to_use = device_dir if payment_successful else error_dir  # Choose the correct directory
+        receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}{err_suffix}.txt"
+        receipt_path = os.path.join(folder_to_use, receipt_filename)
+
+        # Append the order details to the receipt
+        if order_details:
+            receipt += self.format_order_details(order_details)
+
+        # Write the receipt to a file in the chosen directory
         with open(receipt_path, "w", encoding="utf-8") as file:
             file.write(receipt)
+
 
 
 ### Sperre Zahlungsfreigabe bzw sage der automat macht gerade einen Kassenschluss und kann Ihre Bestellung in 1 Minute abwickeln.

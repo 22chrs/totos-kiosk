@@ -1,4 +1,4 @@
-#!/Users/chris/Documents/Git/totos-kiosk/devices/venv/bin/python3
+#!/Users/chris/Documents/Git/totos-kiosk/devices/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys

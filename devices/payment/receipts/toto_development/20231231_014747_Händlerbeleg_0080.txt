@@ -1,0 +1,63 @@
+** Händlerbeleg **
+
+Bezahlung Mastercard
+
+31.12.2023                  01:47:32 CET
+Terminal-ID:                    52500038
+TA-Nr.:                           000268
+Beleg-Nr.:                          0080
+Vorgangs-Nr.:                       0206
+VU-Nummer:                          9999
+App-ID:                   A0000000041010
+Karten-Nr.:             xxxxxxxxxxxx5901
+Kartenfolge-Nr.:                      00
+Erfassungsart:                Kontaktlos
+Autor-Nr.:                        424242
+EMV-DATA:
+0000048001//420300///00
+
+Betrag:               EUR 3,51
+
+
+Zahlung erfolgt
+
+Status: 00
+Trace: 268
+
+Order Details:
+{
+    "target": "devices",
+    "message": {
+        "automatenID": "Testumgebung",
+        "whichTerminal": "front",
+        "orderID": null,
+        "orderStatus": "paymentReserved",
+        "timeStampOrder": "20231231_014737",
+        "totalPrice": 3.51,
+        "tip": 0,
+        "products": [
+            {
+                "productName": "Expresso",
+                "productCategory": "Kaffee",
+                "calculatedPrice": 2.51,
+                "choosenSize": "35 ml",
+                "choosenSugar": "zero",
+                "choosenMug": "einwegVariable",
+                "choosenLid": "ohneDeckel",
+                "preparationStation": "ordered",
+                "quantity": 1
+            },
+            {
+                "productName": "Schwarzer Kaffee",
+                "productCategory": "Kaffee",
+                "calculatedPrice": 1,
+                "choosenSize": "200 ml",
+                "choosenSugar": "zero",
+                "choosenMug": "einwegVariable",
+                "choosenLid": "ohneDeckel",
+                "preparationStation": "ordered",
+                "quantity": 1
+            }
+        ]
+    }
+}

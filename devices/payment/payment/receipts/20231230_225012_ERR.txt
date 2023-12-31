@@ -1,2 +1,0 @@
-Error: Connection error
-Terminal IP: 192.168.0.1

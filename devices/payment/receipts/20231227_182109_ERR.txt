@@ -1,2 +1,0 @@
-Error: -2 Terminal nicht erreichbar
-Terminal IP: 192.168.188.21
