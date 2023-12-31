@@ -1,5 +1,0 @@
-/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles/zvt++.dir
-/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles/shared-zvt++.dir
-/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles/static-zvt++.dir
-/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles/edit_cache.dir
-/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles/rebuild_cache.dir
