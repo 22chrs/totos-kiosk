@@ -269,6 +269,15 @@ class PaymentTerminal:
         trace = ""
         expiry_date = ""
         status = ""
+        card_name = ""
+        date = ""
+        time = ""
+        terminal_id = ""
+        currency = ""
+        amount_in_cents = ""
+        card_id = ""
+        payment_type = ""
+        author_id = ""
 
         # Flags to identify which section we're currently reading
         in_kundenbeleg = False
@@ -302,6 +311,28 @@ class PaymentTerminal:
                 expiry_date = line.split()[-1]
             if "status" in line:
                 status = line.split()[-1]
+            if "date" in line:  # Look for a line containing the date
+                date_str = line.split()[-1]  
+                year = datetime.now().year  # Get the current year
+                date = f"{date_str[2:]}.{date_str[:2]}.{year}" # Reformat the date string (assuming it's in MMDD format)
+            if "time" in line:  
+                time_str = line.split()[-1] 
+                time = f"{time_str[:2]}:{time_str[2:4]}:{time_str[4:]} CET"  # Reformat the time string (assuming it's in HHMMSS format)
+            if "tid" in line:
+                terminal_id = line.split(":")[1].strip()
+            if "currency" in line:
+                currency = line.split(":")[1].strip()
+            if "card_name" in line:
+                card_name = line.split(":")[1].strip()
+            if "amount in cent" in line: 
+                amount = line.split(":")[1].strip()
+                amount_in_cents = int(float(amount.replace('EUR', '').strip()) * 100)  # Convert EUR to cents
+            if "pan" in line:  
+                card_id = line.split(":")[1].strip()
+            if "payment_type" in line: 
+                payment_type = line.split(":")[1].strip()
+            if "aid" in line: 
+                author_id = line.split(":")[1].strip()
 
             if in_kundenbeleg or in_haendlerbeleg:
                 if in_kundenbeleg:
@@ -317,9 +348,19 @@ class PaymentTerminal:
 
         # Create a dictionary for payment details
         payment_details = {
-            'trace': trace,
-            'expiry_date': expiry_date,
-            'status': status
+            'date': date, # Datum
+            'time': time, # Zeit
+            'amount_in_cents': amount_in_cents, # gebuchter Betrag
+            'currency': currency,
+            'receipt_number': beleg_nr, # Belegnummer FEIG Terminal
+            'status': status, # Payment Success/ Error Status
+            'card_name': card_name, # z.B. Mastercard
+            'payment_type': payment_type, # z.B. Kontaktlos
+            'card_id': card_id, # Kreditkartennummer
+            'expiry_date': expiry_date, # Ablaufdatum Kreditkarte
+            'author_id': author_id, # Authorennummer
+            'terminal_id': terminal_id, # tid/ Terminal ID
+            'trace': trace # (TA-Nr.)
         }
 
         # Append payment details to order_details for formatting

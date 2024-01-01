@@ -35,7 +35,7 @@ async def handle_order(websocket, message):
     try:
         outer_data = json.loads(message)
         order_details = outer_data
-        print(f"order_details updated in handle_order: {order_details}")  # Diagnostic print
+        #print(f"order_details updated in handle_order: {order_details}")  # Diagnostic print
         if "message" in outer_data:
             inner_message = json.loads(outer_data["message"])  # Parse the inner JSON
             if 'whichTerminal' in inner_message and 'totalPrice' in inner_message:
