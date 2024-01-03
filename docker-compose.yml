@@ -1,7 +1,7 @@
-version: '2.4'
+version: "2.4"
 volumes:
   xserver-volume:
-  settings:                          # Only required if using PERSISTENT flag (see below)
+  settings: # Only required if using PERSISTENT flag (see below)
 
 services:
   browser:
@@ -9,27 +9,27 @@ services:
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
     volumes:
-      - 'settings:/data' # Only required if using PERSISTENT flag (see below)
+      - "settings:/data" # Only required if using PERSISTENT flag (see below)
     environment:
       - LAUNCH_URL=http://app:8081?display=2
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
       - KIOSK=1
-     # - FLAGS= --enable-accelerated-video-decode --disable-context-menu --disable-pinch --lang=de
-     # - LOCAL_HTTP_DELAY=10
-     # - FLAGS=--disable-pinch
+      # - FLAGS= --enable-accelerated-video-decode --disable-context-menu --disable-pinch --lang=de
+      # - LOCAL_HTTP_DELAY=10
+      # - FLAGS=--disable-pinch
       - WINDOW_SIZE=1280,800 # Touchscreen Fannal 10.1"
-     # - WINDOW_SIZE=43840, 2160
+      # - WINDOW_SIZE=43840, 2160
     ports:
-      - '5011' # management API (optional)
+      - "5011" # management API (optional)
 
-  browsercontrol:
-    image: balenablocks/browsercontrol
-    restart: always
-    network_mode: host
-    privileged: true
-    ports:
-      - 80:80
+  # browsercontrol:
+  #   image: balenablocks/browsercontrol
+  #   restart: always
+  #   network_mode: host
+  #   privileged: true
+  #   ports:
+  #     - 80:80
 
   # display:
   #   build: ./display
@@ -47,7 +47,7 @@ services:
   #   #  - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
   #   labels:
   #     io.balena.features.dbus: '1'
-  
+
   app:
     build: ./app
     restart: always
@@ -60,12 +60,6 @@ services:
   #  depends_on:
   #    - display
 
-  orchester:
-    build: ./orchester
-    restart: always
-    privileged: true
-    hostname: orchester
-
   devices:
     build: ./devices
     restart: always
@@ -74,10 +68,10 @@ services:
     environment:
       - WEBSOCKET_SERVER_URI=ws://orchester:8765
 
-  toto:
-    build: ./toto
-    restart: always
-    privileged: true
-    hostname: toto
-    environment:
-      - WEBSOCKET_SERVER_URI=ws://orchester:8765
+  # toto:
+  #   build: ./toto
+  #   restart: always
+  #   privileged: true
+  #   hostname: toto
+  #   environment:
+  #     - WEBSOCKET_SERVER_URI=ws://orchester:8765

@@ -4,16 +4,14 @@
 **/env/
 **/.pytest_cache/
 **/CMakeFiles/
+**/.vscode/
+
 
 ### DEVICES
 devices/payment/receipts
 devices/payment/quene.txt
-
+devices/payment/CMakeFiles
 devices/CODE-teensy
-
-### ORCHESTER
-orchester/env/
-orchester/payment/receipts
 
 ### TOTO
 toto/env/
