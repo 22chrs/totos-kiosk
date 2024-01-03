@@ -7646,3 +7646,19 @@
 <-PT|      ---------------------------       |
 <-PT||
 ----------------
+<-PT||
+<-PT||
+<-PT|LAVEGO                                  |
+<-PT||
+<-PT|          ** Kassenschnitt **           |
+<-PT||
+<-PT|03.01.2024                  23:58:55 CET|
+<-PT|Terminal-ID:                    52500038|
+<-PT|Vorgangs-Nr.:                       0229|
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|             Fehlgeschlagen             |
+<-PT|  Offene Vorautorisierungen vorhanden   |
+<-PT|          ####################          |
+----------------
