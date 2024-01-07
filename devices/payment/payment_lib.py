@@ -4,6 +4,7 @@ import subprocess
 import re
 import json
 import datetime
+import platform
 
 ###
 # Fragen
@@ -13,15 +14,23 @@ import datetime
 
 class PaymentTerminal:
     def __init__(self, ip_address_terminal, executable_name='zvt++'):
-        # Initialize the PaymentTerminal with the path to the zvt++ executable
+        # Determine the appropriate executable based on the system architecture
         self.executable_path = self.get_executable_path(executable_name)
         self.ip_address_terminal = ip_address_terminal
 
     def get_executable_path(self, executable_name):
-        # Get the absolute directory path of the current file (payment_lib.py)
+        # Get the absolute directory path of the current file
         dir_path = os.path.dirname(os.path.abspath(__file__))
-        # Construct the absolute path to the executable
-        return os.path.join(dir_path, executable_name, executable_name)
+
+        # Determine the system architecture
+        system_arch = platform.machine()
+        if 'arm' in system_arch or 'aarch' in system_arch:  # Indicates an ARM architecture (like M1 Macs)
+            executable_suffix = '_silicon'
+        else:  # For x86 architecture (like most Docker environments)
+            executable_suffix = '_x86'
+
+        # Construct the absolute path to the appropriate executable
+        return os.path.join(dir_path, executable_name + executable_suffix)
     
     async def printSysConfig(self):
         os.chmod(self.executable_path, 0o755)

@@ -14,6 +14,10 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-python:${PYTHON_VERSION}-${DEBIAN_
 WORKDIR /opt/
 
 # This will copy all files in our root to the working directory in the container
+
+COPY ./payment /opt/
+COPY ./usbserial /opt/
+COPY ./websocket /opt/
 COPY . .
 
 # Setting up a Python virtual environment

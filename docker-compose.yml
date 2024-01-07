@@ -32,7 +32,6 @@ services:
       - "8081:8081"
     environment:
       - PORT=8081
-      - WEBSOCKET_SERVER_URI=devices:8765
   #  depends_on:
   #    - display
 
