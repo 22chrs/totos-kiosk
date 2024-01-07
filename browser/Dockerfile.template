@@ -1,6 +1,6 @@
-ARG NODEJS_VERSION="16.19.1"
+ARG NODEJS_VERSION="12.22.12"
 
-FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-bullseye-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-buster-run
 
 # install required packages
 RUN install_packages \
@@ -10,6 +10,7 @@ RUN install_packages \
     lsb-release \
     mesa-vdpau-drivers \
     scrot \
+    wget \
     x11-xserver-utils \
     xserver-xorg-input-evdev \
     xserver-xorg-legacy \

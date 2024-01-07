@@ -3,7 +3,7 @@
 ######################################
 
 # base image
-FROM balenalib/generic-amd64-debian-node:19-bookworm-build AS base_image
+FROM node:21-bookworm AS base_image
 
 WORKDIR /opt/
 
@@ -22,7 +22,7 @@ RUN npm run build
 ## Puts it all together
 ######################################
 
-FROM balenalib/generic-amd64-debian-node:19-bookworm-run
+FROM node:21-bookworm-slim
 
 WORKDIR /opt/
 
@@ -41,12 +41,8 @@ COPY --from=base_image /opt/.env.production /opt/
 COPY ./start.sh /opt/
 #RUN dir -s
 
-# Copy SSL certificates into the image
-COPY ./certs /opt/certs
-
-
 # Install production dependencies only
-RUN npm ci --only=prod
+RUN npm ci --omit=dev
 
 ENV NODE_ENV=production 
 # this is specific for balena, to let the startup script know we want to use all udev devices (mouse, keyboard, etc)

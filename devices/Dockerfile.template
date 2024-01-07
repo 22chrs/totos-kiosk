@@ -16,6 +16,12 @@ WORKDIR /opt/
 # This will copy all files in our root to the working directory in the container
 COPY . .
 
+# Setting up a Python virtual environment
+RUN python3 -m venv /opt/venv
+
+# Activating the virtual environment
+ENV PATH="/opt/venv/bin:$PATH"
+
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 

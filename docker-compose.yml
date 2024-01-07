@@ -11,7 +11,7 @@ services:
     volumes:
       - "settings:/data" # Only required if using PERSISTENT flag (see below)
     environment:
-      - LAUNCH_URL=http://app:8081?display=2
+      - LAUNCH_URL=http://app:8081?display=1
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
       - KIOSK=0
@@ -23,31 +23,6 @@ services:
     ports:
       - "5011" # management API (optional)
 
-  # browsercontrol:
-  #   image: balenablocks/browsercontrol
-  #   restart: always
-  #   network_mode: host
-  #   privileged: true
-  #   ports:
-  #     - 80:80
-
-  # display:
-  #   build: ./display
-  #   restart: always
-  #   network_mode: host
-  #   hostname: display
-  #   privileged: true
-  #   environment:
-  #    # - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
-  #     - LAUNCH_URL_1=http://app:8081?display=1
-  #     - LAUNCH_URL_2=http://app:8081?display=2
-  #     - SHOW_CURSOR=1
-  #     - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket'
-  #   #volumes:
-  #   #  - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-  #   labels:
-  #     io.balena.features.dbus: '1'
-
   app:
     build: ./app
     restart: always
@@ -57,6 +32,7 @@ services:
       - "8081:8081"
     environment:
       - PORT=8081
+      - WEBSOCKET_SERVER_URI=devices:8765
   #  depends_on:
   #    - display
 
@@ -65,8 +41,6 @@ services:
     restart: always
     privileged: true
     hostname: devices
-    environment:
-      - WEBSOCKET_SERVER_URI=ws://orchester:8765
 
   # toto:
   #   build: ./toto

@@ -58,7 +58,7 @@ async def check_connections_periodically():
         message = await check_clients_connected(["app"])
         if message:
             print(message)
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
 # Entry point
 if __name__ == '__main__':

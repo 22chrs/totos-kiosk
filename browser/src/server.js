@@ -4,7 +4,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const chromeLauncher = require("chrome-launcher");
 const bent = require("bent");
-const { setIntervalAsync, clearIntervalAsync } = require("set-interval-async/dynamic");
+const {
+  setIntervalAsync,
+  clearIntervalAsync,
+} = require("set-interval-async/dynamic");
 const { spawn } = require("child_process");
 const { readFile, unlink } = require("fs").promises;
 const path = require("path");
@@ -17,7 +20,6 @@ const WINDOW_POSITION = process.env.WINDOW_POSITION || "0,0";
 const PERSISTENT_DATA = process.env.PERSISTENT || "0";
 const REMOTE_DEBUG_PORT = process.env.REMOTE_DEBUG_PORT || 35173;
 const FLAGS = process.env.FLAGS || null;
-const EXTRA_FLAGS = process.env.EXTRA_FLAGS || null;
 const HTTPS_REGEX = /^https?:\/\//i; //regex for HTTP/S prefix
 
 // Environment variables which can be overriden from the API
@@ -118,14 +120,15 @@ let launchChromium = async function (url) {
       flags.push("--disable-gpu");
     } else {
       console.log("Enabling GPU");
-      let gpuFlags = ["--enable-zero-copy", "--num-raster-threads=4", "--ignore-gpu-blocklist", "--enable-gpu-rasterization"];
+      let gpuFlags = [
+        "--enable-zero-copy",
+        "--num-raster-threads=4",
+        "--ignore-gpu-blacklist",
+        "--enable-gpu-rasterization",
+      ];
 
       flags = flags.concat(gpuFlags);
     }
-  }
-
-  if (EXTRA_FLAGS) {
-    flags = flags.concat(EXTRA_FLAGS.split(" "));
   }
 
   let startingUrl = url;
@@ -147,13 +150,17 @@ let launchChromium = async function (url) {
     userDataDir: "1" === PERSISTENT_DATA ? "/data/chromium" : undefined,
   });
 
-  console.log(`Chromium remote debugging tools running on port: ${chrome.port}`);
+  console.log(
+    `Chromium remote debugging tools running on port: ${chrome.port}`
+  );
   currentUrl = url;
 };
 
 // Get's the chrome-launcher default flags, minus the extensions and audio muting flags.
 async function SetDefaultFlags() {
-  DEFAULT_FLAGS = await chromeLauncher.Launcher.defaultFlags().filter((flag) => "--disable-extensions" !== flag && "--mute-audio" !== flag);
+  DEFAULT_FLAGS = await chromeLauncher.Launcher.defaultFlags().filter(
+    (flag) => "--disable-extensions" !== flag && "--mute-audio" !== flag
+  );
 }
 
 async function setTimer(interval) {
@@ -201,7 +208,10 @@ app.use(
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 app.use(errorHandler);
@@ -317,7 +327,9 @@ app.get("/screenshot", async (req, res) => {
       child.on("close", res);
     });
     if (statusCode != 0) {
-      return res.status(500).send("Screenshot command exited with non-zero return code.");
+      return res
+        .status(500)
+        .send("Screenshot command exited with non-zero return code.");
     }
 
     const fileContents = await readFile(filePath);

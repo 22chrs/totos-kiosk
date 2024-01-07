@@ -3,14 +3,19 @@
 **/venv/
 **/env/
 **/.pytest_cache/
+**/__pycache__/
 **/CMakeFiles/
+**/.next/
 **/.vscode/
+**/node_modules
 
 
 ### DEVICES
 devices/payment/receipts
 devices/payment/quene.txt
-devices/payment/CMakeFiles
+devices/payment/zvt\+\+/stuff
+devices/payment/zvt\+\+/ssrc
+
 devices/CODE-teensy
 
 ### TOTO

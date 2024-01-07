@@ -1,12 +1,14 @@
 #.gitignore
-
 .DS_Store
 file_structure.txt
 
 **/venv/
 **/env/
 **/.pytest_cache/
+**/__pycache__/
 **/CMakeFiles/
+**/.next/
+**/node_modules
 
 ### DEVICES
 devices/payment/receipts
