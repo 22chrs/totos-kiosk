@@ -57,10 +57,10 @@ RM = /opt/homebrew/Cellar/cmake/3.27.8/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++
+CMAKE_SOURCE_DIR = /Users/Git/totos-kiosk/devices/payment/zvt++
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++
+CMAKE_BINARY_DIR = /Users/Git/totos-kiosk/devices/payment/zvt++
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles /Users/Git/totos-kiosk/devices/payment/zvt++//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Git/totos-kiosk/devices/payment/zvt++/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

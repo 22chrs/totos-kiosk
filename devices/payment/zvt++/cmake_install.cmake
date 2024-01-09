@@ -1,4 +1,4 @@
-# Install script for directory: /Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++
+# Install script for directory: /Users/Git/totos-kiosk/devices/payment/zvt++
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/chris/Documents/Git/totos-kiosk/devices/payment/zvt++/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/Git/totos-kiosk/devices/payment/zvt++/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
