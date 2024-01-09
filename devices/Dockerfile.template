@@ -15,7 +15,8 @@ WORKDIR /opt/
 
 # This will copy all files in our root to the working directory in the container
 
-COPY ./payment /opt/
+COPY ./payment/payment_lib.py /opt/
+#COPY ./payment/zvt++_x86 /opt/
 COPY ./usbserial /opt/
 COPY ./websocket /opt/
 COPY . .

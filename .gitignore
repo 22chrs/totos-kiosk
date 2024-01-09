@@ -9,6 +9,7 @@ file_structure.txt
 **/CMakeFiles/
 **/.next/
 **/node_modules
+**/out
 
 ### DEVICES
 devices/payment/receipts
