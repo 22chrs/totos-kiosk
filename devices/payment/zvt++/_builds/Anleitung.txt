@@ -1,0 +1,62 @@
+
+Guide to Setting Up a C++ Development Environment with Boost and CMake on Debian under WSL
+
+1. Install Windows Subsystem for Linux (WSL) on Windows:
+   - Open Windows Terminal.
+   - Run the command to enable WSL:
+     wsl --install
+
+2. Install Debian for WSL via the Windows Store:
+   - Open Microsoft Store.
+   - Search for and install "Debian".
+
+3. Install CMake on Debian:
+   - Update package lists:
+     sudo apt-get update
+   - Install CMake & clang:
+     sudo apt-get install cmake
+     sudo apt-get install clang
+     sudo apt-get build-essential
+	
+
+4. Download Boost on Windows:
+   - Visit the Boost website and download the .bz2 file for the required version.
+
+5. Copy Boost Archive from Windows to Debian:
+   - Use the cp command to transfer the file:
+     sudo cp /mnt/c/path-to-boost-file /desired-debian-directory
+
+6. Install Boost:
+   - Unpack the Boost archive and navigate to its directory.
+     sudo tar -xf name.tar.bz2
+   - Prepare for build:
+     sudo ./bootstrap.sh
+   - Build and install with the -fPIC flag and shared linking:
+     sudo ./b2 cxxflags=-fPIC install
+     sudo ./b2 link=shared install
+
+7. Delete Existing CMake Cache:
+   - Navigate to your project directory which is on windows.
+     cd /mnt/c/zvt++
+   - Alle Ordner bis auf src, stuff löschen. Nur die Dateien CMakeList.txt und hosts.json im root behalten.
+   - Remove the old CMake cache file, especially if it contains Windows paths (like /mnt/ paths):
+     rm CMakeCache.txt
+
+8. Generate a New CMake Cache File:
+   - This step is usually automatically done when running CMake in the next step.
+
+9. Create a Build Directory:
+   - Inside the project directory, create a build directory:
+     mkdir build
+   - Navigate into this directory:
+     cd build
+
+10. Run CMake to Configure the Project:
+    - Inside the build directory, run CMake pointing to the source:
+      cmake ..
+
+11. Build the Project:
+    - Inside the build directory, run make:
+      make
+
+After following these steps, you'll have a development environment set up on Debian under WSL for C++ projects using Boost and CMake.
