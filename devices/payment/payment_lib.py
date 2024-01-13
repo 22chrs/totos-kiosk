@@ -24,13 +24,30 @@ class PaymentTerminal:
 
         # Determine the system architecture
         system_arch = platform.machine()
-        if 'arm' in system_arch or 'aarch' in system_arch:  # Indicates an ARM architecture (like M1 Macs)
-            executable_suffix = '_silicon'
-        else:  # For x86 architecture (like most Docker environments)
-            executable_suffix = '_x86'
 
-        # Construct the absolute path to the appropriate executable
-        return os.path.join(dir_path, executable_name + executable_suffix)
+        # Define the path to the _builds folder
+        builds_dir = os.path.join(dir_path, 'zvt++', '_builds')
+
+        # Find the appropriate build directory based on architecture
+        if 'arm' in system_arch or 'aarch' in system_arch:  # ARM architecture (like M1 Macs)
+            suffix = 'arm'
+        else:  # x86 architecture (like most Docker environments)
+            suffix = 'x64'
+
+        # Search for the correct build folder
+        build_folder = None
+        for folder in os.listdir(builds_dir):
+            if suffix in folder.lower():
+                build_folder = folder
+                break
+
+        if build_folder is None:
+            raise Exception(f"No suitable build folder found for architecture: {system_arch}")
+
+        # Construct the path to the executable
+        executable_path = os.path.join(builds_dir, build_folder, executable_name)
+
+        return executable_path
     
     async def printSysConfig(self):
         os.chmod(self.executable_path, 0o755)

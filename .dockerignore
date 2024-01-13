@@ -10,11 +10,14 @@
 **/node_modules
 
 
+
 ### DEVICES
+devices/orders
 devices/payment/receipts
 devices/payment/quene.txt
 devices/payment/zvt\+\+/stuff
 devices/payment/zvt\+\+/ssrc
+
 
 devices/CODE-teensy
 

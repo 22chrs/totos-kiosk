@@ -10,6 +10,7 @@ file_structure.txt
 **/.next/
 **/node_modules
 **/out
+**/stuff
 
 ### DEVICES
 devices/payment/receipts

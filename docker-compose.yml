@@ -32,8 +32,9 @@ services:
       - "8081:8081"
     environment:
       - PORT=8081
-  #  depends_on:
-  #    - display
+    # depends_on:
+    #  - browser
+    #  - devices
 
   devices:
     build: ./devices
