@@ -5,5 +5,6 @@
 
 #start express server with nextjs files
 npm run startLocal
+#npm run start
 
 balena-idle
