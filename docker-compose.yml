@@ -5,7 +5,8 @@ volumes:
 
 services:
   browser:
-    build: ./browser-2.4.7
+    image: bh.cr/balenalabs/browser-amd64/2.5.1 # where <arch> is one of aarch64, arm32 or amd64 (getestet bis. 2.5.1 läuft, 2.5.2 läuft nicht) 
+    #build: ./browser-2.4.7
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
     volumes:
@@ -22,6 +23,16 @@ services:
       # - WINDOW_SIZE=43840, 2160
     ports:
       - "5011" # management API (optional)
+
+  # display:
+  #   build: ./display-pi5
+  #   privileged: true
+  #   environment:
+  #     - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
+  #     - LAUNCH_URL_1=http://app:8080?display=1
+  #     - LAUNCH_URL_2=http://app:8080?display=2
+  #   labels:
+  #     io.balena.features.dbus: '1'
 
   app:
     build: ./app

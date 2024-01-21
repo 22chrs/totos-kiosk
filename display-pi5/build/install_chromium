@@ -35,8 +35,7 @@ fi
 
 install_packages \
     ${CHROMIUM_PACKAGE} \
-    chromium \
-    chromium-sandbox \
+    chromium-common \
     libgles2-mesa \
     lsb-release \
     mesa-vdpau-drivers \
