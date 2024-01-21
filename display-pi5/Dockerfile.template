@@ -1,0 +1,37 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:19.6-bookworm-run
+## Install Chromium
+
+# Install the necessary packages
+COPY ./build /usr/src/build
+RUN /usr/src/build/install_chromium "%%BALENA_MACHINE_NAME%%"
+
+RUN useradd chromium -m -s /bin/bash -G root || true && \
+    groupadd -r -f chromium && id -u chromium || true && \
+    chown -R chromium:chromium /home/chromium || true
+RUN usermod -a -G audio,video,tty chromium
+RUN ln -s /usr/bin/chromium /usr/bin/chromium-browser || true
+RUN touch /home/chromium/.Xauthority
+RUN chown chromium:chromium /home/chromium/.Xauthority
+
+## Input Device
+ENV UDEV=1
+
+WORKDIR /app
+
+## Setup User Data
+RUN mkdir -p /chromium/display1
+RUN mkdir -p /chromium/display2
+RUN chown -R chromium:chromium /chromium/display1
+RUN chown -R chromium:chromium /chromium/display2
+
+## Setup Scripts
+COPY ./scripts ./scripts
+RUN chmod +x ./scripts/*.sh
+
+## Install Display Server
+COPY ./package.json ./
+RUN npm install --omit=dev
+COPY ./src ./src
+
+## Launch
+CMD ["bash", "/app/scripts/entrypoint.sh"]

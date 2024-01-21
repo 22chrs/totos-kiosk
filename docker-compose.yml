@@ -5,13 +5,13 @@ volumes:
 
 services:
   browser:
-    build: ./browser
+    build: ./browser-2.4.7
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
     volumes:
       - "settings:/data" # Only required if using PERSISTENT flag (see below)
     environment:
-      - LAUNCH_URL=http://app:8081?display=1
+      - LAUNCH_URL=http://app:8080?display=1
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
       - KIOSK=1
@@ -30,9 +30,9 @@ services:
     hostname: app
     ports:
     #  - "3000:3000"
-      - "8081:8081"
+      - "8080:8080"
     environment:
-      - PORT=8081
+      - PORT=8080
     # depends_on:
     #  - browser
     #  - devices
