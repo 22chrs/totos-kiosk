@@ -6,7 +6,7 @@ volumes:
 services:
   browser:
     image: bh.cr/balenalabs/browser-amd64/2.5.1 # where <arch> is one of aarch64, arm32 or amd64 (getestet bis. 2.5.1 läuft, 2.5.2 läuft nicht) 
-    #build: ./browser-2.4.7
+    build: ./browser-2.7.0
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
     volumes:
