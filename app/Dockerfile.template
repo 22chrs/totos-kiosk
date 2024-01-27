@@ -9,7 +9,8 @@
 #ARG NODEJS_VERSION="21.6"
 #ARG DEBIAN_VERSION="bookworm"
 #FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-build AS base_image 
-FROM node:21.6-bookworm AS base_image 
+FROM node:21.6-bookworm 
+#AS base_image 
 
 WORKDIR /opt/
 
@@ -30,6 +31,7 @@ RUN npm run build
 ######################################
 
 #FROM node:19-bookworm-slim
+#ARG NODEJS_VERSION="21.6"
 #FROM balenalib/generic-amd64-debian-node:19.6-bookworm-run
 #FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-run
 #FROM node:21.6-bookworm
@@ -44,23 +46,23 @@ RUN npm run build
 
 
 
-# copy the nextjs app
-#COPY --from=base_image /opt/next.config.mjs /opt/
-#COPY --from=base_image /opt/package.json /opt/
-#COPY --from=base_image /opt/package-lock.json /opt/
-#COPY --from=base_image /opt/.next /opt/.next
-#COPY --from=base_image /opt/public /opt/public
-#COPY --from=base_image /opt/server.js /opt/
-#COPY --from=base_image /opt/.env.production /opt/
+# # copy the nextjs app
+# COPY --from=base_image /opt/next.config.mjs /opt/
+# COPY --from=base_image /opt/package.json /opt/
+# COPY --from=base_image /opt/package-lock.json /opt/
+# COPY --from=base_image /opt/.next /opt/.next
+# COPY --from=base_image /opt/public /opt/public
+# COPY --from=base_image /opt/server.js /opt/
+# COPY --from=base_image /opt/.env.production /opt/
 
 
 
-# copy the start skript and other stuff
-#COPY ./start.sh /opt/
+# # copy the start skript and other stuff
+# COPY ./start.sh /opt/
 #RUN dir -s
 
 # Install production dependencies only
-# RUN npm ci --omit=dev
+#RUN npm ci --omit=dev
 #RUN npm install
 
 ENV NODE_ENV=production 
