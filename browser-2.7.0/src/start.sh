@@ -59,6 +59,18 @@ mkdir -p /data/chromium
 chown -R chromium:chromium /data
 rm -f /data/chromium/SingletonLock
 
+# Check if the root CA certificate exists in the shared volume and install it
+cp /certs/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
+update-ca-certificates
+
+# Set up NSS Database for Chromium with correct permissions
+CHROMIUM_HOME="/home/chromium"
+mkdir -p $CHROMIUM_HOME/.pki/nssdb
+chown -R chromium:chromium $CHROMIUM_HOME/.pki
+su - chromium -c "certutil -d sql:$CHROMIUM_HOME/.pki/nssdb --empty-password -N -f /dev/null 2> /dev/null"
+su - chromium -c "certutil -d sql:$CHROMIUM_HOME/.pki/nssdb -A -t 'CT,C,C' -n rootCA -i /certs/rootCA.pem"
+
+
 # we can't maintain the environment with su, because we are logging in to a new session
 # so we need to manually pass in the environment variables to maintain, in a whitelist
 # This gets the current environment, as a comma-separated string

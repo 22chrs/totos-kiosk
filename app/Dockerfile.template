@@ -1,77 +1,37 @@
-######################################
-## Base image
-######################################
+# https://www.makeswift.com/blog/accessing-your-local-nextjs-dev-server-using-https
 
-# base image
-#FROM node:19-bookworm AS base_image
-#FROM balenalib/generic-amd64-debian-node:19.6-bookworm-build AS base_image 
-
-#ARG NODEJS_VERSION="21.6"
-#ARG DEBIAN_VERSION="bookworm"
-#FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-build AS base_image 
-FROM node:21.6-bookworm 
-#AS base_image 
+#FROM node:21.6-bookworm 
+ARG NODEJS_VERSION="19.6.1"
+ARG DEBIAN_VERSION="bookworm"
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-build
 
 WORKDIR /opt/
 
-# copy file system (without the files listed in the .dockerigonre)
+# Copy your application code and start script
 COPY ./hejtoto.com /opt/
 COPY ./start.sh /opt/
-#RUN ls -la
 
-# install dependencies including devDependencies
+# Install dependencies including devDependencies
 RUN npm ci 
 
-# build electron app
+# Build the application
 RUN npm run build
 
-######################################
-## The finalized container
-## Puts it all together
-######################################
+# Update package list and install mkcert
+RUN apt-get update && \
+    apt-get install -y mkcert
 
-#FROM node:19-bookworm-slim
-#ARG NODEJS_VERSION="21.6"
-#FROM balenalib/generic-amd64-debian-node:19.6-bookworm-run
-#FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-run
-#FROM node:21.6-bookworm
+# Setup mkcert, generate a certificate for 'app', and create a root CA certificate
+RUN mkcert -install && \
+    mkcert app && \
+    mkcert -CAROOT
 
-
-#WORKDIR /opt/
-
-# # Install Python and other necessary tools
-# RUN apt-get update && \
-#     apt-get install -y python3 make g++ && \
-#     rm -rf /var/lib/apt/lists/*
-
-
-
-# # copy the nextjs app
-# COPY --from=base_image /opt/next.config.mjs /opt/
-# COPY --from=base_image /opt/package.json /opt/
-# COPY --from=base_image /opt/package-lock.json /opt/
-# COPY --from=base_image /opt/.next /opt/.next
-# COPY --from=base_image /opt/public /opt/public
-# COPY --from=base_image /opt/server.js /opt/
-# COPY --from=base_image /opt/.env.production /opt/
-
-
-
-# # copy the start skript and other stuff
-# COPY ./start.sh /opt/
-#RUN dir -s
-
-# Install production dependencies only
-#RUN npm ci --omit=dev
-#RUN npm install
+# Install local-ssl-proxy globally
+RUN npm install -g local-ssl-proxy
 
 ENV NODE_ENV=production 
-# this is specific for balena, to let the startup script know we want to use all udev devices (mouse, keyboard, etc)
-#UDEV=1 
-# this is very important, we need to tell our environment that we are going to talk to display 0, which is hosted by the xserver block
-#    DISPLAY=:0 \
-#    DISPLAY=:1
 
-
-# We are running our entrypoint commands through the start.sh script, because we need to do a couple more things outside of just run electron
+# Admin Rechte
+RUN chmod +x start.sh 
+# Start command
 CMD ["bash", "/opt/start.sh"]

@@ -2,23 +2,26 @@ version: "2.4"
 volumes:
   xserver-volume:
   settings: # Only required if using PERSISTENT flag (see below)
+  shared-certs: # New volume for sharing certificates
 
 services:
   browser:
-    image: bh.cr/balenalabs/browser-amd64/2.5.1 # where <arch> is one of aarch64, arm32 or amd64 (getestet bis. 2.5.1 läuft, 2.5.2 läuft nicht) 
+    #image: bh.cr/balenalabs/browser-amd64/2.5.1 # where <arch> is one of aarch64, arm32 or amd64 (getestet bis. 2.5.1 läuft, 2.5.2 läuft nicht) 
     build: ./browser-2.7.0
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
     volumes:
       - "settings:/data" # Only required if using PERSISTENT flag (see below)
+      - "shared-certs:/certs" # Mount the shared volume
     environment:
-      - LAUNCH_URL=http://app:8080?display=1
+      - LAUNCH_URL=https://app:8082
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
-      - KIOSK=1
+      - KIOSK=0
       # - FLAGS= --enable-accelerated-video-decode --disable-context-menu --disable-pinch --lang=de
       # - LOCAL_HTTP_DELAY=10
       # - FLAGS=--disable-pinch
+      #- EXTRA_FLAGS --use-system-ssl --ignore-certificate-errors --allow-insecure-localhost --auto-open-devtools-for-tabs --disable-web-security --no-sandbox
       - WINDOW_SIZE=1280,800 # Touchscreen Fannal 10.1"
       # - WINDOW_SIZE=43840, 2160
     ports:
@@ -39,11 +42,13 @@ services:
     restart: always
     privileged: true
     hostname: app
+    volumes:
+      - "shared-certs:/certs" # Mount the shared volume
     ports:
-    #  - "3000:3000"
-      - "8080:8080"
+      - "8081:8081" # Internal HTTP port
+      - "8082:8082" # External HTTPS port for SSL proxy
     environment:
-      - PORT=8080
+      - PORT=8081
     # depends_on:
     #  - browser
     #  - devices

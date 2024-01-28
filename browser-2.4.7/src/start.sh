@@ -18,6 +18,11 @@ echo "balenaLabs browser version: $(<VERSION)"
 echo "Setting CPU Scaling Governor to 'performance'"
 echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 
 
+# Check if the root CA certificate exists in the shared volume and install it
+cp /certs/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
+update-ca-certificates
+echo "########################Installing root CA certificate from shared volume..."
+
 # check if display number envar was set
 if [[ -z "$DISPLAY_NUM" ]]
   then
@@ -43,6 +48,8 @@ then
 	echo -e "\033[91mWARNING: GPU MEMORY TOO LOW"
 	fi
 fi
+
+
 
 # set up the user data area
 mkdir -p /data/chromium

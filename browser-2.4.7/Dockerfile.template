@@ -48,6 +48,27 @@ RUN usermod -a -G audio,video,tty chromium
 
 RUN ln -s /usr/bin/chromium /usr/bin/chromium-browser || true
 
+
+
+
+# Install locale and keyboard configuration packages
+RUN apt-get update && apt-get install -y locales console-data
+
+# Generate locale for German
+RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+
+# Set environment variables for German locale
+ENV LANG de_DE.UTF-8
+ENV LANGUAGE de_DE:de
+ENV LC_ALL de_DE.UTF-8
+
+# Set the keyboard layout to German
+RUN echo "XKBLAYOUT=de" > /etc/default/keyboard
+
+
+
+
 # Set up the audio block. This won't have any effect if the audio block is not being used.
 RUN curl -skL https://raw.githubusercontent.com/balena-labs-projects/audio/master/scripts/alsa-bridge/debian-setup.sh| sh
 ENV PULSE_SERVER=tcp:audio:4317
