@@ -42,37 +42,36 @@ async def echo(websocket, path, callback):
         if client_alias in clients:
             del clients[client_alias]
             print(f"Client disconnected: {client_alias}")
+            
 
 async def start_websocket_server(callback):
     host = '0.0.0.0'
     port = int(os.environ.get('PORT', 8765))
 
-    # SSL context setup
-    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-
     # Check if running inside Docker
     def is_running_in_docker():
         return os.getenv('RUNNING_IN_DOCKER') == 'true'
 
-    # Modify the SSL context setup based on the environment
+    # Initialize ssl_context only if running in Docker
+    ssl_context = None
     if is_running_in_docker():
         ssl_cert_path = '/certs/devices.pem'
         ssl_key_path = '/certs/devices-key.pem'
+        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        ssl_context.load_cert_chain(ssl_cert_path, ssl_key_path)
+        print(f"WebSocket server starting on wss://{host}:{port}")
     else:
-        ssl_cert_path = '../certs/devices.pem'
-        ssl_key_path = '../certs/devices-key.pem'
+        print(f"WebSocket server starting on ws://{host}:{port}")
 
-    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-    ssl_context.load_cert_chain(ssl_cert_path, ssl_key_path)
-
-    print(f"WebSocket server starting on wss://{host}:{port}")
+    # Start the server with or without SSL context based on environment
     start_server = websockets.serve(lambda ws, path: echo(ws, path, callback), host, port, ssl=ssl_context)
 
     try:
         await start_server
-        print(f"WebSocket server successfully started on wss://{host}:{port}")
+        print(f"WebSocket server successfully started on {'wss' if ssl_context else 'ws'}://{host}:{port}")
     except Exception as e:
         print(f"WebSocket server failed to start: {e}")
+
 
 # Function to send a message from the host
 async def send_message_from_host(client_alias, message):
