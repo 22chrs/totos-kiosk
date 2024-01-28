@@ -1,7 +1,4 @@
 
-
-
-
 1. Virtuelle Umgebung installieren
     - python3 -m venv venv  
 2. Virtuelle Umgebung aktiveren

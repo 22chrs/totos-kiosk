@@ -49,7 +49,21 @@ async def start_websocket_server(callback):
 
     # SSL context setup
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-    ssl_context.load_cert_chain('/certs/app.pem', '/certs/app-key.pem')  # Update these paths to your actual certificate paths
+
+    # Check if running inside Docker
+    def is_running_in_docker():
+        return os.getenv('RUNNING_IN_DOCKER') == 'true'
+
+    # Modify the SSL context setup based on the environment
+    if is_running_in_docker():
+        ssl_cert_path = '/certs/devices.pem'
+        ssl_key_path = '/certs/devices-key.pem'
+    else:
+        ssl_cert_path = '../certs/devices.pem'
+        ssl_key_path = '../certs/devices-key.pem'
+
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    ssl_context.load_cert_chain(ssl_cert_path, ssl_key_path)
 
     print(f"WebSocket server starting on wss://{host}:{port}")
     start_server = websockets.serve(lambda ws, path: echo(ws, path, callback), host, port, ssl=ssl_context)

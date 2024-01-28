@@ -27,6 +27,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Enable udevd so that plugged dynamic hardware devices show up in our container.
 ENV UDEV=1
+ENV RUNNING_IN_DOCKER=true
 
-# main.py will run when container starts up on the device
-CMD ["python","-u","main.py"]
+# Ensure start.sh is executable
+RUN chmod +x /opt/start.sh
+
+# main.py will be started by start.sh when container starts up on the device
+CMD ["/opt/start.sh"]

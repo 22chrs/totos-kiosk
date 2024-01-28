@@ -15,7 +15,7 @@ echo "Copying root CA files to $CERT_DIR..."
 cp "$ROOT_CA_PATH"/rootCA.pem .
 cp "$ROOT_CA_PATH"/rootCA-key.pem .
 
-echo "Generating certificate and key for 'app'..."
-mkcert -key-file app-key.pem -cert-file app.pem "app" "*.app"
+echo "Generating certificate and key for 'devices'..."
+mkcert -key-file devices-key.pem -cert-file devices.pem "devices" "*.devices"
 
 echo "Certificates and keys generated in $CERT_DIR"
