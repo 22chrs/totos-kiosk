@@ -26,6 +26,8 @@ services:
       # - WINDOW_SIZE=43840, 2160
     ports:
       - "5011" # management API (optional)
+    depends_on:
+      - app
 
   # display:
   #   build: ./display-pi5
@@ -49,10 +51,7 @@ services:
       - "8082:8082" # External HTTPS port for SSL proxy
     environment:
       - PORT=8081
-    # depends_on:
-    #  - browser
-    #  - devices
-
+      
   devices:
     build: ./devices
     restart: always

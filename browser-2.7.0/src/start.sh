@@ -59,16 +59,45 @@ mkdir -p /data/chromium
 chown -R chromium:chromium /data
 rm -f /data/chromium/SingletonLock
 
-# Check if the root CA certificate exists in the shared volume and install it
-cp /certs/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
-update-ca-certificates
 
-# Set up NSS Database for Chromium with correct permissions
-CHROMIUM_HOME="/home/chromium"
-mkdir -p $CHROMIUM_HOME/.pki/nssdb
-chown -R chromium:chromium $CHROMIUM_HOME/.pki
-su - chromium -c "certutil -d sql:$CHROMIUM_HOME/.pki/nssdb --empty-password -N -f /dev/null 2> /dev/null"
-su - chromium -c "certutil -d sql:$CHROMIUM_HOME/.pki/nssdb -A -t 'CT,C,C' -n rootCA -i /certs/rootCA.pem"
+
+# Define paths for the certificates
+SHARED_CERT="/certs/rootCA.pem"
+BROWSER_CERT="/usr/local/share/ca-certificates/rootCA.crt"
+NSSDB="/home/chromium/.pki/nssdb"
+
+# Function to update the certificate
+update_certificate() {
+    echo "Updating certificate..."
+    cp "$SHARED_CERT" "$BROWSER_CERT"
+    update-ca-certificates
+    # Ensure the NSSDB directory exists and is owned by the 'chromium' user
+    mkdir -p "$NSSDB"
+    chown -R chromium:chromium "$NSSDB"
+    su - chromium -c "certutil -d sql:$NSSDB --empty-password -N -f /dev/null 2> /dev/null"
+    su - chromium -c "certutil -d sql:$NSSDB -A -t 'CT,C,C' -n rootCA -i $SHARED_CERT"
+}
+
+# Check if the shared certificate is available and different from the browser's certificate, then update
+if [ -f "$SHARED_CERT" ]; then
+    if [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
+        update_certificate
+    fi
+else
+    echo "Shared certificate not found."
+fi
+
+# Background process to periodically check for certificate updates
+(
+    while true; do
+        sleep 10  # Check every hour
+        if [ -f "$SHARED_CERT" ] && [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
+            update_certificate
+        fi
+    done
+) &
+
+
 
 
 # we can't maintain the environment with su, because we are logging in to a new session
@@ -80,4 +109,9 @@ environment="${environment::-1}"
 
 # launch Chromium and whitelist the enVars so that they pass through to the su session
 su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
+
+
+echo "changed"
 balena-idle
+
+

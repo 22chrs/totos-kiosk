@@ -23,4 +23,5 @@ cp /root/.local/share/mkcert/rootCA.pem /certs/
 
 # Run balena-idle to keep the container running
 echo "Running balena-idle..."
+echo "changed"
 balena-idle
