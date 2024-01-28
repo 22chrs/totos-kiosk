@@ -40,10 +40,10 @@ services:
   #     io.balena.features.dbus: '1'
 
   app:
+    hostname: app
     build: ./app
     restart: always
     privileged: true
-    hostname: app
     volumes:
       - "shared-certs:/certs" # Mount the shared volume
     ports:
@@ -51,12 +51,16 @@ services:
       - "8082:8082" # External HTTPS port for SSL proxy
     environment:
       - PORT=8081
-      
+
   devices:
+    hostname: devices
     build: ./devices
     restart: always
     privileged: true
-    hostname: devices
+    volumes:
+      - "shared-certs:/certs" # Mount the shared volume
+    depends_on:
+      - app
 
   # toto:
   #   build: ./toto

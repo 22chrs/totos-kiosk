@@ -78,10 +78,17 @@ update_certificate() {
     su - chromium -c "certutil -d sql:$NSSDB -A -t 'CT,C,C' -n rootCA -i $SHARED_CERT"
 }
 
+
 # Check if the shared certificate is available and different from the browser's certificate, then update
 if [ -f "$SHARED_CERT" ]; then
     if [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
+        su - chromium -c "certutil -d sql:$NSSDB -D -n rootCA" #delete old one
         update_certificate
+        # Kill existing Chromium process
+        pkill chromium || true
+        # Wait for a moment to ensure the process has been terminated
+        sleep 2
+        su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
     fi
 else
     echo "Shared certificate not found."
