@@ -11,6 +11,7 @@ file_structure.txt
 **/node_modules
 **/out
 **/stuff
+**/*.pem
 
 ### DEVICES
 devices/payment/receipts

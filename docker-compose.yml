@@ -5,6 +5,16 @@ volumes:
   shared-certs: # New volume for sharing certificates
 
 services:
+
+  certs-init:
+    build:
+      context: ./certs
+      dockerfile: Dockerfile.init-certs
+    volumes:
+      - shared-certs:/shared-certs
+    command: ["sh", "-c", "cp -r /certs/* /shared-certs/ && echo 'Certificates copied' && sleep 3600"]
+
+
   browser:
     #image: bh.cr/balenalabs/browser-amd64/2.5.1 # where <arch> is one of aarch64, arm32 or amd64 (getestet bis. 2.5.1 läuft, 2.5.2 läuft nicht) 
     build: ./browser-2.7.0
@@ -44,6 +54,11 @@ services:
     build: ./app
     restart: always
     privileged: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     volumes:
       - "shared-certs:/certs" # Mount the shared volume
     ports:

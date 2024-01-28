@@ -1,7 +1,7 @@
 import websockets
 import os
 import json
-from datetime import datetime
+import ssl
 
 HOST_NAME = 'devices'
 
@@ -46,11 +46,17 @@ async def echo(websocket, path, callback):
 async def start_websocket_server(callback):
     host = '0.0.0.0'
     port = int(os.environ.get('PORT', 8765))
-    print(f"WebSocket server starting on {host}:{port}")
-    start_server = websockets.serve(lambda ws, path: echo(ws, path, callback), host, port)
+
+    # SSL context setup
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    ssl_context.load_cert_chain('/certs/app.pem', '/certs/app-key.pem')  # Update these paths to your actual certificate paths
+
+    print(f"WebSocket server starting on wss://{host}:{port}")
+    start_server = websockets.serve(lambda ws, path: echo(ws, path, callback), host, port, ssl=ssl_context)
+
     try:
         await start_server
-        print(f"WebSocket server successfully started on {host}:{port}")
+        print(f"WebSocket server successfully started on wss://{host}:{port}")
     except Exception as e:
         print(f"WebSocket server failed to start: {e}")
 

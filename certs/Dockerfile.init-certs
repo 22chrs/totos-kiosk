@@ -1,0 +1,3 @@
+FROM alpine
+COPY . /certs
+CMD ["sh", "-c", "cp -r /certs/* /shared-certs/"]
