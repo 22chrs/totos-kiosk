@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y \
 // add to start.sh after setting up user data; after the 2 sec sleep look that the start chromium code is still the same chromium starting code than some lines after this code
 
 
+
 # Define paths for the certificates
 SHARED_CERT="/certs/rootCA.pem"
 BROWSER_CERT="/usr/local/share/ca-certificates/rootCA.crt"
@@ -53,7 +54,18 @@ update_certificate() {
 # Check if the shared certificate is available and different from the browser's certificate, then update
 if [ -f "$SHARED_CERT" ]; then
     if [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
-        su - chromium -c "certutil -d sql:$NSSDB -D -n rootCA" #delete old one
+        # Switch to the chromium user to ensure proper permissions and deleate old certs
+        # su - chromium -c "
+        #     # List all certificates, extract full nicknames, and delete each one
+        #     certutil -d sql:$NSSDB -L | awk -F '  ' '/^[a-zA-Z0-9]/ {print \$1}' | while read CERT; do
+        #         certutil -d sql:$NSSDB -D -n \"\$CERT\"
+        #         if [ \$? -eq 0 ]; then
+        #             echo \"Deleted certificate: \$CERT\"
+        #         else
+        #             echo \"Failed to delete certificate: \$CERT\"
+        #         fi
+        #     done
+        # "
         update_certificate
         # Kill existing Chromium process
         pkill chromium || true
@@ -74,3 +86,4 @@ fi
         fi
     done
 ) &
+

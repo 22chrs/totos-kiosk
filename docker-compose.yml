@@ -14,7 +14,6 @@ services:
       - shared-certs:/shared-certs
     command: ["sh", "-c", "cp -r /certs/* /shared-certs/ && echo 'Certificates copied' && sleep 3600"]
 
-
   browser:
     #image: bh.cr/balenalabs/browser-amd64/2.5.1 # where <arch> is one of aarch64, arm32 or amd64 (getestet bis. 2.5.1 läuft, 2.5.2 läuft nicht) 
     build: ./browser-2.7.0
@@ -34,31 +33,13 @@ services:
       #- EXTRA_FLAGS --use-system-ssl --ignore-certificate-errors --allow-insecure-localhost --auto-open-devtools-for-tabs --disable-web-security --no-sandbox
       - WINDOW_SIZE=1280,800 # Touchscreen Fannal 10.1"
       # - WINDOW_SIZE=43840, 2160
-    ports:
-      - "5011" # management API (optional)
-    depends_on:
-      - app
 
-  # display:
-  #   build: ./display-pi5
-  #   privileged: true
-  #   environment:
-  #     - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
-  #     - LAUNCH_URL_1=http://app:8080?display=1
-  #     - LAUNCH_URL_2=http://app:8080?display=2
-  #   labels:
-  #     io.balena.features.dbus: '1'
 
   app:
     hostname: app
     build: ./app
     restart: always
     privileged: true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     volumes:
       - "shared-certs:/certs" # Mount the shared volume
     ports:
@@ -74,13 +55,11 @@ services:
     privileged: true
     volumes:
       - "shared-certs:/certs" # Mount the shared volume
-    depends_on:
-      - app
 
   # toto:
+  #   hostname: toto
   #   build: ./toto
   #   restart: always
   #   privileged: true
-  #   hostname: toto
-  #   environment:
-  #     - WEBSOCKET_SERVER_URI=ws://orchester:8765
+  #   volumes:
+  #     - "shared-certs:/certs" # Mount the shared volume

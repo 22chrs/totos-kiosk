@@ -17,15 +17,6 @@ RUN npm ci
 # Build the application
 RUN npm run build
 
-# Update package list and install mkcert
-# RUN apt-get update && \
-#     apt-get install -y mkcert
-
-# Setup mkcert, generate a certificate for 'app', and create a root CA certificate
-# RUN mkcert -install && \
-#     mkcert app && \
-#     mkcert -CAROOT
-
 # Install local-ssl-proxy globally
 RUN npm install -g local-ssl-proxy
 
