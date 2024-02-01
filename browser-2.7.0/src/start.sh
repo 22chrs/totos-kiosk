@@ -18,11 +18,25 @@ echo "balenaLabs browser version: $(<VERSION)"
 echo "Setting CPU Scaling Governor to 'performance'"
 echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 
 
+# # check if display number envar was set
+# if [[ -z "$DISPLAY_NUM" ]]
+#   then
+#     export DISPLAY_NUM=0
+# fi
+
 # check if display number envar was set
-if [[ -z "$DISPLAY_NUM" ]]
-  then
+if [[ -z "$DISPLAY_NUM" ]]; then
     export DISPLAY_NUM=0
 fi
+
+# export DISPLAY=: $DISPLAY_NUM
+
+# # Attempt to start the X server for the specified display number
+# Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /tmp/10.log -config /etc/X11/xorg.conf :$DISPLAY_NUM &
+
+# # Wait a bit to ensure the X server starts
+# sleep 5
+
 
 # set whether to show a cursor or not
 if [[ ! -z $SHOW_CURSOR ]] && [[ "$SHOW_CURSOR" -eq "1" ]]
@@ -58,8 +72,6 @@ fi
 mkdir -p /data/chromium
 chown -R chromium:chromium /data
 rm -f /data/chromium/SingletonLock
-
-
 
 # Define paths for the certificates
 SHARED_CERT="/certs/rootCA.pem"

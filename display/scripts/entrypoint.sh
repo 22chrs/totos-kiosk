@@ -1,42 +1,42 @@
+#!/usr/bin/env bash
+
+## Hosts
+echo "127.0.0.1 $HOSTNAME" >> /etc/hosts
+
+export DEBIAN_FRONTEND=noninteractive
+
+
+## XServer Configuration
+mkdir -p /tmp/.X11-unix
+chown root:root /tmp/.X11-unix
+chmod 1777 /tmp/.X11-unix
+
+sed -i -e 's/console/anybody/g' /etc/X11/Xwrapper.config
+sudo dpkg-reconfigure xserver-xorg-legacy
+
+
+echo "allowed_users=anybody" | sudo tee /etc/X11/Xwrapper.config
+echo "needs_root_rights=yes" | sudo tee -a /etc/X11/Xwrapper.config
 
 
 
-modify balena browser:
-# Todo: 
+#sudo usermod -a -G tty pi
 
 
-// How to pdate:
-- Copy and save xorg.conf and README
-- add the following code to the files:
 
 
-// add to dockerfile.template before audio things
 
-# Install locale and keyboard configuration packages
-RUN apt-get update && apt-get install -y locales console-data
+## Disable CPU Throttling
+echo 'performance' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
-# Generate locale for German
-RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
-
-# Set environment variables for German locale
-ENV LANG de_DE.UTF-8
-ENV LANGUAGE de_DE:de
-ENV LC_ALL de_DE.UTF-8
-
-# Set the keyboard layout to German
-RUN echo "XKBLAYOUT=de" > /etc/default/keyboard
-
-# Tools to handle and load certs
-RUN apt-get update && apt-get install -y \
-    libnss3-tools \
-    lsb-release 
-
-# Copy xorg.conf for multi monitors setup
-COPY xorg.conf /etc/X11/xorg.conf
-
-// add to start.sh after setting up user data; after the 2 sec sleep look that the start chromium code is still the same chromium starting code than some lines after this code
-
+## Show Cursor
+if [[ -n $SHOW_CURSOR ]] && [[ $SHOW_CURSOR -eq 1 ]]; then
+  export CURSOR=''
+  echo "Enabling cursor"
+else
+  export CURSOR='-- -nocursor'
+  echo "Disabling cursor"
+fi
 
 
 # Define paths for the certificates
@@ -93,3 +93,14 @@ fi
     done
 ) &
 
+
+
+
+
+## Pass Environment Variables to New Session
+environment=$(env | grep -v -w '_' | awk -F= '{ st = index($0,"=");print substr($1,0,st) ","}' | tr -d "\n")
+environment="${environment::-1}"
+
+## Change User to "chromium" and startx with start_server.sh
+su -w $environment -c "export DISPLAY=:0 && startx /app/scripts/start_server.sh $CURSOR" - chromium
+balena-idle

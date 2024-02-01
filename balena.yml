@@ -1,6 +1,6 @@
 name: hej-toto-app
 type: sw.application
-version: 10.0.0
+version: 14.0.1
 joinable: false
 description: >-
   Hej Toto App
@@ -20,4 +20,5 @@ data:
   supportedDeviceTypes:
     - generic-amd64
     - generic-aarch64
-  #  - raspberrypi5
+    - raspberrypi4
+    - raspberrypi5
