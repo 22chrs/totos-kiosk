@@ -77,7 +77,7 @@ if [ -f "$SHARED_CERT" ]; then
         pkill chromium || true
         # Wait for a moment to ensure the process has been terminated
         sleep 2
-        su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
+        #su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
     fi
 else
     echo "Shared certificate not found."
