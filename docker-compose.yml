@@ -14,49 +14,49 @@ services:
       - shared-certs:/shared-certs
     command: ["sh", "-c", "cp -r /certs/* /shared-certs/ && echo 'Certificates copied' && sleep 3600"]
 
-  display:
-    build: ./display-orginal
-    privileged: true
-    restart: always
-    volumes:
-      - "settings:/data" # Only required if using PERSISTENT flag (see below)
-      - "shared-certs:/certs" # Mount the shared volume
-    environment:
-      - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
-      - LAUNCH_URL_1=https:/google.com
-      - LAUNCH_URL_2=https:/google.de
-      #- LAUNCH_URL_1=https://app:8082?display=1
-      #- LAUNCH_URL_2=https://app:8082?display=2
-      - SHOW_CURSOR=1
-      # - DISPLAY=0
-      # - DISPLAY_1=0
-      # - DISPLAY_2=1
-    labels:
-      io.balena.features.dbus: '1'
-
-  # browser1:
-  #   build: ./browser-2.7.0
+  # display:
+  #   build: ./display-orginal
+  #   privileged: true
   #   restart: always
-  #   privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
   #   volumes:
   #     - "settings:/data" # Only required if using PERSISTENT flag (see below)
   #     - "shared-certs:/certs" # Mount the shared volume
   #   environment:
-  #     - LAUNCH_URL=https://app:8082?display=1
-  #     - TERMINAL=1
-  #     - DISPLAY_NUM=0
+  #     - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
+  #     - LAUNCH_URL_1=https:/google.com
+  #     - LAUNCH_URL_2=https:/bing.com
+  #     #- LAUNCH_URL_1=https://app:8082?display=1
+  #     #- LAUNCH_URL_2=https://app:8082?display=2
   #     - SHOW_CURSOR=1
-  #     - ENABLE_GPU=1
-  #     - KIOSK=1
-  #     # - EXTRA_FLAGS= --disable-pinch
-  #     - WINDOW_SIZE=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
-  # # xserver:
-  # #   # Replace <arch> with your own machines architecture. The default architecture without a - is `amd64`
-  # #   image: bh.cr/balenalabs/xserver-<arch> 
-  # #   restart: always
-  # #   privileged: true
-  # #   volumes:
-  # #     - 'x11:/tmp/.X11-unix'
+  #     # - DISPLAY=0
+  #     # - DISPLAY_1=0
+  #     # - DISPLAY_2=1
+  #   labels:
+  #     io.balena.features.dbus: '1'
+
+  browser1:
+    build: ./browser-2.7.0
+    restart: always
+    privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
+    volumes:
+      - "settings:/data" # Only required if using PERSISTENT flag (see below)
+      - "shared-certs:/certs" # Mount the shared volume
+    environment:
+      - LAUNCH_URL=https://app:8082?display=1
+      - TERMINAL=1
+      - DISPLAY_NUM=0
+      - SHOW_CURSOR=1
+      - ENABLE_GPU=1
+      - KIOSK=0
+      # - EXTRA_FLAGS= --disable-pinch
+      - WINDOW_SIZE=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
+  # xserver:
+  #   # Replace <arch> with your own machines architecture. The default architecture without a - is `amd64`
+  #   image: bh.cr/balenalabs/xserver-<arch> 
+  #   restart: always
+  #   privileged: true
+  #   volumes:
+  #     - 'x11:/tmp/.X11-unix'
 
   # browser2:
   #   build: ./browser-2.7.0
@@ -88,13 +88,13 @@ services:
     environment:
       - PORT=8081
 
-  devices:
-    hostname: devices
-    build: ./devices
-    restart: always
-    privileged: true
-    volumes:
-      - "shared-certs:/certs" # Mount the shared volume
+  # devices:
+  #   hostname: devices
+  #   build: ./devices
+  #   restart: always
+  #   privileged: true
+  #   volumes:
+  #     - "shared-certs:/certs" # Mount the shared volume
 
   # toto:
   #   hostname: toto

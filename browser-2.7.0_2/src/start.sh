@@ -88,37 +88,34 @@ update_certificate() {
     chown -R chromium:chromium "$NSSDB"
     su - chromium -c "certutil -d sql:$NSSDB --empty-password -N -f /dev/null 2> /dev/null"
     su - chromium -c "certutil -d sql:$NSSDB -A -t 'CT,C,C' -n rootCA -i $SHARED_CERT"
-
-    #certutil -d sql:$NSSDB --empty-password -N -f /dev/null 2> /dev/null
-    #certutil -d sql:$NSSDB -A -t 'CT,C,C' -n rootCA -i $SHARED_CERT
 }
 
 
-# # Check if the shared certificate is available and different from the browser's certificate, then update
-# if [ -f "$SHARED_CERT" ]; then
-#     if [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
-#         # Switch to the chromium user to ensure proper permissions and deleate old certs
-#         # su - chromium -c "
-#         #     # List all certificates, extract full nicknames, and delete each one
-#         #     certutil -d sql:$NSSDB -L | awk -F '  ' '/^[a-zA-Z0-9]/ {print \$1}' | while read CERT; do
-#         #         certutil -d sql:$NSSDB -D -n \"\$CERT\"
-#         #         if [ \$? -eq 0 ]; then
-#         #             echo \"Deleted certificate: \$CERT\"
-#         #         else
-#         #             echo \"Failed to delete certificate: \$CERT\"
-#         #         fi
-#         #     done
-#         # "
-#         update_certificate
-#         # Kill existing Chromium process
-#         pkill chromium || true
-#         # Wait for a moment to ensure the process has been terminated
-#         sleep 2
-#         su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
-#     fi
-# else
-#     echo "Shared certificate not found."
-# fi
+# Check if the shared certificate is available and different from the browser's certificate, then update
+if [ -f "$SHARED_CERT" ]; then
+    if [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
+        # Switch to the chromium user to ensure proper permissions and deleate old certs
+        # su - chromium -c "
+        #     # List all certificates, extract full nicknames, and delete each one
+        #     certutil -d sql:$NSSDB -L | awk -F '  ' '/^[a-zA-Z0-9]/ {print \$1}' | while read CERT; do
+        #         certutil -d sql:$NSSDB -D -n \"\$CERT\"
+        #         if [ \$? -eq 0 ]; then
+        #             echo \"Deleted certificate: \$CERT\"
+        #         else
+        #             echo \"Failed to delete certificate: \$CERT\"
+        #         fi
+        #     done
+        # "
+        update_certificate
+        # Kill existing Chromium process
+        pkill chromium || true
+        # Wait for a moment to ensure the process has been terminated
+        sleep 2
+        su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
+    fi
+else
+    echo "Shared certificate not found."
+fi
 
 # Background process to periodically check for certificate updates
 (
@@ -140,37 +137,11 @@ environment=$(env | grep -v -w '_' | awk -F= '{ st = index($0,"=");print substr(
 # remove the last comma
 environment="${environment::-1}"
 
-startx -- :0 &
-sleep 10
-
-export DISPLAY=:0
-xrandr --output HDMI-1 --auto --primary
-xrandr --output HDMI-2 --auto
-xrandr --output HDMI-2 --mode 1920x1080 --right-of HDMI-1
-xrandr --output HDMI-1 --mode 1920x1080
-
-#su - chromium -w $environment -c 'DISPLAY=:0 chromium-browser --new-window --user-data-dir=/tmp/browser-1 --window-size=1920,1080 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &'
-
-#su - chromium -w $environment -c 'DIPSPAY=:0 chromium-browser --new-window --user-data-dir=/tmp/browser-2 --window-size=1920,1080 --window-position="1920,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=2 &'
-
-
-chromium-browser --new-window --user-data-dir=/tmp/browser-1 --window-size=1920,1080 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &
-
-chromium-browser --new-window --user-data-dir=/tmp/browser-2 --window-size=1920,1080 --window-position="1920,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://bing.com &
-
-
-#su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx " - chromium
-
-
-
 # launch Chromium and whitelist the enVars so that they pass through to the su session
-#su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
+su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
 
 
 echo "changed"
 balena-idle
-
-
-
 
 
