@@ -93,32 +93,31 @@ update_certificate() {
     #certutil -d sql:$NSSDB -A -t 'CT,C,C' -n rootCA -i $SHARED_CERT
 }
 
-
-# # Check if the shared certificate is available and different from the browser's certificate, then update
-# if [ -f "$SHARED_CERT" ]; then
-#     if [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
-#         # Switch to the chromium user to ensure proper permissions and deleate old certs
-#         # su - chromium -c "
-#         #     # List all certificates, extract full nicknames, and delete each one
-#         #     certutil -d sql:$NSSDB -L | awk -F '  ' '/^[a-zA-Z0-9]/ {print \$1}' | while read CERT; do
-#         #         certutil -d sql:$NSSDB -D -n \"\$CERT\"
-#         #         if [ \$? -eq 0 ]; then
-#         #             echo \"Deleted certificate: \$CERT\"
-#         #         else
-#         #             echo \"Failed to delete certificate: \$CERT\"
-#         #         fi
-#         #     done
-#         # "
-#         update_certificate
-#         # Kill existing Chromium process
-#         pkill chromium || true
-#         # Wait for a moment to ensure the process has been terminated
-#         sleep 2
-#         su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
-#     fi
-# else
-#     echo "Shared certificate not found."
-# fi
+# Check if the shared certificate is available and different from the browser's certificate, then update
+if [ -f "$SHARED_CERT" ]; then
+    if [ ! -f "$BROWSER_CERT" ] || ! cmp -s "$SHARED_CERT" "$BROWSER_CERT"; then
+        # Switch to the chromium user to ensure proper permissions and deleate old certs
+        # su - chromium -c "
+        #     # List all certificates, extract full nicknames, and delete each one
+        #     certutil -d sql:$NSSDB -L | awk -F '  ' '/^[a-zA-Z0-9]/ {print \$1}' | while read CERT; do
+        #         certutil -d sql:$NSSDB -D -n \"\$CERT\"
+        #         if [ \$? -eq 0 ]; then
+        #             echo \"Deleted certificate: \$CERT\"
+        #         else
+        #             echo \"Failed to delete certificate: \$CERT\"
+        #         fi
+        #     done
+        # "
+        update_certificate
+        # Kill existing Chromium process
+        pkill chromium || true
+        # Wait for a moment to ensure the process has been terminated
+        sleep 2
+        su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
+    fi
+else
+    echo "Shared certificate not found."
+fi
 
 # Background process to periodically check for certificate updates
 (
@@ -129,8 +128,6 @@ update_certificate() {
         fi
     done
 ) &
-
-
 
 
 # we can't maintain the environment with su, because we are logging in to a new session
@@ -148,19 +145,19 @@ xset s noblank
 
 
 export DISPLAY=:0
-xrandr --output HDMI-2 --mode 1280x800 --pos 0x0 --rate 60 
-xrandr --output HDMI-1 --mode 1280x800 --pos 1280x0 --rate 60 
+xrandr --output HDMI-1 --mode 1280x800 --pos 0x0 --rate 60 
+xrandr --output HDMI-2 --mode 1280x800 --pos 1280x0 --rate 60 
 xrandr --fb 3840x800
 
-
-#su - chromium -w $environment -c 'DISPLAY=:0 chromium-browser --new-window --user-data-dir=/tmp/browser-1 --window-size=1920,1080 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &'
-
-#su - chromium -w $environment -c 'DIPSPAY=:0 chromium-browser --new-window --user-data-dir=/tmp/browser-2 --window-size=1920,1080 --window-position="1920,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=2 &'
-
-chromium-browser --new-window --disable-gpu --user-data-dir='Profil 1' --window-size=1280,800 --window-position=2560,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://bing.com &
-chromium-browser --new-window --disable-gpu --user-data-dir=Default --window-size=1280,800 --window-position=0,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://app:8082?display=1 &
+#su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-1 --window-size=1280,800 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &'
+#su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-2 --window-size=1280,800 --window-position="2560,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=2 &'
 
 
+chromium-browser --new-window --user-data-dir=Default --window-size=1280,800 --window-position=0,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://app:8082?display=1 &
+chromium-browser --new-window --user-data-dir='Profil 1' --window-size=1280,800 --window-position=2560,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://bing.com &
+
+
+#orginal line
 #su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx " - chromium
 
 
