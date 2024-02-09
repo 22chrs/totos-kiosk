@@ -141,22 +141,24 @@ environment=$(env | grep -v -w '_' | awk -F= '{ st = index($0,"=");print substr(
 environment="${environment::-1}"
 
 startx -- :0 &
-sleep 10
+sleep 5
+xset s off
+xset -dpms
+xset s noblank
+
 
 export DISPLAY=:0
-xrandr --output HDMI-1 --auto --primary
-xrandr --output HDMI-2 --auto
-xrandr --output HDMI-2 --mode 1920x1080 --right-of HDMI-1
-xrandr --output HDMI-1 --mode 1920x1080
+xrandr --output HDMI-2 --mode 1280x800 --pos 0x0 --rate 60 
+xrandr --output HDMI-1 --mode 1280x800 --pos 1280x0 --rate 60 
+xrandr --fb 3840x800
+
 
 #su - chromium -w $environment -c 'DISPLAY=:0 chromium-browser --new-window --user-data-dir=/tmp/browser-1 --window-size=1920,1080 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &'
 
 #su - chromium -w $environment -c 'DIPSPAY=:0 chromium-browser --new-window --user-data-dir=/tmp/browser-2 --window-size=1920,1080 --window-position="1920,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=2 &'
 
-
-chromium-browser --new-window --user-data-dir=/tmp/browser-1 --window-size=1920,1080 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &
-
-chromium-browser --new-window --user-data-dir=/tmp/browser-2 --window-size=1920,1080 --window-position="1920,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://bing.com &
+chromium-browser --new-window --disable-gpu --user-data-dir='Profil 1' --window-size=1280,800 --window-position=2560,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://bing.com &
+chromium-browser --new-window --disable-gpu --user-data-dir=Default --window-size=1280,800 --window-position=0,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://app:8082?display=1 &
 
 
 #su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx " - chromium
