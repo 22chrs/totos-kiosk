@@ -137,17 +137,18 @@ environment=$(env | grep -v -w '_' | awk -F= '{ st = index($0,"=");print substr(
 # remove the last comma
 environment="${environment::-1}"
 
+
+# start xServer and cofig it to use 2 seperate Screens
 startx -- :0 &
-sleep 5
-xset s off
-xset -dpms
-xset s noblank
-
-
+echo "Starting xServer and waiting ..."
+sleep 10
+echo "Done waiting. Config xServers."
+xset s off -dpms
 export DISPLAY=:0
 xrandr --output HDMI-1 --mode 1280x800 --pos 0x0 --rate 60 
 xrandr --output HDMI-2 --mode 1280x800 --pos 1280x0 --rate 60 
 xrandr --fb 3840x800
+sleep 2
 
 #su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-1 --window-size=1280,800 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &'
 #su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-2 --window-size=1280,800 --window-position="2560,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=2 &'
@@ -166,7 +167,7 @@ chromium-browser --new-window --user-data-dir='Profil 1' --window-size=1280,800 
 #su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
 
 
-echo "changed"
+
 balena-idle
 
 
