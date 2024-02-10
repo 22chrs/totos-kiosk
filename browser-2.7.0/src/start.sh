@@ -154,12 +154,16 @@ sleep 2
 #su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-2 --window-size=1280,800 --window-position="2560,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=2 &'
 
 
-chromium-browser --new-window --user-data-dir=Default --window-size=1280,800 --window-position=0,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://app:8082?display=1 &
-chromium-browser --new-window --user-data-dir='Profil 1' --window-size=1280,800 --window-position=2560,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://bing.com &
+#chromium-browser --new-window --user-data-dir=Default --window-size=1280,800 --window-position=0,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://app:8082?display=1 &
+#chromium-browser --new-window --user-data-dir='Profil 1' --window-size=1280,800 --window-position=2560,0 --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --no-sandbox https://bing.com &
+
+chromium-browser --app=https://app:8082?display=1 --window-size=1280,800 --window-position=0,0 --kiosk --user-data-dir=/var/tmp/display1 --no-sandbox&
+chromium-browser --app=https:/google.com --window-size=1280,800 --window-position=2560,0 --kiosk --user-data-dir=/var/tmp/display2 --no-sandbox&
 
 
 #orginal line
 #su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx " - chromium
+
 
 
 
