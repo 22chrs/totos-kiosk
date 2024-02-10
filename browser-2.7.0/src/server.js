@@ -15,8 +15,10 @@ const os = require("os");
 
 // Bring in the static environment variables
 const API_PORT = parseInt(process.env.API_PORT) || 5011;
-const WINDOW_SIZE = process.env.WINDOW_SIZE || "1280,800";
-const WINDOW_POSITION = process.env.WINDOW_POSITION || "0,0";
+const WINDOW_SIZE_1 = process.env.WINDOW_SIZE_1 || "1280,800";
+const WINDOW_POSITION_1 = process.env.WINDOW_POSITION_1 || "0,0";
+const WINDOW_SIZE_2 = process.env.WINDOW_SIZE_1 || "1280,800";
+const WINDOW_POSITION_2 = process.env.WINDOW_POSITION_1 || "2560,0";
 const PERSISTENT_DATA = process.env.PERSISTENT || "0";
 const REMOTE_DEBUG_PORT = process.env.REMOTE_DEBUG_PORT || 35173;
 const FLAGS = process.env.FLAGS || null;
@@ -53,6 +55,9 @@ async function getUrlToDisplayAsync() {
   }
 
   console.log("LAUNCH_URL environment variable not set.");
+  console.log("Looking for local HTTP/S services.");
+
+  console.log("LAUNCH_URL_1 environment variable not set.");
   console.log("Looking for local HTTP/S services.");
 
   // make a HTTP/S request for each supported port to the localhost
@@ -103,8 +108,8 @@ let launchChromium = async function (url) {
     // User the default flags from chrome-launcher, plus our own.
     flags = DEFAULT_FLAGS;
     let balenaFlags = [
-      "--window-size=" + WINDOW_SIZE,
-      "--window-position=" + WINDOW_POSITION,
+      "--window-size=" + WINDOW_SIZE_1,
+      "--window-position=" + WINDOW_POSITION_1,
       "--autoplay-policy=no-user-gesture-required",
       "--noerrdialogs",
       "--disable-session-crashed-bubble",

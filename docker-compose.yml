@@ -23,13 +23,16 @@ services:
       - "shared-certs:/certs" # Mount the shared volume
     environment:
       - LAUNCH_URL=https://app:8082?display=1
+      - WINDOW_SIZE_1=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
+      - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
+      #- LAUNCH_URL_2=https://app:8082?display=2
       - DISPLAY_NUM=0
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
       - KIOSK=0
       # - EXTRA_FLAGS= --disable-pinch
-      - WINDOW_SIZE=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
-      - WINDOW_POSITION=2560,0
+
+     
 
   app:
     hostname: app
