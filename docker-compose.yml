@@ -6,7 +6,7 @@ volumes:
 
 services:
 
-  certs-init:
+  certs:
     build:
       context: ./certs
       dockerfile: Dockerfile.init-certs
@@ -34,6 +34,9 @@ services:
       - WINDOW_SIZE_2=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
       - WINDOW_POSITION21=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
       # - EXTRA_FLAGS= --disable-pinch
+    depends_on:
+      - app
+      - certs
 
   app:
     hostname: app
@@ -49,7 +52,8 @@ services:
     environment:
       - PORT=3000
     depends_on:
-      - browser
+      - certs
+
 
   # devices:
   #   hostname: devices
