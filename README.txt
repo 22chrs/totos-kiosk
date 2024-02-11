@@ -4,57 +4,50 @@ https://www.youtube.com/watch?v=N9353-K2pVM
 
 
 
-root@ec7d60180432:/usr/src/app# env
-RESIN_APP_ID=2108640
-BALENA_APP_ID=2108640
-BALENA_DEVICE_ARCH=aarch64
-SHOW_CURSOR=1
-ENABLE_GPU=1
-WINDOW_POSITION21=0,0
-HOSTNAME=ec7d60180432
-BALENA=1
-LANGUAGE=de_DE:de
-BALENA_APP_UUID=c361d9c8489e4eac8497cc25b2641835
-RESIN_APP_LOCK_PATH=/tmp/balena/updates.lock
-YARN_VERSION=1.22.4
-BALENA_APP_LOCK_PATH=/tmp/balena/updates.lock
-PWD=/usr/src/app
-UDEV=1
-LAUNCH_URL=https://app:8082?display=2
-BALENA_SERVICE_NAME=browser1
-TZ=Europe/Amsterdam
-BALENA_APP_NAME=hejtoto2
-DISPLAY_NUM=0
-RESIN_APP_UUID=c361d9c8489e4eac8497cc25b2641835
-HOME=/root
-LANG=de_DE.UTF-8
-LAUNCH_URL_2=https://app:8082?display=2
-RESIN_SERVICE_NAME=browser1
-RESIN_DEVICE_UUID=3598d75e59a4e1b93cfb1c9e75f05dd5
-TERM=xterm
-RESIN_APP_NAME=hejtoto2
-USER=root
-BALENA_DEVICE_NAME_AT_INIT=PI5-hejtoto
-RESIN=1
-BALENA_DEVICE_UUID=3598d75e59a4e1b93cfb1c9e75f05dd5
-DISPLAY=:0
-WINDOW_POSITION_1=0,0
-SHLVL=1
-WINDOW_SIZE_2=1280,800
-WINDOW_SIZE_1=1280,800
-KIOSK=1
-RESIN_DEVICE_ARCH=aarch64
-LC_ALL=de_DE.UTF-8
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-BALENA_DEVICE_TYPE=raspberrypi5
-RESIN_SERVICE_KILL_ME_PATH=/tmp/balena/handover-complete
-RESIN_HOST_OS_VERSION=balenaOS 4.0.16
-RESIN_DEVICE_NAME_AT_INIT=PI5-hejtoto
-NODE_VERSION=16.19.1
-RESIN_DEVICE_TYPE=raspberrypi5
-PULSE_SERVER=tcp:audio:4317
-DEBIAN_FRONTEND=noninteractive
-BALENA_HOST_OS_VERSION=balenaOS 4.0.16
-BALENA_SERVICE_HANDOVER_COMPLETE_PATH=/tmp/balena/handover-complete
-_=/usr/bin/env
-root@ec7d60180432:/usr/src/app# 
+
+
+2024-02-11T16:43:16+01:00  browser1  user.max_user_namespaces = 10000
+2024-02-11T16:43:17+01:00  browser1  umount: /dev: target is busy.
+2024-02-11T16:43:17+01:00  browser1  Running Balena base image entrypoint...
+2024-02-11T16:43:18+01:00  browser1  setting xserver-xorg-legacy/xwrapper/allowed_users from configuration file
+2024-02-11T16:43:18+01:00  browser1  BalenaLabs browser version: 2.7.0
+2024-02-11T16:43:18+01:00  browser1  Setting CPU Scaling Governor to 'performance'
+2024-02-11T16:43:18+01:00  browser1  Enabling cursor
+2024-02-11T16:43:18+01:00  browser1  Raspberry Pi 5 detected, injecting X.org config
+2024-02-11T16:43:18+01:00  browser1  Updating certificates in /etc/ssl/certs...
+2024-02-11T16:43:20+01:00  browser1  0 added, 0 removed; done.
+2024-02-11T16:43:20+01:00  browser1  Running hooks in /etc/ca-certificates/update.d...
+2024-02-11T16:43:20+01:00  browser1  done.
+2024-02-11T16:43:20+01:00  browser1  Updating certificates in /etc/ssl/certs...
+2024-02-11T16:43:21+01:00  browser1  0 added, 0 removed; done.
+2024-02-11T16:43:21+01:00  browser1  Running hooks in /etc/ca-certificates/update.d...
+2024-02-11T16:43:21+01:00  browser1  done.
+2024-02-11T16:43:21+01:00  browser1  
+2024-02-11T16:43:23+01:00  browser1  --- List Input Devices ---
+2024-02-11T16:43:23+01:00  browser1  â¡ Virtual core pointer                           id=2     [master pointer  (3)]
+2024-02-11T16:43:23+01:00  browser1  â   â³ Virtual core XTEST pointer                 id=4     [slave  pointer  (2)]
+2024-02-11T16:43:23+01:00  browser1  â   â³ Logitech Optical USB Mouse                 id=6     [slave  pointer  (2)]
+2024-02-11T16:43:23+01:00  browser1  â£ Virtual core keyboard                          id=3     [master keyboard (2)]
+2024-02-11T16:43:23+01:00  browser1      â³ Virtual core XTEST keyboard                id=5     [slave  keyboard (3)]
+2024-02-11T16:43:23+01:00  browser1      â³ pwr_button                                 id=7     [slave  keyboard (3)]
+2024-02-11T16:43:23+01:00  browser1      â³ vc4-hdmi-0                                 id=8     [slave  keyboard (3)]
+2024-02-11T16:43:23+01:00  browser1      â³ vc4-hdmi-1                                 id=9     [slave  keyboard (3)]
+2024-02-11T16:43:23+01:00  browser1  ----- End of List --------
+2024-02-11T16:43:23+01:00  browser1  dpkg-query: no packages found matching bluealsa
+2024-02-11T16:43:23+01:00  browser1  Installed browser version: Chromium 120.0.6099.102 Built on Debian , running on Debian 12
+2024-02-11T16:43:23+01:00  browser1  Can't open display :0
+2024-02-11T16:43:23+01:00  browser1  Can't open display :0
+2024-02-11T16:43:23+01:00  browser1  Can't open display :0
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  Point
+2024-02-11T16:43:25+01:00  browser1  xset:  unable to open display ":0"
+2024-02-11T16:43:25+01:00  browser1  Browser API running on port: 5011
+2024-02-11T16:43:25+01:00  browser1  Using LAUNCH_URL_1: https://app:8082?display=2
+2024-02-11T16:43:25+01:00  browser1  Enabling GPU
+2024-02-11T16:43:25+01:00  browser1  Enabling KIOSK mode

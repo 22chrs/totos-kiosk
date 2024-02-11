@@ -107,25 +107,27 @@ update_certificate_for_user "chromium"
 #service dbus start
 #xhost +si:localuser:$USER &
 
-export DISPLAY=:0
-if ! xset q &>/dev/null; then
-    echo "Starting X Server..."
-    startx &
-    sleep 10  # Wait for X server to become ready
-fi
+# export DISPLAY=:0
+# if ! xset q &>/dev/null; then
+#     echo "Starting X Server..."
+#     startx &
+#     sleep 10  # Wait for X server to become ready
+# fi
 
 
 
 # we can't maintain the environment with su, because we are logging in to a new session
 # so we need to manually pass in the environment variables to maintain, in a whitelist
 # This gets the current environment, as a comma-separated string
+echo "Point A"
 environment=$(env | grep -v -w '_' | awk -F= '{ st = index($0,"=");print substr($1,0,st) ","}' | tr -d "\n")
 # remove the last comma
 environment="${environment::-1}"
 
 # launch Chromium and whitelist the enVars so that they pass through to the su session
 su -w $environment -c "export DISPLAY=:0 && startx /usr/src/app/startx.sh $CURSOR" - chromium
-echo "Point"
+echo "Point BBC"
+
 
 #su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-1 --window-size=1280,800 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &'
 #su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-2 --window-size=1280,800 --window-position="2560,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=2 &'

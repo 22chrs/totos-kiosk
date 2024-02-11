@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y \
     lsb-release 
 
 # Copy xorg.conf for multi monitors setup
-COPY xorg.conf /etc/X11/xorg.conf
+#COPY xorg.conf /etc/X11/xorg.conf
 
 
 

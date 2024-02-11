@@ -14,7 +14,7 @@ services:
       - shared-certs:/shared-certs
     command: ["sh", "-c", "cp -r /certs/* /shared-certs/ && echo 'Certificates copied' && sleep 3600"]
 
-  browser1:
+  browser:
     build: ./browser-2.7.0
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
@@ -43,10 +43,13 @@ services:
     volumes:
       - "shared-certs:/certs" # Mount the shared volume
     ports:
-      - "8081:8081" # Internal HTTP port
+      - "3000:3000"
+      #- "8081:8081" # Internal HTTP port
       - "8082:8082" # External HTTPS port for SSL proxy
     environment:
-      - PORT=8081
+      - PORT=3000
+    depends_on:
+      - browser
 
   # devices:
   #   hostname: devices
