@@ -42,8 +42,9 @@ let timer = {};
 // 3) the default static HTML
 async function getUrlToDisplayAsync() {
   let launchUrl = process.env.LAUNCH_URL || null;
+  //let launchUrl = process.env.LAUNCH_URL_2 || null;
   if (null !== launchUrl) {
-    console.log(`Using LAUNCH_URL: ${launchUrl}`);
+    console.log(`Using LAUNCH_URL_1: ${launchUrl}`);
 
     // Prepend http:// if the LAUNCH_URL doesn't have it.
     // This is needed for the --app flag to be used for kiosk mode
@@ -54,8 +55,20 @@ async function getUrlToDisplayAsync() {
     return launchUrl;
   }
 
-  console.log("LAUNCH_URL environment variable not set.");
-  console.log("Looking for local HTTP/S services.");
+  // async function getUrlToDisplayAsync() {
+  //   let launchUrl_1 = process.env.LAUNCH_URL_1 || null;
+  //   let launchUrl_2 = process.env.LAUNCH_URL_2 || null;
+  //   if (null !== launchUrl_1) {
+  //     console.log(`Using LAUNCH_URL_1: ${launchUrl_1}`);
+
+  //     // Prepend http:// if the LAUNCH_URL doesn't have it.
+  //     // This is needed for the --app flag to be used for kiosk mode
+  //     if (!HTTPS_REGEX.test(launchUrl_1)) {
+  //       launchUrl_1 = `http://${launchUrl_1}`;
+  //     }
+
+  //     return launchUrl_1;
+  //   }
 
   console.log("LAUNCH_URL_1 environment variable not set.");
   console.log("Looking for local HTTP/S services.");
