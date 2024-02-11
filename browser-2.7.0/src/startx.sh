@@ -12,7 +12,7 @@ sed -i 's/"exited_cleanly":false/"exited_cleanly":true/; s/"exit_type":"[^"]\+"/
 export VERSION=`chromium-browser --version`
 echo "Installed browser version: $VERSION"
 
-export DISPLAY=:0
+#export DISPLAY=:0
 xrandr --output HDMI-1 --mode 1280x800 --pos 0x0 --rate 60
 xrandr --output HDMI-2 --mode 1280x800 --pos 1280x0 --rate 60
 xrandr --fb 3840x800

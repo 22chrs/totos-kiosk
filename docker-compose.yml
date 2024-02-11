@@ -26,7 +26,7 @@ services:
       - SHOW_CURSOR=1
       - ENABLE_GPU=1
       - KIOSK=1
-      - LAUNCH_URL=https://app:8082?display=2
+      - LAUNCH_URL=https://app:8082?display=1
       #- LAUNCH_URL_1=https://app:8082?display=2
       - WINDOW_SIZE_1=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
       - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
