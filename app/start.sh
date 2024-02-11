@@ -7,7 +7,7 @@ echo "Starting server.js..."
 npm run startLocal &
 
 # Delay to ensure server starts
-sleep 3
+sleep 5
 
 echo "server.js has been started."
 

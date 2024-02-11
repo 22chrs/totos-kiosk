@@ -18,16 +18,6 @@ xrandr --output HDMI-2 --mode 1280x800 --pos 1280x0 --rate 60
 xrandr --fb 3840x800
 sleep 2
 
-echo "Point"
-echo "Point"
-echo "Point"
-echo "Point"
-echo "Point"
-echo "Point"
-echo "Point"
-echo "PointXX"
-
-
 # stop the screen blanking
 xset s off -dpms
 

@@ -87,31 +87,6 @@ update_certificate_for_user() {
 update_certificate_for_user "root"
 update_certificate_for_user "chromium"
 
-# Start the X Server and configure it
-# startx -- :0 &
-# echo "Starting xServer and waiting..."
-# sleep 10
-# echo "Done waiting. Configuring xServers."
-# xset s off -dpms
-# export DISPLAY=:0
-# xrandr --output HDMI-1 --mode 1280x800 --pos 0x0 --rate 60
-# xrandr --output HDMI-2 --mode 1280x800 --pos 1280x0 --rate 60
-# xrandr --fb 3840x800
-# sleep 5
-
-
-#service dbus start
-#xhost +si:localuser:$USER &
-
-# export DISPLAY=:0
-# if ! xset q &>/dev/null; then
-#     echo "Starting X Server..."
-#     startx &
-#     sleep 10  # Wait for X server to become ready
-# fi
-
-
-
 # we can't maintain the environment with su, because we are logging in to a new session
 # so we need to manually pass in the environment variables to maintain, in a whitelist
 # This gets the current environment, as a comma-separated string
@@ -120,9 +95,9 @@ environment=$(env | grep -v -w '_' | awk -F= '{ st = index($0,"=");print substr(
 # remove the last comma
 environment="${environment::-1}"
 
+
 # launch Chromium and whitelist the enVars so that they pass through to the su session
 su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium
-echo "Point BBC"
 
 
 #su - chromium -w $environment -c 'chromium-browser --kiosk --new-window --user-data-dir=/tmp/browser-1 --window-size=1280,800 --window-position="0,0" --start-fullscreen --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --disable-component-update --overscroll-history-navigation=0 --disable-translate --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null --no-sandbox https://app:8082?display=1 &'
@@ -130,6 +105,7 @@ echo "Point BBC"
 
 #chromium-browser --app=https://app:8082?display=1 --window-size=1280,800 --window-position=0,0 --kiosk --user-data-dir=/var/tmp/display1 --no-sandbox&
 #chromium-browser --app=https:/google.com --window-size=1280,800 --window-position=2560,0 --kiosk --user-data-dir=/var/tmp/display2 --no-sandbox&
+
 
 
 balena-idle
