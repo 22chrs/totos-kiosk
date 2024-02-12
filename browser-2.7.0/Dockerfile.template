@@ -25,9 +25,19 @@ RUN mkdir -p /etc/chromium/policies/recommended
 COPY ./policy.json /etc/chromium/policies/recommended/my_policy.json
 
 # Add chromium user
-RUN useradd chromium -m -s /bin/bash -G root || true && \
-    groupadd -r -f chromium && id -u chromium || true \
-    && chown -R chromium:chromium /home/chromium || true
+# RUN useradd chromium -m -s /bin/bash -G root || true && \
+#     groupadd -r -f chromium && id -u chromium || true \
+#     && chown -R chromium:chromium /home/chromium || true
+
+# Create chromium user
+RUN useradd -m -s /bin/bash chromium || true
+# Create directories for browser instances
+RUN mkdir -p /chromium/browser1 && \
+    mkdir -p /chromium/browser2
+# Set ownership of the directories
+RUN chown -R chromium:chromium /chromium/browser1 && \
+    chown -R chromium:chromium /chromium/browser2
+
 
 COPY ./public-html /home/chromium  
 
@@ -56,10 +66,6 @@ RUN echo "XKBLAYOUT=de" > /etc/default/keyboard
 RUN apt-get update && apt-get install -y \
     libnss3-tools \
     lsb-release 
-
-# Copy xorg.conf for multi monitors setup
-#COPY xorg.conf /etc/X11/xorg.conf
-
 
 
 # Set up the audio block. This won't have any effect if the audio block is not being used.

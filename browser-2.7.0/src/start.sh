@@ -49,10 +49,21 @@ if [ "${BALENA_DEVICE_TYPE}" = "raspberrypi5" ]; then
     cp -a "/usr/src/build/rpi/99-vc4.conf" "/etc/X11/xorg.conf.d/"
 fi
 
-# Set up user data area for chromium
-mkdir -p /data/chromium
-chown -R chromium:chromium /data
-rm -f /data/chromium/SingletonLock
+# # Set up user data area for chromium
+# mkdir -p /data/chromium
+# chown -R chromium:chromium /data
+# rm -f /data/chromium/SingletonLock
+
+# Set up user data areas for chromium instances
+mkdir -p /chromium/browser1
+mkdir -p /chromium/browser2
+# Ensure the 'chromium' user owns both directories
+chown -R chromium:chromium /chromium/browser1
+chown -R chromium:chromium /chromium/browser2
+# Remove the SingletonLock file from each user data directory if it exists
+rm -f /chromium/browser1/SingletonLock
+rm -f /chromium/browser2/SingletonLock
+
 
 # Function to update the certificate for both root and chromium users
 update_certificate_for_user() {

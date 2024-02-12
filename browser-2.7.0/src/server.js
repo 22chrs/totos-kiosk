@@ -130,7 +130,7 @@ let launchBrowsers = async function (url1, url2) {
     ignoreDefaultFlags: true,
     chromeFlags: flags1,
     port: REMOTE_DEBUG_PORT,
-    userDataDir: PERSISTENT_DATA === "1" ? "/data/chromium" : undefined,
+    userDataDir: "/chromium/browser1",
   });
 
   //Launching the second browser
@@ -139,7 +139,7 @@ let launchBrowsers = async function (url1, url2) {
     ignoreDefaultFlags: true,
     chromeFlags: flags2,
     port: REMOTE_DEBUG_PORT + 1, // Adjust port to avoid conflict
-    userDataDir: PERSISTENT_DATA === "1" ? "/data/chromium" : undefined,
+    userDataDir: "/chromium/browser2",
   });
 
   console.log(`Launched browsers with URLs: ${url1}, ${url2}`);

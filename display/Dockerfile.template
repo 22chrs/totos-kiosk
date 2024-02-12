@@ -40,10 +40,10 @@ ENV UDEV=1
 WORKDIR /app
 
 ## Setup User Data
-RUN mkdir -p /chromium/display1
-RUN mkdir -p /chromium/display2
-RUN chown -R chromium:chromium /chromium/display1
-RUN chown -R chromium:chromium /chromium/display2
+RUN mkdir -p /chromium/browser1
+RUN mkdir -p /chromium/browser2
+RUN chown -R chromium:chromium /chromium/browser1
+RUN chown -R chromium:chromium /chromium/browser2
 
 ## Setup Scripts
 COPY ./scripts ./scripts
