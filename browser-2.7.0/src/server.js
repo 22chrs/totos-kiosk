@@ -17,8 +17,10 @@ const os = require("os");
 const API_PORT = parseInt(process.env.API_PORT) || 5011;
 const WINDOW_SIZE_1 = process.env.WINDOW_SIZE_1 || "1280,800";
 const WINDOW_POSITION_1 = process.env.WINDOW_POSITION_1 || "0,0";
-const WINDOW_SIZE_2 = process.env.WINDOW_SIZE_1 || "1280,800";
-const WINDOW_POSITION_2 = process.env.WINDOW_POSITION_1 || "2560,0";
+
+const WINDOW_SIZE_2 = process.env.WINDOW_SIZE_2 || "1280,800";
+const WINDOW_POSITION_2 = process.env.WINDOW_POSITION_2 || "2560,0";
+
 const PERSISTENT_DATA = process.env.PERSISTENT || "0";
 const REMOTE_DEBUG_PORT = process.env.REMOTE_DEBUG_PORT || 35173;
 const FLAGS = process.env.FLAGS || null;
@@ -40,21 +42,6 @@ let timer = {};
 // 1) the configured LAUNCH_URL
 // 2) a discovered HTTP service on the device
 // 3) the default static HTML
-// async function getUrlToDisplayAsync() {
-//   let launchUrl = process.env.LAUNCH_URL || null;
-//   //let launchUrl = process.env.LAUNCH_URL_2 || null;
-//   if (null !== launchUrl) {
-//     console.log(`Using LAUNCH_URL_1: ${launchUrl}`);
-
-//     // Prepend http:// if the LAUNCH_URL doesn't have it.
-//     // This is needed for the --app flag to be used for kiosk mode
-//     if (!HTTPS_REGEX.test(launchUrl)) {
-//       launchUrl = `http://${launchUrl}`;
-//     }
-
-//     return launchUrl;
-//   }
-
 async function getUrlToDisplayAsync() {
   let launchUrl_1 = process.env.LAUNCH_URL_1 || null;
   let launchUrl_2 = process.env.LAUNCH_URL_2 || null;
@@ -66,8 +53,11 @@ async function getUrlToDisplayAsync() {
     if (!HTTPS_REGEX.test(launchUrl_1)) {
       launchUrl_1 = `http://${launchUrl_1}`;
     }
+    if (!launchUrl_2) {
+      launchUrl_2 = "http://google.com"; // Placeholder
+    }
 
-    return launchUrl_1;
+    return [launchUrl_1, launchUrl_2];
   }
 
   console.log("LAUNCH_URL_1 environment variable not set.");
@@ -109,76 +99,50 @@ async function getUrlToDisplayAsync() {
   return returnURL;
 }
 
-// Launch the browser with the URL specified
-let launchChromium = async function (url) {
+let launchBrowsers = async function (url1, url2) {
   await chromeLauncher.killAll();
 
-  flags = [];
-  // If the user has set the flags, use them
-  if (null !== FLAGS) {
-    flags = FLAGS.split(" ");
-  } else {
-    // User the default flags from chrome-launcher, plus our own.
-    flags = DEFAULT_FLAGS;
-    let balenaFlags = [
-      "--window-size=" + WINDOW_SIZE_1,
-      "--window-position=" + WINDOW_POSITION_1,
-      "--autoplay-policy=no-user-gesture-required",
-      "--noerrdialogs",
-      "--disable-session-crashed-bubble",
-      "--check-for-update-interval=31536000",
-      "--disable-dev-shm-usage", // TODO: work out if we can enable this for devices with >1Gb of memory
-    ];
+  // Common flags plus specific window size and position for each browser
+  let commonFlags = [
+    "--autoplay-policy=no-user-gesture-required",
+    "--noerrdialogs",
+    "--disable-session-crashed-bubble",
+    "--check-for-update-interval=31536000",
+    "--disable-dev-shm-usage",
+    enableGpu != "1" ? "--disable-gpu" : "--enable-gpu-rasterization",
+  ].concat(EXTRA_FLAGS ? EXTRA_FLAGS.split(" ") : []);
 
-    // Merge the chromium default and balena default flags
-    flags = flags.concat(balenaFlags);
+  // Flags for the first browser
+  let flags1 = [
+    `--window-size=${WINDOW_SIZE_1}`,
+    `--window-position=${WINDOW_POSITION_1}`,
+  ].concat(commonFlags);
 
-    // either disable the gpu or set some flags to enable it
-    if (enableGpu != "1") {
-      console.log("Disabling GPU");
-      flags.push("--disable-gpu");
-    } else {
-      console.log("Enabling GPU");
-      let gpuFlags = [
-        "--enable-zero-copy",
-        "--num-raster-threads=4",
-        "--ignore-gpu-blocklist",
-        "--enable-gpu-rasterization",
-      ];
+  // Flags for the second browser
+  let flags2 = [
+    `--window-size=${WINDOW_SIZE_2}`,
+    `--window-position=${WINDOW_POSITION_2}`,
+  ].concat(commonFlags);
 
-      flags = flags.concat(gpuFlags);
-    }
-  }
-
-  if (EXTRA_FLAGS) {
-    flags = flags.concat(EXTRA_FLAGS.split(" "));
-  }
-
-  let startingUrl = url;
-  if ("1" === kioskMode) {
-    console.log("Enabling KIOSK mode");
-    startingUrl = `--app= ${url}`;
-  } else {
-    console.log("Disabling KIOSK mode");
-  }
-
-  console.log(`Starting Chromium with flags: ${flags}`);
-  console.log(`Displaying URL: ${startingUrl}`);
-
-  const chrome = await chromeLauncher.launch({
-    startingUrl: startingUrl,
+  // Launching the first browser
+  await chromeLauncher.launch({
+    startingUrl: kioskMode === "1" ? `--app=${url1}` : url1,
     ignoreDefaultFlags: true,
-    chromeFlags: flags,
+    chromeFlags: flags1,
     port: REMOTE_DEBUG_PORT,
-    connectionPollInterval: 1000,
-    maxConnectionRetries: 120,
-    userDataDir: "1" === PERSISTENT_DATA ? "/data/chromium" : undefined,
+    userDataDir: PERSISTENT_DATA === "1" ? "/data/chromium" : undefined,
   });
 
-  console.log(
-    `Chromium remote debugging tools running on port: ${chrome.port}`
-  );
-  currentUrl = url;
+  //Launching the second browser
+  await chromeLauncher.launch({
+    startingUrl: kioskMode === "1" ? `--app=${url2}` : url2,
+    ignoreDefaultFlags: true,
+    chromeFlags: flags2,
+    port: REMOTE_DEBUG_PORT + 1, // Adjust port to avoid conflict
+    userDataDir: PERSISTENT_DATA === "1" ? "/data/chromium" : undefined,
+  });
+
+  console.log(`Launched browsers with URLs: ${url1}, ${url2}`);
 };
 
 // Get's the chrome-launcher default flags, minus the extensions and audio muting flags.
@@ -205,8 +169,8 @@ async function clearTimer() {
 
 async function main() {
   await SetDefaultFlags();
-  let url = await getUrlToDisplayAsync();
-  await launchChromium(url);
+  const [url1, url2] = await getUrlToDisplayAsync();
+  await launchBrowsers(url1, url2);
 }
 
 main().catch((err) => {

@@ -31,7 +31,7 @@ services:
       - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
       - LAUNCH_URL_2=https://app:8082?display=2
       - WINDOW_SIZE_2=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
-      - WINDOW_POSITION21=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
+      - WINDOW_POSITION_2=2560,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
       # - EXTRA_FLAGS= --disable-pinch
     depends_on:
       - app
