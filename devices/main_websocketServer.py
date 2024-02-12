@@ -8,7 +8,7 @@ if __name__ == '__main__':
     async def check_connections_periodically():
         while True:
             # Check if specific clients are connected
-            message = await check_clients_connected(["app"])  # ["toto", "app"]
+            message = await check_clients_connected(["app_1", "app_2"])
             if message:  # Only print if there's a message
                 print(message)
             # Here you can add additional logic based on the connection status

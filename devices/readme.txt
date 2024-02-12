@@ -5,8 +5,8 @@
     - source venv/bin/activate
 3. Requirments installieren
     - pip install -r requirements.txt
-
-
+4. Run
+    - python3 main.py
 
 
 1. Zahlung: 

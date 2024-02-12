@@ -55,7 +55,7 @@ async def handle_order(websocket, message):
 # WebSocket-related functions
 async def check_connections_periodically():
     while True:
-        message = await check_clients_connected(["app"])
+        message = await check_clients_connected(["app_1", "app_2"])
         if message:
             print(message)
         await asyncio.sleep(10)
