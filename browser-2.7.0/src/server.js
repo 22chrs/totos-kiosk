@@ -110,6 +110,7 @@ let launchBrowsers = async function (url1, url2) {
     "--check-for-update-interval=31536000",
     "--disable-dev-shm-usage",
     enableGpu != "1" ? "--disable-gpu" : "--enable-gpu-rasterization",
+    `--disable-pinch`,
   ].concat(EXTRA_FLAGS ? EXTRA_FLAGS.split(" ") : []);
 
   // Flags for the first browser

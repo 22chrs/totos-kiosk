@@ -17,7 +17,6 @@ Guide to Setting Up a C++ Development Environment with Boost and CMake on Debian
      sudo apt-get install cmake
      sudo apt-get install clang
      sudo apt-get build-essential
-	
 
 4. Download Boost on Windows:
    - Visit the Boost website and download the .bz2 file for the required version.
