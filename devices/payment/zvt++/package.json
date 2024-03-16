@@ -1,8 +1,0 @@
-{
-    "name": "my-zvt-app",
-    "version": "1.0.2",  
-    "scripts": {
-      "start": "node index.js"
-    }
-  }
-  

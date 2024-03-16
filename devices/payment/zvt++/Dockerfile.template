@@ -34,8 +34,8 @@ RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.84.0/source/boost_
 
 # Copy your project files
 #komig
+#COPY ./src /opt/zvt++/src
 COPY ./src /opt/zvt++/src
-COPY ./src /opt/zvt++
 
 COPY ./hosts.json /opt/zvt++
 COPY ./CMakeLists.txt /opt/zvt++
@@ -50,7 +50,7 @@ ENV CC=clang
 WORKDIR /opt/zvt++
 RUN mkdir -p build && \
     cd build && \
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17  && \
+    cmake .. && \
     make
 
 # Create and set entrypoint script
