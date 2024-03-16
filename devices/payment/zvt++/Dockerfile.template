@@ -1,10 +1,9 @@
-# Use a base image that matches your Raspberry Pi's architecture
 FROM balenalib/raspberrypi5-debian:buster-build
 
 # Set the working directory
 WORKDIR /opt/zvt++
 
-# Install build essentials, clang, g++, git, and other dependencies needed to compile CMake from source
+# Install build essentials, clang, g++, git, other dependencies, AND Boost
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
@@ -12,11 +11,12 @@ RUN apt-get update && \
     g++ \
     git \
     wget \
-    libssl-dev && \
+    libssl-dev \
+    libboost-all-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Download and compile CMake from source
+# Download, compile, and install CMake (if you don't have a pre-built version)
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3.tar.gz && \
     tar -xzvf cmake-3.21.3.tar.gz && \
     cd cmake-3.21.3 && \
@@ -24,20 +24,34 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3
     make && \
     make install
 
-# Set environment variables for compilers
+# Download and install Boost 1.84.0
+RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.84.0/source/boost_1_84_0.tar.bz2 && \
+    tar -xf boost_1_84_0.tar.bz2 && \
+    cd boost_1_84_0 && \
+    ./bootstrap.sh && \
+    ./b2 cxxflags=-fPIC install && \
+    ./b2 link=shared install
+
+# Copy your project files
+COPY ./src /opt/zvt++/
+COPY ./entrypoint /opt/zvt++/
+
+# Set compiler environment variables
 ENV CXX=clang++
 ENV CC=clang
 
-# Copy the current directory contents into the container
-COPY . .
-
-# Build the application
+# Build your application
 RUN mkdir -p build && \
     cd build && \
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20 && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20  && \
     make
 
-# Copy and set the entrypoint script to execute when the container starts
+# Create and set entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Expose your application's port
+EXPOSE 301 
+
+# Set the container's entrypoint
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
