@@ -33,7 +33,11 @@ RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.84.0/source/boost_
     ./b2 link=shared install
 
 # Copy your project files
+#komig
 COPY ./src /opt/zvt++/src
+COPY ./src /opt/zvt++
+
+COPY ./hosts.json /opt/zvt++
 COPY ./CMakeLists.txt /opt/zvt++
 
 COPY ./entrypoint.sh /opt/zvt++
