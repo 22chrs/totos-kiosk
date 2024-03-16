@@ -28,11 +28,16 @@ class PaymentTerminal:
         # Define the path to the _builds folder
         builds_dir = os.path.join(dir_path, 'zvt++', '_builds')
 
-        # Find the appropriate build directory based on architecture
-        if 'arm' in system_arch or 'aarch' in system_arch:  # ARM architecture (like M1 Macs)
-            suffix = 'arm'
-        else:  # x86 architecture (like most Docker environments)
+        if 'arm' in system_arch or 'aarch64' in system_arch:
+            # Use platform.system() to distinguish between macOS and other systems
+            if platform.system() == 'Darwin':  # macOS
+                suffix = 'armMac'
+            else:  # Non-macOS ARM systems, potentially Raspberry Pi or others
+                suffix = 'armPi'
+        elif 'x86' in system_arch or 'x86_64' in system_arch:  # x86 architecture
             suffix = 'x64'
+        else:
+            raise Exception(f"Unsupported architecture: {system_arch}")
 
         # Search for the correct build folder
         build_folder = None

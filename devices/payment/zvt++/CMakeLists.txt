@@ -1,21 +1,18 @@
 cmake_minimum_required(VERSION 3.17)
 project(zvt++ VERSION 1.1.7)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON) 
+
+# Compiler Flags (adjust as needed)
 set(CMAKE_CXX_FLAGS "-O2 -fvisibility=hidden -fvisibility-inlines-hidden")
 
-#        cxxflags=-fvisibility=hidden
-#        cxxflags=-fvisibility-inlines-hidden
 
-#set(CMAKE_CXX_FLAGS_DEBUG "-g -O1")
-#set(CMAKE_CXX_FLAGS_RELEASE "-O1")
-
-set(CMAKE_CXX_STANDARD 17)
-
+# Boost Configuration 
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
-
-find_package(Boost 1.78.0 COMPONENTS system thread json chrono)
+find_package(Boost 1.78.0 REQUIRED COMPONENTS system thread json chrono) 
 
 if(Boost_FOUND)
     file(GLOB BMPS_SRC src/bmps/*.?pp)
@@ -26,10 +23,19 @@ if(Boost_FOUND)
     file(GLOB HEADER src/*.hpp)
 
     include_directories(src src/bmps src/cmds src/cmds/error src/json src/converter src/gicc src/nexo)
-    include_directories(/opt/homebrew/include)
-    link_directories(/opt/homebrew/lib)
+
+    # OS-Specific Paths 
+    if(APPLE)
+        include_directories(/opt/homebrew/include)
+        link_directories(/opt/homebrew/lib)
+    else() # Linux - Raspberry Pi
+        # Add include and library paths for Boost if it's not in standard locations
+        include_directories(/usr/local/include) 
+        link_directories(/usr/local/lib) 
+    endif() 
 
     include_directories(${Boost_INCLUDE_DIR})
+
 
     add_executable(zvt++ ${CMDS_SRC} ${BMPS_SRC} ${SRC} src/zvt++.cpp src/zvt++.hpp src/cmds/RepeatReceipt.cpp src/cmds/RepeatReceipt.hpp src/cmds/Abort.cpp src/cmds/Abort.hpp src/json/Host.cpp src/json/Host.hpp src/cmds/Reversal.cpp src/cmds/Reversal.hpp src/converter/TagValueConverter.cpp src/converter/TagValueConverter.hpp src/converter/EmvTagConverter.cpp src/converter/EmvTagConverter.hpp src/gicc/Bmp55.cpp src/gicc/Bmp55.hpp src/cmds/PrintLine.cpp src/cmds/PrintLine.hpp src/cmds/error/RegisterErrorCategory.hpp src/cmds/error/StatusEnquiryErrorCategory.hpp src/cmds/error/StatusErrorCategory.hpp src/cmds/error/NAckErrorCategory.hpp src/cmds/error/AuthAbortCategory.hpp src/cmds/DisplayText.cpp src/cmds/DisplayText.hpp src/cmds/BookTotal.cpp src/cmds/BookTotal.hpp src/nexo/SupportedServices.cpp src/nexo/SupportedServices.hpp
             src/gicc/Gicc.cpp

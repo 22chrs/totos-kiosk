@@ -1,7 +1,7 @@
-FROM balenalib/raspberrypi5-debian:buster-build
+FROM balenalib/raspberrypi5-debian:bullseye-build
 
 # Set the working directory
-WORKDIR /opt/zvt++
+WORKDIR /opt/
 
 # Install build essentials, clang, g++, git, other dependencies, AND Boost
 RUN apt-get update && \
@@ -33,17 +33,20 @@ RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.84.0/source/boost_
     ./b2 link=shared install
 
 # Copy your project files
-COPY ./src /opt/zvt++/
-COPY ./entrypoint /opt/zvt++/
+COPY ./src /opt/zvt++/src
+COPY ./CMakeLists.txt /opt/zvt++
+
+COPY ./entrypoint.sh /opt/zvt++
 
 # Set compiler environment variables
 ENV CXX=clang++
 ENV CC=clang
 
 # Build your application
+WORKDIR /opt/zvt++
 RUN mkdir -p build && \
     cd build && \
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20  && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17  && \
     make
 
 # Create and set entrypoint script
