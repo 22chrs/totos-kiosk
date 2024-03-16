@@ -1,0 +1,43 @@
+# Use a base image that matches your Raspberry Pi's architecture
+FROM balenalib/raspberrypi5-debian:buster-build
+
+# Set the working directory
+WORKDIR /opt/zvt++
+
+# Install build essentials, clang, g++, git, and other dependencies needed to compile CMake from source
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    clang \
+    g++ \
+    git \
+    wget \
+    libssl-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Download and compile CMake from source
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3.tar.gz && \
+    tar -xzvf cmake-3.21.3.tar.gz && \
+    cd cmake-3.21.3 && \
+    ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release && \
+    make && \
+    make install
+
+# Set environment variables for compilers
+ENV CXX=clang++
+ENV CC=clang
+
+# Copy the current directory contents into the container
+COPY . .
+
+# Build the application
+RUN mkdir -p build && \
+    cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20 && \
+    make
+
+# Copy and set the entrypoint script to execute when the container starts
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
