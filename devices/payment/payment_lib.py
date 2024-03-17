@@ -31,9 +31,9 @@ class PaymentTerminal:
         if 'arm' in system_arch or 'aarch64' in system_arch:
             # Use platform.system() to distinguish between macOS and other systems
             if platform.system() == 'Darwin':  # macOS
-                suffix = 'armMac'
+                suffix = 'mac'
             else:  # Non-macOS ARM systems, potentially Raspberry Pi or others
-                suffix = 'armPi'
+                suffix = 'pi5'
         elif 'x86' in system_arch or 'x86_64' in system_arch:  # x86 architecture
             suffix = 'x64'
         else:
@@ -53,6 +53,8 @@ class PaymentTerminal:
         executable_path = os.path.join(builds_dir, build_folder, executable_name)
 
         return executable_path
+    
+    
     
     async def printSysConfig(self):
         os.chmod(self.executable_path, 0o755)
