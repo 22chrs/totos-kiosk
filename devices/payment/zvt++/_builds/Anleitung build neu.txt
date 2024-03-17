@@ -1,5 +1,17 @@
 
-Guide to Setting Up a C++ Development Environment with Boost and CMake on Debian under WSL
+// Guide Raspberry Pi Debian via Balena Cloud
+
+1. Via Balena Cloud cd path/to/zvt++
+2. balena push Projektname
+3. build wird auf USB Stick, der am Pi angeschlossen ist kopiert
+
+
+
+
+
+
+
+// Guide to Setting Up a C++ Development Environment with Boost and CMake on Debian under WSL
 
 1. Install Windows Subsystem for Linux (WSL) on Windows:
    - Open Windows Terminal.

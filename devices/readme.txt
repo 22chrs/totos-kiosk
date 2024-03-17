@@ -41,4 +41,5 @@ filtern
 
 
 tree -I '.vscode|CODE-teensy|zvt++|venv|__pycache__' > file_structure.txt
+tree -I '.vscode|CODE-teensy|venv|__pycache__' > file_structure.txt
 

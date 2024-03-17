@@ -9,6 +9,7 @@ RUN apt-get update && \
     build-essential \
     clang \
     g++ \
+    zip -y \
     git \
     wget \
     libssl-dev \
@@ -56,6 +57,8 @@ RUN mkdir -p build && \
 # Create and set entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN zip -r build.zip build
 
 # Expose your application's port
 EXPOSE 301 
