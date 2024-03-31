@@ -46,4 +46,5 @@ install_packages \
     xserver-xorg-video-fbdev \
     xserver-xorg xinit \
     xinput \
-    xterm
+    xterm 
+    #openbox

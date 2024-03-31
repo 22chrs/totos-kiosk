@@ -2,10 +2,11 @@
 
 echo "--- List Input Devices ---"
 xinput list
+xrandr --query
 echo "----- End of List --------"
 
 # Set the default cursor to the standard arrow for the entire X session
-xsetroot -cursor_name left_ptr
+#xsetroot -cursor_name left_ptr
 
 # these two lines remove the "restore pages" popup on chromium. 
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /data/chromium/'Local State' > /dev/null 2>&1 || true 
@@ -16,8 +17,8 @@ export VERSION=`chromium-browser --version`
 echo "Installed browser version: $VERSION"
 
 #export DISPLAY=:0
-xrandr --output HDMI-1 --mode 1280x800 --pos 0x0 --rate 60
-xrandr --output HDMI-2 --mode 1280x800 --pos 1280x0 --rate 60
+xrandr --output HDMI-1 --mode 1280x800 --pos 0x0 --rate 60 --primary
+xrandr --output HDMI-2 --mode 1280x800 --pos 1280x0 --rate 60 
 xrandr --fb 3840x800
 #xrandr --fb 2560x800
 sleep 2
@@ -30,11 +31,15 @@ xinput set-prop 6 --type=float "Coordinate Transformation Matrix" 0.333333 0 0 0
 xinput set-prop 7 --type=float "Coordinate Transformation Matrix" 0.333333 0 0.333333 0 1 0 0 0 1
 
 # Map touch input devices to their corresponding screens
+
 xinput map-to-output 6 HDMI-1
 xinput map-to-output 7 HDMI-2
 
-
 # stop the screen blanking
 xset s off -dpms
+
+echo "--- xrandr query ---"
+xrandr --query
+echo "--- xrandr query ---"
 
 node /usr/src/app/server.js

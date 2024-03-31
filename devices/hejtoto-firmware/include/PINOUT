@@ -1,0 +1,66 @@
+// MCP23017 address: 0x20
+// SHT3x address: 0x44
+// MCP23017 address: 0x20
+
+// TEENSY 4.1 PINOUT
+
+// 0 = RX1 // HardwareSerial port 1
+// 1 = TX1
+// 2 = PWM_FAN_1
+// 3 = PWM_FAN_2
+// 4 = PWM_FAN_3
+// 5 = ES3
+// 6 = PWM_24V_5
+// 7 = RX2 // HardwareSerial port 2
+// 8 = TX2
+// 9 = PWM_24V_4
+// 10 = NEOPIXEL
+// 11 = ES1
+// 12 = ES2
+// 13 = BUILD_IN_LED
+// 14 = PWM_OUT_3V3
+// 15 = PWM_FAN_3
+// 16 = ES5
+// 17 = ES6
+// 18 = SDA
+// 19 = SCL
+// 20 = TX6
+// 21 = RX6 // HardwareSerial port 5
+// 22 = PWM_24V_3
+// 23 = RPM_FAN_1
+// 24 = TX3
+// 25 = RX3 // HardwareSerial port 6
+// 26 = RPM_FAN_2
+// 27 = ES4
+// 28 = RX4 // HardwareSerial port 7
+// 29 = TX4
+// 30 = STP1
+// 31 = STP2
+// 32 = STP3
+// 33 = PWM_24V_1
+// 34 = RX5 // HardwareSerial port 8
+// 35 = TX5
+// 36 = PWM_24V_2
+// 37 = PWM_12V
+// 38 = STP4
+// 39 = STP5
+// 40 = STP6
+// 41 = LICHTSENSOR
+
+// MCP23017 PINOUT
+// A0 = J1
+// A1 = J2
+// A2 = DIR1
+// A3 = DIR2
+// A4 = DIR3
+// A5 = EN1
+// A6 = EN2
+// A7 = EN3
+// B0 = DES1 //!Pullup
+// B1 = DES2 //!Pullup
+// B2 = DIR6
+// B3 = DIR5
+// B4 = DIR4
+// B5 = EN6
+// B6 = EN5
+// B7 = EN4
