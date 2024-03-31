@@ -24,7 +24,7 @@ struct BoardConfig
     StepperConfig stepper[6]; // Assuming 6 steppers per board
 };
 
-extern const BoardConfig *currentConfig;
+extern const BoardConfig *currentBoardConfig;
 
 // Function declaration
 void init_BoardSelect();

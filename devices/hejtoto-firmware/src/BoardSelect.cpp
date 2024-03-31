@@ -36,7 +36,7 @@ const BoardConfig RoboCubeBackConfig = {{
     {1500, 10000, 50000, 1 / (RESOLUTION / MICROSTEPS), 0},         // Stepper 6 //! not connected
 }};
 
-const BoardConfig *currentConfig = nullptr;
+const BoardConfig *currentBoardConfig = nullptr;
 
 void init_BoardSelect()
 {
@@ -48,17 +48,17 @@ void init_BoardSelect()
 
     if ((J1 == LOW) && (J2 == LOW))
     {
-        currentConfig = &ServiceCubeConfig;
+        currentBoardConfig = &ServiceCubeConfig;
         board = SERVICE_CUBE;
     }
     else if ((J1 == HIGH) && (J2 == LOW))
     {
-        currentConfig = &RoboCubeFrontConfig;
+        currentBoardConfig = &RoboCubeFrontConfig;
         board = ROBOCUBE_FRONT;
     }
     else if ((J1 == LOW) && (J2 == HIGH))
     {
-        currentConfig = &RoboCubeBackConfig;
+        currentBoardConfig = &RoboCubeBackConfig;
         board = ROBOCUBE_BACK;
     }
 }
