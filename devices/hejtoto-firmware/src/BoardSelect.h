@@ -12,11 +12,13 @@ extern byte board; // Declare it as an external variable to be defined in BoardS
 
 struct StepperConfig
 {
-    int current;      // mA
-    int maxSpeed;     // steps/s
-    int acceleration; // steps/s^2
-    float ratio;      // mm/step
-    float maxLength;  // mm
+    int current;              // mA
+    int maxSpeed;             // steps/s
+    int acceleration;         // steps/s^2
+    float ratio;              // mm/step
+    float maxTravel;          // mm
+    float homeShift;          // mm
+    boolean inverseDirection; // mm
 };
 
 struct BoardConfig

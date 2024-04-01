@@ -66,6 +66,7 @@ struct StepperMotor
     uint8_t enPin, dirPin, stepPin, dirPinDummy;
     TMC2208Stepper *driver;
     Stepper *stepper;
+    float position; // mm
 };
 
 inline StepperMotor stepperMotors[6] = {
@@ -79,9 +80,11 @@ inline StepperMotor stepperMotors[6] = {
 // Functions
 void init_Stepper();
 
-void moveMotorToPosition(byte stepperX, float length);
+void moveMotorToAbsPosition(byte stepperX, float newPosition);
+void moveMotorRel(byte stepperX, float newPosition);
 bool motorMovingState(byte stepperX);
-void move2MotorsToPosition(byte stepperA, byte stepperB, float length);
-void homeMotor(byte stepperX);
+void move2MotorsToAbsPosition(byte stepperA, byte stepperB, float newPosition);
+void stopMotor(byte stepperX);
+boolean homeMotor(byte stepperX);
 
 #endif

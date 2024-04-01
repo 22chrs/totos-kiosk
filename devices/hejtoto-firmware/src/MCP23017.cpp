@@ -10,7 +10,4 @@ void init_MCP23017()
         while (1)
             ;
     }
-
-    mcp.pinMode(DES1_PIN, INPUT_PULLUP);
-    mcp.pinMode(DES2_PIN, INPUT_PULLUP);
 }
