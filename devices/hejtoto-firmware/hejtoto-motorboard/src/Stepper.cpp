@@ -1,7 +1,6 @@
 // Stepper.cpp
 
 #include <Stepper.h>
-#include <LimitSwitch.h>
 
 void init_Stepper()
 {
@@ -149,7 +148,7 @@ void setPositionMotor(byte stepperX, float position)
     stepperMotors[stepperX - 1].stepper->setPosition(position);
 }
 
-void setSpeedMotor(byte stepperX, float speed)
+void setSpeedMotor(byte stepperX, long speed)
 {
     stepperMotors[stepperX - 1].stepper->setMaxSpeed(speed);
 }
@@ -233,4 +232,7 @@ boolean homeMotor(byte stepperX)
             }
         }
     }
+    // If none of the conditions for a successful homing are met, return false
+    Serial.println("Homing failed."); // Optional: add this line if you want to log the failure before returning
+    return false;
 }

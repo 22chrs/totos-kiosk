@@ -13,7 +13,7 @@
 #define RPM_FAN_3_PIN 26
 
 void init_Fan();
-void pwmFan(int FanX, int percent);
-int getRpmFan(char FanX);
+void pwmFan(byte FanX, int percent);
+int getRpmFan(byte FanX);
 
 #endif

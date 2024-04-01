@@ -1,5 +1,3 @@
-
-
 #include <_global.h>
 #include <MCP23017.h>
 #include <BoardSelect.h>
@@ -8,6 +6,8 @@
 #include <Temperature.h>
 #include <Mosfet.h>
 #include <LimitSwitch.h>
+#include <USB.h>
+#include <Fan.h>
 
 void setup()
 {
@@ -21,7 +21,8 @@ void setup()
   init_TemperatureSensor(); // Initialize temperature and humidity sensor
   init_doorSensor();
   init_LimitSwitch();
-
+  init_USB();
+  init_Fan();
   Wire.setClock(400000); // Set I2C speed to 400kHz (Standard 100kHz)
 
   Neopixel(GREEN);
@@ -32,4 +33,5 @@ void loop()
   // Check routines
   check_doorSensor();
   check_TemperatureSensor();
+  check_USB();
 }

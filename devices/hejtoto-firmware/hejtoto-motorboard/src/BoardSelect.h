@@ -21,8 +21,14 @@ struct StepperConfig
     boolean inverseDirection; // mm
 };
 
+// struct BoardInfo
+// {
+//     String boardName; // RoboCube, ServiceCubeFront, ServiceCubeBack
+// };
+
 struct BoardConfig
 {
+    String boardName;
     StepperConfig stepper[6]; // Assuming 6 steppers per board
 };
 
