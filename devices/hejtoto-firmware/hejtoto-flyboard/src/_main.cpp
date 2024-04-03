@@ -4,6 +4,7 @@
 #include <Led.h>
 // #include <WLAN.h>
 #include <LimitSwitch.h>
+#include <Cam.h>
 
 void setup()
 {
@@ -16,10 +17,12 @@ void setup()
   init_Stepper();
   init_LimitSwitch();
   init_LEDs();
+  init_Cam();
   // init_WLAN();
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
+  // Serial.println("Loop");
+  //  put your main code here, to run repeatedly:
 }

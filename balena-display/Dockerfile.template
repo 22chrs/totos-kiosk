@@ -1,4 +1,6 @@
 FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:19.6.1-bookworm-run
+#FROM dtcooper/raspberrypi-os:bookworm
+
 ## Install Chromium
 RUN install_packages \
     chromium \

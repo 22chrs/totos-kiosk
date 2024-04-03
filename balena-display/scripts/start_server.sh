@@ -3,6 +3,7 @@
 echo "--- List Input Devices ---"
 xinput list
 xrandr --query
+lspci
 echo "----- End of List --------"
 
 #export DISPLAY=:0
