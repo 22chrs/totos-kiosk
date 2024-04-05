@@ -14,42 +14,29 @@ services:
       - shared-certs:/shared-certs
     command: ["sh", "-c", "cp -r /certs/* /shared-certs/ && echo 'Certificates copied' && sleep 3600"]
 
-  display:
-    build: ./balena-display
-    privileged: true
-    network_mode: host
-    environment:
-      - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
-      - LAUNCH_URL_1=https://google.com
-      - LAUNCH_URL_2=https://bing.com
-      - SHOW_CURSOR=1
-    labels:
-      io.balena.features.dbus: '1'
-
-
   browser:
-    build: ./browser-2.7.0
+    build: ./browser-orginal
     restart: always
     privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
     volumes:
       - "settings:/data" # Only required if using PERSISTENT flag (see below)
       - "shared-certs:/certs" # Mount the shared volume
+     # - "xserver:/tmp/.X11-unix" # external xserver needed
     environment:
       - DISPLAY_NUM=0 # hat gerade keinen Einfluss, da 2x überschieben
-      - SHOW_CURSOR=1
+      - SHOW_CURSOR=0
       - ENABLE_GPU=1
       - KIOSK=1
-      - LAUNCH_URL_1=https://app:8082?display=1
-      - WINDOW_SIZE_1=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
+      #- LAUNCH_URL=https://app:8082?display=1
+      - WINDOW_SIZE=2560,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
       - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
-      - LAUNCH_URL_2=https://app:8082?display=2
-      - WINDOW_SIZE_2=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
-      - WINDOW_POSITION_2=2560,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
+      # - LAUNCH_URL_2=https://app:8082?display=2
+      # - WINDOW_SIZE_2=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
+      # - WINDOW_POSITION_2=1280,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
       # - EXTRA_FLAGS= --disable-pinch
     depends_on:
       - app
       - certs
-
 
   app:
     hostname: app

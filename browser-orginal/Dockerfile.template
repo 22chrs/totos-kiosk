@@ -1,7 +1,6 @@
-ARG NODEJS_VERSION="19.6.1"
-ARG DEBIAN_VERSION="bookworm"
+ARG NODEJS_VERSION="16.19.1"
 
-FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-bookworm-run
 
 # Install the necessary packages
 COPY ./build /usr/src/build
@@ -18,26 +17,15 @@ COPY ./src /usr/src/app/
 RUN chmod +x ./*.sh
 
 ENV UDEV=1
-ENV TZ Europe/Amsterdam
 
 RUN mkdir -p /etc/chromium/policies
 RUN mkdir -p /etc/chromium/policies/recommended
 COPY ./policy.json /etc/chromium/policies/recommended/my_policy.json
 
 # Add chromium user
-# RUN useradd chromium -m -s /bin/bash -G root || true && \
-#     groupadd -r -f chromium && id -u chromium || true \
-#     && chown -R chromium:chromium /home/chromium || true
-
-# Create chromium user
-RUN useradd -m -s /bin/bash chromium || true
-# Create directories for browser instances
-RUN mkdir -p /chromium/browser1 && \
-    mkdir -p /chromium/browser2
-# Set ownership of the directories
-RUN chown -R chromium:chromium /chromium/browser1 && \
-    chown -R chromium:chromium /chromium/browser2
-
+RUN useradd chromium -m -s /bin/bash -G root || true && \
+    groupadd -r -f chromium && id -u chromium || true \
+    && chown -R chromium:chromium /home/chromium || true
 
 COPY ./public-html /home/chromium  
 
@@ -45,28 +33,10 @@ COPY ./public-html /home/chromium
 RUN echo 'SUBSYSTEM=="vchiq",GROUP="video",MODE="0660"' > /etc/udev/rules.d/10-vchiq-permissions.rules
 RUN usermod -a -G audio,video,tty chromium
 
-
-
-# Install locale and keyboard configuration packages
-RUN apt-get update && apt-get install -y locales console-data
-
-# Generate locale for German
-RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
-
-# Set environment variables for German locale
-ENV LANG de_DE.UTF-8
-ENV LANGUAGE de_DE:de
-ENV LC_ALL de_DE.UTF-8
-
-# Set the keyboard layout to German
-RUN echo "XKBLAYOUT=de" > /etc/default/keyboard
-
 # Tools to handle and load certs
 RUN apt-get update && apt-get install -y \
     libnss3-tools \
     lsb-release 
-
 
 # Set up the audio block. This won't have any effect if the audio block is not being used.
 RUN curl -skL https://raw.githubusercontent.com/balena-labs-projects/audio/master/scripts/alsa-bridge/debian-setup.sh| sh
