@@ -109,10 +109,8 @@ let launchBrowsers = async function (url1, url2) {
     "--disable-session-crashed-bubble",
     "--check-for-update-interval=31536000",
     "--disable-dev-shm-usage",
-    //"--no-sandbox",
-    "--enable-native-gpu-memory-buffers",
     enableGpu != "1" ? "--disable-gpu" : "--enable-gpu-rasterization",
-    "--disable-pinch",
+    `--disable-pinch`,
   ].concat(EXTRA_FLAGS ? EXTRA_FLAGS.split(" ") : []);
 
   // Flags for the first browser
@@ -127,15 +125,6 @@ let launchBrowsers = async function (url1, url2) {
     `--window-position=${WINDOW_POSITION_2}`,
   ].concat(commonFlags);
 
-  // Launching the second browser
-  await chromeLauncher.launch({
-    startingUrl: kioskMode === "1" ? `--app=${url2}` : url2,
-    ignoreDefaultFlags: true,
-    chromeFlags: flags2,
-    port: REMOTE_DEBUG_PORT + 1, // Adjust port to avoid conflict
-    userDataDir: "/chromium/browser2",
-  });
-
   // Launching the first browser
   await chromeLauncher.launch({
     startingUrl: kioskMode === "1" ? `--app=${url1}` : url1,
@@ -143,6 +132,15 @@ let launchBrowsers = async function (url1, url2) {
     chromeFlags: flags1,
     port: REMOTE_DEBUG_PORT,
     userDataDir: "/chromium/browser1",
+  });
+
+  //Launching the second browser
+  await chromeLauncher.launch({
+    startingUrl: kioskMode === "1" ? `--app=${url2}` : url2,
+    ignoreDefaultFlags: true,
+    chromeFlags: flags2,
+    port: REMOTE_DEBUG_PORT + 1, // Adjust port to avoid conflict
+    userDataDir: "/chromium/browser2",
   });
 
   console.log(`Launched browsers with URLs: ${url1}, ${url2}`);
