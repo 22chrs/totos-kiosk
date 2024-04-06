@@ -33,10 +33,28 @@ COPY ./public-html /home/chromium
 RUN echo 'SUBSYSTEM=="vchiq",GROUP="video",MODE="0660"' > /etc/udev/rules.d/10-vchiq-permissions.rules
 RUN usermod -a -G audio,video,tty chromium
 
+
+#! NEU START
+
+# Generate locale for German
+RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+
+# Set environment variables for German locale
+ENV LANG de_DE.UTF-8
+ENV LANGUAGE de_DE:de
+ENV LC_ALL de_DE.UTF-8
+
+# Set the keyboard layout to German
+RUN echo "XKBLAYOUT=de" > /etc/default/keyboard
+
 # Tools to handle and load certs
 RUN apt-get update && apt-get install -y \
     libnss3-tools \
     lsb-release 
+
+#! NEU ENDE
+
 
 # Set up the audio block. This won't have any effect if the audio block is not being used.
 RUN curl -skL https://raw.githubusercontent.com/balena-labs-projects/audio/master/scripts/alsa-bridge/debian-setup.sh| sh

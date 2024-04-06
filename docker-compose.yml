@@ -1,11 +1,9 @@
 version: "2.4"
 volumes:
-  #xserver-volume:
   settings: # Only required if using PERSISTENT flag (see below)
   shared-certs: # New volume for sharing certificates
 
 services:
-
   certs:
     build:
       context: ./certs
@@ -21,7 +19,6 @@ services:
     volumes:
       - "settings:/data" # Only required if using PERSISTENT flag (see below)
       - "shared-certs:/certs" # Mount the shared volume
-     # - "xserver:/tmp/.X11-unix" # external xserver needed
     environment:
       - DISPLAY_NUM=0 # hat gerade keinen Einfluss, da 2x überschieben
       - SHOW_CURSOR=0
@@ -30,10 +27,7 @@ services:
       #- LAUNCH_URL=https://app:8082?display=1
       - WINDOW_SIZE=2560,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
       - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
-      # - LAUNCH_URL_2=https://app:8082?display=2
-      # - WINDOW_SIZE_2=1280,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
-      # - WINDOW_POSITION_2=1280,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
-      # - EXTRA_FLAGS= --disable-pinch
+      - EXTRA_FLAGS= --disable-pinch
     depends_on:
       - app
       - certs
@@ -47,7 +41,6 @@ services:
       - "shared-certs:/certs" # Mount the shared volume
     ports:
       - "3000:3000"
-      #- "8081:8081" # Internal HTTP port
       - "8082:8082" # External HTTPS port for SSL proxy
     environment:
       - PORT=3000

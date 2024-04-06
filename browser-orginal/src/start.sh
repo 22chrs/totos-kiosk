@@ -60,6 +60,9 @@ chown -R chromium:chromium /data
 rm -f /data/chromium/SingletonLock
 
 
+
+#! NEU START
+
 # Function to update the certificate for both root and chromium users
 update_certificate_for_user() {
     local user=$1
@@ -93,18 +96,14 @@ update_certificate_for_user() {
 update_certificate_for_user "root"
 update_certificate_for_user "chromium"
 
+#! NEU ENDE
+
 # we can't maintain the environment with su, because we are logging in to a new session
 # so we need to manually pass in the environment variables to maintain, in a whitelist
 # This gets the current environment, as a comma-separated string
 environment=$(env | grep -v -w '_' | awk -F= '{ st = index($0,"=");print substr($1,0,st) ","}' | tr -d "\n")
 # remove the last comma
 environment="${environment::-1}"
-
-# #! NEU
-# export DISPLAY=:0
-# while [ ! -e /tmp/.X11-unix/X${DISPLAY#*:} ]; do sleep 0.5; done
-# node /usr/src/app/server.js
-# #! NEU
 
 # launch Chromium and whitelist the enVars so that they pass through to the su session
 su -w $environment -c "export DISPLAY=:$DISPLAY_NUM && startx /usr/src/app/startx.sh $CURSOR" - chromium

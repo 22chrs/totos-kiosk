@@ -83,6 +83,7 @@ echo "Installed browser version: $VERSION"
 # stop the screen blanking
 xset s off -dpms
 
+#! NEU START
 
 xrandr --fb 2559x800
 xinput set-prop 6 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
@@ -91,5 +92,7 @@ xinput set-prop 7 "Coordinate Transformation Matrix" 1 0 -1 0 1 0 0 0 1
 # Map touch input devices to their corresponding screens
 xinput map-to-output 6 HDMI-1
 xinput map-to-output 7 HDMI-2
+
+#! NEU ENDE
 
 node /usr/src/app/server.js
