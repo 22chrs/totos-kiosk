@@ -3,3 +3,4 @@
 start.sh
 startx.sh
 Dockerfile.template
+index.html

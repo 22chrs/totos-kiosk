@@ -1,28 +1,40 @@
-# https://www.makeswift.com/blog/accessing-your-local-nextjs-dev-server-using-https
-
-#FROM node:21.6-bookworm 
+# Specify Node.js version and Debian version as arguments
 ARG NODEJS_VERSION="19.6.1"
 ARG DEBIAN_VERSION="bookworm"
-FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-build
+# Use balenalib base image optimized for the target hardware
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-build as builder
 
 WORKDIR /opt/
 
-# Copy your application code and start script
+# Copy your application code
 COPY ./hejtoto.com /opt/
-COPY ./start.sh /opt/
 
 # Install dependencies including devDependencies
-RUN npm ci 
+RUN npm ci
 
 # Build the application
 RUN npm run build
 
-# Install local-ssl-proxy globally
-RUN npm install -g local-ssl-proxy
+# Stage 2: Setup runtime environment
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-run
 
-ENV NODE_ENV=production 
+WORKDIR /opt/
 
-# Admin Rechte
-RUN chmod +x start.sh 
+# Copy built artifacts and necessary scripts from builder stage
+COPY --from=builder /opt/ ./
+COPY ./start.sh /opt/
+
+# Install local-ssl-proxy globally for runtime
+RUN npm install -g local-ssl-proxy && \
+    # Clean npm cache to reduce image size
+    npm cache clean --force
+
+ENV NODE_ENV=production
+
+# Ensure start script is executable
+RUN chmod +x start.sh
+
 # Start command
 CMD ["bash", "/opt/start.sh"]
+
+

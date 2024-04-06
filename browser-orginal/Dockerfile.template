@@ -36,9 +36,11 @@ RUN usermod -a -G audio,video,tty chromium
 
 #! NEU START
 
+# Install locale and keyboard configuration packages
+RUN apt-get update && apt-get install -y locales console-data
+
 # Generate locale for German
-RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
+RUN sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen
 
 # Set environment variables for German locale
 ENV LANG de_DE.UTF-8
