@@ -4,7 +4,6 @@
 #define LED_H
 
 #include <_global.h>
-#include <FastLED.h>
 
 #define BUILD_IN_LED_PIN 13
 
@@ -23,8 +22,6 @@ enum ColorName
     WHITE,
     OFF
 };
-
-inline CRGB MyNeopixel[NUM_LEDS];
 
 void init_LEDs();
 void Neopixel(ColorName colorName);

@@ -40,5 +40,36 @@
         crossorigin="anonymous"
       ></iframe>
     </div>
+    <script>
+      const retryInterval = 5000; // 5 seconds
+
+      // Function to check and reload iframe if it didn't load correctly
+      function checkAndReload(iframe) {
+        try {
+          // Try accessing the iframe's content
+          if (!iframe.contentWindow || !iframe.contentWindow.document) {
+            throw new Error("Frame content not accessible.");
+          }
+        } catch (e) {
+          console.log(`Reloading ${iframe.name}: ${e.message}`);
+          // If access is denied, the content hasn't loaded, so reload
+          iframe.contentWindow.location.reload(true);
+        }
+      }
+
+      // Function to set up retry mechanism
+      function setupRetry(iframeId) {
+        const iframe = document.getElementsByName(iframeId)[0];
+        iframe.addEventListener("load", function () {
+          setTimeout(() => checkAndReload(iframe), retryInterval);
+        });
+        // Initially check if iframe is loaded properly
+        checkAndReload(iframe);
+      }
+
+      // Set up retries for both iframes
+      setupRetry("leftFrame");
+      setupRetry("rightFrame");
+    </script>
   </body>
 </html>

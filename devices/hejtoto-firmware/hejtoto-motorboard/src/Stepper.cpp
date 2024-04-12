@@ -1,17 +1,18 @@
 // Stepper.cpp
 
 #include <Stepper.h>
+#define StepperCount 6
 
 void init_Stepper()
 {
     TS4::begin();
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < StepperCount; i++)
     {
         mcp.pinMode(stepperMotors[i].enPin, OUTPUT);
         mcp.pinMode(stepperMotors[i].dirPin, OUTPUT);
         mcp.pinMode(stepperMotors[i].dirPinDummy, OUTPUT); // If needed
         pinMode(stepperMotors[i].stepPin, OUTPUT);
-        mcp.digitalWrite(stepperMotors[i].enPin, LOW); // Enable driver in hardware
+        mcp.digitalWrite(stepperMotors[i].enPin, HIGH); // Disable driver in hardware
 
         stepperMotors[i].serialPort->begin(115200);
         stepperMotors[i].driver->toff(5);
@@ -21,7 +22,19 @@ void init_Stepper()
 
         stepperMotors[i].stepper->setMaxSpeed(currentBoardConfig->stepper[i].maxSpeed);
         stepperMotors[i].stepper->setAcceleration(currentBoardConfig->stepper[i].acceleration);
-        stepperMotors[i].position = -33;
+        stepperMotors[i].position = 0;
+    }
+}
+
+void enableMotor(byte stepperX, boolean isEnabled)
+{
+    if (isEnabled == false)
+    {
+        mcp.digitalWrite(stepperMotors[stepperX - 1].enPin, HIGH); // Disable driver in hardware
+    }
+    if (isEnabled == true)
+    {
+        mcp.digitalWrite(stepperMotors[stepperX - 1].enPin, LOW); // Disable driver in hardware
     }
 }
 
@@ -39,10 +52,12 @@ void moveMotorToAbsPosition(byte stepperX, float newPosition)
     if (newPosition >= stepperMotors[stepperX - 1].position)
     {
         direction = 1;
+        Serial.println("Direction inverted.");
     }
     else
     {
         direction = 0;
+        Serial.println("Direction normal.");
     }
 
     mcp.digitalWrite(stepperMotors[stepperX - 1].dirPin, direction ? HIGH : LOW);

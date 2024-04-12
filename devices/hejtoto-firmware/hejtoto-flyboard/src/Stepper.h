@@ -4,13 +4,16 @@
 #define STEPPER_H
 
 #include <_global.h>
-#include <TMCStepper.h>
-#include <SPI.h>
+#include <TMC2130Stepper.h>
+// #include <TMCStepper.h>
+
 #include <TeensyStep.h>
 #include <LimitSwitch.h>
 
-#define DRIVER_ADDRESS 0b00 // EZ2209 driver address according to MS1 and MS2
-#define R_SENSE 0.11f       // value for EZ2209 driver
+// #define DRIVER_ADDRESS 0b00 // EZ2209 driver address according to MS1 and MS2
+// #define R_SENSE 0.11f       // value for EZ2209 driver
+
+bool dir = true;
 
 const int MICROSTEPS = 16;
 const int RESOLUTION = 200; // Steps/turn
@@ -22,16 +25,14 @@ const float homeShift = 3;
 
 // !driver
 #define EN_PIN D3    // Enable
-#define CS_PIN D2    // SPI-CS pin
+#define CS_PIN D2    //! Muss raus da immer an.
 #define MOSI_PIN D10 // SPI-MOSI pin
 #define MISO_PIN D9  // SPI-MISO pin
 #define SCK_PIN D8   // SPI-SCK pin
 
-extern TMC2130Stepper driver;
-
 // !stepper
-#define DIR_PIN 2 // Direction
-#define STP_PIN 1 // Step
+#define DIR_PIN D1 // Direction
+#define STP_PIN D0 // Step
 
 extern Stepper motor;
 extern StepControl controller;

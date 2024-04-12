@@ -1,7 +1,7 @@
 // Action.h
 
-#ifndef ACTION_H
-#define ACTION_H
+#ifndef ACTIONS_H
+#define ACTIONS_H
 
 #include <_global.h>
 

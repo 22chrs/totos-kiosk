@@ -79,13 +79,21 @@ void check_doorSensor()
         chronoDoorSensors.restart();
         // Example door sensor checking logic
         // Adjust according to your specific hardware setup and requirements
-        if (mcp.digitalRead(DES1_PIN) == HIGH)
+        if (mcp.digitalRead(DES1_PIN) == LOW)
         {
             Serial.println("Door 1 open.");
         }
-        if (mcp.digitalRead(DES2_PIN) == HIGH)
+        if (mcp.digitalRead(DES1_PIN) == HIGH)
+        {
+            Serial.println("Door 1 closed.");
+        }
+        if (mcp.digitalRead(DES2_PIN) == LOW)
         {
             Serial.println("Door 2 open.");
+        }
+        if (mcp.digitalRead(DES2_PIN) == HIGH)
+        {
+            Serial.println("Door 2 closed.");
         }
     }
 }

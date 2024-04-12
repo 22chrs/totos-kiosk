@@ -2,7 +2,8 @@
 
 #include <Stepper.h>
 
-TMC2130Stepper driver(CS_PIN, R_SENSE);
+// TMC2130Stepper driver(CS_PIN, R_SENSE);
+TMC2130Stepper TMC2130 = TMC2130Stepper(EN_PIN, DIR_PIN, STP_PIN, CS_PIN);
 
 Stepper motor(DIR_PIN, STP_PIN);
 StepControl controller;
@@ -11,20 +12,18 @@ long maxSpeed = 30000; // Initialize with its value
 
 void init_Stepper()
 {
+    TMC2130.begin();                  // Initiate pins and registeries
+    TMC2130.SilentStepStick2130(400); // Set stepper current to 600mA
     pinMode(EN_PIN, OUTPUT);
     pinMode(STP_PIN, OUTPUT);
     pinMode(DIR_PIN, OUTPUT);
     digitalWrite(EN_PIN, LOW); // Enable driver in hardware
-    SPI.begin();               // SPI drivers
-    driver.begin();
+                               // SPI drivers
 
     motor.setMaxSpeed(maxSpeed);         // stp/s
     motor.setAcceleration(Acceleration); // stp/s^2
 
-    driver.toff(5);             // Enables driver in software
-    driver.rms_current(500);    // Set motor RMS current
-    driver.microsteps(16);      // Set microsteps to 1/16th
-    driver.pwm_autoscale(true); // Needed for stealthChop
+    digitalWrite(EN_PIN, LOW);
 }
 
 void moveMotorToAbsPosition(float newPosition)

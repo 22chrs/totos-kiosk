@@ -1,66 +1,70 @@
 // led.cpp
-
+// Adafruit_NeoPixel(neoPixelCount, neoPixelPin, NEO_GRBW + NEO_KHZ800);
 #include <Led.h>
+// led.cpp
 
-CRGB MyNeopixel[NUM_LEDS];
+#include <Adafruit_NeoPixel.h>
 
-void init_LEDs()
-{
-    // Initialize FastLED library for the NEOPIXEL strip.
-    FastLED.addLeds<WS2812B, NEOPIXEL_PIN, GRB>(MyNeopixel, NUM_LEDS);
-    // Set the brightness of the strip (optional, ranges from 0 to 255).
-    FastLED.setBrightness(255);
-    // Turn off the LED by setting its color to black.
-    MyNeopixel[0] = CRGB::Black;
-    FastLED.show();
+#define NUMPIXELS NUM_LEDS // Define the number of pixels in the NeoPixel strip
 
-    // Initialize the built-in LED.
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, LOW); // Start with the built-in LED off.
-}
+// Declare our NeoPixel strip object:
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, NEOPIXEL_PIN, NEO_GRBW + NEO_KHZ800);
 
 void Neopixel(ColorName colorName)
 {
-    CRGB color;
+    uint32_t color;
 
     switch (colorName)
     {
     case RED:
-        color = CRGB::Red;
+        color = strip.Color(255, 0, 0); // Red
         break;
     case ORANGE:
-        color = CRGB::Orange;
+        color = strip.Color(255, 165, 0); // Orange
         break;
     case GREEN:
-        color = CRGB::Green;
+        color = strip.Color(0, 255, 0); // Green
         break;
     case BLUE:
-        color = CRGB::Blue;
+        color = strip.Color(0, 0, 255); // Blue
         break;
     case YELLOW:
-        color = CRGB::Yellow;
+        color = strip.Color(255, 255, 0); // Yellow
         break;
     case PURPLE:
-        color = CRGB::Purple;
+        color = strip.Color(160, 32, 240); // Purple
         break;
     case PINK:
-        color = CRGB(255, 105, 180); // There's no predefined CRGB::Pink, so we use an RGB value for pink.
+        color = strip.Color(255, 105, 180); // Pink
         break;
     case WHITE:
-        color = CRGB::White;
+        color = strip.Color(255, 255, 255); // White
         break;
     case OFF:
-        color = CRGB::Black; // Turn the LED off
+        color = strip.Color(0, 0, 0); // Off
         break;
     default:
-        color = CRGB::Black; // Default or unknown color
+        color = strip.Color(0, 0, 0); // Default to off if color is unknown
     }
 
-    MyNeopixel[0] = color;
-    FastLED.show();
+    strip.setPixelColor(0, color); // Set color of the first pixel
+    strip.show();                  // Update the strip to show the color change
+}
+
+void init_LEDs()
+{
+
+    strip.begin(); // Initialize the NeoPixel strip
+    strip.setPixelColor(0, strip.Color(0, 0, 0));
+    strip.setBrightness(255); // Set the brightness (optional, ranges from 0 to 255)
+    strip.show();             // Initialize all pixels to 'off'
+    Neopixel(BLUE);
+
+    pinMode(BUILTIN_LED, OUTPUT);   // Initialize the built-in LED
+    digitalWrite(BUILTIN_LED, LOW); // Start with the built-in LED off
 }
 
 void setBuiltInLEDState(bool state)
 {
-    digitalWrite(LED_BUILTIN, state ? HIGH : LOW);
+    digitalWrite(BUILTIN_LED, state ? HIGH : LOW); // Set the state of the built-in LED
 }

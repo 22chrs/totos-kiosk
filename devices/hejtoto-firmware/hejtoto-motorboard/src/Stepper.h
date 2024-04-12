@@ -15,7 +15,7 @@ using namespace TS4;
 #define DRIVER_ADDRESS 0b00 // EZ2209 driver address according to MS1 and MS2
 #define R_SENSE 0.11f       // value for EZ2209 driver
 
-const int MICROSTEPS = 16;
+const int MICROSTEPS = 1;
 const int RESOLUTION = 200; // Steps/turn
 
 // !Stepper 1
@@ -82,6 +82,7 @@ inline StepperMotor stepperMotors[6] = {
 // Functions
 void init_Stepper();
 
+void enableMotor(byte stepperX, boolean isEnabled);
 void moveMotorToAbsPosition(byte stepperX, float newPosition);
 void moveMotorRel(byte stepperX, float newPosition);
 bool motorMovingState(byte stepperX);
