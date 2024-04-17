@@ -5,8 +5,6 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define NUMPIXELS NUM_LEDS // Define the number of pixels in the NeoPixel strip
-
 // Declare our NeoPixel strip object:
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, NEOPIXEL_PIN, NEO_GRBW + NEO_KHZ800);
 

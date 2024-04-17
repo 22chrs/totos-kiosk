@@ -6,7 +6,7 @@
 #include <_global.h>
 
 #define NEOPIXEL_PIN D4
-#define NUM_LEDS 1
+#define NUM_LEDS 3
 
 enum ColorName
 {
