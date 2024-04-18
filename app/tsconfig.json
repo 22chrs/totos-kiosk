@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/public/*": ["public/*"],
+      "@/components/*": ["src/components/*"],
+      "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/data/*": ["data/*"],
+      "@/providers/*": ["src/providers/*"],
+      "@/internationalization/*": ["internationalization/*"],
+      "@/theme/*": ["src/theme/*"],
+      "@/websocket/*": ["src/websocket/*"],
+      "@/firebase/*": ["src/firebase/*"],
+      "@/pages/*": ["pages/*"]
+    },
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/404.tsx",
+    "next-i18next.config.mjs",
+    "next-sitemap.config.js",
+    ".vscode/locales/i18n.ts",
+    "src/components/buttons/SignInButton.tsx2",
+    "src/components/images/image.__"
+  ],
+  "exclude": ["node_modules"]
+}

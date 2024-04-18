@@ -7,7 +7,7 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VE
 WORKDIR /opt/
 
 # Copy your application code
-COPY ./hejtoto.com /opt/
+COPY ./ /opt/
 
 # Install dependencies including devDependencies
 RUN npm ci

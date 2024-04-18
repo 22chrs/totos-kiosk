@@ -41,18 +41,18 @@
       ></iframe>
     </div>
     <script>
-      const retryInterval = 5000; // 5 seconds
+      const retryInterval = 5000; // Retry every 5 seconds
 
       // Function to check and reload iframe if it didn't load correctly
       function checkAndReload(iframe) {
         try {
           // Try accessing the iframe's content
-          if (!iframe.contentWindow || !iframe.contentWindow.document) {
-            throw new Error("Frame content not accessible.");
+          if (!iframe.contentWindow.document.body) {
+            throw new Error("Frame content not loaded.");
           }
         } catch (e) {
           console.log(`Reloading ${iframe.name}: ${e.message}`);
-          // If access is denied, the content hasn't loaded, so reload
+          // If access is denied or no content, reload
           iframe.contentWindow.location.reload(true);
         }
       }
@@ -60,11 +60,10 @@
       // Function to set up retry mechanism
       function setupRetry(iframeId) {
         const iframe = document.getElementsByName(iframeId)[0];
-        iframe.addEventListener("load", function () {
-          setTimeout(() => checkAndReload(iframe), retryInterval);
-        });
-        // Initially check if iframe is loaded properly
+        // Check immediately if the iframe has loaded
         checkAndReload(iframe);
+        // Set interval to keep checking until the content is fully loaded
+        setInterval(() => checkAndReload(iframe), retryInterval);
       }
 
       // Set up retries for both iframes
