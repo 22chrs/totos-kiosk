@@ -42,7 +42,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     //console.log('Display query param:', displayQueryParam);
 
     // Disable Framer Motion animations for this part
-    MotionGlobalConfig.skipAnimations = true;
+    //MotionGlobalConfig.skipAnimations = true;
 
     return (
       <ChakraProvider theme={theme}>

@@ -1,6 +1,6 @@
 name: hej-toto-app
 type: sw.application
-version: 15.0.2
+version: 20.0.0
 joinable: false
 description: >-
   Hej Toto App

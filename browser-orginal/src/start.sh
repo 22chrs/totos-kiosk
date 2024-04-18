@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+
+#! NEU START (Intnernet connected check)
+while ! ping -c 1 8.8.8.8 > /dev/null 2>&1; do
+  echo "Waiting for internet connection..."
+  sleep 2
+done
+echo "Internet is now connected."
+#! NEU ENDE (Intnernet connected check)
+
 # this allows chromium sandbox to run, see https://github.com/balena-os/meta-balena/issues/2319
 sysctl -w user.max_user_namespaces=10000
 
