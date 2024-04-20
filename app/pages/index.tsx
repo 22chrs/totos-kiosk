@@ -74,7 +74,7 @@ const Kiosk = () => {
           right='0'
           pb='8vh'
           pl='5vw'
-          pr='30vw'
+          //pr='30vw'
           // paddingX='5vw'
           // paddingY='1vh'
           bgColor='transparent'
