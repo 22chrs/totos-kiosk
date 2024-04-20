@@ -19,12 +19,18 @@ const isKioskDomain =
     window.location.hostname === 'www.kiosk.hejtoto.com');
 
 const resources = {
+  Deutsch: {
+    translation: de_DE,
+  },
+  English: {
+    translation: en_US,
+  },
   Français: {
     translation: fr_FR,
   },
-  Nederlands: {
-    translation: nl_NL,
-  },
+  // Nederlands: {
+  //   translation: nl_NL,
+  // },
   Español: {
     translation: es_ES,
   },
@@ -34,18 +40,18 @@ const resources = {
   // Polski: {
   //   translation: pl_PL,
   // },
-  Українська: {
-    translation: uk_UA,
-  },
+  // Українська: {
+  //   translation: uk_UA,
+  // },
   Русский: {
     translation: ru_RU,
   },
-  Türk: {
-    translation: tr_TR,
-  },
-  العربية: {
-    translation: ar_AR,
-  },
+  // Türk: {
+  //   translation: tr_TR,
+  // },
+  // العربية: {
+  //   translation: ar_AR,
+  // },
   // 中文: {
   //   translation: zh_CN,
   // },

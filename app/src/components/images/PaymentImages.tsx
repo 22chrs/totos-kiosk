@@ -12,7 +12,7 @@ export const PaymentImages = () => {
 
   const width = '500';
   const height = '500';
-  const borderRadius = 'lg';
+  const borderRadius = 'xl';
   const gap = '2';
 
   return (

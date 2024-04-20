@@ -1,16 +1,21 @@
 // const isProduction = process.env.NODE_ENV === 'production';
 
-const locales = [
-  'de_DE',
-  'en_US',
-  'fr_FR',
-  'ru_RU',
-  'es_ES',
-  'it_IT',
-  'nl_NL',
-  'pl_PL',
-  'uk_UA',
-];
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Set locales based on the environment
+const locales = isProduction
+  ? [
+      'de_DE',
+      'en_US',
+      'fr_FR',
+      'ru_RU',
+      'es_ES',
+      'it_IT',
+      'nl_NL',
+      'pl_PL',
+      'uk_UA',
+    ]
+  : ['de_DE', 'en_US'];
 
 const nextConfig = {
   // Properly enable or disable image optimization

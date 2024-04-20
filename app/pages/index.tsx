@@ -32,10 +32,6 @@ const Kiosk = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const { displayNumber } = useContext(DisplayContext);
-  const { setHeader } = useLayoutContext();
-  useEffect(() => {
-    setHeader(<HeaderStartPage />);
-  }, [setHeader]);
 
   const handlePageClick = () => {
     router.pushWithDisplay('/kiosk/shop');
@@ -47,7 +43,8 @@ const Kiosk = () => {
       transition={{ enter: { duration: 0.5, easing: 'easeInOut' } }}
       in={enterCount > 0}
     >
-      <Box onClick={handlePageClick}>
+      <Box position='relative' height='100vh' width='100vw' overflow='hidden'>
+        <HeaderStartPage />
         <Video
           ref={ref}
           position='absolute'
@@ -58,62 +55,36 @@ const Kiosk = () => {
             '/assets/videos/video_day.mov',
             '/assets/videos/video_night.mov',
           )}
-          h='100vh'
-          w='100vw'
+          height='100%'
+          width='100%'
           objectFit='cover'
           zIndex='-1'
         />
-
-        <PageLayout
-          title={t('kiosk')}
-          description=''
-          contentHeight={KIOSK_CONTENT_HEIGHT_STARTPAGE}
-        >
-          <Flex
-            direction='column'
-            justifyContent='center'
-            alignItems='center'
-            height='75vh'
-            maxW='30%'
-          >
-            {/* <Heading variant='h1_kiosk' fontSize='5rem'>
-            {t('kiosk')}
-          </Heading> */}
-          </Flex>
-          <Text>
-            {displayNumber === '1'
-              ? 'Display front attached.'
-              : displayNumber === '2'
-                ? 'Display back attached.'
-                : 'Error Display'}
-          </Text>
-        </PageLayout>
+        <Text position='absolute' zIndex='1'>
+          {displayNumber === '1'
+            ? 'Display front attached.'
+            : displayNumber === '2'
+              ? 'Display back attached.'
+              : 'Error Display'}
+        </Text>
         <Box
-          position='relative'
-          h='100vh'
-          onClick={handlePageClick}
-          px='13vw'
+          position='absolute'
+          bottom='0'
+          left='0'
+          right='0'
+          pb='8vh'
+          pl='5vw'
+          pr='30vw'
+          // paddingX='5vw'
+          // paddingY='1vh'
           bgColor='transparent'
-          // bgColor={useColorModeValue(
-          //   'footerBGColor.lightMode',
-          //   'footerBGColor.darkMode'
-          // )}
           color={useColorModeValue(
             'footerFontColor.lightMode',
             'footerFontColor.darkMode',
           )}
-          //px='5vw'
-
-          w='100%'
+          zIndex='1'
         >
-          <Box
-            //bgColor='red'
-            //p='3'
-            //pt={`calc((${KIOSK_FOOTER_HEIGHT_STARTPAGE} - ${KIOSK_LANG_HEIGHT}) / 2)`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <LanguagesTabsKiosk handleOpen={handlePageClick} />
-          </Box>
+          <LanguagesTabsKiosk handleOpen={handlePageClick} />
         </Box>
       </Box>
     </ScaleFade>

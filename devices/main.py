@@ -52,16 +52,20 @@ async def handle_order(websocket, message):
     except json.JSONDecodeError:
         print("Error: Received message is not valid JSON.")
 
+
 # WebSocket-related functions
 async def check_connections_periodically():
     while True:
         message = await check_clients_connected(["app_1", "app_2"])
         if message:
             print(message)
-        await asyncio.sleep(10)
+        await asyncio.sleep(3)
+
 
 # Entry point
 if __name__ == '__main__':
+ 
+
     # Initialize asyncio event loop
     loop = asyncio.get_event_loop()
 

@@ -1,5 +1,6 @@
 import {
   Box,
+  Icon,
   Tab,
   TabList,
   Tabs,
@@ -7,7 +8,9 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { FaAccusoft } from 'react-icons/fa';
 import { KIOSK_LANG_HEIGHT } from 'src/constants';
+import { LanguageRegular } from '../icons/icons';
 
 //https://help.ubuntu.com/stable/ubuntu-help/figures/input-methods-switcher.png
 
@@ -47,85 +50,106 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
   };
 
   return (
-    <Tabs
-      variant='soft-rounded'
-      bgColor={mode('pageBGColor.lightMode', 'pageBGColor.lightMode')}
-      rounded='3xl'
-      borderWidth='0.2rem'
-      borderColor={mode('footerBGColor.darkMode', 'footerBGColor.darkMode')}
-    >
-      <TabList>
-        {availableLanguages.map((lang) => {
-          const shortName = getShortName(lang);
+    <>
+      <Tabs
+        _focusVisible={{ boxShadow: 'none', outline: 'none' }}
+        _focus={{ boxShadow: 'none' }}
+        variant='soft-rounded'
+        bgColor={mode('pageBGColor.lightMode', 'pageBGColor.lightMode')}
+        rounded='2xl'
+        borderWidth='0.2rem'
+        borderColor={mode('footerBGColor.darkMode', 'footerBGColor.darkMode')}
+      >
+        <TabList _focus={{ boxShadow: 'none' }}>
+          <Tab
+            _focusVisible={{ boxShadow: 'none', outline: 'none' }}
+            _focus={{ boxShadow: 'none' }}
+            aria-label='Language icon' // Accessibility label
+            background='transparent!important'
+          >
+            <Icon
+              _focusVisible={{ boxShadow: 'none', outline: 'none' }}
+              _focus={{ boxShadow: 'none' }}
+              //bgColor='red'
+              as={LanguageRegular}
+              fontSize='7xl'
+              color='black'
+              background='transparent!important'
+            />
+          </Tab>
+          {availableLanguages.map((lang) => {
+            const shortName = getShortName(lang);
 
-          return (
-            <Tab
-              key={lang}
-              //isDisabled={i18n.language === lang ? true : false}
-              onClick={
-                i18n.language === lang
-                  ? handleOpen // call handleOpen when the language is already selected
-                  : () => handleLanguageChange(lang)
-              }
-              className={i18n.language === lang ? 'myItemFalse' : 'myItem'}
-              _active={{ bg: 'transparent' }}
-              _selected={{ bg: 'transparent', color: 'inherit', opacity: 1 }}
-              _focus={{ outline: 'none', boxShadow: 'none' }}
-              sx={{
-                ':focus': {
-                  outline: 'none !important',
-                },
-              }}
-              px='0'
-              py='0'
-              width='100vw'
-              height={KIOSK_LANG_HEIGHT}
-            >
-              <VStack
-                height='85%'
-                width='85%'
-                bg={
+            return (
+              <Tab
+                background='transparent!important'
+                key={lang}
+                //isDisabled={i18n.language === lang ? true : false}
+                onClick={
                   i18n.language === lang
-                    ? mode(
-                        ' footerBGColor.lightMode',
-                        'footerBGColor.lightMode',
-                      )
-                    : 'transparent'
+                    ? handleOpen // call handleOpen when the language is already selected
+                    : () => handleLanguageChange(lang)
                 }
-                color={
-                  i18n.language === lang
-                    ? mode(
-                        'primaryFontColor.lightMode',
-                        'primaryFontColor.lightMode',
-                      )
-                    : mode(
-                        'footerFontColor.lightMode',
-                        'footerFontColor.lightMode',
-                      )
-                }
-                fontWeight={i18n.language === lang ? '700' : '400'}
-                rounded='2xl'
-                position='relative'
-                spacing={0}
-                justifyContent='center' // centers vertically
+                className={i18n.language === lang ? 'myItemFalse' : 'myItem'}
+                _active={{ bg: 'transparent' }}
+                _selected={{ bg: 'transparent', color: 'inherit', opacity: 1 }}
+                _focus={{ outline: 'none', boxShadow: 'none' }}
+                sx={{
+                  ':focus': {
+                    outline: 'none !important',
+                  },
+                }}
+                px='0'
+                py='0'
+                width='100vw'
+                height={KIOSK_LANG_HEIGHT}
               >
-                <Box as='span' fontSize='4xl' transform='translateY(-12%)'>
-                  {shortName}
-                </Box>
-                <Box
-                  as='span'
-                  fontSize='sm'
-                  position='absolute'
-                  bottom='0'
-                  transform='translateY(-30%)'
+                <VStack
+                  height='85%'
+                  width='85%'
+                  bg={
+                    i18n.language === lang
+                      ? mode(
+                          ' footerBGColor.lightMode',
+                          'footerBGColor.lightMode',
+                        )
+                      : 'transparent'
+                  }
+                  color={
+                    i18n.language === lang
+                      ? mode(
+                          'primaryFontColor.lightMode',
+                          'primaryFontColor.lightMode',
+                        )
+                      : mode(
+                          'footerFontColor.lightMode',
+                          'footerFontColor.lightMode',
+                        )
+                  }
+                  fontWeight={i18n.language === lang ? '700' : '400'}
+                  rounded='2xl'
+                  position='relative'
+                  spacing={0}
+                  justifyContent='center' // centers vertically
                 >
-                  {lang}
-                </Box>
-              </VStack>
-            </Tab>
-          );
-        })}
-      </TabList>
-    </Tabs>
+                  <Box as='span' fontSize='4xl' transform='translateY(-12%)'>
+                    {shortName}
+                  </Box>
+                  <Box
+                    as='span'
+                    fontSize='sm'
+                    position='absolute'
+                    bottom='0'
+                    transform='translateY(-30%)'
+                  >
+                    {lang}
+                  </Box>
+                </VStack>
+              </Tab>
+            );
+          })}
+        </TabList>
+      </Tabs>
+    </>
   );
 };

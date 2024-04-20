@@ -18,8 +18,26 @@ const styles = {
       fontWeight: '400',
       fontSize: 'md',
       bg: mode('pageBGColor.lightMode', 'pageBGColor.darkMode')(props),
-      //transition: 'all 3.2s ease-in-out', // Add this line for the transition
+      userSelect: 'none',
     },
+    ':focus, :focus-visible, *[data-focus]': {
+      outline: 'none !important',
+      boxShadow: 'none !important',
+      //border: 'none !important',
+    },
+    // You can remove the following rules as they are now redundant with the new rule above
+    // '*:focus': {
+    //   outline: 'none !important',
+    //   boxShadow: 'none !important',
+    // },
+    // '*:focus-visible': {
+    //   outline: 'none !important',
+    //   boxShadow: 'none !important',
+    // },
+    // '*:focus-within': {
+    //   outline: 'none !important',
+    //   boxShadow: 'none !important',
+    // },
   }),
 };
 

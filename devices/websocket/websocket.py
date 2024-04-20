@@ -16,6 +16,9 @@ clients = {}
 
 async def echo(websocket, path, callback):
     client_alias = await websocket.recv()
+    # if client_alias in clients:
+    #     print(f"Client already connected, refreshing connection: {client_alias}")
+    #     clients[client_alias].websocket.close()  # Close existing websocket
     clients[client_alias] = WebSocketClient(websocket)
     print(f"New client connected: {client_alias}")
 
