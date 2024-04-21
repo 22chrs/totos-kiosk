@@ -11,6 +11,7 @@ import {
   Grid,
   HStack,
   Heading,
+  Icon,
   Spacer,
   Stack,
   VStack,
@@ -32,6 +33,7 @@ import {
   VerticalTabsProps,
 } from '@/components/kiosk/shop/Interface';
 import { handleUmlauts } from '@/components/kiosk/shop/utils';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 // Kategorien
 function Categories({ title, isSelected, onClick }) {
@@ -112,6 +114,35 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );
+  const [productIndex, setProductIndex] = useState(0); // State to track the index of the current product slice
+
+  const handleOpen = (product: Product, category: Category) => {
+    setSelectedProduct(product);
+    setSelectedCategory(category);
+    onOpen();
+  };
+
+  const handleNext = () => {
+    const nextIndex = productIndex + 5;
+    if (nextIndex >= products.length) {
+      setProductIndex(0); // If at the end, loop back to the start
+    } else {
+      setProductIndex(nextIndex);
+    }
+  };
+
+  const handlePrev = () => {
+    const prevIndex = productIndex - 5;
+    if (prevIndex < 0) {
+      setProductIndex(Math.max(0, products.length - 5));
+    } else {
+      setProductIndex(prevIndex);
+    }
+  };
+
+  const handleReset = () => {
+    setProductIndex(0); // Resets to the beginning of the list
+  };
 
   const cardBGColor = useColorModeValue(
     'footerBGColor.lightMode',
@@ -122,15 +153,10 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
     'primaryFontColor.darkMode',
   );
 
-  const shadowCard = useColorModeValue('md', 'xl');
-
-  const handleOpen = (product: Product, category: Category) => {
-    setSelectedProduct(product);
-    setSelectedCategory(category);
-    onOpen();
-  };
-
-  const numRows = Math.ceil(products.length / 3);
+  const displayedProducts = products.slice(productIndex, productIndex + 5);
+  const showMoreIndicator = products.length > productIndex + 5;
+  const showPrevIndicator = productIndex > 0;
+  const atEndOfList = productIndex + 5 >= products.length;
 
   return (
     <Grid
@@ -139,13 +165,13 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
       pr='0'
       height='100%'
     >
-      {products.map((product) => (
+      {displayedProducts.map((product) => (
         <Card
           onClick={() => handleOpen(product, category)}
           key={product.name}
           borderRadius={KISOK_BORDERRADIUS}
           color={cardFontColor}
-          height={numRows > 1 ? '100%' : 'calc(50% - 1.25rem / 2)'}
+          height={displayedProducts.length <= 3 ? '50%' : '100%'}
           position='relative'
           overflow='hidden'
           cursor='pointer'
@@ -203,6 +229,35 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           </CardFooter>
         </Card>
       ))}
+
+      <Flex justifyContent='space-between' width='100%'>
+        {showPrevIndicator && (
+          <Icon
+            as={FaChevronUp}
+            w={8}
+            h={8}
+            cursor='pointer'
+            onClick={handlePrev}
+          />
+        )}
+        {showMoreIndicator ? (
+          <Icon
+            as={FaChevronDown}
+            w={8}
+            h={8}
+            cursor='pointer'
+            onClick={handleNext}
+          />
+        ) : atEndOfList ? (
+          <Icon
+            as='feComponentTransfer'
+            w={8}
+            h={8}
+            cursor='pointer'
+            onClick={handleReset}
+          />
+        ) : null}
+      </Flex>
 
       <ModalProductCard
         isOpen={isOpen}

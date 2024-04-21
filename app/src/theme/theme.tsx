@@ -23,6 +23,7 @@ const styles = {
     ':focus, :focus-visible, *[data-focus]': {
       outline: 'none !important',
       boxShadow: 'none !important',
+      // background: 'transparent!important',
       //border: 'none !important',
     },
     // You can remove the following rules as they are now redundant with the new rule above

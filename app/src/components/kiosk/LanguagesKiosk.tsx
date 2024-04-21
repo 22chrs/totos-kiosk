@@ -1,11 +1,14 @@
 import {
   Box,
+  Collapse,
   Icon,
+  Slide,
   Tab,
   TabList,
   Tabs,
   VStack,
   useColorModeValue as mode,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FaAccusoft, FaChevronDown, FaChevronUp } from 'react-icons/fa';
@@ -17,15 +20,22 @@ import { useState } from 'react';
 
 export const LanguagesTabsKiosk = ({ handleOpen }) => {
   const { i18n } = useTranslation();
+  const { isOpen, onToggle } = useDisclosure(); // useDisclosure for managing slide visibility
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang);
+    setShowAllLanguages(false); // Optionally close the slide after selection
   };
 
   const availableLanguages = Array.isArray(i18n.options.supportedLngs)
     ? i18n.options.supportedLngs.filter((lang) => lang !== 'cimode')
     : [];
   const [showAllLanguages, setShowAllLanguages] = useState(false);
+
+  const toggleLanguages = () => {
+    setShowAllLanguages(!showAllLanguages);
+    onToggle(); // This will toggle the isOpen state from useDisclosure
+  };
 
   // useEffect(() => {
   //   handleLanguageChange('Deutsch');
@@ -73,13 +83,20 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
           width='auto'
         >
           <TabList
-            _focus={{ boxShadow: 'none' }}
+            _focus={{ boxShadow: 'none', background: 'transparent!important' }}
             display='flex'
             justifyContent='center'
           >
             <Tab
-              _focusVisible={{ boxShadow: 'none', outline: 'none' }}
-              _focus={{ boxShadow: 'none' }}
+              _focusVisible={{
+                boxShadow: 'none',
+                outline: 'none',
+                background: 'transparent!important',
+              }}
+              _focus={{
+                boxShadow: 'none',
+                background: 'transparent!important',
+              }}
               aria-label='Language icon'
               background='transparent!important'
               onClick={() => setShowAllLanguages(!showAllLanguages)}
@@ -98,7 +115,7 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                 key={i18n.language}
                 //isDisabled // Disable interaction since it's just a display
                 _selected={{
-                  bg: 'transparent',
+                  background: 'transparent!important',
                   color: 'inherit',
                   opacity: 1,
                 }}
@@ -142,7 +159,6 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                 </VStack>
               </Tab>
             )}
-
             {showAllLanguages &&
               availableLanguages.map((lang) => {
                 const shortName = getShortName(lang);
@@ -151,7 +167,7 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                     background='transparent!important'
                     key={lang}
                     onClick={() => handleLanguageChange(lang)}
-                    _active={{ bg: 'transparent' }}
+                    _active={{ background: 'transparent!important' }}
                     _selected={{
                       bg: 'transparent',
                       color: 'inherit',
@@ -160,20 +176,17 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                     _focus={{ outline: 'none', boxShadow: 'none' }}
                     px='10'
                     py='1'
-                    //width='8vw' //!###
                     height={KIOSK_LANG_HEIGHT}
+                    style={{
+                      transition: 'transform 0.3s ease-in-out',
+                      transform: showAllLanguages
+                        ? 'translateX(0)'
+                        : 'translateX(100%)',
+                    }}
                   >
                     <VStack
                       height='85%'
                       width='85%'
-                      // bg={
-                      //   i18n.language === lang
-                      //     ? mode(
-                      //         'footerBGColor.lightMode',
-                      //         'footerBGColor.lightMode',
-                      //       )
-                      //     : 'transparent'
-                      // }
                       color={
                         i18n.language === lang
                           ? mode(
@@ -212,18 +225,33 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                   </Tab>
                 );
               })}
+
             <Tab
-              _focusVisible={{ boxShadow: 'none', outline: 'none' }}
-              _focus={{ boxShadow: 'none' }}
+              _active={{ background: 'transparent!important' }}
+              _focusVisible={{
+                boxShadow: 'none',
+                outline: 'none',
+                background: 'transparent!important',
+              }}
+              _focus={{
+                boxShadow: 'none',
+                background: 'transparent!important',
+              }}
               aria-label='Expand languages'
               background='transparent!important'
-              onClick={() => setShowAllLanguages(!showAllLanguages)}
+              onClick={toggleLanguages} // Use the combined function here
             >
               <Icon
+                _active={{ background: 'transparent!important' }}
                 as={showAllLanguages ? FaChevronUp : FaChevronDown}
                 fontSize='5xl'
                 color='black'
                 background='transparent!important'
+                _focusVisible={{
+                  boxShadow: 'none',
+                  outline: 'none',
+                  background: 'transparent!important',
+                }}
                 style={{
                   transform: showAllLanguages ? 'translateY(-8%)' : 'none',
                 }} // Only move the up arrow up

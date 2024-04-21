@@ -110,6 +110,42 @@
           "milkRatio": 0.5,
           "coffeBeansMildRatio": 0.2,
           "coffeePomaceRatio": 0.2
+        },
+        {
+          "id": "8",
+          "name": "Grüner Tee",
+          "description": "Ein erfrischender grüner Tee mit einer leichten bitteren Note. Ein perfektes, belebendes Getränk.",
+          "price": 2.5,
+          "vat": 0.19,
+          "allergens": [],
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": true,
+          "glutenfree": true,
+          "capacity": 100,
+          "freshWaterRatio": 1.2,
+          "wasteWaterRatio": 0.2,
+          "milkRatio": 0
+        },
+        {
+          "id": "9",
+          "name": "Schwarzer Tee",
+          "description": "Ein starker, robuster Tee mit einem reichen, vollen Geschmack. Eine klassische, zeitlose Wahl.",
+          "price": 2.5,
+          "vat": 0.19,
+          "allergens": [],
+          "sizes": [
+            { "size": "200 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 2.0 }
+          ],
+          "vegan": true,
+          "glutenfree": true,
+          "capacity": 120,
+          "freshWaterRatio": 1.2,
+          "wasteWaterRatio": 0.2,
+          "milkRatio": 0
         }
       ]
     },
@@ -155,16 +191,7 @@
           "freshWaterRatio": 0.2,
           "wasteWaterRatio": 0.2,
           "milkRatio": 1
-        }
-      ]
-    },
-    {
-      "name": "Tee",
-      "unit": "Stück",
-      "additives": ["sugar"],
-      "mugs": ["disposable", "reusable"],
-      "lids": ["disposable", "reusable"],
-      "products": [
+        },
         {
           "id": "8",
           "name": "Grüner Tee",
