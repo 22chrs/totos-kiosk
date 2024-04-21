@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react';
 
-export const RedBox = () => {
+export const TouchToStart = () => {
   return (
     <Button
       position='fixed'

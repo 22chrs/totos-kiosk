@@ -22,6 +22,7 @@ import { useLayoutContext } from '@/providers/LayoutContext';
 import { useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KIOSK_CONTENT_HEIGHT_STARTPAGE } from 'src/constants';
+import { TouchToStart } from '@/components/kiosk/touchToStart';
 
 const Video = chakra('video');
 
@@ -92,6 +93,7 @@ const Kiosk = () => {
         >
           <LanguagesTabsKiosk handleOpen={handlePageClick} />
         </Box>
+        <TouchToStart />
       </Box>
     </ScaleFade>
   );
