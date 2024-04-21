@@ -43,7 +43,13 @@ const Kiosk = () => {
       transition={{ enter: { duration: 0.5, easing: 'easeInOut' } }}
       in={enterCount > 0}
     >
-      <Box position='relative' height='100vh' width='100vw' overflow='hidden'>
+      <Box
+        position='relative'
+        height='100vh'
+        width='100vw'
+        overflow='hidden'
+        onClick={handlePageClick}
+      >
         <HeaderStartPage />
         <Video
           ref={ref}

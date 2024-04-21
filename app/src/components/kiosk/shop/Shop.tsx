@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import {
   KIOSK_CATEGORY_WIDTH,
   KIOSK_CONTENT_HEIGHT,
+  KIOSK_PRODUCT_HEIGHT,
   KISOK_BORDERRADIUS,
 } from 'src/constants';
 
@@ -78,7 +79,7 @@ function Categories({ title, isSelected, onClick }) {
       width={isSelected ? '100%' : '100%'} // ausufern
     >
       <HStack>
-        <Box height='100vh' width='300' overflow='hidden' position='relative'>
+        <Box height='100vh' overflow='hidden' position='relative'>
           <Heading
             position='absolute'
             p='6'
@@ -171,7 +172,7 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           key={product.name}
           borderRadius={KISOK_BORDERRADIUS}
           color={cardFontColor}
-          height={displayedProducts.length <= 3 ? '50%' : '100%'}
+          height={KIOSK_PRODUCT_HEIGHT}
           position='relative'
           overflow='hidden'
           cursor='pointer'
@@ -179,49 +180,34 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           <Image
             alt={`${product.name}`}
             fill={true}
-            object-fit='contain'
+            objectFit='contain'
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             style={{ objectFit: 'cover' }}
             src={`/kiosk/products/images/${handleUmlauts(product.name)}.jpg`}
           />
 
-          <CardBody zIndex='5'>
-            <Flex width='100%' justifyContent='flex-start' pt='1' pl='2'>
-              <Box pt='20'>
-                <Box
-                  //borderWidth='0.2rem'
-                  // borderColor={useColorModeValue(
-                  //   'primaryHeadingColor.lightMode',
-                  //   'primaryHeadingColor.lightMode'
-                  // )}
-                  // bgColor={useColorModeValue(
-                  //   'footerBGColor.lightMode',
-                  //   'footerBGColor.lightMode'
-                  // )}
-                  pt='22'
-                  pb='1.5'
-                  pr='4'
-                  pl='2'
-                  roundedRight='lg'
-                  //transform='translateX(-2rem)'
-                >
-                  <Heading
-                    // color={useColorModeValue(
-                    //   'primaryHeadingColor.lightMode',
-                    //   'primaryHeadingColor.lightMode'
-                    // )}
-                    variant='h2_Kiosk'
-                    color={cardFontColor}
-                  >
-                    {product.name}
-                  </Heading>
-                </Box>
+          <CardBody zIndex='5' p='0'>
+            <Flex width='100%' pl='2' pt='2' justifyContent='flex-start'>
+              <Box py='1.5' px='2' rounded='lg'>
+                <Heading variant='h2_Kiosk' color={cardFontColor}>
+                  {product.name}
+                </Heading>
               </Box>
             </Flex>
           </CardBody>
 
-          <CardFooter zIndex='10'>
-            <Flex width='100%' justifyContent='flex-end' pt='1' pr='0'>
+          <CardFooter
+            zIndex='10'
+            pb='3'
+            pr='3'
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              right: '0',
+              width: '100%',
+            }}
+          >
+            <Flex width='100%' justifyContent='flex-end'>
               <Button variant='kiosk_pricetag_small' color={cardFontColor}>
                 {formatPrice(product.price)}
               </Button>

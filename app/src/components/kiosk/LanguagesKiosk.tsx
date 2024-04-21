@@ -11,7 +11,12 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { FaAccusoft, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import {
+  FaAccusoft,
+  FaChevronDown,
+  FaChevronLeft,
+  FaChevronUp,
+} from 'react-icons/fa';
 import { KIOSK_LANG_HEIGHT } from 'src/constants';
 import { LanguageRegular } from '../icons/icons';
 import { useState } from 'react';
@@ -81,6 +86,7 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
           borderWidth='0.2rem'
           borderColor={mode('footerBGColor.darkMode', 'footerBGColor.darkMode')}
           width='auto'
+          onClick={(e) => e.stopPropagation()}
         >
           <TabList
             _focus={{ boxShadow: 'none', background: 'transparent!important' }}
@@ -120,8 +126,9 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                   opacity: 1,
                 }}
                 _focus={{ outline: 'none', boxShadow: 'none' }}
-                px='10'
+                px='8'
                 py='1'
+                onClick={toggleLanguages}
                 //width='8vw' //!###
 
                 height={KIOSK_LANG_HEIGHT}
@@ -137,22 +144,27 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                     'primaryFontColor.lightMode',
                     'primaryFontColor.lightMode',
                   )}
-                  pb='1'
+                  pb='1.5'
                   fontWeight='700'
                   rounded='2xl'
                   position='relative'
                   spacing={0}
                   justifyContent='center'
                 >
-                  <Box as='span' fontSize='4xl' transform='translateY(-12%)'>
+                  <Box
+                    as='span'
+                    fontSize='4xl'
+                    transform='translateY(-17%)'
+                    letterSpacing='0.2rem'
+                  >
                     {currentShortName}
                   </Box>
                   <Box
                     as='span'
-                    fontSize='sm'
+                    fontSize='md'
                     position='absolute'
                     bottom='0'
-                    transform='translateY(-30%)'
+                    transform='translateY(-20%)'
                   >
                     {i18n.language}
                   </Box>
@@ -174,7 +186,7 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                       opacity: 1,
                     }}
                     _focus={{ outline: 'none', boxShadow: 'none' }}
-                    px='10'
+                    px='8'
                     py='1'
                     height={KIOSK_LANG_HEIGHT}
                     style={{
@@ -198,7 +210,7 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                               'footerFontColor.lightMode',
                             )
                       }
-                      pb='1'
+                      pb='1.5'
                       fontWeight={i18n.language === lang ? '700' : '400'}
                       rounded='2xl'
                       position='relative'
@@ -208,16 +220,18 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                       <Box
                         as='span'
                         fontSize='4xl'
-                        transform='translateY(-12%)'
+                        transform='translateY(-17%)'
+                        letterSpacing='0.2rem'
                       >
                         {shortName}
                       </Box>
                       <Box
                         as='span'
-                        fontSize='sm'
+                        //pt='4'
+                        fontSize='md'
                         position='absolute'
                         bottom='0'
-                        transform='translateY(-30%)'
+                        transform='translateY(-20%)'
                       >
                         {lang}
                       </Box>
@@ -243,7 +257,7 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
             >
               <Icon
                 _active={{ background: 'transparent!important' }}
-                as={showAllLanguages ? FaChevronUp : FaChevronDown}
+                as={showAllLanguages ? FaChevronLeft : FaChevronDown}
                 fontSize='5xl'
                 color='black'
                 background='transparent!important'
@@ -253,7 +267,9 @@ export const LanguagesTabsKiosk = ({ handleOpen }) => {
                   background: 'transparent!important',
                 }}
                 style={{
-                  transform: showAllLanguages ? 'translateY(-8%)' : 'none',
+                  transform: showAllLanguages
+                    ? 'translateY(-1%)'
+                    : 'translateY(3%)',
                 }} // Only move the up arrow up
               />
             </Tab>
