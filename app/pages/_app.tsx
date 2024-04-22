@@ -31,6 +31,13 @@ const App = ({ Component, pageProps }: AppProps) => {
   };
 
   useEffect(() => {
+    // Log the environment variables
+    console.log(
+      'Disable Right Click:',
+      process.env.NEXT_PUBLIC_DISABLE_RIGHT_CLICK,
+    );
+    console.log('Environment Mode:', process.env.NEXT_PUBLIC_ENVIRONMENT_MODE);
+
     if (process.env.NEXT_PUBLIC_DISABLE_RIGHT_CLICK === 'true') {
       disableRightClick();
     }

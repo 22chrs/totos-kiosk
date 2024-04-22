@@ -3,7 +3,10 @@ import WebSocket from 'isomorphic-ws';
 const serverAddress =
   process.env.NEXT_PUBLIC_ENVIRONMENT_MODE === 'production'
     ? 'wss://devices:8765' // Use wss for production
-    : 'ws://localhost:8765'; // Use wss for development
+    : 'ws://localhost:8765'; // Use ws for development
+
+// Log the server address to check the current WebSocket endpoint
+console.log('WebSocket Server Address:', serverAddress);
 
 class WebSocketClient {
   ws: WebSocket | null = null; // Allow ws to be null initially

@@ -21,13 +21,20 @@ devices/payment/zvt\+\+/ssrc
 devices/CODE-teensy
 
 ### TOTO
-toto/env/
 toto/ur_log/
 toto/robot/
 
 ### APP
+
+# local env files
+app/.env.local
+app/.env.development.local
+app/.env.test.local
+app/.env.production.local
+app/.env
+
+
 # dependencies
-app/hejtoto.com/node_modules
 app/hejtoto.com/.pnp
 app/hejtoto.com/.pnp.js
 app/hejtoto.com/yarn.lock
@@ -51,18 +58,8 @@ app/hejtoto.com/npm-debug.log*
 app/hejtoto.com/yarn-debug.log*
 app/hejtoto.com/yarn-error.log*
 
-# local env files
-app/hejtoto.com/.env.local
-app/hejtoto.com/.env.development.local
-app/hejtoto.com/.env.test.local
-app/hejtoto.com/.env.production.local
-app/hejtoto.com/.env
-
 # vercel
 app/hejtoto.com/.vercel
-
-# package-lock
-#kiosk/hejtoto.com/package-lock.json
 
 # VSCode
 .vscode/
