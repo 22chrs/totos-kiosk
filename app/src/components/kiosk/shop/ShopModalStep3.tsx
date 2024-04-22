@@ -4,7 +4,7 @@ import {
   ShieldCheckSharpSolid,
 } from '@/components/icons/icons';
 
-import { PaymentImages } from '@/components/images/PaymentImages';
+import { PaymentImagesFooter } from '@/components/images/PaymentImages';
 import { formatPrice } from '@/components/kiosk/shop/utils';
 import { addNewOrder } from '@/firebase/dbFunctionsBestellungen';
 import i18n, { standardSprache } from '@/internationalization/i18n';
@@ -282,7 +282,7 @@ function ShopModalStep3({ herkunft, onClose }) {
                   </Box>
                   {/* <Spacer /> */}
                   <Box maxW='20%' pt={herkunft === 'shop' ? '5' : '14'} pr='0'>
-                    <PaymentImages />
+                    <PaymentImagesFooter />
                   </Box>
                 </HStack>
               </Box>
