@@ -23,6 +23,7 @@ import { useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KIOSK_CONTENT_HEIGHT_STARTPAGE } from 'src/constants';
 import { TouchToStart } from '@/components/kiosk/touchToStart';
+import { InfoCircle, Start } from '@/components/kiosk/Info';
 
 const Video = chakra('video');
 
@@ -79,8 +80,8 @@ const Kiosk = () => {
           bottom='0'
           left='0'
           right='0'
-          pb='21vh'
-          pl='5vw'
+          pb='18vh'
+          pl='9'
           //pr='30vw'
           // paddingX='5vw'
           // paddingY='1vh'
@@ -91,9 +92,10 @@ const Kiosk = () => {
           )}
           zIndex='1'
         >
-          <LanguagesTabsKiosk handleOpen={handlePageClick} />
+          <LanguagesTabsKiosk />
         </Box>
-        <TouchToStart />
+
+        <InfoCircle />
       </Box>
     </ScaleFade>
   );

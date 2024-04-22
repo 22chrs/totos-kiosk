@@ -148,8 +148,8 @@ export const PaymentImagesFooterIcon = () => {
       w='full'
       pos='fixed'
       bottom='0'
-      bg={useColorModeValue('rgba(255, 255, 255, 0.95)', 'rgba(0, 0, 0, 0.8)')}
-      pt='3'
+      bg={useColorModeValue('rgba(255, 255, 255, 0.5)', 'rgba(0, 0, 0, 0.4)')}
+      pt='5'
       pb='5'
       overflowX='auto'
       gap='14'
@@ -169,8 +169,8 @@ export const PaymentImagesFooterIcon = () => {
         <Image
           src='/assets/payment/Girocard.svg'
           alt='VPay'
-          width='60'
-          height='60'
+          width='55'
+          height='55'
           quality='100'
         />
       </Box>
@@ -190,8 +190,8 @@ export const PaymentImagesFooterIcon = () => {
           '/assets/payment/Maestro_dark.svg',
         )}
         alt='ApplePay'
-        width='100'
-        height='100'
+        width='70'
+        height='70'
         quality='100'
       />
       <Image
@@ -214,8 +214,8 @@ export const PaymentImagesFooterIcon = () => {
       <Image
         src='/assets/payment/Visa.svg'
         alt='VPay'
-        width='120'
-        height='120'
+        width='115'
+        height='115'
         quality='100'
       />
 
@@ -225,8 +225,8 @@ export const PaymentImagesFooterIcon = () => {
           '/assets/payment/Mastercard_dark.svg',
         )}
         alt='ApplePay'
-        width='100'
-        height='100'
+        width='70'
+        height='70'
         quality='100'
       />
     </HStack>

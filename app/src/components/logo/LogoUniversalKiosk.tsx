@@ -4,8 +4,8 @@ import LogoQuer from '@/components/logo/LogoQuer';
 import { Box, useColorModeValue } from '@chakra-ui/react';
 
 const LogoUniversalKiosk = ({ logoType, height, top }) => {
-  const colorFont = useColorModeValue('#F7FAFC', 'black'); //#2D3748
-  const colorBG = useColorModeValue('#171923', '#F7FAFC');
+  const colorFont = useColorModeValue('black', 'black'); //#2D3748
+  const colorBG = useColorModeValue('yellow', 'yellow');
 
   const logoOutput =
     logoType === 'Logo' ? (

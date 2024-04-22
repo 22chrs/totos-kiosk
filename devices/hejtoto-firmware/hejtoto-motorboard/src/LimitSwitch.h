@@ -17,6 +17,7 @@
 
 void init_LimitSwitch();
 boolean check_limitSwitch(byte limitSwitchNumber);
+void check_limitSwitch1();
 
 void init_doorSensor();
 void check_doorSensor();
