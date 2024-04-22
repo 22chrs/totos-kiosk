@@ -79,7 +79,7 @@ const Kiosk = () => {
           bottom='0'
           left='0'
           right='0'
-          pb='8vh'
+          pb='21vh'
           pl='5vw'
           //pr='30vw'
           // paddingX='5vw'

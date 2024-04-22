@@ -51,7 +51,13 @@ const nextConfig = {
   },
 
   webpack(config, { isServer }) {
-    return config; // Modify as needed, but removed unnecessary comment
+    // To handle SVG files
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return config; // Always return the modified config
   },
 };
 
