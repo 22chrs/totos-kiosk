@@ -2,31 +2,32 @@
 #include <_global.h>
 #include <Stepper.h>
 #include <Led.h>
-// #include <WLAN.h>
 #include <LimitSwitch.h>
 #include <Cam.h>
 
 void setup()
 {
-  SPI.begin();
-  Serial.begin(115200);
-  while (!Serial)
-    ;
 
-  Serial.println("Started.");
+    Serial.begin(115200);
+    // while (!Serial)
+    //     ;
 
-  init_Stepper();
+    Serial.println("Started.");
+    SPI.begin();
 
-  // init_LimitSwitch();
-  init_LEDs();
-  // init_Cam();
-  // init_WLAN();
-  // Neopixel(BLUE);
+    // init_Stepper();
+
+    // init_LimitSwitch();
+    init_LEDs();
+    setupCam();
+
+    // Neopixel(BLUE);
 }
 
 void loop()
 {
-  moveMotorToAbsPosition(10000);
-  // Serial.println("Loop");
-  //  put your main code here, to run repeatedly:
+    delay(1000);
+    // moveMotorToAbsPosition(10000);
+    //  Serial.println("Loop");
+    //   put your main code here, to run repeatedly:
 }

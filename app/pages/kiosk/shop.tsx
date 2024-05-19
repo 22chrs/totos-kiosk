@@ -170,7 +170,7 @@ const Kiosk = () => {
             _hover={{ bgColor: 'transparent' }}
           />
           <ModalBody p='0'>
-            <LanguagesTabsKiosk handleOpen={onLangClose} />
+            <LanguagesTabsKiosk />
           </ModalBody>
         </ModalContent>
       </Modal>

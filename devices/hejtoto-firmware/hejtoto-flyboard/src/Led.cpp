@@ -58,8 +58,15 @@ void init_LEDs()
     strip.show();             // Initialize all pixels to 'off'
     Neopixel(BLUE);
 
-    pinMode(BUILTIN_LED, OUTPUT);   // Initialize the built-in LED
-    digitalWrite(BUILTIN_LED, LOW); // Start with the built-in LED off
+    pinMode(BUILTIN_LED, OUTPUT); // Initialize the built-in LED
+
+    for (int i = 0; i < 5; i++)
+    {
+        digitalWrite(BUILTIN_LED, LOW); // Turn the LED on
+        delay(200);
+        digitalWrite(BUILTIN_LED, HIGH); // Turn the LED off
+        delay(200);                      // Wait
+    }
 }
 
 void setBuiltInLEDState(bool state)
