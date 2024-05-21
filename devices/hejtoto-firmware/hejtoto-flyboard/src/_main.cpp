@@ -15,19 +15,20 @@ void setup()
     Serial.println("Started.");
     SPI.begin();
 
-    // init_Stepper();
+    init_Stepper();
 
-    // init_LimitSwitch();
+    init_LimitSwitch();
     init_LEDs();
-    setupCam();
+    Neopixel(BLUE);
+    // setupCam();
 
     // Neopixel(BLUE);
 }
 
 void loop()
 {
-    delay(1000);
-    // moveMotorToAbsPosition(10000);
-    //  Serial.println("Loop");
+    moveMotorToAbsPosition(1000);
+    //  delay(1000);
+
     //   put your main code here, to run repeatedly:
 }

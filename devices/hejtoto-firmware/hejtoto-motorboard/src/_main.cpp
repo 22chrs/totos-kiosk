@@ -41,10 +41,10 @@ void setup()
   init_TOF200C(2);
   enableMotor(1, true);
   enableMotor(2, true);
-  moveMotorToAbsPosition(1, 30000);
+  moveMotorToAbsPosition(1, -5000);
   moveMotorToAbsPosition(2, 1000);
 
-  pwmFan(1, 50);
+  pwmFan(1, 150);
 
   setBuiltInLEDState(HIGH);
   delay(100);
@@ -59,21 +59,22 @@ void setup()
   setBuiltInLEDState(LOW);
   delay(100);
   Serial.println("End.");
+  Neopixel(BLUE);
 }
 
 void loop()
 {
 
-  if (motorMovingState(1) == false)
-  {
-    enableMotor(1, false);
-    // moveMotorToAbsPosition(6, 0);
-  }
-  if (motorMovingState(2) == false)
-  {
-    enableMotor(2, false);
-    // moveMotorToAbsPosition(6, 0);
-  }
+  // if (motorMovingState(1) == false)
+  // {
+  //   enableMotor(1, false);
+  //   // moveMotorToAbsPosition(6, 0);
+  // }
+  // if (motorMovingState(2) == false)
+  // {
+  //   enableMotor(2, false);
+  //   // moveMotorToAbsPosition(6, 0);
+  // }
 
   check_doorSensor();
   check_limitSwitch1();

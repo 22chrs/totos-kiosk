@@ -2,28 +2,30 @@
 
 #include <Stepper.h>
 
-// TMC2130Stepper driver(CS_PIN, R_SENSE);
-TMC2130Stepper TMC2130 = TMC2130Stepper(EN_PIN, DIR_PIN, STP_PIN, CS_PIN);
+SoftwareSerial SoftSerial(SW_RX_PIN, SW_TX_PIN); // Be sure to connect RX to TX and TX to RX between both devices
+TMC2209Stepper TMCdriver(&SoftSerial, R_SENSE, DRIVER_ADDRESS);
 
 Stepper motor(DIR_PIN, STP_PIN);
 StepControl controller;
 
-long maxSpeed = 30000; // Initialize with its value
-
 void init_Stepper()
 {
-    TMC2130.begin();                  // Initiate pins and registeries
-    TMC2130.SilentStepStick2130(400); // Set stepper current to 600mA
+    SoftSerial.begin(11520);
+    // TMCdriver.beginSerial(11520); // Initialize UART
+
     pinMode(EN_PIN, OUTPUT);
     pinMode(STP_PIN, OUTPUT);
     pinMode(DIR_PIN, OUTPUT);
+    // pinMode(DIAG_PIN, INPUT);
     digitalWrite(EN_PIN, LOW); // Enable driver in hardware
-                               // SPI drivers
+
+    TMCdriver.begin();                // UART: Init SW UART (if selected) with default 115200 baudrate
+    TMCdriver.toff(5);                // Enables driver in software
+    TMCdriver.rms_current(400);       // Set motor RMS current
+    TMCdriver.microsteps(MICROSTEPS); // Set microsteps
 
     motor.setMaxSpeed(maxSpeed);         // stp/s
-    motor.setAcceleration(Acceleration); // stp/s^2
-
-    digitalWrite(EN_PIN, LOW);
+    motor.setAcceleration(acceleration); // stp/s^2
 }
 
 void moveMotorToAbsPosition(float newPosition)

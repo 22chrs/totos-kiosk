@@ -8,10 +8,10 @@
 
 #include <Arduino.h>
 
-#define EN_PIN D3   // Nano v3:	16 Mega:	38	//enable (CFG6)
-#define DIR_PIN D1  //			19			55	//direction
-#define STEP_PIN D0 //			18			54	//step
-#define CS_PIN      //			17			64	//chip select
+#define EN_PIN D3      // Nano v3:	16 Mega:	38	//enable (CFG6)
+#define DIR_PIN D1     //			19			55	//direction
+#define STEP_PIN D0    //			18			54	//step
+const int CS_PIN = 42; //			17			64	//chip select
 
 constexpr uint32_t steps_per_mm = 80;
 
@@ -31,7 +31,7 @@ void setup()
   pinMode(CS_PIN, OUTPUT);
   digitalWrite(CS_PIN, HIGH);
   driver.begin();          // Initiate pins and registeries
-  driver.rms_current(600); // Set stepper current to 600mA. The command is the same as command TMC2130.setCurrent(600, 0.11, 0.5);
+  driver.rms_current(400); // Set stepper current to 600mA. The command is the same as command TMC2130.setCurrent(600, 0.11, 0.5);
   driver.stealthChop(1);   // Enable extremely quiet stepping
   driver.stealth_autoscale(1);
   driver.microsteps(16);

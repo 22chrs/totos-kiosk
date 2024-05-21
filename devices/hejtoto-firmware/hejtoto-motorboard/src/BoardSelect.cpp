@@ -13,7 +13,7 @@ const BoardConfig ServiceCubeConfig = {
         // current [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
         //! ratio = (PULLY_MOTOR / PULLY_SCREW) * LEAD_SCREW / (RESOLUTION * MICROSTEPS)
 
-        {1000, 5000, 5000, 2 / (RESOLUTION / MICROSTEPS), 555, 5, false},          // Stepper 1 //! geraten! Lift_1
+        {400, 5000, 4000, 2 / (RESOLUTION / MICROSTEPS), 555, 5, false},           // Stepper 1 //! geraten! Lift_1
         {1000, 5000, 5000, (20 / 80) / (RESOLUTION / MICROSTEPS), 333, 5, false},  // Stepper 2 //! geraten! Karusell_1
         {1000, 10000, 5000, 2 / (RESOLUTION / MICROSTEPS), 555, 5, false},         // Stepper 3 //! geraten! Lift_2
         {1000, 10000, 5000, (20 / 80) / (RESOLUTION / MICROSTEPS), 333, 5, false}, // Stepper 4 //! geraten! Karusell_2

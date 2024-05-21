@@ -46,6 +46,8 @@ void Neopixel(ColorName colorName)
     }
 
     strip.setPixelColor(0, color); // Set color of the first pixel
+    strip.setPixelColor(1, color); // Set color of the first pixel
+    strip.setPixelColor(2, color); // Set color of the first pixel
     strip.show();                  // Update the strip to show the color change
 }
 
@@ -56,7 +58,7 @@ void init_LEDs()
     strip.setPixelColor(0, strip.Color(0, 0, 0));
     strip.setBrightness(255); // Set the brightness (optional, ranges from 0 to 255)
     strip.show();             // Initialize all pixels to 'off'
-    Neopixel(BLUE);
+    Neopixel(RED);
 
     pinMode(BUILTIN_LED, OUTPUT); // Initialize the built-in LED
 

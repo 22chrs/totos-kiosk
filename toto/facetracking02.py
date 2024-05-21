@@ -15,6 +15,18 @@ import imutils
 from imutils.video import VideoStream
 import math3d as m3d
 
+#! NEW
+from tflite_runtime.interpreter import Interpreter
+from tflite_runtime.interpreter import load_delegate
+# Load Edge TPU model
+EDGETPU_SHARED_LIB = 'libedgetpu.so.1'
+MODEL_PATH = "mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite"
+interpreter = Interpreter(model_path=MODEL_PATH,
+                          experimental_delegates=[load_delegate(EDGETPU_SHARED_LIB)])
+interpreter.allocate_tensors()
+
+#! NEW
+
 # Set constants for robot connection, speed, acceleration, and start position
 ROBOT_IP = '192.168.178.83'
 ACCELERATION = 0.3  # Robot acceleration value

@@ -1,7 +1,9 @@
+#include <_global.h>
 #include <Cam.h>
 #include "esp_camera.h"
 #include <WiFi.h>
 #include "credentials.h"
+#include <Led.h>
 #define CAMERA_MODEL_XIAO_ESP32S3 // Has PSRAM
 
 #include "camera_pins.h"
@@ -10,9 +12,25 @@
 
 void setupCam()
 {
-    Serial.begin(115200);
-    while (!Serial)
-        ;
+    WiFi.begin(ssid, password);
+    WiFi.setSleep(false);
+
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("");
+    Serial.println("WiFi connected");
+
+    startCameraServer();
+
+    Serial.print("Camera Ready! Use 'http://");
+    Serial.print(WiFi.localIP());
+    Serial.println("' to connect");
+    Neopixel(GREEN);
+    delay(500);
+
     Serial.setDebugOutput(true);
     Serial.println();
 
@@ -75,6 +93,7 @@ void setupCam()
     if (err != ESP_OK)
     {
         Serial.printf("Camera init failed with error 0x%x", err);
+        Neopixel(RED);
         return;
     }
 
@@ -96,21 +115,4 @@ void setupCam()
 #if defined(LED_GPIO_NUM)
     setupLedFlash(LED_GPIO_NUM);
 #endif
-
-    WiFi.begin(ssid, password);
-    WiFi.setSleep(false);
-
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("");
-    Serial.println("WiFi connected");
-
-    startCameraServer();
-
-    Serial.print("Camera Ready! Use 'http://");
-    Serial.print(WiFi.localIP());
-    Serial.println("' to connect");
 }
