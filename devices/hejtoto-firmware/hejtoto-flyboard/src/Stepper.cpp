@@ -2,15 +2,17 @@
 
 #include <Stepper.h>
 
-SoftwareSerial SoftSerial(SW_RX_PIN, SW_TX_PIN); // Be sure to connect RX to TX and TX to RX between both devices
-TMC2209Stepper TMCdriver(&SoftSerial, R_SENSE, DRIVER_ADDRESS);
+HardwareSerial MySerial1(1);
+
+TMC2209Stepper TMCdriver(&MySerial1, R_SENSE, DRIVER_ADDRESS);
 
 Stepper motor(DIR_PIN, STP_PIN);
 StepControl controller;
 
 void init_Stepper()
 {
-    SoftSerial.begin(11520);
+    MySerial1.begin(115200, SERIAL_8N1, D7, D6);
+    delay(500);
     // TMCdriver.beginSerial(11520); // Initialize UART
 
     pinMode(EN_PIN, OUTPUT);
@@ -19,13 +21,19 @@ void init_Stepper()
     // pinMode(DIAG_PIN, INPUT);
     digitalWrite(EN_PIN, LOW); // Enable driver in hardware
 
-    TMCdriver.begin();                // UART: Init SW UART (if selected) with default 115200 baudrate
-    TMCdriver.toff(5);                // Enables driver in software
-    TMCdriver.rms_current(400);       // Set motor RMS current
-    TMCdriver.microsteps(MICROSTEPS); // Set microsteps
+    TMCdriver.begin();          // UART: Init SW UART (if selected) with default 115200 baudrate
+    TMCdriver.toff(5);          // Enables driver in software
+    TMCdriver.rms_current(400); // Set motor RMS current
+    TMCdriver.microsteps(16);   // Set microsteps
+    delay(100);
 
-    motor.setMaxSpeed(maxSpeed);         // stp/s
-    motor.setAcceleration(acceleration); // stp/s^2
+    motor.setMaxSpeed(1000);    // stp/s
+    motor.setAcceleration(500); // stp/s^2
+
+    // Ask for the current setting
+    uint16_t current = TMCdriver.rms_current();
+    Serial.print("Current RMS set inside the driver: ");
+    Serial.println(current);
 }
 
 void moveMotorToAbsPosition(float newPosition)

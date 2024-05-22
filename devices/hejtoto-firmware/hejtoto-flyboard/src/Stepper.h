@@ -5,8 +5,7 @@
 
 #include <_global.h>
 #include <TMCStepper.h>
-#include <SoftwareSerial.h>
-// #include <TMCStepper.h>
+#include <HardwareSerial.h>
 
 #include <TeensyStep.h>
 #include <LimitSwitch.h>
@@ -32,8 +31,8 @@ const int MICROSTEPS = 1;
 const int RESOLUTION = 200; // Steps/turn
 
 const float maxTravel = 10000;   // mm //! geraten
-const long maxSpeed = 4000;      // stp/s
-const long acceleration = 10000; // stp/s^2
+const long maxSpeed = 8000;      // stp/s
+const long acceleration = 15000; // stp/s^2
 const float homeShift = 3;
 
 // const float gearRatio = (20.0 / 32.0) / (2.0 * RESOLUTION);
@@ -45,6 +44,7 @@ void moveMotorToAbsPosition(float newPosition);
 void moveMotorRel(float newPosition);
 bool motorMovingState();
 void stopMotor();
+
 boolean homeMotor();
 
 #endif

@@ -9,6 +9,8 @@ void setup()
 {
 
     Serial.begin(115200);
+    init_LEDs();
+    Neopixel(OFF);
     // while (!Serial)
     //     ;
 
@@ -18,8 +20,8 @@ void setup()
     init_Stepper();
 
     init_LimitSwitch();
-    init_LEDs();
-    Neopixel(BLUE);
+
+    Neopixel(GREEN);
     // setupCam();
 
     // Neopixel(BLUE);
@@ -27,8 +29,8 @@ void setup()
 
 void loop()
 {
-    moveMotorToAbsPosition(1000);
-    //  delay(1000);
+    moveMotorRel(10);
+    //   delay(1000);
 
     //   put your main code here, to run repeatedly:
 }
