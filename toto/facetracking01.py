@@ -29,9 +29,9 @@ if sys.platform == "linux":
     from picamera.array import PiRGBArray
     RASPBERRY_BOOL = True
 
-ROBOT_IP = '192.168.8.124'
-ACCELERATION = 0.9  # Robot acceleration value
-VELOCITY = 0.8  # Robot speed value
+ROBOT_IP = '192.168.1.124'
+ACCELERATION = 0.03  # Robot acceleration value
+VELOCITY = 0.05  # Robot speed value
 
 # The Joint position the robot starts at
 robot_startposition = (math.radians(-218),
@@ -51,12 +51,13 @@ video_asp_ratio  = video_resolution[0] / video_resolution[1]  # Aspect ration of
 video_viewangle_hor = math.radians(25)  # Camera FOV (field of fiew) angle in radians in horizontal direction
 
 # Variable which scales the robot movement from pixels to meters.
-m_per_pixel = 00.00009  
+m_per_pixel = 00.00001
 
 # Size of the robot view-window
 # The robot will at most move this distance in each direction
-max_x = 0.2
-max_y = 0.2
+max_x = 0.05
+max_y = 0.05
+
 
 # Maximum Rotation of the robot at the edge of the view window
 hor_rot_max = math.radians(50)

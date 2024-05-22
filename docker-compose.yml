@@ -58,10 +58,10 @@ services:
     depends_on:
       - certs
 
-  # toto:
-  #   hostname: toto
-  #   build: ./toto
-  #   restart: always
-  #   privileged: true
-  #   volumes:
-  #     - "shared-certs:/certs" # Mount the shared volume
+  toto:
+    hostname: toto
+    build: ./toto
+    restart: always
+    privileged: true
+    volumes:
+      - "shared-certs:/certs" # Mount the shared volume

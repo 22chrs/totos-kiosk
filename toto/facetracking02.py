@@ -28,7 +28,7 @@ interpreter.allocate_tensors()
 #! NEW
 
 # Set constants for robot connection, speed, acceleration, and start position
-ROBOT_IP = '192.168.178.83'
+ROBOT_IP = '192.168.1.124'
 ACCELERATION = 0.3  # Robot acceleration value
 VELOCITY = 0.5  # Robot speed value
 robot_startposition = (math.radians(-218),

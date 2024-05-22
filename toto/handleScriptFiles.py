@@ -11,7 +11,7 @@ import time
 import threading
 
 #ROBOT_IP = "192.168.178.83"
-ROBOT_IP = "192.168.8.124"
+ROBOT_IP = '192.168.1.124'
 ACCELERATION = 0.3  # Robot acceleration value
 VELOCITY = 0.5  # Robot speed value
 

@@ -19,9 +19,6 @@
 #define EN_PIN D3  // Enable
 #define DIAG_PIN D10;
 
-#define SW_RX_PIN D8
-#define SW_TX_PIN D9
-
 extern Stepper motor;
 extern StepControl controller;
 
@@ -30,9 +27,9 @@ const int MICROSTEPS = 1;
 // !stepper
 const int RESOLUTION = 200; // Steps/turn
 
-const float maxTravel = 10000;   // mm //! geraten
-const long maxSpeed = 8000;      // stp/s
-const long acceleration = 15000; // stp/s^2
+const float maxTravel = 10000;  // mm //! geraten
+const long maxSpeed = 6000;     // stp/s
+const long acceleration = 1500; // stp/s^2
 const float homeShift = 3;
 
 // const float gearRatio = (20.0 / 32.0) / (2.0 * RESOLUTION);

@@ -27,6 +27,7 @@ void init_Stepper()
     TMCdriver.microsteps(16);   // Set microsteps
     delay(100);
 
+    // motor.setPosition(0);
     motor.setMaxSpeed(1000);    // stp/s
     motor.setAcceleration(500); // stp/s^2
 

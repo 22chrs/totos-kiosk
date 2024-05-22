@@ -21,15 +21,18 @@ void setup()
 
     init_LimitSwitch();
 
-    Neopixel(GREEN);
-    // setupCam();
+    Neopixel(BLUE);
+    setupCam();
 
     // Neopixel(BLUE);
 }
 
 void loop()
 {
-    moveMotorRel(10);
+    // moveMotorToAbsPosition(100);
+    // delay(2000);
+    // stopMotor();
+    // delay(2000);
     //   delay(1000);
 
     //   put your main code here, to run repeatedly:

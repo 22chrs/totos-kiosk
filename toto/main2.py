@@ -13,7 +13,7 @@ import math
 import time
 from URBasic import RoboClass
 
-ROBOT_IP = "192.168.8.1"
+ROBOT_IP = '192.168.1.124'
 # Fritz!box: 192.168.178.83
 # MAC ADDRESS: 00:30:D6:21:C5:F4
 ACCELERATION = 0.3  # Robot acceleration value

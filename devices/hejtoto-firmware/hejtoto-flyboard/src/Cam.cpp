@@ -8,7 +8,9 @@
 
 #include "camera_pins.h"
 
-// Stream URL z.B.: http://192.168.68.64:81/stream
+// Stream URL z.B.: http://192.168.1.158:81/stream
+
+// http://192.168.1.158:81/stream
 
 void setupCam()
 {
