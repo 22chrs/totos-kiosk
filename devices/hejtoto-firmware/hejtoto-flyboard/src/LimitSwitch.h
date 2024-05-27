@@ -9,5 +9,6 @@
 
 void init_LimitSwitch();
 boolean check_limitSwitch();
+void homeMotor();
 
 #endif

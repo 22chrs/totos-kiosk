@@ -17,19 +17,32 @@ void setup()
     Serial.println("Started.");
     SPI.begin();
 
-    init_Stepper();
+    // init_Stepper();
 
-    init_LimitSwitch();
+    // init_LimitSwitch();
 
-    Neopixel(BLUE);
+    Neopixel(PURPLE);
     setupCam();
 
-    // Neopixel(BLUE);
+    Neopixel(GREEN);
+    // moveMotorAbs(-10);
+    // homeMotor();
 }
 
 void loop()
 {
-    // moveMotorToAbsPosition(100);
+    // moveMotorAbs(-15);
+    // delay(60 * 1000);
+    // moveMotorAbs(0);
+    // delay(60 * 1000);
+
+    // moveMotorAbs(-20);
+    //  delay(5000);
+    //  moveMotorAbs(0);
+    //  delay(5000);
+
+    // loopStepper();
+    // moveMotorToAbsPosition(10);
     // delay(2000);
     // stopMotor();
     // delay(2000);

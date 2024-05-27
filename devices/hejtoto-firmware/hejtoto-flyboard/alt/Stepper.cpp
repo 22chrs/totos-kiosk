@@ -1,33 +1,13 @@
 // Stepper.cpp
 
 #include <Stepper.h>
-#include <LimitSwitch.h>
-#include <Led.h>
 
 HardwareSerial MySerial1(1);
 
-#define DRIVER_ADDRESS 0b00 // EZ2209 driver address according to MS1 and MS2
-#define R_SENSE 0.11f       // value for EZ2209 driver
 TMC2209Stepper TMCdriver(&MySerial1, R_SENSE, DRIVER_ADDRESS);
 
-// !driver
-#define DIR_PIN D1 // Direction
-#define STP_PIN D0 // Step
-#define EN_PIN D3  // Enable
-#define DIAG_PIN D10;
-
-const int MICROSTEPS = 16;
-
-// !stepper
-ESP_FlexyStepper stepper;
-const int RESOLUTION = 200; // Steps/turn
-
-const int SPEED_IN_STEPS_PER_SECOND = 2 * RESOLUTION * MICROSTEPS;
-const int ACCELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
-const int DECELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
-
-// !geometry
-const float RATIO = (20.0 / 32.0) * 2.0;
+Stepper motor(DIR_PIN, STP_PIN);
+StepControl controller;
 
 void init_Stepper()
 {
@@ -47,14 +27,9 @@ void init_Stepper()
     TMCdriver.microsteps(MICROSTEPS); // Set microsteps
     delay(100);
 
-    stepper.connectToPins(STP_PIN, DIR_PIN);
-    stepper.setSpeedInStepsPerSecond(SPEED_IN_STEPS_PER_SECOND);
-    stepper.setAccelerationInStepsPerSecondPerSecond(ACCELERATION_IN_STEPS_PER_SECOND);
-    stepper.setDecelerationInStepsPerSecondPerSecond(DECELERATION_IN_STEPS_PER_SECOND);
-
-    stepper.setStepsPerMillimeter(200 * MICROSTEPS / RATIO);
-
-    stepper.startAsService(1); // you might get away with starting the service on core 0, if you experience jitter, start it on core 1
+    // motor.setPosition(0);
+    motor.setMaxSpeed(1000);    // stp/s
+    motor.setAcceleration(500); // stp/s^2
 
     // Ask for the current setting
     uint16_t current = TMCdriver.rms_current();
@@ -62,57 +37,17 @@ void init_Stepper()
     Serial.println(current);
 }
 
-// void loopStepper()
+void moveMotorToAbsPosition(float newPosition)
+{
+    motor.setTargetAbs(newPosition);
+    controller.move(motor);
+}
+
+// void moveMotorRel(float newPosition)
 // {
-//     // just move the stepper back and forth in an endless loop
-//     if (stepper.getDistanceToTargetSigned() == 0)
-//     {
-//         Serial.printf("Stepper positions: X: %i", stepper.getCurrentPositionInSteps());
-//         delay(2000);
-
-//         long relativeTargetPosition = 800 * previousDirection;
-//         Serial.printf("Moving both stepper motors by %ld steps\n", relativeTargetPosition);
-//         stepper.setTargetPositionRelativeInSteps(relativeTargetPosition);
-//     }
-//     Serial.printf("Stepper positions: X: %i, Y: %i\n", stepper.getCurrentPositionInSteps());
-//     delay(100);
-
-//     // Notice that you can now do whatever you want in the loop function without the need to call processMovement().
-//     // also you do not have to care if your loop processing times are too long.
+//     motor.setTargetRel(newPosition);
+//     controller.move(motor);
 // }
-void moveMotorAbs(float absolutePositionToMoveToInMillimeters)
-{
-    stepper.moveToPositionInMillimeters(absolutePositionToMoveToInMillimeters);
-}
-
-void homeMotor()
-{
-    if (check_limitSwitch() == true)
-    {
-        stepper.setCurrentPositionAsHomeAndStop();
-        stepper.moveToPositionInMillimeters(-10);
-        while (stepper.motionComplete() == false)
-        {
-            delay(1);
-        }
-    }
-
-    if (check_limitSwitch() == false)
-    {
-        stepper.moveToHomeInRevolutions(-1, SPEED_IN_STEPS_PER_SECOND, 20 * MICROSTEPS, ES_PIN);
-        while (stepper.motionComplete() == false)
-        {
-            delay(1);
-        }
-        stepper.setCurrentPositionAsHomeAndStop();
-        stepper.moveToPositionInMillimeters(5);
-        while (stepper.motionComplete() == false)
-        {
-            delay(1);
-        }
-        stepper.setCurrentPositionAsHomeAndStop();
-    }
-}
 
 // bool motorMovingState()
 // {

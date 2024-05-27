@@ -44,7 +44,7 @@ robot_startposition = (math.radians(-218),
 # Path to the face-detection model:
 pretrained_model = cv2.dnn.readNetFromCaffe("facetracking/deploy.prototxt.txt", "facetracking/res10_300x300_ssd_iter_140000.caffemodel")
 
-video_resolution = (700, 400)  # resolution the video capture will be resized to, smaller sizes can speed up detection
+video_resolution = (640, 480)  # resolution the video capture will be resized to, smaller sizes can speed up detection
 video_midpoint = (int(video_resolution[0]/2),
                   int(video_resolution[1]/2))
 video_asp_ratio  = video_resolution[0] / video_resolution[1]  # Aspect ration of each frame
