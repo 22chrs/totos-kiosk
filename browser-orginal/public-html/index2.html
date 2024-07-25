@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Split View with iFrames</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      #leftPane,
+      #rightPane {
+        width: 50%; /* Each pane takes up half the window */
+        height: 100%;
+        float: left;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="leftPane">
+      <iframe
+        src="https://app:8082?display=1"
+        name="leftFrame"
+        crossorigin="anonymous"
+      ></iframe>
+    </div>
+    <div id="rightPane">
+      <iframe
+        src="https://app:8082?display=2"
+        name="rightFrame"
+        crossorigin="anonymous"
+      ></iframe>
+    </div>
+    <script>
+      const retryInterval = 5000; // Retry every 5 seconds
+
+      // Function to check and reload iframe if it didn't load correctly
+      function checkAndReload(iframe) {
+        try {
+          // Try accessing the iframe's content
+          if (!iframe.contentWindow.document.body) {
+            throw new Error("Frame content not loaded.");
+          }
+        } catch (e) {
+          console.log(`Reloading ${iframe.name}: ${e.message}`);
+          // If access is denied or no content, reload
+          iframe.contentWindow.location.reload(true);
+        }
+      }
+
+      // Function to set up retry mechanism
+      function setupRetry(iframeId) {
+        const iframe = document.getElementsByName(iframeId)[0];
+        // Check immediately if the iframe has loaded
+        checkAndReload(iframe);
+        // Set interval to keep checking until the content is fully loaded
+        setInterval(() => checkAndReload(iframe), retryInterval);
+      }
+
+      // Set up retries for both iframes
+      setupRetry("leftFrame");
+      setupRetry("rightFrame");
+    </script>
+  </body>
+</html>

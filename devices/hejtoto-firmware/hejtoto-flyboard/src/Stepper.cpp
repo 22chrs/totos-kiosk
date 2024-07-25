@@ -3,11 +3,16 @@
 #include <Stepper.h>
 #include <LimitSwitch.h>
 #include <Led.h>
+#include <HardwareSerial.h>
+HardwareSerial MySerial0(0);
 
-HardwareSerial MySerial1(1);
+// #include <SoftwareSerial.h>
 
 #define DRIVER_ADDRESS 0b00 // EZ2209 driver address according to MS1 and MS2
-#define R_SENSE 0.11f       // value for EZ2209 driver
+#define R_SENSE 0.11f       // value for EZ2209 driver 110mOhm
+
+// SoftwareSerial SoftSerial(D6, D7); // RX, TX
+HardwareSerial MySerial1(1);
 TMC2209Stepper TMCdriver(&MySerial1, R_SENSE, DRIVER_ADDRESS);
 
 // !driver
@@ -29,9 +34,15 @@ const int DECELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
 // !geometry
 const float RATIO = (20.0 / 32.0) * 2.0;
 
+// #define RXD1 D6 // <<<<<<<<
+// #define TXD1 D7 // <<<<<<<<<
+
 void init_Stepper()
 {
-    MySerial1.begin(115200, SERIAL_8N1, D7, D6);
+
+    // SoftSerial.begin(115200);
+    MySerial1.begin(115200, SERIAL_8N1, D6, D7);
+
     delay(500);
     // TMCdriver.beginSerial(11520); // Initialize UART
 
@@ -42,8 +53,8 @@ void init_Stepper()
     digitalWrite(EN_PIN, LOW); // Enable driver in hardware
 
     TMCdriver.begin();                // UART: Init SW UART (if selected) with default 115200 baudrate
-    TMCdriver.toff(5);                // Enables driver in software
-    TMCdriver.rms_current(400);       // Set motor RMS current
+    TMCdriver.toff(3);                // Enables driver in software
+    TMCdriver.rms_current(500);       // Set motor RMS current
     TMCdriver.microsteps(MICROSTEPS); // Set microsteps
     delay(100);
 
@@ -62,27 +73,17 @@ void init_Stepper()
     Serial.println(current);
 }
 
-// void loopStepper()
-// {
-//     // just move the stepper back and forth in an endless loop
-//     if (stepper.getDistanceToTargetSigned() == 0)
-//     {
-//         Serial.printf("Stepper positions: X: %i", stepper.getCurrentPositionInSteps());
-//         delay(2000);
-
-//         long relativeTargetPosition = 800 * previousDirection;
-//         Serial.printf("Moving both stepper motors by %ld steps\n", relativeTargetPosition);
-//         stepper.setTargetPositionRelativeInSteps(relativeTargetPosition);
-//     }
-//     Serial.printf("Stepper positions: X: %i, Y: %i\n", stepper.getCurrentPositionInSteps());
-//     delay(100);
-
-//     // Notice that you can now do whatever you want in the loop function without the need to call processMovement().
-//     // also you do not have to care if your loop processing times are too long.
-// }
 void moveMotorAbs(float absolutePositionToMoveToInMillimeters)
 {
+
+    TMCdriver.rms_current(400);
+    TMCdriver.microsteps(256); // Set microsteps  to 2
+    Serial.print(F("Read microsteps via UART to test UART receive : "));
+    Serial.println(TMCdriver.microsteps()); // check if reads 2
+
     stepper.moveToPositionInMillimeters(absolutePositionToMoveToInMillimeters);
+
+    delay(1000);
 }
 
 void homeMotor()
@@ -113,107 +114,3 @@ void homeMotor()
         stepper.setCurrentPositionAsHomeAndStop();
     }
 }
-
-// bool motorMovingState()
-// {
-//     return (controller.isRunning());
-// }
-
-// void stopMotor()
-// {
-//     controller.stop();
-// }
-
-// void setPositionMotor(float position)
-// {
-//     motor.setPosition(position);
-// }
-
-// void setSpeedMotor(long speed)
-// {
-//     motor.setMaxSpeed(speed);
-// }
-
-// boolean homeMotor()
-// {
-//     if (check_limitSwitch() == 1)
-//     {
-//         for (int attempt = 0; attempt < 3 && check_limitSwitch() == 1; attempt++)
-//         {
-//             Serial.println("Endstop is triggered. Move Motor a bit out.");
-//             moveMotorRel(maxTravel * (-0.03)); // Move 3% back
-
-//             while (motorMovingState() == 1)
-//             { // Wait for the motor to stop moving
-//                 delay(1);
-//             }
-//         }
-//         if (check_limitSwitch() == 1)
-//         {
-//             Serial.println("Homing Error. Endstop initally and still triggered after 3 attempts.");
-//             return false;
-//         }
-//     }
-
-//     if (check_limitSwitch() == 0) // Endstop is not triggered
-//     {
-//         Serial.println("Endstop is not triggered. Begin homing routine.");
-//         setPositionMotor(0);
-//         moveMotorToAbsPosition(maxTravel * (-1)); // Rückwärts fahren
-
-//         while (motorMovingState() == 1) // Motor is moving
-//         {
-//             if (check_limitSwitch() == 1)
-//             {
-//                 Serial.println("Endstop triggered. Stop.");
-//                 stopMotor();
-//                 break;
-//             }
-//         }
-//         setSpeedMotor(maxSpeed * 0.1); // 3% of normal Speed
-//         for (int attempt = 0; attempt < 3 && check_limitSwitch() == 1; attempt++)
-//         {
-//             Serial.println("Endstop is triggered. Move Motor a bit out.");
-//             moveMotorRel(maxTravel * (-0.03)); // Move 3% back
-
-//             while (motorMovingState() == 1)
-//             { // Wait for the motor to stop moving
-//                 delay(1);
-//             }
-//         }
-//         if (check_limitSwitch() == 1)
-//         {
-//             Serial.println("Homing Error. Endstop still triggered after 3 attempts, check for persistent issues.");
-//             return false;
-//         }
-//         else
-//         {
-//             Serial.println("Endstop cleared.");
-//         }
-//         Serial.println("Homing slow...");
-//         moveMotorToAbsPosition(0);
-//         while (motorMovingState() == 1)
-//         {
-//             if (check_limitSwitch() == 1)
-//             {
-//                 stopMotor();
-//                 Serial.println("Endstop successfully reached.");
-//                 setSpeedMotor(maxSpeed); // normal Speed
-//                 Serial.println("Move Motor to homeShift.");
-//                 moveMotorToAbsPosition(homeShift);
-//                 setPositionMotor(0);
-//                 Serial.println("Position saved as 0.");
-//                 Serial.println("Homing Successful.");
-//                 return true;
-//             }
-//             else
-//             {
-//                 Serial.println("X: Homing failed.");
-//                 return false;
-//             }
-//         }
-//     }
-//     // If none of the conditions for a successful homing are met, return false
-//     Serial.println("Homing failed."); // Optional: add this line if you want to log the failure before returning
-//     return false;
-// }

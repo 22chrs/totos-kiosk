@@ -15,14 +15,12 @@
 void setup()
 {
   init_LEDs();
-  setBuiltInLEDState(HIGH);
 
   Wire.begin();          // Initialize I2C
   Wire.setClock(400000); // Set I2C speed to 400kHz (Standard 100kHz)
 
   Serial.begin(115200); // Start serial communication at 9600 baud
-
-  Serial.println("Begin.");
+  Serial.println("Serial started.");
 
   init_TCA9548A();
   init_MCP23017(); // Initialize pins of MCP23017 I/O Expander
@@ -38,47 +36,45 @@ void setup()
   init_LimitSwitch();
   init_doorSensor();
 
-  init_TOF200C(2);
+  // init_TOF200C(3);
   enableMotor(1, true);
   enableMotor(2, true);
-  moveMotorToAbsPosition(1, -5000);
-  moveMotorToAbsPosition(2, 1000);
+  moveMotorToAbsPosition(1, 25000);
+  moveMotorToAbsPosition(2, 25000);
+  // moveMotorToAbsPosition(2, 1000);
 
-  pwmFan(1, 150);
+  pwmFan(3, 0);
 
-  setBuiltInLEDState(HIGH);
-  delay(100);
-  setBuiltInLEDState(LOW);
-  delay(100);
-  setBuiltInLEDState(HIGH);
-  delay(100);
-  setBuiltInLEDState(LOW);
-  delay(100);
-  setBuiltInLEDState(HIGH);
-  delay(100);
-  setBuiltInLEDState(LOW);
-  delay(100);
-  Serial.println("End.");
-  Neopixel(BLUE);
+  Neopixel(GREEN);
+
+  buildInLEDBlik();
+
+  // pwmMosfet(1, 20);
+  // delay(1000);
+  // pwmMosfet(1, 0);
 }
 
 void loop()
 {
 
-  // if (motorMovingState(1) == false)
-  // {
-  //   enableMotor(1, false);
-  //   // moveMotorToAbsPosition(6, 0);
-  // }
+  if (motorMovingState(1) == false)
+  {
+    moveMotorToAbsPosition(1, 0);
+    moveMotorToAbsPosition(2, 0);
+
+    // moveMotorToAbsPosition(1, -20000);
+    //  enableMotor(1, false);
+    //   moveMotorToAbsPosition(6, 0);
+  }
   // if (motorMovingState(2) == false)
   // {
   //   enableMotor(2, false);
   //   // moveMotorToAbsPosition(6, 0);
   // }
 
-  check_doorSensor();
-  check_limitSwitch1();
+  // check_doorSensor();
+  // check_limitSwitch1();
 
-  check_TemperatureSensor();
+  // check_TemperatureSensor();
   // readTOF200C(2);
 }

@@ -26,8 +26,8 @@ services:
       - LOCAL_HTTP_DELAY=3 #Number of seconds to wait for a local HTTP service to start before trying to detect it
       - KIOSK=1
      # - LAUNCH_URL=https://app:8082?display=1
-      - WINDOW_SIZE=2560,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
-      - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
+      - WINDOW_SIZE=1920,1080 #! KIOSK = 2560,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
+     # - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
       - EXTRA_FLAGS= --disable-pinch, --top-chrome-touch-ui, --touch-events, --touch-adjustment, --pointer-events, --smooth-scrolling, --overscroll-history-navigation
     depends_on:
       - app

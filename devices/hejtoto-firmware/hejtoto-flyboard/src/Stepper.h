@@ -22,9 +22,6 @@ void init_Stepper();
 
 void loopStepper();
 void moveMotorAbs(float absolutePositionToMoveToInMillimeters);
-// bool motorMovingState();
-// void stopMotor();
 
-// boolean homeMotor();
 
 #endif

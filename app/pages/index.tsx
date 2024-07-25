@@ -1,4 +1,4 @@
-//kiosk.tsx
+// kiosk.tsx
 
 import { HeaderStartPage } from '@/components/layout/menuKiosk/header';
 
@@ -19,7 +19,7 @@ import {
 //import { BackgroundImage } from '@/components/images/Backgroundimage';
 import { LanguagesTabsKiosk } from '@/components/kiosk/LanguagesKiosk';
 import { useLayoutContext } from '@/providers/LayoutContext';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KIOSK_CONTENT_HEIGHT_STARTPAGE } from 'src/constants';
 import { TouchToStart } from '@/components/kiosk/touchToStart';
@@ -35,9 +35,45 @@ const Kiosk = () => {
   const { t } = useTranslation();
   const { displayNumber } = useContext(DisplayContext);
 
+  const videoSources = [
+    '/assets/videos/01.mov',
+    '/assets/videos/02.mov',
+    '/assets/videos/03.mov',
+    '/assets/videos/04A.mov',
+    '/assets/videos/04B.mov',
+    '/assets/videos/05A.mov',
+    '/assets/videos/05B.mov',
+    '/assets/videos/06.mov',
+    '/assets/videos/07.mov',
+    '/assets/videos/08.mov',
+    '/assets/videos/09A.mov',
+    '/assets/videos/09B.mov',
+    '/assets/videos/10A.mov',
+    '/assets/videos/10B.mov',
+    '/assets/videos/11.mov',
+  ];
+
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
   const handlePageClick = () => {
     router.pushWithDisplay('/kiosk/shop');
   };
+
+  const handleVideoEnd = () => {
+    setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videoSources.length);
+  };
+
+  useEffect(() => {
+    const videoElement = ref.current;
+    if (videoElement) {
+      videoElement.addEventListener('ended', handleVideoEnd);
+    }
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener('ended', handleVideoEnd);
+      }
+    };
+  }, []);
 
   return (
     <ScaleFade
@@ -52,23 +88,19 @@ const Kiosk = () => {
         overflow='hidden'
         onClick={handlePageClick}
       >
-        <HeaderStartPage />
+        {/* <HeaderStartPage /> */}
         <Video
           ref={ref}
           position='absolute'
           autoPlay
-          loop
           muted
-          src={useColorModeValue(
-            '/assets/videos/video_day.mov',
-            '/assets/videos/video_night.mov',
-          )}
+          src={videoSources[currentVideoIndex]}
           height='100%'
           width='100%'
           objectFit='cover'
           zIndex='-1'
         />
-        <Text position='absolute' zIndex='1'>
+        {/* <Text position='absolute' zIndex='1'>
           {displayNumber === '1'
             ? 'Display front attached.'
             : displayNumber === '2'
@@ -95,7 +127,7 @@ const Kiosk = () => {
           <LanguagesTabsKiosk />
         </Box>
 
-        <InfoCircle />
+        <InfoCircle /> */}
       </Box>
     </ScaleFade>
   );

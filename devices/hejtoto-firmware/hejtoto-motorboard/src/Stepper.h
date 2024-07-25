@@ -22,42 +22,42 @@ const int RESOLUTION = 200; // Steps/turn
 // EN1_PIN @MCP23017    // Enable
 // DIR1_PIN @MCP23017    // Direction
 #define USED_SERIAL_PORT_1 Serial1 // HardwareSerial port
-#define DIR1_PIN_DUMMY 48          // For using in TeensyStep4 since mcp is not known here
+#define DIR1_PIN 11                // For using in TeensyStep4 since mcp is not known here
 #define STP1_PIN 30                // Step
 
 // !Stepper 2
 // EN2_PIN @MCP23017    // Enable
 // DIR2_PIN @MCP23017    // Direction
 #define USED_SERIAL_PORT_2 Serial2 // HardwareSerial port
-#define DIR2_PIN_DUMMY 49          // For using in TeensyStep4 since mcp is not known here
+#define DIR2_PIN 12                // For using in TeensyStep4 since mcp is not known here
 #define STP2_PIN 31                // Step
 
 // !Stepper 3
 // EN3_PIN @MCP23017    // Enable
 // DIR3_PIN @MCP23017    // Direction
 #define USED_SERIAL_PORT_3 Serial6 // HardwareSerial port
-#define DIR3_PIN_DUMMY 50          // For using in TeensyStep4 since mcp is not known here
+#define DIR3_PIN 5                 // For using in TeensyStep4 since mcp is not known here
 #define STP3_PIN 32                // Step
 
 // !Stepper 4
 // EN4_PIN @MCP23017    // Enable
 // DIR4_PIN @MCP23017    // Direction
 #define USED_SERIAL_PORT_4 Serial7 // HardwareSerial port
-#define DIR4_PIN_DUMMY 51          // For using in TeensyStep4 since mcp is not known here
+#define DIR4_PIN 27                // For using in TeensyStep4 since mcp is not known here
 #define STP4_PIN 38                // Step
 
 // !Stepper 5
 // EN5_PIN @MCP23017    // Enable
 // DIR5_PIN @MCP23017    // Direction
 #define USED_SERIAL_PORT_5 Serial8 // HardwareSerial port
-#define DIR5_PIN_DUMMY 52          // For using in TeensyStep4 since mcp is not known here
+#define DIR5_PIN 16                // For using in TeensyStep4 since mcp is not known here
 #define STP5_PIN 39                // Step
 
 // !Stepper 6
 // EN6_PIN @MCP23017    // Enable
 // DIR6_PIN @MCP23017    // Direction
 #define USED_SERIAL_PORT_6 Serial5 // HardwareSerial port
-#define DIR6_PIN_DUMMY 53          // For using in TeensyStep4 since mcp is not known here
+#define DIR6_PIN 17                // For using in TeensyStep4 since mcp is not known here
 #define STP6_PIN 40                // Step
 // inline Stepper stepper_6(STP6_PIN, DIR6_PIN_DUMMY); // (STEP-pin, DIR-pin)
 
@@ -72,12 +72,12 @@ struct StepperMotor
 };
 
 inline StepperMotor stepperMotors[6] = {
-    {&USED_SERIAL_PORT_1, EN1_PIN, DIR1_PIN, STP1_PIN, DIR1_PIN_DUMMY, new TMC2209Stepper(&USED_SERIAL_PORT_1, R_SENSE, DRIVER_ADDRESS), new Stepper(STP1_PIN, DIR1_PIN_DUMMY)},
-    {&USED_SERIAL_PORT_2, EN2_PIN, DIR2_PIN, STP2_PIN, DIR2_PIN_DUMMY, new TMC2209Stepper(&USED_SERIAL_PORT_2, R_SENSE, DRIVER_ADDRESS), new Stepper(STP2_PIN, DIR2_PIN_DUMMY)},
-    {&USED_SERIAL_PORT_3, EN3_PIN, DIR3_PIN, STP3_PIN, DIR3_PIN_DUMMY, new TMC2209Stepper(&USED_SERIAL_PORT_3, R_SENSE, DRIVER_ADDRESS), new Stepper(STP3_PIN, DIR3_PIN_DUMMY)},
-    {&USED_SERIAL_PORT_4, EN4_PIN, DIR4_PIN, STP4_PIN, DIR4_PIN_DUMMY, new TMC2209Stepper(&USED_SERIAL_PORT_4, R_SENSE, DRIVER_ADDRESS), new Stepper(STP4_PIN, DIR4_PIN_DUMMY)},
-    {&USED_SERIAL_PORT_5, EN5_PIN, DIR5_PIN, STP5_PIN, DIR5_PIN_DUMMY, new TMC2209Stepper(&USED_SERIAL_PORT_5, R_SENSE, DRIVER_ADDRESS), new Stepper(STP5_PIN, DIR5_PIN_DUMMY)},
-    {&USED_SERIAL_PORT_6, EN6_PIN, DIR6_PIN, STP6_PIN, DIR6_PIN_DUMMY, new TMC2209Stepper(&USED_SERIAL_PORT_6, R_SENSE, DRIVER_ADDRESS), new Stepper(STP6_PIN, DIR6_PIN_DUMMY)}};
+    {&USED_SERIAL_PORT_1, EN1_PIN, DIR1_PIN, STP1_PIN, DIR1_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_1, R_SENSE, DRIVER_ADDRESS), new Stepper(STP1_PIN, DIR1_PIN)},
+    {&USED_SERIAL_PORT_2, EN2_PIN, DIR2_PIN, STP2_PIN, DIR2_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_2, R_SENSE, DRIVER_ADDRESS), new Stepper(STP2_PIN, DIR2_PIN)},
+    {&USED_SERIAL_PORT_3, EN3_PIN, DIR3_PIN, STP3_PIN, DIR3_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_3, R_SENSE, DRIVER_ADDRESS), new Stepper(STP3_PIN, DIR3_PIN)},
+    {&USED_SERIAL_PORT_4, EN4_PIN, DIR4_PIN, STP4_PIN, DIR4_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_4, R_SENSE, DRIVER_ADDRESS), new Stepper(STP4_PIN, DIR4_PIN)},
+    {&USED_SERIAL_PORT_5, EN5_PIN, DIR5_PIN, STP5_PIN, DIR5_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_5, R_SENSE, DRIVER_ADDRESS), new Stepper(STP5_PIN, DIR5_PIN)},
+    {&USED_SERIAL_PORT_6, EN6_PIN, DIR6_PIN, STP6_PIN, DIR6_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_6, R_SENSE, DRIVER_ADDRESS), new Stepper(STP6_PIN, DIR6_PIN)}};
 
 // Functions
 void init_Stepper();

@@ -24,6 +24,7 @@ enum ColorName
 };
 
 void init_LEDs();
+void buildInLEDBlik();
 void Neopixel(ColorName colorName);
 void setBuiltInLEDState(bool state);
 

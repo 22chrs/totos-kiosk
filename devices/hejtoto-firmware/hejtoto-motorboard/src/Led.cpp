@@ -54,12 +54,28 @@ void init_LEDs()
 
     strip.begin(); // Initialize the NeoPixel strip
     strip.setPixelColor(0, strip.Color(0, 0, 0));
-    strip.setBrightness(10); // Set the brightness (optional, ranges from 0 to 255)
-    strip.show();            // Initialize all pixels to 'off'
+    strip.setBrightness(255); // Set the brightness (optional, ranges from 0 to 255)
+    strip.show();             // Initialize all pixels to 'off'
     Neopixel(OFF);
 
     pinMode(BUILD_IN_LED_PIN, OUTPUT);   // Initialize the built-in LED
     digitalWrite(BUILD_IN_LED_PIN, LOW); // Start with the built-in LED off
+}
+
+void buildInLEDBlik()
+{
+    setBuiltInLEDState(HIGH);
+    delay(100);
+    setBuiltInLEDState(LOW);
+    delay(100);
+    setBuiltInLEDState(HIGH);
+    delay(100);
+    setBuiltInLEDState(LOW);
+    delay(100);
+    setBuiltInLEDState(HIGH);
+    delay(100);
+    setBuiltInLEDState(LOW);
+    delay(100);
 }
 
 void setBuiltInLEDState(bool state)

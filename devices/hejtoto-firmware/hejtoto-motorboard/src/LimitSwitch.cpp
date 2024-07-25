@@ -22,49 +22,28 @@ void ISR_Switch6() { flipDirection(5); }
 
 void init_LimitSwitch()
 {
-    for (int i = 0; i < NUMBER_OF_SWITCHES; ++i)
-    {
-        pinMode(switchPins[i], INPUT_PULLUP);
-        // switch (i)
-        // {
-        // case 0:
-        //     attachInterrupt(digitalPinToInterrupt(switchPins[i]), ISR_Switch1, FALLING);
-        //     break;
-        // case 1:
-        //     attachInterrupt(digitalPinToInterrupt(switchPins[i]), ISR_Switch2, FALLING);
-        //     break;
-        // case 2:
-        //     attachInterrupt(digitalPinToInterrupt(switchPins[i]), ISR_Switch3, FALLING);
-        //     break;
-        // case 3:
-        //     attachInterrupt(digitalPinToInterrupt(switchPins[i]), ISR_Switch4, FALLING);
-        //     break;
-        // case 4:
-        //     attachInterrupt(digitalPinToInterrupt(switchPins[i]), ISR_Switch5, FALLING);
-        //     break;
-        // case 5:
-        //     attachInterrupt(digitalPinToInterrupt(switchPins[i]), ISR_Switch6, FALLING);
-        //     break;
-        // }
-    }
+    mcp.pinMode(ES1_PIN, INPUT_PULLUP);
+    mcp.pinMode(ES2_PIN, INPUT_PULLUP);
+    mcp.pinMode(ES3_PIN, INPUT_PULLUP);
+    mcp.pinMode(ES4_PIN, INPUT_PULLUP);
+    mcp.pinMode(ES5_PIN, INPUT_PULLUP);
+    mcp.pinMode(ES6_PIN, INPUT_PULLUP);
 }
 
 boolean check_limitSwitch(byte limitSwitchNumber)
 {
-    // byte index = limitSwitchNumber - 1;
-    // if (index >= 0 && index < NUMBER_OF_SWITCHES)
-    // {
-    //     boolean state = mcp.digitalRead(switchPins[index]); // Read the current state of the pin
-    //     Serial.print("Limit Switch ");
-    //     Serial.print(limitSwitchNumber);
-    //     Serial.println(state ? " Triggered." : " Not Triggered.");
-    //     return !state; // Assuming active LOW configuration due to INPUT_PULLUP
-    // }
-    // else
-    // {
-    //     Serial.println("Invalid switch number");
-    //     return false;
-    // }
+    if (limitSwitchNumber >= NUMBER_OF_SWITCHES)
+    {
+        return false; // Invalid switch number
+    }
+
+    if (switchFlipped[limitSwitchNumber])
+    {
+        switchFlipped[limitSwitchNumber] = false; // Reset the flag
+        return true;                              // Switch was flipped
+    }
+
+    return false; // Switch was not flipped
 }
 
 Chrono chronoLimitSwitch;
