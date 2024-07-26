@@ -12,6 +12,18 @@ TMC2209 stepper_driver;
 const uint8_t STEP_PIN = D0;
 const uint8_t DIR_PIN = D1;
 
+const int DELAY = 2000;
+const int32_t VELOCITY = 10000;
+const int32_t VELOCITY_STOPPED = 0;
+const uint8_t PERCENT_MIN = 0;
+const uint8_t PERCENT_MAX = 100;
+const uint8_t PERCENT_INC = 10;
+// current values may need to be reduced to prevent overheating depending on
+// specific motor and power supply voltage
+const uint8_t RUN_CURRENT_PERCENT = 100;
+
+uint8_t hold_current_percent = PERCENT_INC;
+
 void setup()
 {
   // Enable Stepper
@@ -22,18 +34,10 @@ void setup()
   MySerial0.begin(9600, SERIAL_8N1, -1, -1); // Configure MySerial0 on pins TX=D6 and RX=D7 (-1, -1 means use the default)
 
   stepper_driver.setup(MySerial0);
-  delay(2000);
+  delay(1000);
 
-  stepper_driver.enableCoolStep();
-  stepper_driver.moveUsingStepDirInterface();
-
-  // stepper_driver.useInternalSenseResistors();
-
-  stepper_driver.enableAutomaticCurrentScaling();
-  stepper_driver.enableAutomaticGradientAdaptation();
-
-  stepper_driver.enableStealthChop();
-  stepper_driver.enable();
+  stepper_driver.disable();
+  stepper_driver.setRunCurrent(RUN_CURRENT_PERCENT);
 }
 void loop()
 {
