@@ -7,47 +7,55 @@
 // See this reference for more details:
 // https://www.arduino.cc/reference/en/language/functions/communication/serial/
 
-HardwareSerial& serial_stream_1 = Serial1;
-HardwareSerial& serial_stream_2 = Serial2;
+HardwareSerial& serial_stream = Serial1;
 
-const long SERIAL_BAUD_RATE = 115200;
-const int DELAY = 3000;
+const long SERIAL_BAUD_RATE = 500000;
+const int DELAY = 2000;
+const long VELOCITY = 230000;
+// current values may need to be reduced to prevent overheating depending on
+// specific motor and power supply voltage
+const uint8_t RUN_CURRENT_PERCENT = 100;
 
 // Instantiate TMC2209
-TMC2209 stepper_driver_1;
-TMC2209 stepper_driver_2;
+TMC2209 stepper_driver;
 
 void setup() {
     Serial.begin(SERIAL_BAUD_RATE);
 
-    stepper_driver_1.setup(serial_stream_1);
-    stepper_driver_2.setup(serial_stream_2);
+    stepper_driver.setup(serial_stream);
+    delay(DELAY);
+
+    stepper_driver.setRunCurrent(RUN_CURRENT_PERCENT);
+    stepper_driver.enableCoolStep();
+    stepper_driver.enable();
+    stepper_driver.moveAtVelocity(VELOCITY);
 }
 
 void loop() {
-    if (stepper_driver_1.isSetupAndCommunicating()) {
-        Serial.println("Stepper 1 driver is setup and communicating!");
-        Serial.println("Try turning driver power off to see what happens.");
-    } else if (stepper_driver_1.isCommunicatingButNotSetup()) {
-        Serial.println("Stepper 1 driver is communicating but not setup!");
-        Serial.println("Running setup again...");
-        stepper_driver_1.setup(serial_stream_1);
-    } else {
-        Serial.println("Stepper 1 driver is not communicating!");
-        Serial.println("Try turning driver power on to see what happens.");
+    if (not stepper_driver.isSetupAndCommunicating()) {
+        Serial.println("Stepper driver not setup and communicating!");
+        return;
     }
 
-    if (stepper_driver_2.isSetupAndCommunicating()) {
-        Serial.println("Stepper 2 driver is setup and communicating!");
-        Serial.println("Try turning driver power off to see what happens.");
-    } else if (stepper_driver_2.isCommunicatingButNotSetup()) {
-        Serial.println("Stepper 2 driver is communicating but not setup!");
-        Serial.println("Running setup again...");
-        stepper_driver_2.setup(serial_stream_2);
+    bool hardware_disabled = stepper_driver.hardwareDisabled();
+    TMC2209::Settings settings = stepper_driver.getSettings();
+    TMC2209::Status status = stepper_driver.getStatus();
+
+    if (hardware_disabled) {
+        Serial.println("Stepper driver is hardware disabled!");
+    } else if (not settings.software_enabled) {
+        Serial.println("Stepper driver is software disabled!");
+    } else if ((not status.standstill)) {
+        Serial.print("Moving at velocity ");
+        Serial.println(VELOCITY);
+
+        uint32_t interstep_duration = stepper_driver.getInterstepDuration();
+        Serial.print("which is equal to an interstep_duration of ");
+        Serial.println(interstep_duration);
     } else {
-        Serial.println("Stepper 2 driver is not communicating!");
-        Serial.println("Try turning driver power on to see what happens.");
+        Serial.println("Not moving, something is wrong!");
     }
+
     Serial.println();
     delay(DELAY);
 }

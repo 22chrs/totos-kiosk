@@ -1,24 +1,23 @@
 #ifndef BOARDSELECT_H
 #define BOARDSELECT_H
 
-#include <_global.h>
 #include <MCP23017.h>
+#include <_global.h>
 
 // Define board types
-extern byte board; // Declare it as an external variable to be defined in BoardSelect.cpp
+extern byte board;  // Declare it as an external variable to be defined in BoardSelect.cpp
 #define SERVICE_CUBE 1
 #define ROBOCUBE_FRONT 2
 #define ROBOCUBE_BACK 3
 
-struct StepperConfig
-{
-    int current;              // mA
-    int maxSpeed;             // steps/s
-    int acceleration;         // steps/s^2
-    float ratio;              // mm/step
-    float maxTravel;          // mm
-    float homeShift;          // mm
-    boolean inverseDirection; // mm
+struct StepperConfig {
+    float current;             // mA
+    float maxSpeed;            // steps/s
+    float acceleration;        // steps/s^2
+    float ratio;               // mm/step
+    float maxTravel;           // mm
+    float homeShift;           // mm
+    boolean inverseDirection;  // mm
 };
 
 // struct BoardInfo
@@ -26,10 +25,9 @@ struct StepperConfig
 //     String boardName; // RoboCube, ServiceCubeFront, ServiceCubeBack
 // };
 
-struct BoardConfig
-{
+struct BoardConfig {
     String boardName;
-    StepperConfig stepper[6]; // Assuming 6 steppers per board
+    StepperConfig stepper[6];  // Assuming 6 steppers per board
 };
 
 extern const BoardConfig *currentBoardConfig;

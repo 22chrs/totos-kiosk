@@ -12,11 +12,11 @@
 
 using namespace TS4;
 
-const int MICROSTEPS = 188;
+const int MICROSTEPS = 256;
 const int RESOLUTION = 200;  // Steps/tur
 const uint8_t RUN_CURRENT_PERCENT = 100;
 
-const long SERIAL_BAUD_RATE = 115200;
+const long SERIAL_BAUD_RATE = 500000;
 
 // !Stepper 1
 inline HardwareSerial &USED_SERIAL_PORT_1 = Serial1;
@@ -47,24 +47,22 @@ inline HardwareSerial &USED_SERIAL_PORT_5 = Serial8;
 inline HardwareSerial &USED_SERIAL_PORT_6 = Serial5;
 #define DIR6_PIN 17  // For using in TeensyStep4 since mcp is not known here
 #define STP6_PIN 40  // Step
-// inline Stepper stepper_6(STP6_PIN, DIR6_PIN_DUMMY); // (STEP-pin, DIR-pin)
 
 // Stepper motor pin definitions and driver instances
 struct StepperMotor {
     // HardwareSerial *serialPort;
-    uint8_t enPin, dirPin, stepPin, dirPinDummy;
+    uint8_t enPin, dirPin, stepPin;
     TMC2209 *driver;
     Stepper *stepper;
-    float position;  // mm
 };
 
 inline StepperMotor stepperMotors[6] = {
-    {EN1_PIN, DIR1_PIN, STP1_PIN, DIR1_PIN, new TMC2209, new Stepper(STP1_PIN, DIR1_PIN)},
-    {EN2_PIN, DIR2_PIN, STP2_PIN, DIR2_PIN, new TMC2209, new Stepper(STP2_PIN, DIR2_PIN)},
-    {EN3_PIN, DIR3_PIN, STP3_PIN, DIR3_PIN, new TMC2209, new Stepper(STP3_PIN, DIR3_PIN)},
-    {EN4_PIN, DIR4_PIN, STP4_PIN, DIR4_PIN, new TMC2209, new Stepper(STP4_PIN, DIR4_PIN)},
-    {EN5_PIN, DIR5_PIN, STP5_PIN, DIR5_PIN, new TMC2209, new Stepper(STP5_PIN, DIR5_PIN)},
-    {EN6_PIN, DIR6_PIN, STP6_PIN, DIR6_PIN, new TMC2209, new Stepper(STP6_PIN, DIR6_PIN)}};
+    {EN1_PIN, DIR1_PIN, STP1_PIN, new TMC2209, new Stepper(STP1_PIN, DIR1_PIN)},
+    {EN2_PIN, DIR2_PIN, STP2_PIN, new TMC2209, new Stepper(STP2_PIN, DIR2_PIN)},
+    {EN3_PIN, DIR3_PIN, STP3_PIN, new TMC2209, new Stepper(STP3_PIN, DIR3_PIN)},
+    {EN4_PIN, DIR4_PIN, STP4_PIN, new TMC2209, new Stepper(STP4_PIN, DIR4_PIN)},
+    {EN5_PIN, DIR5_PIN, STP5_PIN, new TMC2209, new Stepper(STP5_PIN, DIR5_PIN)},
+    {EN6_PIN, DIR6_PIN, STP6_PIN, new TMC2209, new Stepper(STP6_PIN, DIR6_PIN)}};
 
 // Functions
 

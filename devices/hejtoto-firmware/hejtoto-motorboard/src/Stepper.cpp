@@ -12,20 +12,18 @@ void init_Stepper() {
         pinMode(stepperMotors[i].stepPin, OUTPUT);
         mcp.digitalWrite(stepperMotors[i].enPin, HIGH);  // Disable driver in hardware
 
-        stepperMotors[0].driver->setup(USED_SERIAL_PORT_1);
-        stepperMotors[1].driver->setup(USED_SERIAL_PORT_2);
-        stepperMotors[2].driver->setup(USED_SERIAL_PORT_3);
-        stepperMotors[3].driver->setup(USED_SERIAL_PORT_4);
-        stepperMotors[4].driver->setup(USED_SERIAL_PORT_5);
-        stepperMotors[5].driver->setup(USED_SERIAL_PORT_6);
+        stepperMotors[0].driver->setup(USED_SERIAL_PORT_1, SERIAL_BAUD_RATE);
+        stepperMotors[1].driver->setup(USED_SERIAL_PORT_2, SERIAL_BAUD_RATE);
+        stepperMotors[2].driver->setup(USED_SERIAL_PORT_3, SERIAL_BAUD_RATE);
+        stepperMotors[3].driver->setup(USED_SERIAL_PORT_4, SERIAL_BAUD_RATE);
+        stepperMotors[4].driver->setup(USED_SERIAL_PORT_5, SERIAL_BAUD_RATE);
+        stepperMotors[5].driver->setup(USED_SERIAL_PORT_6, SERIAL_BAUD_RATE);
 
-        // stepperMotors[i].driver->setup(serialPort);
         stepperMotors[i].driver->setRunCurrent(RUN_CURRENT_PERCENT);
-        stepperMotors[i].driver->enable();
-
         stepperMotors[i].stepper->setMaxSpeed(currentBoardConfig->stepper[i].maxSpeed);
+        // stepperMotors[i].driver->enableCoolStep();
         stepperMotors[i].stepper->setAcceleration(currentBoardConfig->stepper[i].acceleration);
-        stepperMotors[i].position = 0;
+        stepperMotors[i].driver->enable();
     }
 }
 
@@ -63,40 +61,13 @@ void moveMotorToAbsPosition(byte stepperX, float newPosition) {
     if (stepperX < 1 || stepperX > 6)
         return;
 
-    bool direction;
-    if (newPosition >= stepperMotors[stepperX - 1].position) {
-        direction = 1;
-        Serial.println("Direction inverted.");
-    } else {
-        direction = 0;
-        Serial.println("Direction normal.");
-    }
-
-    mcp.digitalWrite(stepperMotors[stepperX - 1].dirPin, direction ? HIGH : LOW);
     stepperMotors[stepperX - 1].stepper->moveAbsAsync(newPosition);
-    stepperMotors[stepperX - 1].position = newPosition;
 }
 
 void moveMotorRel(byte stepperX, float newPosition) {
     if (stepperMotors[stepperX - 1].stepper->isMoving == false)  // nur wenn Motor nicht in Bewegung
     {
-        if (currentBoardConfig->stepper[stepperX - 1].inverseDirection == true) {
-            newPosition = -newPosition;
-        }
-
-        if (stepperX < 1 || stepperX > 6)
-            return;
-
-        bool direction;
-        if (newPosition >= stepperMotors[stepperX - 1].position) {
-            direction = 1;
-        } else {
-            direction = 0;
-        }
-
-        mcp.digitalWrite(stepperMotors[stepperX - 1].dirPin, direction ? HIGH : LOW);
         stepperMotors[stepperX - 1].stepper->moveRelAsync(newPosition);
-        stepperMotors[stepperX - 1].position = newPosition;
     }
 }
 
@@ -111,33 +82,6 @@ void move2MotorsToAbsPosition(byte stepperA, byte stepperB, float newPosition) {
     float newPositionA = newPosition;
     float newPositionB = newPosition;
 
-    if (currentBoardConfig->stepper[stepperA - 1].inverseDirection == true) {
-        newPositionA = -newPositionA;
-    }
-    if (currentBoardConfig->stepper[stepperB - 1].inverseDirection == true) {
-        newPositionB = -newPositionB;
-    }
-
-    // Ensure stepper indices are within bounds
-    if (stepperA < 1 || stepperA > 6 || stepperB < 1 || stepperB > 6 || stepperA == stepperB)
-        return;
-
-    bool directionStepperA;
-    if (newPositionA >= stepperMotors[stepperA - 1].position) {
-        directionStepperA = 1;
-    } else {
-        directionStepperA = 0;
-    }
-    mcp.digitalWrite(stepperMotors[stepperA - 1].dirPin, directionStepperA ? HIGH : LOW);
-
-    bool directionStepperB;
-    if (newPositionB >= stepperMotors[stepperB - 1].position) {
-        directionStepperB = 1;
-    } else {
-        directionStepperB = 0;
-    }
-    mcp.digitalWrite(stepperMotors[stepperB - 1].dirPin, directionStepperB ? HIGH : LOW);
-
     // Set target positions for each stepper
     stepperMotors[stepperA - 1].stepper->setTargetAbs(newPositionA);
     stepperMotors[stepperB - 1].stepper->setTargetAbs(newPositionB);
@@ -145,9 +89,6 @@ void move2MotorsToAbsPosition(byte stepperA, byte stepperB, float newPosition) {
     // Create a stepper group and move synchronously
     StepperGroup group = {*stepperMotors[stepperA - 1].stepper, *stepperMotors[stepperB - 1].stepper};
     group.move();
-
-    stepperMotors[stepperA - 1].position = newPosition;
-    stepperMotors[stepperB - 1].position = newPosition;
 }
 
 void stopMotor(byte stepperX) {

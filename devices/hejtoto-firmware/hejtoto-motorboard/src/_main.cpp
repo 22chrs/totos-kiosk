@@ -36,9 +36,7 @@ void setup() {
 
     // init_TOF200C(3);
     enableMotor(1, true);
-    enableMotor(2, true);
-    moveMotorToAbsPosition(1, 25000);
-    moveMotorToAbsPosition(2, 25000);
+    moveMotorToAbsPosition(1, 256 * 200 * 25000);
     // moveMotorToAbsPosition(2, 1000);
 
     pwmFan(3, 0);
@@ -53,17 +51,13 @@ void setup() {
 }
 
 void loop() {
-    testSerialCommunication();
-    delay(1000);
+    // if (motorMovingState(1) == false) {
+    //     moveMotorToAbsPosition(1, 0);
 
-    if (motorMovingState(1) == false) {
-        moveMotorToAbsPosition(1, 0);
-        moveMotorToAbsPosition(2, 0);
-
-        // moveMotorToAbsPosition(1, -20000);
-        //  enableMotor(1, false);
-        //   moveMotorToAbsPosition(6, 0);
-    }
+    //     // moveMotorToAbsPosition(1, -20000);
+    //     //  enableMotor(1, false);
+    //     //   moveMotorToAbsPosition(6, 0);
+    // }
     // if (motorMovingState(2) == false)
     // {
     //   enableMotor(2, false);
