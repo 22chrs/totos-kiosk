@@ -13,36 +13,68 @@ const BoardConfig ServiceCubeConfig = {
         // current [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
         //! ratio = (PULLY_MOTOR / PULLY_SCREW) * LEAD_SCREW / (RESOLUTION * MICROSTEPS)
 
-        {100, 20000, 100000, (1), 555, 5, false},                          // Stepper 1 //! geraten! Lift_1
-        {100, 5000, 5000, (20 / 80) / (RESOLUTION / 22), 333, 5, false},   // Stepper 2 //! geraten! Karusell_1
-        {100, 10000, 5000, 2 / (RESOLUTION / 22), 555, 5, false},          // Stepper 3 //! geraten! Lift_2
-        {100, 10000, 5000, (20 / 80) / (RESOLUTION / 22), 333, 5, false},  // Stepper 4 //! geraten! Karusell_2
-        {100, 10000, 5000, 2 / (RESOLUTION / 22), 555, 5, false},          // Stepper 5 //! geraten! Lift_3
-        {100, 10000, 5000, (20 / 80) / (RESOLUTION / 22), 333, 5, false},  // Stepper 6 //! geraten! Karusell_3
+        // Rodell A (Zähnezahl 20 -> Zähnezahl ###) => ### 20/### mm/U //! ###
+        {1500, 70000, 100000, (1), 555, 5, false},
+        // Lift A (Zähnezahl 20 -> Zähnezahl 38, Pitch 2) => 20/38*2 mm/U = 20/19 mm/U
+        {1500, 70000, 100000, (20 / 19), 700, 5, false},
+
+        // Rodell B (Zähnezahl 20 -> Zähnezahl ###) //! ###
+        {1500, 70000, 100000, (1), 555, 5, false},
+        // Lift B (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
+        {1500, 70000, 100000, (20 / 19), 700, 5, false},
+
+        // Rodell C (Zähnezahl 20 -> Zähnezahl ###) //! ###
+        {1500, 70000, 100000, (1), 555, 5, false},
+        // Lift C (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
+        {1500, 70000, 100000, (20 / 19), 700, 5, false},
     }};
 
 const BoardConfig RoboCubeFrontConfig = {
     "RoboCubeFront",
     {
         // current [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
-        {1000, 10000, 50000, 1 / (RESOLUTION / 22), 333, 5, false},        // Stepper 1 //! geraten! Becherschubser_front
-        {1000, 10000, 50000, 8 / (RESOLUTION / 22), 333, 5, false},        // Stepper 2 //! geraten! Schleuse_front
-        {1500, 10000, 50000, 8 / (RESOLUTION / 22), 333, 5, false},        // Stepper 3 //! geraten! Terminal_A_front
-        {1500, 10000, 50000, 8 / (RESOLUTION / 22), 333, 5, false},        // Stepper 4 //! geraten! Terminal_B_front
-        {1500, 10000, 50000, (1 / 5) / (RESOLUTION / 22), 333, 5, false},  // Stepper 5 //! geraten! Zucker_front
-        {1500, 10000, 50000, 1 / (RESOLUTION / 22), 333, 5, false},        // Stepper 6 //! geraten! Snacks
+
+        // Shield A (Pitch 8)  => 8 mm/U
+        {1700, 70000, 100000, 8, 333, 5, false},
+
+        // Shield B (Pitch 8)
+        {1700, 70000, 100000, 8, 333, 5, false},
+
+        // Schleuse (Pitch 8)
+        {1700, 70000, 100000, 8, 333, 5, false},
+
+        // Becherschubse (Zähnezahl 20)
+        {1500, 70000, 100000, 40, 500, 5, false},
+
+        // Snackbar (Zähnezahl 20) => 2*20 mm/U = 40mm/U
+        {1800, 70000, 100000, 40, 1000, 5, false},
+
+        // Leer
+        {0, 0, 0, 0, 0, 5, false},
     }};
 
 const BoardConfig RoboCubeBackConfig = {
     "RoboCubeBack",
     {
         // current [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
-        {1400, 10000, 5000, 1 / (RESOLUTION / 22), 333, 5, false},         // Stepper 1 //! geraten! Becherschubser_back
-        {1400, 10000, 5000, 1 / (RESOLUTION / 22), 333, 5, false},         // Stepper 2 //! geraten! Schleuse_back
-        {1500, 10000, 50000, 8 / (RESOLUTION / 22), 333, 5, false},        // Stepper 3 //! geraten! Terminal_A_back
-        {1500, 10000, 50000, 8 / (RESOLUTION / 22), 333, 5, false},        // Stepper 4 //! geraten! Terminal_B_back
-        {1500, 10000, 50000, (1 / 5) / (RESOLUTION / 22), 333, 5, false},  // Stepper 5 //! geraten! Zucker_back
-        {1500, 10000, 50000, 1 / (RESOLUTION / 22), 0, 5, false},          // Stepper 6 //! not connected
+
+        // Shield A (Pitch 8)
+        {1700, 70000, 100000, 8, 333, 5, false},
+
+        // Shield B (Pitch 8)
+        {1700, 70000, 100000, 8, 333, 5, false},
+
+        // Schleuse (Pitch 8)
+        {1700, 70000, 100000, 8, 333, 5, false},
+
+        // Becherschubse (Zähnezahl 20)
+        {1500, 70000, 100000, 40, 500, 5, false},
+
+        // Leer
+        {0, 0, 0, 0, 0, 5, false},
+
+        // Leer
+        {0, 0, 0, 0, 0, 5, false},
     }};
 
 const BoardConfig *currentBoardConfig = nullptr;

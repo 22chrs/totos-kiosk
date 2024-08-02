@@ -3,47 +3,6 @@
 #include <Stepper.h>
 #define StepperCount 6
 
-void init_Stepper() {
-    TS4::begin();
-
-    for (int i = 0; i < StepperCount; i++) {
-        mcp.pinMode(stepperMotors[i].enPin, OUTPUT);
-        mcp.pinMode(stepperMotors[i].dirPin, OUTPUT);
-        pinMode(stepperMotors[i].stepPin, OUTPUT);
-        mcp.digitalWrite(stepperMotors[i].enPin, HIGH);  // Disable driver in hardware
-
-        stepperMotors[0].driver->setup(USED_SERIAL_PORT_1, SERIAL_BAUD_RATE);
-        stepperMotors[1].driver->setup(USED_SERIAL_PORT_2, SERIAL_BAUD_RATE);
-        stepperMotors[2].driver->setup(USED_SERIAL_PORT_3, SERIAL_BAUD_RATE);
-        stepperMotors[3].driver->setup(USED_SERIAL_PORT_4, SERIAL_BAUD_RATE);
-        stepperMotors[4].driver->setup(USED_SERIAL_PORT_5, SERIAL_BAUD_RATE);
-        stepperMotors[5].driver->setup(USED_SERIAL_PORT_6, SERIAL_BAUD_RATE);
-
-        stepperMotors[i].driver->setRunCurrent(RUN_CURRENT_PERCENT);
-        stepperMotors[i].stepper->setMaxSpeed(currentBoardConfig->stepper[i].maxSpeed);
-        // stepperMotors[i].driver->enableCoolStep();
-        stepperMotors[i].stepper->setAcceleration(currentBoardConfig->stepper[i].acceleration);
-        stepperMotors[i].driver->enable();
-    }
-}
-
-void testSerialCommunication() {
-    for (int i = 0; i < StepperCount; i++) {
-        if (stepperMotors[i].driver->isSetupAndCommunicating()) {
-            Serial.println("Stepper 1 driver is setup and communicating!");
-            Serial.println("Try turning driver power off to see what happens.");
-        } else if (stepperMotors[i].driver->isCommunicatingButNotSetup()) {
-            Serial.println("Stepper 1 driver is communicating but not setup!");
-        } else {
-            Serial.println("Stepper 1 driver is not communicating!");
-            Serial.println("Try turning driver power on to see what happens.");
-        }
-
-        Serial.println();
-        delay(100);
-    }
-}
-
 void enableMotor(byte stepperX, boolean isEnabled) {
     if (isEnabled == false) {
         mcp.digitalWrite(stepperMotors[stepperX - 1].enPin, HIGH);  // Disable driver in hardware
@@ -53,14 +12,36 @@ void enableMotor(byte stepperX, boolean isEnabled) {
     }
 }
 
+void init_Stepper() {
+    TS4::begin();
+
+    for (int i = 0; i < StepperCount; i++) {
+        mcp.pinMode(stepperMotors[i].enPin, OUTPUT);
+        pinMode(stepperMotors[i].stepPin, OUTPUT);
+        pinMode(stepperMotors[i].dirPin, OUTPUT);
+        enableMotor(i, false);  // Disable Stepper in Hardware
+
+        stepperMotors[0].driver->setup(USED_SERIAL_PORT_1, SERIAL_BAUD_RATE);
+        stepperMotors[1].driver->setup(USED_SERIAL_PORT_2, SERIAL_BAUD_RATE);
+        stepperMotors[2].driver->setup(USED_SERIAL_PORT_3, SERIAL_BAUD_RATE);
+        stepperMotors[3].driver->setup(USED_SERIAL_PORT_4, SERIAL_BAUD_RATE);
+        stepperMotors[4].driver->setup(USED_SERIAL_PORT_5, SERIAL_BAUD_RATE);
+        stepperMotors[5].driver->setup(USED_SERIAL_PORT_6, SERIAL_BAUD_RATE);
+
+        stepperMotors[i].driver->setRunCurrent(RUN_CURRENT_PERCENT);
+        stepperMotors[i].driver->disable();
+
+        stepperMotors[i].stepper->setMaxSpeed(currentBoardConfig->stepper[i].maxSpeed);
+        stepperMotors[i].stepper->setAcceleration(currentBoardConfig->stepper[i].acceleration);
+    }
+}
+
 void moveMotorToAbsPosition(byte stepperX, float newPosition) {
     if (currentBoardConfig->stepper[stepperX - 1].inverseDirection == true) {
         newPosition = -newPosition;
     }
-
     if (stepperX < 1 || stepperX > 6)
         return;
-
     stepperMotors[stepperX - 1].stepper->moveAbsAsync(newPosition);
 }
 
@@ -170,4 +151,28 @@ boolean homeMotor(byte stepperX) {
     // If none of the conditions for a successful homing are met, return false
     Serial.println("Homing failed.");  // Optional: add this line if you want to log the failure before returning
     return false;
+}
+
+void testSerialCommunication() {
+    for (int i = 0; i < StepperCount; i++) {
+        if (stepperMotors[i].driver->isSetupAndCommunicating()) {
+            Serial.println("Stepper 1 driver is setup and communicating!");
+            Serial.println("Try turning driver power off to see what happens.");
+        } else if (stepperMotors[i].driver->isCommunicatingButNotSetup()) {
+            Serial.println("Stepper 1 driver is communicating but not setup!");
+        } else {
+            Serial.println("Stepper 1 driver is not communicating!");
+            Serial.println("Try turning driver power on to see what happens.");
+        }
+
+        Serial.println();
+        delay(100);
+    }
+}
+
+float currentMotorPosition(byte stepperX) {
+    float currentPosition = 0;
+    currentPosition = stepperMotors[stepperX - 1].stepper->getPosition();
+    Serial.println(currentPosition);
+    return currentPosition;
 }

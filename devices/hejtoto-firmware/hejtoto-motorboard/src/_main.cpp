@@ -4,6 +4,7 @@
 #include <LimitSwitch.h>
 #include <MCP23017.h>  //0x20
 #include <Mosfet.h>
+#include <SerialCommands.h>
 #include <Stepper.h>
 #include <TCA9548A.h>     //0x70
 #include <Temperature.h>  //0x45
@@ -51,6 +52,7 @@ void setup() {
 }
 
 void loop() {
+    loopSerialCommands();
     // if (motorMovingState(1) == false) {
     //     moveMotorToAbsPosition(1, 0);
 

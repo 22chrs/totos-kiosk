@@ -10,13 +10,15 @@
 #include <TeensyStep4.h>  // https://github.com/luni64/TeensyStep4
 #include <_global.h>
 
+const int MICROSTEPS = 256;
+const int RESOLUTION = 200;
+
+// TeensyStep
 using namespace TS4;
 
-const int MICROSTEPS = 256;
-const int RESOLUTION = 200;  // Steps/tur
-const uint8_t RUN_CURRENT_PERCENT = 100;
-
+// Driver
 const long SERIAL_BAUD_RATE = 500000;
+inline uint8_t RUN_CURRENT_PERCENT = 100;  // Max Current Stepper Driver
 
 // !Stepper 1
 inline HardwareSerial &USED_SERIAL_PORT_1 = Serial1;
@@ -65,7 +67,6 @@ inline StepperMotor stepperMotors[6] = {
     {EN6_PIN, DIR6_PIN, STP6_PIN, new TMC2209, new Stepper(STP6_PIN, DIR6_PIN)}};
 
 // Functions
-
 void init_Stepper();
 void testSerialCommunication();
 void enableMotor(byte stepperX, boolean isEnabled);
@@ -75,5 +76,6 @@ bool motorMovingState(byte stepperX);
 void move2MotorsToAbsPosition(byte stepperA, byte stepperB, float newPosition);
 void stopMotor(byte stepperX);
 boolean homeMotor(byte stepperX);
+float currentMotorPosition(byte stepperX);
 
 #endif
