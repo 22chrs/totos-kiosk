@@ -37,7 +37,7 @@ void setup() {
 
     // init_TOF200C(3);
     // enableMotor(1, true);
-    moveMotorToAbsPosition(5, 10);
+    moveMotorToAbsPosition(5, 645);
     // homeMotor(5);
     // moveMotorToAbsPosition(2, 1000);
 
