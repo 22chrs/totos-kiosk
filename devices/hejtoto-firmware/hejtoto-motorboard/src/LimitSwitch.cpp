@@ -32,10 +32,10 @@ boolean check_limitSwitch(byte limitSwitchNumber) {
         limitSwitchNumber = ES6_PIN;
     }
 
-    if (mcp.digitalRead(limitSwitchNumber) == LOW) {
-        return false;
-    } else if (mcp.digitalRead(limitSwitchNumber) == HIGH) {
+    if (mcp.digitalRead(limitSwitchNumber) == HIGH) {
         return true;
+    } else {
+        return false;
     }
 }
 

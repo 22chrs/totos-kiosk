@@ -11,6 +11,7 @@ extern byte board;  // Declare it as an external variable to be defined in Board
 #define ROBOCUBE_BACK 3
 
 struct StepperConfig {
+    String name;
     int holdCurrent;             // mA
     int driveCurrent;            // mA
     unsigned long maxSpeed;      // steps/s
@@ -19,12 +20,9 @@ struct StepperConfig {
     double maxTravel;            // mm
     double homeShift;            // mm
     boolean inverseDirection;    // mm
+    boolean isCombined;          // Indicates if the motor is part of a combined system
+    int combinedGroupId;         // Group ID for combined motors
 };
-
-// struct BoardInfo
-// {
-//     String boardName; // RoboCube, ServiceCubeFront, ServiceCubeBack
-// };
 
 struct BoardConfig {
     String boardName;

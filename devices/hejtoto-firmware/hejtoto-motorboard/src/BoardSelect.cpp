@@ -14,19 +14,19 @@ const BoardConfig ServiceCubeConfig = {
         //! ratio = (PULLY_MOTOR / PULLY_SCREW) * LEAD_SCREW / (RESOLUTION * MICROSTEPS)
 
         // Rodell A (Zähnezahl 20 -> Zähnezahl ###) => ### 20/### mm/U //! ###
-        {0, 1500, 1000, 1000, (1), 555, 5, false},
+        {"Rodell_A", 0, 1500, 1000, 1000, (1), 555, 5, false, false, 0},
         // Lift A (Zähnezahl 20 -> Zähnezahl 38, Pitch 2) => 20/38*2 mm/U = 20/19 mm/U
-        {0, 1500, 9000, 10000, (20 / 19), 700, 5, false},
+        {"Lift_A", 0, 1500, 9000, 10000, (20 / 19), 700, 5, false, false, 0},
 
         // Rodell B (Zähnezahl 20 -> Zähnezahl ###) //! ###
-        {0, 1500, 1000, 1000, (1), 555, 5, false},
+        {"Rodell_B", 0, 1500, 1000, 1000, (1), 555, 5, false, false, 0},
         // Lift B (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
-        {0, 1500, 9000, 10000, (20 / 19), 700, 5, false},
+        {"Lift_B", 0, 1500, 9000, 10000, (20 / 19), 700, 5, false, false, 0},
 
         // Rodell C (Zähnezahl 20 -> Zähnezahl ###) //! ###
-        {0, 1500, 1000, 1000, (1), 555, 5, false},
+        {"Rodell_C", 0, 1500, 1000, 1000, (1), 555, 5, false, false, 0},
         // Lift C (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
-        {0, 1500, 9000, 10000, (20 / 19), 700, 5, false},
+        {"Lift_C", 0, 1500, 9000, 10000, (20 / 19), 700, 5, false, false, 0},
     }};
 
 const BoardConfig RoboCubeFrontConfig = {
@@ -35,22 +35,22 @@ const BoardConfig RoboCubeFrontConfig = {
         // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
-        {0, 1700, 9000, 10000, 8, 333, 5, false},
+        {"Shield_A", 0, 1700, 9000, 10000, 8, 333, 5, false, true, 1},
 
         // Schleuse (Pitch 8)
-        {0, 1700, 9000, 10000, 8, 193, -3, false},  //! ready :)
+        {"Schleuse", 0, 1700, 9000, 10000, 8, 193, -3, false, false, 0},
 
         // Leer
-        {0, 0, 0, 0, 0, 0, 5, false},
+        {"Leer", 0, 0, 0, 0, 0, 0, 0, false, false, 0},
 
         // Snackbar (Zähnezahl 20) => 2*20 mm/U = 40mm/U
-        {0, 1800, 7000, 3000, 40, 1000, 5, false},
+        {"Snackbar", 0, 1800, 7000, 3000, 40, 1000, 5, false, false, 0},
 
         // Becherschubse (Zähnezahl 20) 12.73
-        {300, 1500, 1000, 10000, 40, 645, -12, false},  //! ready :)
+        {"Becherschubse", 300, 1500, 1000, 10000, 40, 645, -12, false, false, 0},
 
         // Shield B (Pitch 8)
-        {0, 1700, 9000, 100000, 8, 333, 5, false},
+        {"Shield_B", 0, 0, 0, 0, 0, 0, 0, false, true, 1},
 
     }};
 
@@ -60,22 +60,22 @@ const BoardConfig RoboCubeBackConfig = {
         // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
-        {0, 1700, 9000, 10000, 8, 333, 5, false},
+        {"Shield_A", 0, 1700, 9000, 10000, 8, 333, 5, false, true, 1},
 
         // Schleuse (Pitch 8)
-        {0, 1700, 9000, 10000, 8, 193, -3, false},  //! ready :)
+        {"Schleuse", 0, 1700, 9000, 10000, 8, 193, -3, false, false, 0},
 
         // Leer
-        {0, 0, 0, 0, 0, 0, 5, false},
+        {"Leer", 0, 0, 0, 0, 0, 0, 0, false, false, 0},
 
         // Leer
-        {0, 0, 0, 0, 0, 0, 5, false},
+        {"Leer", 0, 0, 0, 0, 0, 0, 0, false, false, 0},
 
         // Becherschubse (Zähnezahl 20) 12.73
-        {0, 1500, 9000, 10000, 40, 645, -12, false},  //! ready :)
+        {"Becherschubse", 0, 1500, 9000, 10000, 40, 645, -12, false, false, 0},
 
         // Shield B (Pitch 8)
-        {0, 1700, 9000, 100000, 8, 333, 5, false},
+        {"Shield_B", 0, 0, 0, 0, 0, 0, 0, false, true, 1},
     }};
 
 const BoardConfig *currentBoardConfig = nullptr;

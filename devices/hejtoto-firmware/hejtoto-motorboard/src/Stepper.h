@@ -73,12 +73,12 @@ inline StepperMotor stepperMotors[6] = {
 void init_Stepper();
 void testSerialCommunication();
 void enableMotor(byte stepperX, boolean isEnabled);
-void moveMotorToAbsPosition(byte stepperX, float newPosition);
-void moveMotorRel(byte stepperX, float newPosition);
+void moveMotorToAbsPosition(byte stepperX, double newPosition);
 boolean motorMovingState(byte stepperX);
-void move2MotorsToAbsPosition(byte stepperA, byte stepperB, float newPosition);
+void move2MotorsToAbsPosition(byte stepperA, byte stepperB, double newPosition);
 void stopMotor(byte stepperX);
 boolean homeMotor(byte stepperX);
+boolean homeCombinedMotors(byte stepperX, byte stepperY);
 float currentMotorPosition(byte stepperX);
 
 #endif
