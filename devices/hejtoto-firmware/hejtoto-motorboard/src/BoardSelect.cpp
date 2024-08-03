@@ -20,6 +20,7 @@ const BoardConfig ServiceCubeConfig = {
 
         // Rodell B (Zähnezahl 20 -> Zähnezahl ###) //! ###
         {1500, 70000, 100000, (1), 555, 5, false},
+
         // Lift B (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
         {1500, 70000, 100000, (20 / 19), 700, 5, false},
 
@@ -37,20 +38,21 @@ const BoardConfig RoboCubeFrontConfig = {
         // Shield A (Pitch 8)  => 8 mm/U
         {1700, 70000, 100000, 8, 333, 5, false},
 
-        // Shield B (Pitch 8)
-        {1700, 70000, 100000, 8, 333, 5, false},
-
         // Schleuse (Pitch 8)
-        {1700, 70000, 100000, 8, 333, 5, false},
-
-        // Becherschubse (Zähnezahl 20)
-        {1500, 70000, 100000, 40, 500, 5, false},
-
-        // Snackbar (Zähnezahl 20) => 2*20 mm/U = 40mm/U
-        {1800, 70000, 100000, 40, 1000, 5, false},
+        {1700, 63500, 25000, 8, 193, -3, false},  //! ready :)
 
         // Leer
         {0, 0, 0, 0, 0, 5, false},
+
+        // Snackbar (Zähnezahl 20) => 2*20 mm/U = 40mm/U
+        {1800, 20000, 5000, 40, 1000, 5, false},
+
+        // Becherschubse (Zähnezahl 20) 12.73
+        {1500, 50000, 25000, 40, 645, -12, false},  //! ready :)
+
+        // Shield B (Pitch 8)
+        {1700, 70000, 100000, 8, 333, 5, false},
+
     }};
 
 const BoardConfig RoboCubeBackConfig = {
@@ -65,10 +67,10 @@ const BoardConfig RoboCubeBackConfig = {
         {1700, 70000, 100000, 8, 333, 5, false},
 
         // Schleuse (Pitch 8)
-        {1700, 70000, 100000, 8, 333, 5, false},
+        {1700, 63500, 25000, 8, 193, -3, false},  //! ready :)
 
         // Becherschubse (Zähnezahl 20)
-        {1500, 70000, 100000, 40, 500, 5, false},
+        {1500, 50000, 25000, 40, 645, -12, false},  //! ready :)
 
         // Leer
         {0, 0, 0, 0, 0, 5, false},

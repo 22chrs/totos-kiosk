@@ -36,8 +36,9 @@ void setup() {
     init_doorSensor();
 
     // init_TOF200C(3);
-    enableMotor(1, true);
-    moveMotorToAbsPosition(1, 256 * 200 * 25000);
+    // enableMotor(1, true);
+    moveMotorToAbsPosition(5, 220);
+    // homeMotor(5);
     // moveMotorToAbsPosition(2, 1000);
 
     pwmFan(3, 0);
@@ -53,8 +54,9 @@ void setup() {
 
 void loop() {
     loopSerialCommands();
-    // if (motorMovingState(1) == false) {
-    //     moveMotorToAbsPosition(1, 0);
+    // testSerialCommunication();
+    //  if (motorMovingState(1) == false) {
+    //      moveMotorToAbsPosition(1, 0);
 
     //     // moveMotorToAbsPosition(1, -20000);
     //     //  enableMotor(1, false);
@@ -67,7 +69,7 @@ void loop() {
     // }
 
     // check_doorSensor();
-    // check_limitSwitch1();
+    // check_limitSwitches();
 
     // check_TemperatureSensor();
     // readTOF200C(2);

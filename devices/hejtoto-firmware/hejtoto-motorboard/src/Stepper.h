@@ -72,7 +72,7 @@ void testSerialCommunication();
 void enableMotor(byte stepperX, boolean isEnabled);
 void moveMotorToAbsPosition(byte stepperX, float newPosition);
 void moveMotorRel(byte stepperX, float newPosition);
-bool motorMovingState(byte stepperX);
+boolean motorMovingState(byte stepperX);
 void move2MotorsToAbsPosition(byte stepperA, byte stepperB, float newPosition);
 void stopMotor(byte stepperX);
 boolean homeMotor(byte stepperX);
