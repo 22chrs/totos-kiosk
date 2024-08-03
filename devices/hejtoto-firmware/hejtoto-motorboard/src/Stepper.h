@@ -6,11 +6,12 @@
 #include <BoardSelect.h>
 #include <LimitSwitch.h>
 #include <MCP23017.h>
-#include <TMC2209.h>
+// #include <TMC2209.h>
+#include <TMCStepper.h>
 #include <TeensyStep4.h>  // https://github.com/luni64/TeensyStep4
 #include <_global.h>
 
-const int MICROSTEPS = 256;
+const int MICROSTEPS = 8;
 const int RESOLUTION = 200;
 
 // TeensyStep
@@ -18,7 +19,9 @@ using namespace TS4;
 
 // Driver
 const long SERIAL_BAUD_RATE = 500000;
-inline uint8_t RUN_CURRENT_PERCENT = 100;  // Max Current Stepper Driver
+// inline uint8_t RUN_CURRENT_PERCENT = 100;  // Max Current Stepper Driver
+#define DRIVER_ADDRESS 0b00  // TMC2209 Driver address according to MS1 and MS2
+#define R_SENSE 0.11f        // Match to your driver
 
 // !Stepper 1
 inline HardwareSerial &USED_SERIAL_PORT_1 = Serial1;
@@ -52,19 +55,19 @@ inline HardwareSerial &USED_SERIAL_PORT_6 = Serial5;
 
 // Stepper motor pin definitions and driver instances
 struct StepperMotor {
-    // HardwareSerial *serialPort;
+    HardwareSerial *serialPort;
     uint8_t enPin, dirPin, stepPin;
-    TMC2209 *driver;
+    TMC2209Stepper *driver;
     Stepper *stepper;
 };
 
 inline StepperMotor stepperMotors[6] = {
-    {EN1_PIN, DIR1_PIN, STP1_PIN, new TMC2209, new Stepper(STP1_PIN, DIR1_PIN)},
-    {EN2_PIN, DIR2_PIN, STP2_PIN, new TMC2209, new Stepper(STP2_PIN, DIR2_PIN)},
-    {EN3_PIN, DIR3_PIN, STP3_PIN, new TMC2209, new Stepper(STP3_PIN, DIR3_PIN)},
-    {EN4_PIN, DIR4_PIN, STP4_PIN, new TMC2209, new Stepper(STP4_PIN, DIR4_PIN)},
-    {EN5_PIN, DIR5_PIN, STP5_PIN, new TMC2209, new Stepper(STP5_PIN, DIR5_PIN)},
-    {EN6_PIN, DIR6_PIN, STP6_PIN, new TMC2209, new Stepper(STP6_PIN, DIR6_PIN)}};
+    {&USED_SERIAL_PORT_1, EN1_PIN, DIR1_PIN, STP1_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_1, R_SENSE, DRIVER_ADDRESS), new Stepper(STP1_PIN, DIR1_PIN)},
+    {&USED_SERIAL_PORT_2, EN2_PIN, DIR2_PIN, STP2_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_2, R_SENSE, DRIVER_ADDRESS), new Stepper(STP2_PIN, DIR2_PIN)},
+    {&USED_SERIAL_PORT_3, EN3_PIN, DIR3_PIN, STP3_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_3, R_SENSE, DRIVER_ADDRESS), new Stepper(STP3_PIN, DIR3_PIN)},
+    {&USED_SERIAL_PORT_4, EN4_PIN, DIR4_PIN, STP4_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_4, R_SENSE, DRIVER_ADDRESS), new Stepper(STP4_PIN, DIR4_PIN)},
+    {&USED_SERIAL_PORT_5, EN5_PIN, DIR5_PIN, STP5_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_5, R_SENSE, DRIVER_ADDRESS), new Stepper(STP5_PIN, DIR5_PIN)},
+    {&USED_SERIAL_PORT_6, EN6_PIN, DIR6_PIN, STP6_PIN, new TMC2209Stepper(&USED_SERIAL_PORT_6, R_SENSE, DRIVER_ADDRESS), new Stepper(STP6_PIN, DIR6_PIN)}};
 
 // Functions
 void init_Stepper();

@@ -11,7 +11,8 @@ extern byte board;  // Declare it as an external variable to be defined in Board
 #define ROBOCUBE_BACK 3
 
 struct StepperConfig {
-    int current;                 // mA
+    int holdCurrent;             // mA
+    int driveCurrent;            // mA
     unsigned long maxSpeed;      // steps/s
     unsigned long acceleration;  // steps/s^2
     double ratio;                // mm/step

@@ -21,19 +21,13 @@ void init_Stepper() {
         pinMode(stepperMotors[i].dirPin, OUTPUT);
         enableMotor(i, true);  // Enable Stepper in Hardware
 
-        stepperMotors[0].driver->setup(USED_SERIAL_PORT_1, SERIAL_BAUD_RATE);
-        stepperMotors[1].driver->setup(USED_SERIAL_PORT_2, SERIAL_BAUD_RATE);
-        stepperMotors[2].driver->setup(USED_SERIAL_PORT_3, SERIAL_BAUD_RATE);
-        stepperMotors[3].driver->setup(USED_SERIAL_PORT_4, SERIAL_BAUD_RATE);
-        stepperMotors[4].driver->setup(USED_SERIAL_PORT_5, SERIAL_BAUD_RATE);
-        stepperMotors[5].driver->setup(USED_SERIAL_PORT_6, SERIAL_BAUD_RATE);
+        stepperMotors[i].serialPort->begin(SERIAL_BAUD_RATE);
+        stepperMotors[i].driver->begin();
+        stepperMotors[i].driver->toff(5);
+        stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].holdCurrent);
+        stepperMotors[i].driver->microsteps(MICROSTEPS);
 
-        stepperMotors[i].driver->setRunCurrent(RUN_CURRENT_PERCENT);
-        stepperMotors[i].driver->setHoldCurrent(0);
-        // stepperMotors[i].driver->enableAutomaticCurrentScaling();
-        // stepperMotors[i].driver->enableAutomaticGradientAdaptation();
-        stepperMotors[i].driver->enable();
-        stepperMotors[i].driver->setMicrostepsPerStep(MICROSTEPS);
+        // stepperMotors[i].driver->pwm_autoscale(true);
 
         stepperMotors[i].stepper->setMaxSpeed(currentBoardConfig->stepper[i].maxSpeed);
         stepperMotors[i].stepper->setAcceleration(currentBoardConfig->stepper[i].acceleration);
@@ -179,20 +173,14 @@ boolean homeMotor(byte stepperX) {
 }
 
 void testSerialCommunication() {
-    for (int i = 0; i < StepperCount; i++) {
-        if (stepperMotors[i].driver->isSetupAndCommunicating()) {
-            Serial.println("Stepper 1 driver is setup and communicating!");
-            Serial.println("Try turning driver power off to see what happens.");
-        } else if (stepperMotors[i].driver->isCommunicatingButNotSetup()) {
-            Serial.println("Stepper 1 driver is communicating but not setup!");
-        } else {
-            Serial.println("Stepper 1 driver is not communicating!");
-            Serial.println("Try turning driver power on to see what happens.");
-        }
+    int i = 1;
+    uint16_t msread = stepperMotors[i].driver->microsteps();
+    Serial.print(F("Read microsteps via UART to test UART receive : "));
+    Serial.println(msread);
 
-        Serial.println();
-        delay(100);
-    }
+    msread = stepperMotors[i].driver->rms_current();
+    Serial.print(F("Current : "));
+    Serial.println(msread);
 }
 
 float currentMotorPosition(byte stepperX) {

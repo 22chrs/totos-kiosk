@@ -37,7 +37,7 @@ void setup() {
 
     // init_TOF200C(3);
     // enableMotor(1, true);
-    moveMotorToAbsPosition(5, 220);
+    moveMotorToAbsPosition(5, 10);
     // homeMotor(5);
     // moveMotorToAbsPosition(2, 1000);
 
@@ -53,10 +53,10 @@ void setup() {
 }
 
 void loop() {
-    loopSerialCommands();
+    // loopSerialCommands();
     // testSerialCommunication();
-    //  if (motorMovingState(1) == false) {
-    //      moveMotorToAbsPosition(1, 0);
+    //   if (motorMovingState(1) == false) {
+    //       moveMotorToAbsPosition(1, 0);
 
     //     // moveMotorToAbsPosition(1, -20000);
     //     //  enableMotor(1, false);

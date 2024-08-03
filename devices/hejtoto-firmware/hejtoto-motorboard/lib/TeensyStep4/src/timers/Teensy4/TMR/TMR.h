@@ -24,7 +24,7 @@ class TmrTimer : public ITimer {
     inline void attachCallbacks(callback_t stepCb, callback_t resetCb) override;
 
    protected:
-    static constexpr int prescale = 4;  // 1->2, 2->4, 3->8...7->128
+    static constexpr int prescale = 5;  // 1->2, 2->4, 3->8...7->128
 
     callback_t stepCB;
     callback_t resetCB;
