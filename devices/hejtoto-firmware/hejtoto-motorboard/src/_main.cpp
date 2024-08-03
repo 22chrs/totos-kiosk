@@ -41,7 +41,7 @@ void setup() {
     // homeMotor(5);
     // moveMotorToAbsPosition(2, 1000);
 
-    pwmFan(3, 0);
+    // pwmFan(3, 0);
 
     Neopixel(GREEN);
 

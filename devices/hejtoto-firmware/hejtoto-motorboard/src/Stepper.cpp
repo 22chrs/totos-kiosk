@@ -29,7 +29,7 @@ void init_Stepper() {
         stepperMotors[5].driver->setup(USED_SERIAL_PORT_6, SERIAL_BAUD_RATE);
 
         stepperMotors[i].driver->setRunCurrent(RUN_CURRENT_PERCENT);
-        stepperMotors[i].driver->setHoldCurrent(80);
+        stepperMotors[i].driver->setHoldCurrent(0);
         // stepperMotors[i].driver->enableAutomaticCurrentScaling();
         // stepperMotors[i].driver->enableAutomaticGradientAdaptation();
         stepperMotors[i].driver->enable();
