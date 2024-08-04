@@ -1,6 +1,53 @@
 // Movements.cpp
 #include <Movements.h>
 
+void setDriverState(const String &stepperName, bool activate) {
+    if (currentBoardConfig == nullptr) {
+        Serial.println("Error: Board configuration not initialized.");
+        return;
+    }
+
+    // Find the index of the stepper by friendly name
+    for (int i = 0; i < StepperCount; ++i) {
+        if (currentBoardConfig->stepper[i].name == stepperName) {
+            Serial.print(activate ? "Activating " : "Deactivating ");
+            Serial.println(stepperName);
+
+            // Check if there are any other motors with the same name (combined setup)
+            for (int j = 0; j < StepperCount; ++j) {
+                if (i != j && currentBoardConfig->stepper[j].name == stepperName) {
+                    Serial.print(activate ? "Activating combined motors: " : "Deactivating combined motors: ");
+                    Serial.print(currentBoardConfig->stepper[i].name);
+                    Serial.print(" and ");
+                    Serial.println(currentBoardConfig->stepper[j].name);
+
+                    // Activate or deactivate combined motors
+                    if (activate) {
+                        activateDriverViaUART(i + 1);
+                        activateDriverViaUART(j + 1);
+                    } else {
+                        deactivateDriverViaUART(i + 1);
+                        deactivateDriverViaUART(j + 1);
+                    }
+                    return;
+                }
+            }
+
+            // If no combined motors, activate/deactivate single motor
+            if (activate) {
+                activateDriverViaUART(i + 1);
+            } else {
+                deactivateDriverViaUART(i + 1);
+            }
+            return;
+        }
+    }
+
+    Serial.print("Error: Stepper with name ");
+    Serial.print(stepperName);
+    Serial.println(" not found.");
+}
+
 boolean homeDevice(const String &stepperName) {
     if (currentBoardConfig == nullptr) {
         Serial.println("Error: Board configuration not initialized.");

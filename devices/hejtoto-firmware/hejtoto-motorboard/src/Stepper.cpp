@@ -1,15 +1,27 @@
 // Stepper.cpp
 
 #include <Stepper.h>
-#define StepperCount 6
 
 void enableMotor(byte stepperX, boolean isEnabled) {
     if (isEnabled == false) {
         mcp.digitalWrite(stepperMotors[stepperX - 1].enPin, HIGH);  // Disable driver in hardware
+        delay(10);
     }
     if (isEnabled == true) {
         mcp.digitalWrite(stepperMotors[stepperX - 1].enPin, LOW);  // Disable driver in hardware
+        delay(30);
     }
+}
+
+void changeCurrentStateMotor(byte stepperX, int current) {
+    stepperMotors[stepperX - 1].driver->rms_current(current);
+    delay(5);
+}
+
+void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current) {
+    stepperMotors[stepperX - 1].driver->rms_current(current);
+    stepperMotors[stepperY - 1].driver->rms_current(current);
+    delay(5);
 }
 
 void init_Stepper() {
@@ -19,21 +31,63 @@ void init_Stepper() {
         mcp.pinMode(stepperMotors[i].enPin, OUTPUT);
         pinMode(stepperMotors[i].stepPin, OUTPUT);
         pinMode(stepperMotors[i].dirPin, OUTPUT);
-        enableMotor(i, true);  // Enable Stepper in Hardware
-
+        delay(5);
+        enableMotor(i + 1, true);  // Enable Stepper in Hardware
         stepperMotors[i].serialPort->begin(SERIAL_BAUD_RATE);
+        delay(50);
         stepperMotors[i].driver->begin();
+        delay(10);
         stepperMotors[i].driver->toff(5);
         stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].holdCurrent);
-        stepperMotors[i].driver->microsteps(MICROSTEPS);
-
         // stepperMotors[i].driver->pwm_autoscale(true);
-
+        delay(5);
+        stepperMotors[i].driver->microsteps(MICROSTEPS);
         stepperMotors[i].stepper->setMaxSpeed(currentBoardConfig->stepper[i].maxSpeed);
         stepperMotors[i].stepper->setAcceleration(currentBoardConfig->stepper[i].acceleration);
+        delay(5);
     }
 }
 
+// Helper functions to activate/deactivate a specific driver
+void activateDriverViaUART(byte stepperX) {
+    // Access the driver for the specific stepper
+    TMC2209Stepper &driver = *stepperMotors[stepperX - 1].driver;
+
+    // Enable the driver by clearing the ENABLEDRV bit in the GCONF register
+    uint32_t gconf = driver.GCONF();
+    gconf &= ~(1 << 4);  // Clear bit 4 to enable driver
+    driver.GCONF(gconf);
+
+    // Set the drive current to the desired level
+    uint8_t driveCurrent = currentBoardConfig->stepper[stepperX - 1].driveCurrent;
+    driver.rms_current(driveCurrent);
+
+    // Set IHOLD to a reasonable standby current if needed
+    uint32_t iholdIrun = driver.IHOLD_IRUN();
+    iholdIrun &= ~(0b11111);                // Clear IHOLD bits
+    iholdIrun |= (driveCurrent & 0b11111);  // Set IRUN to driveCurrent bits
+    driver.IHOLD_IRUN(iholdIrun);
+
+    Serial.print("Driver activated with drive current ");
+    Serial.println(driveCurrent);
+}
+
+void deactivateDriverViaUART(byte stepperX) {
+    // Access the driver for the specific stepper
+    TMC2209Stepper &driver = *stepperMotors[stepperX - 1].driver;
+
+    // Disable the driver by setting the ENABLEDRV bit in the GCONF register
+    uint32_t gconf = driver.GCONF();
+    gconf |= (1 << 4);  // Set bit 4 to disable driver
+    driver.GCONF(gconf);
+
+    // Set the IHOLD current to zero
+    uint32_t iholdIrun = driver.IHOLD_IRUN();
+    iholdIrun &= ~(0b11111);  // Clear bits 0-4 to set IHOLD to 0
+    driver.IHOLD_IRUN(iholdIrun);
+
+    Serial.println("Driver deactivated via UART.");
+}
 void moveMotorToAbsPosition(byte stepperX, double newPosition) {
     newPosition = newPosition * MICROSTEPS * RESOLUTION / currentBoardConfig->stepper[stepperX - 1].ratio;
     if (currentBoardConfig->stepper[stepperX - 1].inverseDirection == true) {
@@ -52,12 +106,13 @@ void moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPos
     if (currentBoardConfig->stepper[stepperY - 1].inverseDirection == true) {
         newPosition_B = -newPosition;
     }
+
     // Set target positions for each stepper
     stepperMotors[stepperX - 1].stepper->setTargetAbs(newPosition_A);
     stepperMotors[stepperY - 1].stepper->setTargetAbs(newPosition_B);
     // Create a stepper group and move synchronously
-    StepperGroup group = {*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper};
-    group.move();
+    // controller = {*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper};
+    StepperGroup{*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper}.move();
 }
 
 boolean motorMovingState(byte stepperX) {
@@ -69,17 +124,6 @@ boolean motorMovingState(byte stepperX) {
 
 void stopMotor(byte stepperX) {
     stepperMotors[stepperX - 1].stepper->stop();
-}
-
-void changeCurrentStateMotor(byte stepperX, int current) {
-    stepperMotors[stepperX - 1].driver->rms_current(current);
-    delay(5);
-}
-
-void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current) {
-    stepperMotors[stepperX - 1].driver->rms_current(current);
-    stepperMotors[stepperY - 1].driver->rms_current(current);
-    delay(5);
 }
 
 void setPositionMotor(byte stepperX, double position) {
@@ -109,7 +153,7 @@ boolean homeMotor(byte stepperX) {
     if (check_limitSwitch(stepperX) == false)  // Endstop is not triggered
     {
         Serial.println("Endstop is not triggered. Begin homing routine.");
-        setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.8);             // less% of normal
+        setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.5);             // less% of normal
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 1.5);  // 150% of normal
 
         setPositionMotor(stepperX, 0);
@@ -187,8 +231,8 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     if (check_limitSwitch(stepperX) == false)  // Endstop is not triggered
     {
         Serial.println("Endstop is not triggered. Begin homing routine.");
-        setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.8);             // less% of normal
-        setSpeedMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.8);             // less% of normal
+        setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.5);             // less% of normal
+        setSpeedMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.5);             // less% of normal
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 1.5);  // 150% of normal
         setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration * 1.5);  // 150% of normal
         setPositionMotor(stepperX, 0);

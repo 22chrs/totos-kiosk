@@ -35,19 +35,23 @@ void setup() {
 
     // init_TOF200C(3);
 
-    moveMotorToAbsPosition(5, 645);
-    // homeMotor(5);
-    // moveMotorToAbsPosition(2, 1000);
+    // moveCombinedMotorsToAbsPosition(1, 6, -10);
+    //   moveMotorToAbsPosition(1, 200);
+    //   moveMotorToAbsPosition(6, 200);
+    //     homeMotor(5);
+    //     moveMotorToAbsPosition(2, 1000);
 
     // pwmFan(3, 0);
 
     Neopixel(RED);
 
-    homeDevice("Shield");
-    homeDevice("Snackbar");
+    // homeDevice("Shield");
+    //    homeDevice("Snackbar");
     homeDevice("Schleuse");
-    delay(500);
+    //    delay(500);
+
     homeDevice("Becherschubse");
+    //  homeDevice("Snackbar");
 
     buildInLEDBlik();
 
@@ -57,6 +61,18 @@ void setup() {
 }
 
 void loop() {
+    // delay(7000);
+
+    moveDevice("Schleuse", 190);
+    delay(1000);
+    moveDevice("Becherschubse", 645);
+    delay(7000);
+
+    moveDevice("Schleuse", 0);
+    delay(1000);
+    moveDevice("Becherschubse", 0);
+    delay(7000);
+
     // loopSerialCommands();
     // testSerialCommunication();
     //   if (motorMovingState(1) == false) {
@@ -73,7 +89,7 @@ void loop() {
     // }
 
     // check_doorSensor();
-    // check_limitSwitches();
+    check_limitSwitches();
 
     // check_TemperatureSensor();
     // readTOF200C(2);

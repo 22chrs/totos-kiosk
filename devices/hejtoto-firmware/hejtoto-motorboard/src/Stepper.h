@@ -53,6 +53,8 @@ inline HardwareSerial &USED_SERIAL_PORT_6 = Serial5;
 #define DIR6_PIN 17  // For using in TeensyStep4 since mcp is not known here
 #define STP6_PIN 40  // Step
 
+const byte StepperCount = 6;
+
 // Stepper motor pin definitions and driver instances
 struct StepperMotor {
     HardwareSerial *serialPort;
@@ -72,6 +74,8 @@ inline StepperMotor stepperMotors[6] = {
 // Functions
 void init_Stepper();
 void testSerialCommunication();
+void activateDriverViaUART(byte stepperX);
+void deactivateDriverViaUART(byte stepperX);
 void enableMotor(byte stepperX, boolean isEnabled);
 void changeCurrentStateMotor(byte stepperX, int current);
 void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current);
