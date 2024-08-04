@@ -4,6 +4,7 @@
 #include <LimitSwitch.h>
 #include <MCP23017.h>  //0x20
 #include <Mosfet.h>
+#include <Movements.h>
 #include <SerialCommands.h>
 #include <Stepper.h>
 #include <TCA9548A.h>     //0x70
@@ -25,25 +26,28 @@ void setup() {
     init_MCP23017();  // Initialize pins of MCP23017 I/O Expander
 
     init_BoardSelect();  // Check which board this code runs on
-
-    init_Stepper();  // Initialize stepper motor drivers
-
+    init_Stepper();      // Initialize stepper motor drivers
+    init_LimitSwitch();
+    init_doorSensor();
     init_Mosfet();             // Initialize Mosfets
     init_TemperatureSensor();  // Initialize temperature and humidity sensor
     init_Fan();
 
-    init_LimitSwitch();
-    init_doorSensor();
-
     // init_TOF200C(3);
-    // enableMotor(1, true);
+
     moveMotorToAbsPosition(5, 645);
     // homeMotor(5);
     // moveMotorToAbsPosition(2, 1000);
 
     // pwmFan(3, 0);
 
-    Neopixel(GREEN);
+    Neopixel(RED);
+
+    homeDevice("Shield");
+    homeDevice("Snackbar");
+    homeDevice("Schleuse");
+    delay(500);
+    homeDevice("Becherschubse");
 
     buildInLEDBlik();
 

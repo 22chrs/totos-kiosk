@@ -20,8 +20,6 @@ struct StepperConfig {
     double maxTravel;            // mm
     double homeShift;            // mm
     boolean inverseDirection;    // mm
-    boolean isCombined;          // Indicates if the motor is part of a combined system
-    int combinedGroupId;         // Group ID for combined motors
 };
 
 struct BoardConfig {

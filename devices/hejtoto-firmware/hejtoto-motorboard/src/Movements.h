@@ -9,5 +9,6 @@
 #include <_global.h>
 
 boolean homeDevice(const String &stepperName);
+boolean moveDevice(const String &stepperName, double postion);
 
 #endif
