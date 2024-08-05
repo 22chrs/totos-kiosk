@@ -13,6 +13,8 @@
 #include <_global.h>
 // #include <USB.h>
 
+Chrono helperChrono;
+
 void setup() {
     init_LEDs();
 
@@ -51,25 +53,30 @@ void setup() {
     // setDriverState("Shield", true);
     // delay(500);
 
+    // homeDevice("Shield");
+    // moveDevice("Schleuse", -120, 100, 100);
     homeDevice("Shield");
-    // homeDevice("Schleuse");
-    // homeDevice("Becherschubse");
-    //    homeDevice("Snackbar");
+    moveDevice("Shield", 190, 25, 30);
+    delay(20000);
+    moveDevice("Shield", 20, 100, 100);
 
     buildInLEDBlik();
-
-    // setDriverState("Becherschubse", false);
 
     // pwmMosfet(1, 20);
     // delay(1000);
     // pwmMosfet(1, 0);
 
-    moveDevice("Shield", 192);
-    delay(8000);
-    moveDevice("Shield", 0);
+    // moveDevice("Shield", 180);
 }
 
 void loop() {
+    // if (helperChrono.hasPassed(500)) {
+    //     stepperCheckObstruction();  // Call the function
+
+    //     // Reset the Chrono timer
+    //     helperChrono.restart();
+    // }
+
     // moveDevice("Shield", 195);
     //  delay(1000);
     //  moveDevice("Becherschubse", 645);
@@ -96,7 +103,7 @@ void loop() {
     // }
 
     // check_doorSensor();
-    check_limitSwitches();
+    // check_limitSwitches();
 
     // check_TemperatureSensor();
     // readTOF200C(2);

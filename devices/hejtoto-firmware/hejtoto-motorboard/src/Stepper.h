@@ -73,11 +73,13 @@ inline StepperMotor stepperMotors[6] = {
 
 // Functions
 void init_Stepper();
+void stepperCheckObstruction();
 void testSerialCommunication();
 void activateDriverViaUART(byte stepperX);
 void deactivateDriverViaUART(byte stepperX);
 void enableMotor(byte stepperX, boolean isEnabled);
 void changeCurrentStateMotor(byte stepperX, int current);
+void setSpeedMotor(byte stepperX, long speed);
 void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current);
 void moveMotorToAbsPosition(byte stepperX, double newPosition);
 boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition);

@@ -37,9 +37,20 @@ boolean homeDevice(const String &stepperName) {
     return false;
 }
 
-boolean moveDevice(const String &stepperName, double position) {
+boolean moveDevice(const String &stepperName, double position, int maxSpeedPercentage, int driveCurrentPercentage) {
     if (currentBoardConfig == nullptr) {
         Serial.println("Error: Board configuration not initialized.");
+        return false;
+    }
+
+    // Validate percentage inputs
+    if (driveCurrentPercentage < 0 || driveCurrentPercentage > 100) {
+        Serial.println("Error: Drive current percentage must be between 0 and 100.");
+        return false;
+    }
+
+    if (maxSpeedPercentage < 0 || maxSpeedPercentage > 100) {
+        Serial.println("Error: Max speed percentage must be between 0 and 100.");
         return false;
     }
 
@@ -53,6 +64,22 @@ boolean moveDevice(const String &stepperName, double position) {
 
             const StepperConfig &config = currentBoardConfig->stepper[i];
 
+            // Calculate actual drive current and speed based on percentages
+            int driveCurrent = static_cast<int>(config.driveCurrent * (driveCurrentPercentage / 100.0));
+            unsigned long maxSpeed = static_cast<unsigned long>(config.maxSpeed * (maxSpeedPercentage / 100.0));
+
+            Serial.print("Drive Current set to: ");
+            Serial.print(driveCurrent);
+            Serial.print(" mA (");
+            Serial.print(driveCurrentPercentage);
+            Serial.println("%)");
+
+            Serial.print("Max Speed set to: ");
+            Serial.print(maxSpeed);
+            Serial.print(" steps/s (");
+            Serial.print(maxSpeedPercentage);
+            Serial.println("%)");
+
             // Check if the requested position exceeds the maximum travel
             if (position < 0 || position > config.maxTravel) {
                 Serial.print("Error: Requested position ");
@@ -63,6 +90,10 @@ boolean moveDevice(const String &stepperName, double position) {
                 return false;
             }
 
+            // Set the drive current and speed before moving the motor
+            changeCurrentStateMotor(i + 1, driveCurrent);
+            setSpeedMotor(i + 1, maxSpeed);
+
             // Check for combined motors by name
             for (int j = 0; j < 6; ++j) {
                 if (i != j && currentBoardConfig->stepper[j].name == stepperName) {
@@ -70,6 +101,9 @@ boolean moveDevice(const String &stepperName, double position) {
                     Serial.print(currentBoardConfig->stepper[i].name);
                     Serial.print(" and ");
                     Serial.println(currentBoardConfig->stepper[j].name);
+
+                    changeCurrentStateMotor(j + 1, driveCurrent);
+                    setSpeedMotor(j + 1, maxSpeed);
 
                     // Move combined motors to the specified position
                     moveCombinedMotorsToAbsPosition(i + 1, j + 1, position);

@@ -16,6 +16,8 @@ void enableMotor(byte stepperX, boolean isEnabled) {
 void changeCurrentStateMotor(byte stepperX, int current) {
     stepperMotors[stepperX - 1].driver->rms_current(current);
     delay(5);
+    deactivateDriverViaUART(stepperX);
+    delay(5);
 }
 
 void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current) {
@@ -39,6 +41,16 @@ void init_Stepper() {
         delay(10);
         stepperMotors[i].driver->toff(5);
         stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].driveCurrent);
+
+        //! new
+        // stepperMotors[i].driver->pdn_disable(true);      // Use UART
+        // stepperMotors[i].driver->I_scale_analog(false);  // Set current scaling
+        // stepperMotors[i].driver->en_spreadCycle(false);  // StealthChop mode
+        // stepperMotors[i].driver->pwm_autoscale(true);    // Enable autoscaling for smooth operation
+        // stepperMotors[i].driver->TCOOLTHRS(0xFFFFF);     // Set cooling threshold
+        // stepperMotors[i].driver->SGTHRS(10);             // Set StallGuard threshold
+        //! new
+
         // stepperMotors[i].driver->pwm_autoscale(true);
         delay(5);
         stepperMotors[i].driver->microsteps(MICROSTEPS);
@@ -47,6 +59,18 @@ void init_Stepper() {
         deactivateDriverViaUART(i + 1);  // Treiber alle deaktiveren via UART
         delay(5);
     }
+}
+
+void stepperCheckObstruction() {
+    // Check for stall detection
+    int stallValue = 0;
+    for (int i = 0; i < StepperCount; i++) {
+        // Print stall value for debugging
+        stallValue = stepperMotors[i].driver->SG_RESULT();
+        // Check for a stall condition
+        Serial.println(stallValue);
+    }
+    Serial.println("");
 }
 
 // Helper functions to activate/deactivate a specific driver
@@ -69,7 +93,7 @@ void activateDriverViaUART(byte stepperX) {
     iholdIrun |= (driveCurrent & 0b11111);  // Set IRUN to driveCurrent bits
     driver.IHOLD_IRUN(iholdIrun);
 
-    Serial.print("Driver activated with drive current ");
+    Serial.print("Driver activated with drive current.");
     Serial.println(driveCurrent);
 }
 
@@ -110,9 +134,8 @@ boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double new
     if (currentBoardConfig->stepper[stepperY - 1].inverseDirection == true) {
         newPosition_B = -newPosition;
     }
-
-    stepperMotors[stepperX - 1].stepper->moveAbsAsync(newPosition);
-    stepperMotors[stepperY - 1].stepper->moveAbsAsync(newPosition);
+    stepperMotors[stepperX - 1].stepper->moveAbsAsync(newPosition_A);
+    stepperMotors[stepperY - 1].stepper->moveAbsAsync(newPosition_B);
 
     // Set target positions for each stepper
     // stepperMotors[stepperX - 1].stepper->setTargetAbs(newPosition_A);

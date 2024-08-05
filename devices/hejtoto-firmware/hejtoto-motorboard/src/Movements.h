@@ -9,6 +9,6 @@
 #include <_global.h>
 
 boolean homeDevice(const String &stepperName);
-boolean moveDevice(const String &stepperName, double postion);
+boolean moveDevice(const String &stepperName, double position, int maxSpeedPercentage, int driveCurrentPercentage);
 
 #endif
