@@ -100,7 +100,7 @@ void moveMotorToAbsPosition(byte stepperX, double newPosition) {
     // deactivateDriverViaUART(stepperX);
 }
 
-void moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition) {
+boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition) {
     newPosition = newPosition * MICROSTEPS * RESOLUTION / currentBoardConfig->stepper[stepperX - 1].ratio;
     double newPosition_A = newPosition;
     double newPosition_B = newPosition;
@@ -111,13 +111,17 @@ void moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPos
         newPosition_B = -newPosition;
     }
 
+    stepperMotors[stepperX - 1].stepper->moveAbsAsync(newPosition);
+    stepperMotors[stepperY - 1].stepper->moveAbsAsync(newPosition);
+
     // Set target positions for each stepper
-    stepperMotors[stepperX - 1].stepper->setTargetAbs(newPosition_A);
-    stepperMotors[stepperY - 1].stepper->setTargetAbs(newPosition_B);
+    // stepperMotors[stepperX - 1].stepper->setTargetAbs(newPosition_A);
+    // stepperMotors[stepperY - 1].stepper->setTargetAbs(newPosition_B);
     // Create a stepper group and move synchronously
     // controller = {*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper};
-    StepperGroup{*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper}.move();
+    // StepperGroup{*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper}.move();
     Serial.println("finished.");
+    return true;  // Indicate success
 }
 
 boolean motorMovingState(byte stepperX) {
@@ -149,9 +153,9 @@ boolean homeMotor(byte stepperX) {
         setPositionMotor(stepperX, 0);
 
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].homeShift + currentBoardConfig->stepper[stepperX - 1].maxTravel * 0.05);  // Rückwärts fahren
-        while (motorMovingState(stepperX) == true)                                                                                                           // Motor is moving
+        Serial.println("Move out of endstop.");
+        while (motorMovingState(stepperX) == true)  // Motor is moving
         {
-            Serial.println("Move out of endstop.");
         }
     }
 
@@ -181,10 +185,9 @@ boolean homeMotor(byte stepperX) {
         double procentTravelSlow = 0.02;
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration);
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));  // Vorfahren
-
+        Serial.println("Init homing slowly. Drive forward.");
         while (motorMovingState(stepperX) == true)  // Motor is moving
         {                                           // Wait for the motor to stop moving
-            Serial.println("Init homing slowly. Drive forward.");
         }
         setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.05);
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);                          // 300% of normal                                 // 10% of normal Speed
@@ -206,8 +209,8 @@ boolean homeMotor(byte stepperX) {
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration);  // normal acceleration
         Serial.println("Move Motor to homeShift.");
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].homeShift);
+        Serial.println("Waiting for move Motor to homeShift");
         while (motorMovingState(stepperX) == true) {  // Wait for the motor to stop moving
-            Serial.println("Waiting for move Motor to homeShift");
         }
 
         setPositionMotor(stepperX, 0);
@@ -227,9 +230,9 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         setPositionMotor(stepperY, 0);
 
         moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].homeShift + currentBoardConfig->stepper[stepperX - 1].maxTravel * 0.05);  // Rückwärts fahren
-        while (motorMovingState(stepperX) == true)                                                                                                                              // Motor is moving
+        Serial.println("Move out of endstop.");
+        while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
         {
-            Serial.println("Move out of endstop.");
         }
     }
 
@@ -237,24 +240,28 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     {
         Serial.println("Endstop is not triggered. Begin homing routine.");
         setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.5);             // less% of normal
-        setSpeedMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.5);             // less% of normal
+        setSpeedMotor(stepperY, currentBoardConfig->stepper[stepperY - 1].maxSpeed * 0.5);             // less% of normal
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 1.5);  // 150% of normal
-        setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration * 1.5);  // 150% of normal
+        setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperY - 1].acceleration * 1.5);  // 150% of normal
         setPositionMotor(stepperX, 0);
         setPositionMotor(stepperY, 0);
 
-        moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-1));  // Rückwärts fahren
+        //! moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-1));  // Rückwärts fahren
+        moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-1));
+        moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY - 1].maxTravel * (-1));
+
         Serial.println("Homing started. Moving backwards.");
+
         while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
         {
             if (check_limitSwitch(stepperX) == true) {
-                Serial.println("Endstop X triggered. Stop.");
                 stopMotor(stepperX);
+                Serial.println("Endstop X triggered. Stop.");
             }
 
             if (check_limitSwitch(stepperY) == true) {
-                Serial.println("Endstop Y triggered. Stop.");
                 stopMotor(stepperY);
+                Serial.println("Endstop Y triggered. Stop.");
             }
         }
 
@@ -265,18 +272,21 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         double procentTravelSlow = 0.02;
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration);
         setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration);
-        moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));  // Vorfahren
-
-        while (motorMovingState(stepperX) == true)  // Motor is moving
-        {                                           // Wait for the motor to stop moving
-            Serial.println("Init homing slowly. Drive forward.");
+        //! moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));  // Vorfahren
+        moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));
+        moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));
+        Serial.println("Init homing slowly. Drive forward.");
+        while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
+        {                                                                                     // Wait for the motor to stop moving
         }
         setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.05);
         setSpeedMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.05);
-        setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);                                             // 300% of normal                                 // 10% of normal Speed
-        setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);                                             // 300% of normal                                 // 10% of normal Speed
-        moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-procentTravelSlow * 1.5));  // Rückwärts fahren
-        while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))                                                    // Motor is moving
+        setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);  // 300% of normal                                 // 10% of normal Speed
+        setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);  // 300% of normal                                 // 10% of normal Speed
+                                                                                                     //! moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-procentTravelSlow * 1.5));  // Rückwärts fahren
+        moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-procentTravelSlow * 1.5));
+        moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY - 1].maxTravel * (-procentTravelSlow * 1.5));
+        while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
         {
             if (check_limitSwitch(stepperX) == true) {
                 Serial.println("Endstop X triggered. Stop.");
@@ -297,9 +307,11 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration);  // normal acceleration
         setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration);  // normal acceleration
         Serial.println("Move Motors to homeShift.");
-        moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].homeShift);
+        //! moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].homeShift);
+        moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].homeShift);
+        moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY - 1].homeShift);
+        Serial.println("Waiting for move Motor to homeShift");
         while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true)) {  // Wait for the motor to stop moving
-            Serial.println("Waiting for move Motor to homeShift");
         }
 
         setPositionMotor(stepperX, 0);

@@ -35,15 +35,15 @@ void setup() {
 
     // init_TOF200C(3);
 
-    moveCombinedMotorsToAbsPosition(1, 6, -50);
-    delay(5000);
-    moveCombinedMotorsToAbsPosition(1, 6, 0);
-    // moveCombinedMotorsToAbsPosition(1, 6, 0);
-    //  moveCombinedMotorsToAbsPosition(1, 6, -100);
-    //      moveMotorToAbsPosition(1, 200);
-    //      moveMotorToAbsPosition(6, 200);
-    //        homeMotor(5);
-    //        moveMotorToAbsPosition(2, 1000);
+    // moveCombinedMotorsToAbsPosition(1, 6, 100);
+    //  delay(5000);
+    //  moveCombinedMotorsToAbsPosition(1, 6, 0);
+    //   moveCombinedMotorsToAbsPosition(1, 6, 0);
+    //    moveCombinedMotorsToAbsPosition(1, 6, -100);
+    //        moveMotorToAbsPosition(1, 200);
+    //        moveMotorToAbsPosition(6, 200);
+    //          homeMotor(5);
+    //          moveMotorToAbsPosition(2, 1000);
 
     // pwmFan(3, 0);
 
@@ -51,12 +51,10 @@ void setup() {
     // setDriverState("Shield", true);
     // delay(500);
 
-    // homeDevice("Shield");
-    //         homeDevice("Snackbar");
-    //    homeDevice("Schleuse");
-
+    homeDevice("Shield");
+    // homeDevice("Schleuse");
     // homeDevice("Becherschubse");
-    //   homeDevice("Snackbar");
+    //    homeDevice("Snackbar");
 
     buildInLEDBlik();
 
@@ -65,13 +63,17 @@ void setup() {
     // pwmMosfet(1, 20);
     // delay(1000);
     // pwmMosfet(1, 0);
+
+    moveDevice("Shield", 192);
+    delay(8000);
+    moveDevice("Shield", 0);
 }
 
 void loop() {
-    // moveDevice("Schleuse", 190);
-    // delay(1000);
-    // moveDevice("Becherschubse", 645);
-    // delay(10000);
+    // moveDevice("Shield", 195);
+    //  delay(1000);
+    //  moveDevice("Becherschubse", 645);
+    //  delay(10000);
 
     // moveDevice("Schleuse", 0);
     // delay(1000);
