@@ -35,25 +35,32 @@ void setup() {
 
     // init_TOF200C(3);
 
-    // moveCombinedMotorsToAbsPosition(1, 6, -10);
-    //   moveMotorToAbsPosition(1, 200);
-    //   moveMotorToAbsPosition(6, 200);
-    //     homeMotor(5);
-    //     moveMotorToAbsPosition(2, 1000);
+    moveCombinedMotorsToAbsPosition(1, 6, -50);
+    delay(5000);
+    moveCombinedMotorsToAbsPosition(1, 6, 0);
+    // moveCombinedMotorsToAbsPosition(1, 6, 0);
+    //  moveCombinedMotorsToAbsPosition(1, 6, -100);
+    //      moveMotorToAbsPosition(1, 200);
+    //      moveMotorToAbsPosition(6, 200);
+    //        homeMotor(5);
+    //        moveMotorToAbsPosition(2, 1000);
 
     // pwmFan(3, 0);
 
     Neopixel(RED);
+    // setDriverState("Shield", true);
+    // delay(500);
 
     // homeDevice("Shield");
-    //    homeDevice("Snackbar");
-    homeDevice("Schleuse");
-    //    delay(500);
+    //         homeDevice("Snackbar");
+    //    homeDevice("Schleuse");
 
-    homeDevice("Becherschubse");
-    //  homeDevice("Snackbar");
+    // homeDevice("Becherschubse");
+    //   homeDevice("Snackbar");
 
     buildInLEDBlik();
+
+    // setDriverState("Becherschubse", false);
 
     // pwmMosfet(1, 20);
     // delay(1000);
@@ -61,17 +68,15 @@ void setup() {
 }
 
 void loop() {
-    // delay(7000);
+    // moveDevice("Schleuse", 190);
+    // delay(1000);
+    // moveDevice("Becherschubse", 645);
+    // delay(10000);
 
-    moveDevice("Schleuse", 190);
-    delay(1000);
-    moveDevice("Becherschubse", 645);
-    delay(7000);
-
-    moveDevice("Schleuse", 0);
-    delay(1000);
-    moveDevice("Becherschubse", 0);
-    delay(7000);
+    // moveDevice("Schleuse", 0);
+    // delay(1000);
+    // moveDevice("Becherschubse", 0);
+    // delay(10000);
 
     // loopSerialCommands();
     // testSerialCommunication();

@@ -38,12 +38,13 @@ void init_Stepper() {
         stepperMotors[i].driver->begin();
         delay(10);
         stepperMotors[i].driver->toff(5);
-        stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].holdCurrent);
+        stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].driveCurrent);
         // stepperMotors[i].driver->pwm_autoscale(true);
         delay(5);
         stepperMotors[i].driver->microsteps(MICROSTEPS);
         stepperMotors[i].stepper->setMaxSpeed(currentBoardConfig->stepper[i].maxSpeed);
         stepperMotors[i].stepper->setAcceleration(currentBoardConfig->stepper[i].acceleration);
+        deactivateDriverViaUART(i + 1);  // Treiber alle deaktiveren via UART
         delay(5);
     }
 }
@@ -88,12 +89,15 @@ void deactivateDriverViaUART(byte stepperX) {
 
     Serial.println("Driver deactivated via UART.");
 }
+
 void moveMotorToAbsPosition(byte stepperX, double newPosition) {
     newPosition = newPosition * MICROSTEPS * RESOLUTION / currentBoardConfig->stepper[stepperX - 1].ratio;
     if (currentBoardConfig->stepper[stepperX - 1].inverseDirection == true) {
         newPosition = -newPosition;
     }
     stepperMotors[stepperX - 1].stepper->moveAbsAsync(newPosition);
+
+    // deactivateDriverViaUART(stepperX);
 }
 
 void moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition) {
@@ -113,6 +117,7 @@ void moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPos
     // Create a stepper group and move synchronously
     // controller = {*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper};
     StepperGroup{*stepperMotors[stepperX - 1].stepper, *stepperMotors[stepperY - 1].stepper}.move();
+    Serial.println("finished.");
 }
 
 boolean motorMovingState(byte stepperX) {
@@ -239,10 +244,9 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         setPositionMotor(stepperY, 0);
 
         moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-1));  // Rückwärts fahren
-
+        Serial.println("Homing started. Moving backwards.");
         while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
         {
-            Serial.println("Homing started. Moving backwards.");
             if (check_limitSwitch(stepperX) == true) {
                 Serial.println("Endstop X triggered. Stop.");
                 stopMotor(stepperX);

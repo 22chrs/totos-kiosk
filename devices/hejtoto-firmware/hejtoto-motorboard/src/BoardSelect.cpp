@@ -35,7 +35,7 @@ const BoardConfig RoboCubeFrontConfig = {
         // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
-        {"Shield", 0, 1700, 1000, 1000, 8, 333, 5, false},
+        {"Shield", 1700, 1700, 5000, 3000, 8, 333, 5, false},
 
         // Schleuse (Pitch 8)
         {"Schleuse", 1700, 1700, 7000, 8000, 8, 193, -3, false},  //! ready
@@ -47,10 +47,10 @@ const BoardConfig RoboCubeFrontConfig = {
         {"Snackbar", 0, 1800, 3000, 1000, 40, 1000, 5, false},
 
         // Becherschubse (Zähnezahl 20) 12.73
-        {"Becherschubse", 1300, 1500, 9000, 5000, 40, 645, -12, false},
+        {"Becherschubse", 1500, 1500, 9000, 5000, 40, 645, -12, false},
 
         // Shield B (Pitch 8)
-        {"Shield", 0, 1700, 1000, 1000, 8, 333, 5, false},
+        {"Shield", 1700, 1700, 5000, 3900, 8, 333, 5, false},
 
     }};
 

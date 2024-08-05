@@ -8,7 +8,6 @@
 #include <Stepper.h>
 #include <_global.h>
 
-void setDriverState(const String &stepperName, bool activate);
 boolean homeDevice(const String &stepperName);
 boolean moveDevice(const String &stepperName, double postion);
 
