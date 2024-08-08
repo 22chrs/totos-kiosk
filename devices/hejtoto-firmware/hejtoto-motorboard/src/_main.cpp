@@ -49,16 +49,24 @@ void setup() {
 
     // pwmFan(3, 0);
 
-    Neopixel(RED);
+    Neopixel(GREEN);
     // setDriverState("Shield", true);
     // delay(500);
 
-    // homeDevice("Shield");
-    // moveDevice("Schleuse", -120, 100, 100);
     homeDevice("Shield");
-    moveDevice("Shield", 190, 25, 30);
-    delay(20000);
-    moveDevice("Shield", 20, 100, 100);
+    homeDevice("Schleuse");
+    homeDevice("Snackbar");
+    homeDevice("Becherschubse");
+
+    //
+
+    // moveDevice("Shield", 192, 50, 50);
+
+    // moveDevice("Shield", 20, 100, 100);
+    // delay(20000);
+
+    // moveDevice("Snackbar", 950, 100, 100);
+    //   moveDevice("Schleuse", 700, 100, 100);
 
     buildInLEDBlik();
 

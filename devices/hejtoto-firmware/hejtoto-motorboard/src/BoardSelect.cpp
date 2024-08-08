@@ -38,16 +38,16 @@ const BoardConfig RoboCubeFrontConfig = {
         {"Shield", 1700, 1700, 7000, 8000, 8, 192, 0.2, false},
 
         // Schleuse (Pitch 8)
-        {"Schleuse", 1700, 1700, 7000, 8000, 8, 193, -3, false},  //! ready
+        {"Schleuse", 1700, 1700, 7000, 8000, 8, 193, -3, false},
 
         // Leer
         {"Leer", 0, 0, 0, 0, 0, 0, 0, false},
 
         // Snackbar (Zähnezahl 20) => 2*20 mm/U = 40mm/U
-        {"Snackbar", 0, 1800, 3000, 1000, 40, 1000, 0, false},
+        {"Snackbar", 0, 1800, 6000, 1500, 40, 950, -5, false},
 
         // Becherschubse (Zähnezahl 20) 12.73
-        {"Becherschubse", 1500, 1500, 9000, 5000, 40, 645, -12, false},
+        {"Becherschubse", 1500, 1500, 9000, 5000, 40, 645, -10, false},
 
         // Shield B (Pitch 8)
         {"Shield", 1700, 1700, 7000, 8000, 8, 192, -0.2, false},
@@ -60,10 +60,10 @@ const BoardConfig RoboCubeBackConfig = {
         // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
-        {"Shield", 1700, 1700, 6000, 5000, 8, 333, 5, false},
+        {"Shield", 1700, 1700, 7000, 8000, 8, 192, 0.2, false},
 
         // Schleuse (Pitch 8)
-        {"Schleuse", 1700, 1700, 9000, 10000, 8, 193, -3, false},  //! ready
+        {"Schleuse", 1700, 1700, 7000, 8000, 8, 193, -3, false},
 
         // Leer
         {"Leer", 0, 0, 0, 0, 0, 0, 0, false},
@@ -72,10 +72,10 @@ const BoardConfig RoboCubeBackConfig = {
         {"Leer", 0, 0, 0, 0, 0, 0, 0, false},
 
         // Becherschubse (Zähnezahl 20) 12.73
-        {"Becherschubse", 0, 1500, 9000, 10000, 40, 645, -12, false},
+        {"Becherschubse", 1500, 1500, 9000, 5000, 40, 645, -10, true},
 
         // Shield B (Pitch 8)
-        {"Shield", 1700, 1700, 6000, 5000, 8, 333, 5, false},
+        {"Shield", 1700, 1700, 7000, 8000, 8, 192, -0.2, false},
     }};
 
 const BoardConfig *currentBoardConfig = nullptr;
