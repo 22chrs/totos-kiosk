@@ -49,14 +49,14 @@ void setup() {
 
     // pwmFan(3, 0);
 
-    Neopixel(GREEN);
+    Neopixel(RED);
     // setDriverState("Shield", true);
     // delay(500);
 
-    homeDevice("Shield");
-    homeDevice("Schleuse");
+    // homeDevice("Shield");
+    // homeDevice("Schleuse");
     homeDevice("Snackbar");
-    homeDevice("Becherschubse");
+    // homeDevice("Becherschubse");
 
     //
 
@@ -85,12 +85,51 @@ void loop() {
     //     helperChrono.restart();
     // }
 
-    // moveDevice("Shield", 195);
+    moveDevice("Snackbar", 900, 100, 100);
+    delay(10000);
+    moveDevice("Snackbar", 0, 100, 100);
+    delay(10000);
     //  delay(1000);
     //  moveDevice("Becherschubse", 645);
     //  delay(10000);
 
-    // moveDevice("Schleuse", 0);
+    // StepperStatus statusSchleuse, statusBecherschubse, statusSnackbar, statusShield;
+
+    // deviceStatus("Schleuse", statusSchleuse);
+    // deviceStatus("Becherschubse", statusBecherschubse);
+    // deviceStatus("Snackbar", statusSnackbar);
+    // deviceStatus("Shield", statusShield);
+
+    // if (statusSchleuse.position == 0) {
+    //     moveDevice("Schleuse", currentBoardConfig->stepper[0].maxTravel, 100, 100);
+    // }
+    // if (statusBecherschubse.position == 0) {
+    //     moveDevice("Becherschubse", currentBoardConfig->stepper[4].maxTravel, 100, 100);
+    // }
+    // if (statusSnackbar.position == 0) {
+    //     moveDevice("Snackbar", currentBoardConfig->stepper[3].maxTravel, 100, 100);
+    // }
+    // if (statusShield.position == 0) {
+    //     moveDevice("Shield", currentBoardConfig->stepper[5].maxTravel, 100, 100);
+    // }
+    // deviceStatus("Schleuse", statusSchleuse);
+    // deviceStatus("Becherschubse", statusBecherschubse);
+    // deviceStatus("Snackbar", statusSnackbar);
+    // deviceStatus("Shield", statusShield);
+
+    // if (statusSchleuse.position == currentBoardConfig->stepper[0].maxTravel) {
+    //     moveDevice("Schleuse", 0, 100, 100);
+    // }
+    // if (statusBecherschubse.position == currentBoardConfig->stepper[4].maxTravel) {
+    //     moveDevice("Becherschubse", 0, 100, 100);
+    // }
+    // if (statusSnackbar.position == currentBoardConfig->stepper[3].maxTravel) {
+    //     moveDevice("Snackbar", 0, 100, 100);
+    // }
+    // if (statusShield.position == currentBoardConfig->stepper[5].maxTravel) {
+    //     moveDevice("Shield", 0, 100, 100);
+    // }
+
     // delay(1000);
     // moveDevice("Becherschubse", 0);
     // delay(10000);

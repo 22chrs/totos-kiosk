@@ -10,5 +10,6 @@
 
 boolean homeDevice(const String &stepperName);
 boolean moveDevice(const String &stepperName, double position, int maxSpeedPercentage, int driveCurrentPercentage);
+// void deviceStatus(const String &stepperName, StepperStatus &status);
 
 #endif

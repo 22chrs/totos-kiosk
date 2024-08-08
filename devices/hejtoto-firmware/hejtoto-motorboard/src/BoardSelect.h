@@ -12,22 +12,25 @@ extern byte board;  // Declare it as an external variable to be defined in Board
 
 struct StepperConfig {
     String name;
-    int holdCurrent;             // mA
-    int driveCurrent;            // mA
-    unsigned long maxSpeed;      // steps/s
-    unsigned long acceleration;  // steps/s^2
-    double ratio;                // mm/step
-    double maxTravel;            // mm
-    double homeShift;            // mm
-    boolean inverseDirection;    // mm
+    const int holdCurrent;             // mA
+    const int driveCurrent;            // mA
+    const unsigned long maxSpeed;      // steps/s
+    const unsigned long acceleration;  // steps/s^2
+    const double ratio;                // mm/step
+    const double maxTravel;            // mm
+    const double homeShift;            // mm
+    const boolean inverseDirection;    // true/false
+    boolean isHomed;                   // true/false
+    double currentPosition;            // mm
+    boolean isMoving;                  // true/false
 };
 
 struct BoardConfig {
-    String boardName;
+    const String boardName;
     StepperConfig stepper[6];  // Assuming 6 steppers per board
 };
 
-extern const BoardConfig *currentBoardConfig;
+extern BoardConfig *currentBoardConfig;
 
 // Function declaration
 void init_BoardSelect();

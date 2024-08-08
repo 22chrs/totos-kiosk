@@ -246,6 +246,7 @@ boolean homeMotor(byte stepperX) {
 
         Serial.println("Position saved as 0.");
         Serial.println("Homing Successful.");
+        currentBoardConfig->stepper[stepperX - 1].isHomed = true;
         return true;
     }
     // If none of the conditions for a successful homing are met, return false
@@ -303,7 +304,6 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         double procentTravelSlow = 0.02;
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration);
         setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration);
-        //! moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));  // Vorfahren
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));
         moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (procentTravelSlow));
         Serial.println("Init homing slowly. Drive forward.");
@@ -313,9 +313,8 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         }
         setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.05);
         setSpeedMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].maxSpeed * 0.05);
-        setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);  // 300% of normal                                 // 10% of normal Speed
-        setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);  // 300% of normal                                 // 10% of normal Speed
-                                                                                                     //! moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-procentTravelSlow * 1.5));  // Rückwärts fahren
+        setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);  // 300% of normal
+        setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration * 3);  // 300% of normal
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].maxTravel * (-procentTravelSlow * 1.5));
         moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY - 1].maxTravel * (-procentTravelSlow * 1.5));
         while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
@@ -340,7 +339,6 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX - 1].acceleration);  // normal acceleration
         setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX - 1].acceleration);  // normal acceleration
         Serial.println("Move Motors to homeShift.");
-        //! moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX - 1].homeShift);
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX - 1].homeShift);
         moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY - 1].homeShift);
         Serial.println("Waiting for move Motor to homeShift");
@@ -353,6 +351,8 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
 
         Serial.println("Position saved as 0.");
         Serial.println("Homing Successful.");
+        currentBoardConfig->stepper[stepperX - 1].isHomed = true;
+        currentBoardConfig->stepper[stepperY - 1].isHomed = true;
         return true;
     }
     // If none of the conditions for a successful homing are met, return false

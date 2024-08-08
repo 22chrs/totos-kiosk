@@ -122,3 +122,23 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
     Serial.println(" not found.");
     return false;
 }
+
+void deviceStatus(const String &stepperName) {
+    Serial.println("--- &stepperName --- ");  //&stepperName should stand here.
+
+    // Find the index of the stepper by friendly name
+    for (int i = 0; i < 6; ++i) {
+        if (currentBoardConfig->stepper[i + 1].name == stepperName) {
+            currentBoardConfig->stepper[i + 1].currentPosition = currentMotorPosition(i);
+
+            Serial.println("IsHomed: ");
+            Serial.print(currentBoardConfig->stepper[i].isHomed);
+            status.isHomed = currentBoardConfig->stepper[i].isHomed;
+            status.isMoving = motorMovingState(i + 1);
+            status.position = currentMotorPosition(i + 1);
+            return;
+        }
+    }
+
+    Serial.println("--- --- --- ");
+}
