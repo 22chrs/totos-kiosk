@@ -82,6 +82,7 @@ void changeCurrentStateMotor(byte stepperX, int current);
 void setSpeedMotor(byte stepperX, long speed);
 void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current);
 void moveMotorToAbsPosition(byte stepperX, double newPosition);
+void moveMotorToRelPosition(byte stepperX, double newPosition);
 boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition);
 void stopMotor(byte stepperX);
 double currentMotorPosition(byte stepperX);

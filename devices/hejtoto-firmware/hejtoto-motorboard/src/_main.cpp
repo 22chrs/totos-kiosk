@@ -38,42 +38,26 @@ void setup() {
     init_Fan();
 
     // init_TOF200C(3);
-
-    // moveCombinedMotorsToAbsPosition(1, 6, 100);
-    //  delay(5000);
-    //  moveCombinedMotorsToAbsPosition(1, 6, 0);
-    //   moveCombinedMotorsToAbsPosition(1, 6, 0);
-    //    moveCombinedMotorsToAbsPosition(1, 6, -100);
-    //        moveMotorToAbsPosition(1, 200);
-    //        moveMotorToAbsPosition(6, 200);
-    //          homeMotor(5);
-    //          moveMotorToAbsPosition(2, 1000);
-
     // pwmFan(3, 0);
 
-    // setDriverState("Shield", true);
-    // delay(500);
-
-    homeDevice("Shield");
+    // homeDevice("Lift_A");
+    //      homeDevice("Schleuse");
+    //      homeDevice("Shield");
+    //            homeDevice("Snackbar");
+    // homeDevice("Becherschubse");
     // homeDevice("Schleuse");
-    homeDevice("Snackbar");
-    homeDevice("Becherschubse");
-
-    //
+    // homeDevice("Becherschubse");
 
     // moveDevice("Shield", 192, 50, 50);
 
-    // moveDevice("Shield", 20, 100, 100);
-    // delay(20000);
-
     // moveDevice("Snackbar", 950, 100, 100);
-    //    moveDevice("Schleuse", 700, 100, 100);
 
     // pwmMosfet(1, 20);
     // delay(1000);
     // pwmMosfet(1, 0);
-
-    // moveDevice("Shield", 180);
+    // moveDevice("Rodell_A", 10, 100, 100);
+    // moveDevice("Lift_A", 10, 100, 100);
+    // homeDevice("Rodell_A");
 }
 
 void loop() {
@@ -84,7 +68,6 @@ void loop() {
     //     helperChrono.restart();
     // }
 
-    // moveDevice("Snackbar", 900, 100, 100);
     // delay(10000);
     // moveDevice("Snackbar", 0, 100, 100);
     // delay(10000);

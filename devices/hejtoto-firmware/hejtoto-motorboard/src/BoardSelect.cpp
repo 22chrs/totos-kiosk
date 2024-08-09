@@ -13,20 +13,21 @@ BoardConfig ServiceCubeConfig = {
         // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
         //! ratio = (PULLY_MOTOR / PULLY_SCREW) * LEAD_SCREW / (RESOLUTION * MICROSTEPS)
 
-        // Rodell A (Zähnezahl 20 -> Zähnezahl ###) => ### 20/### mm/U //! ###
-        {"Rodell_A", 0, 1500, 1000, 1000, (1), 555, 5, false, false, 0, false},
         // Lift A (Zähnezahl 20 -> Zähnezahl 38, Pitch 2) => 20/38*2 mm/U = 20/19 mm/U
-        {"Lift_A", 0, 1500, 9000, 10000, (20 / 19), 700, 5, false, false, 0, false},
+        {"Lift_A", 0, 1500, 1500, 9000, (20 / 32), 700, -2, true, false, 0, false},
+        // Rodell A (Zähnezahl 20 -> Zähnezahl ###) => ### 20/### mm/U
+        {"Rodell_A", 0, 1500, 1000, 200, (20 / 130), 1, 0.1, false, false, 0, false},
 
-        // Rodell B (Zähnezahl 20 -> Zähnezahl ###) //! ###
-        {"Rodell_B", 0, 1500, 1000, 1000, (1), 555, 5, false, false, 0, false},
         // Lift B (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
-        {"Lift_B", 0, 1500, 9000, 10000, (20 / 19), 700, 5, false, false, 0, false},
+        {"Lift_B", 0, 1500, 8500, 9000, (20 / 32), 700, -2, true, false, 0, false},
+        // Rodell B (Zähnezahl 20 -> Zähnezahl ###)
+        {"Rodell_B", 0, 1500, 1000, 1000, (20 / 130), 1, 0.1, false, false, 0, false},
 
-        // Rodell C (Zähnezahl 20 -> Zähnezahl ###) //! ###
-        {"Rodell_C", 0, 1500, 1000, 1000, (1), 555, 5, false, false, 0, false},
         // Lift C (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
-        {"Lift_C", 0, 1500, 9000, 10000, (20 / 19), 700, 5, false, false, 0, false},
+        {"Lift_C", 0, 1500, 8500, 9000, (20 / 32), 700, -2, true, false, 0, false},
+        // Rodell C (Zähnezahl 20 -> Zähnezahl ###)
+        {"Rodell_C", 0, 1500, 1000, 1000, (20 / 130), 1, 0.1, false, false, 0, false},
+
     }};
 
 BoardConfig RoboCubeFrontConfig = {

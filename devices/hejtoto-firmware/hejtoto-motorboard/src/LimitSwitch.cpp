@@ -1,4 +1,5 @@
 // LimitSwitch.cpp
+#include <BoardSelect.h>
 #include <LimitSwitch.h>
 #include <MCP23017.h>
 // https://curiousscientist.tech/blog/ping-pong-with-the-accelstepper-library-and-two-limit-switches-polling-and-interrupts
@@ -41,51 +42,28 @@ boolean check_limitSwitch(byte limitSwitchNumber) {
 
 // Chrono objects for debouncing
 Chrono chronoLimitSwitch;
-
 void check_limitSwitches() {
     if (chronoLimitSwitch.hasPassed(200)) {  // Adjust debounce time as necessary
         chronoLimitSwitch.restart();
 
-        if (mcp.digitalRead(ES1_PIN) == LOW) {
-            Serial.println("Endstop 1 open");
+        // Check and print limit switch status with device names
+        if (currentBoardConfig) {
+            for (int i = 0; i < NUMBER_OF_SWITCHES; i++) {
+                if (check_limitSwitch(i)) {
+                    Serial.print(currentBoardConfig->stepper[i].name);  // Print the stepper name
+                    Serial.println(" closed");
+                } else {
+                    Serial.print(currentBoardConfig->stepper[i].name);  // Print the stepper name
+                    Serial.println(" open");
+                }
+            }
         } else {
-            Serial.println("Endstop 1 closed");
-        }
-
-        if (mcp.digitalRead(ES2_PIN) == LOW) {
-            Serial.println("Endstop 2 open");
-        } else {
-            Serial.println("Endstop 2 closed");
-        }
-
-        if (mcp.digitalRead(ES3_PIN) == LOW) {
-            Serial.println("Endstop 3 open");
-        } else {
-            Serial.println("Endstop 3 closed");
-        }
-
-        if (mcp.digitalRead(ES4_PIN) == LOW) {
-            Serial.println("Endstop 4 open");
-        } else {
-            Serial.println("Endstop 4 closed");
-        }
-
-        if (mcp.digitalRead(ES5_PIN) == LOW) {
-            Serial.println("Endstop 5 open");
-        } else {
-            Serial.println("Endstop 5 closed");
-        }
-
-        if (mcp.digitalRead(ES6_PIN) == LOW) {
-            Serial.println("Endstop 6 open");
-        } else {
-            Serial.println("Endstop 6 closed");
+            Serial.println("No board configuration selected.");
         }
 
         Serial.println();
     }
 }
-
 void init_doorSensor() {
     mcp.pinMode(DES1_PIN, INPUT_PULLUP);
     mcp.pinMode(DES2_PIN, INPUT_PULLUP);
