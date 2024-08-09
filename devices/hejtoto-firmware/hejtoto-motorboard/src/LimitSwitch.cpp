@@ -18,17 +18,17 @@ void init_LimitSwitch() {
 }
 
 boolean check_limitSwitch(byte limitSwitchNumber) {
-    if (limitSwitchNumber == 1) {
+    if (limitSwitchNumber == 0) {
         limitSwitchNumber = ES1_PIN;
-    } else if (limitSwitchNumber == 2) {
+    } else if (limitSwitchNumber == 1) {
         limitSwitchNumber = ES2_PIN;
+    } else if (limitSwitchNumber == 2) {
+        limitSwitchNumber = ES4_PIN;
     } else if (limitSwitchNumber == 3) {
         limitSwitchNumber = ES4_PIN;
     } else if (limitSwitchNumber == 4) {
-        limitSwitchNumber = ES4_PIN;
-    } else if (limitSwitchNumber == 5) {
         limitSwitchNumber = ES5_PIN;
-    } else if (limitSwitchNumber == 6) {
+    } else if (limitSwitchNumber == 5) {
         limitSwitchNumber = ES6_PIN;
     }
 

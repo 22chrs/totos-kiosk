@@ -66,11 +66,6 @@ void buildInLEDBlik() {
     setBuiltInLEDState(HIGH);
     delay(100);
     setBuiltInLEDState(LOW);
-    delay(100);
-    setBuiltInLEDState(HIGH);
-    delay(100);
-    setBuiltInLEDState(LOW);
-    delay(100);
 }
 
 void setBuiltInLEDState(bool state) {

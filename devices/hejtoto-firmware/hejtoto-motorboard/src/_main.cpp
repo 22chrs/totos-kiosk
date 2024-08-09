@@ -5,7 +5,7 @@
 #include <MCP23017.h>  //0x20
 #include <Mosfet.h>
 #include <Movements.h>
-#include <SerialCommands.h>
+// #include <SerialCommunication.h>
 #include <Stepper.h>
 #include <TCA9548A.h>     //0x70
 #include <Temperature.h>  //0x45
@@ -17,6 +17,8 @@ Chrono helperChrono;
 
 void setup() {
     init_LEDs();
+    buildInLEDBlik();
+    Neopixel(GREEN);
 
     Wire.begin();           // Initialize I2C
     Wire.setClock(400000);  // Set I2C speed to 400kHz (Standard 100kHz)
@@ -49,14 +51,13 @@ void setup() {
 
     // pwmFan(3, 0);
 
-    Neopixel(RED);
     // setDriverState("Shield", true);
     // delay(500);
 
-    // homeDevice("Shield");
+    homeDevice("Shield");
     // homeDevice("Schleuse");
     homeDevice("Snackbar");
-    // homeDevice("Becherschubse");
+    homeDevice("Becherschubse");
 
     //
 
@@ -66,9 +67,7 @@ void setup() {
     // delay(20000);
 
     // moveDevice("Snackbar", 950, 100, 100);
-    //   moveDevice("Schleuse", 700, 100, 100);
-
-    buildInLEDBlik();
+    //    moveDevice("Schleuse", 700, 100, 100);
 
     // pwmMosfet(1, 20);
     // delay(1000);
@@ -85,10 +84,10 @@ void loop() {
     //     helperChrono.restart();
     // }
 
-    moveDevice("Snackbar", 900, 100, 100);
-    delay(10000);
-    moveDevice("Snackbar", 0, 100, 100);
-    delay(10000);
+    // moveDevice("Snackbar", 900, 100, 100);
+    // delay(10000);
+    // moveDevice("Snackbar", 0, 100, 100);
+    // delay(10000);
     //  delay(1000);
     //  moveDevice("Becherschubse", 645);
     //  delay(10000);

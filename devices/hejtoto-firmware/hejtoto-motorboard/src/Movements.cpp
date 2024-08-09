@@ -22,12 +22,12 @@ boolean homeDevice(const String &stepperName) {
                     Serial.println(currentBoardConfig->stepper[j].name);
 
                     // Call the function to home combined motors
-                    return homeCombinedMotors(i + 1, j + 1);  // Use indices of combined motors
+                    return homeCombinedMotors(i, j);  // Use indices of combined motors
                 }
             }
 
             // If no combined motors, home single motor
-            return homeMotor(i + 1);  // Pass the index as a byte (or unsigned char)
+            return homeMotor(i);  // Pass the index as a byte (or unsigned char)
         }
     }
 
@@ -91,8 +91,8 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
             }
 
             // Set the drive current and speed before moving the motor
-            changeCurrentStateMotor(i + 1, driveCurrent);
-            setSpeedMotor(i + 1, maxSpeed);
+            changeCurrentStateMotor(i, driveCurrent);
+            setSpeedMotor(i, maxSpeed);
 
             // Check for combined motors by name
             for (int j = 0; j < 6; ++j) {
@@ -102,17 +102,17 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
                     Serial.print(" and ");
                     Serial.println(currentBoardConfig->stepper[j].name);
 
-                    changeCurrentStateMotor(j + 1, driveCurrent);
-                    setSpeedMotor(j + 1, maxSpeed);
+                    changeCurrentStateMotor(j, driveCurrent);
+                    setSpeedMotor(j, maxSpeed);
 
                     // Move combined motors to the specified position
-                    moveCombinedMotorsToAbsPosition(i + 1, j + 1, position);
+                    moveCombinedMotorsToAbsPosition(i, j, position);
                     return true;
                 }
             }
 
             // If no combined motors, move single motor
-            moveMotorToAbsPosition(i + 1, position);
+            moveMotorToAbsPosition(i, position);
             return true;
         }
     }
@@ -124,19 +124,25 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
 }
 
 void deviceStatus(const String &stepperName) {
-    Serial.println("--- &stepperName --- ");  //&stepperName should stand here.
+    Serial.println("");
+    Serial.println("--- ");
+    Serial.print(stepperName);
+    Serial.print(" ---");
 
     // Find the index of the stepper by friendly name
     for (int i = 0; i < 6; ++i) {
-        if (currentBoardConfig->stepper[i + 1].name == stepperName) {
-            currentBoardConfig->stepper[i + 1].currentPosition = currentMotorPosition(i);
+        if (currentBoardConfig->stepper[i].name == stepperName) {
+            currentBoardConfig->stepper[i].currentPosition = currentMotorPosition(i);
+            currentBoardConfig->stepper[i].isMoving = motorMovingState(i);
 
-            Serial.println("IsHomed: ");
+            Serial.println("isHomed: ");
             Serial.print(currentBoardConfig->stepper[i].isHomed);
-            status.isHomed = currentBoardConfig->stepper[i].isHomed;
-            status.isMoving = motorMovingState(i + 1);
-            status.position = currentMotorPosition(i + 1);
-            return;
+            Serial.println("currentPosition: ");
+            Serial.print(currentBoardConfig->stepper[i].currentPosition);
+            Serial.println("isMoving: ");
+            Serial.print(currentBoardConfig->stepper[i].isMoving);
+
+            return;  // falls Dual Motor Betrieb wird der erste Motor nur erfasst.
         }
     }
 
