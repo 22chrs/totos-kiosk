@@ -47,13 +47,13 @@ void setup() {
     //   moveDevice("Lift_A", -10, 100, 100);
     //           homeDevice("Shield");
     //    homeDevice("Snackbar");
-    //    homeDevice("Becherschubse");
+    // homeDevice("Becherschubse");
     // homeDevice("Snackbar");
 
     homeDevice("Shield");
 
-    // moveDevice("Shield", 192, 50, 50);
-    //  moveDevice("Becherschubse", -10, 100, 100);
+    moveDevice("Shield", 192, 100, 100);
+    //        moveDevice("Becherschubse", -10, 100, 100);
 
     // moveDevice("Lift_C", 1, 100, 100);
 

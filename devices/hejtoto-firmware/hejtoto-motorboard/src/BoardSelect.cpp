@@ -36,7 +36,7 @@ BoardConfig RoboCubeFrontConfig = {
         // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
-        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, 0.2, false, false, 0.2, false, 0, false},
+        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5, false, 0, false},
 
         // Schleuse (Pitch 8)
         {"Schleuse", 1700, 1700, 7000, 8000, 8.0, 193, -3, false, false, 0.3, false, 0, false},
@@ -51,7 +51,7 @@ BoardConfig RoboCubeFrontConfig = {
         {"Becherschubse", 1500, 1500, 9000, 5000, 40.0, 645, -6, false, false, 0.15, false, 0, false},
 
         // Shield B (Pitch 8)
-        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.2, false, false, 0.15, false, 0, false},
+        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5, false, 0, false},
 
     }};
 
@@ -61,7 +61,7 @@ BoardConfig RoboCubeBackConfig = {
         // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
-        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, 0.2, false, false, 0.15, false, 0, false},
+        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5, false, 0, false},
 
         // Schleuse (Pitch 8)
         {"Schleuse", 1700, 1700, 7000, 8000, 8.0, 193, -3, false, false, 0.15, false, 0, false},
@@ -76,7 +76,7 @@ BoardConfig RoboCubeBackConfig = {
         {"Becherschubse", 1500, 1500, 9000, 5000, 40.0, 645, -6, true, false, 0.15, false, 0, false},
 
         // Shield B (Pitch 8)
-        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.2, false, false, 0.15, false, 0, false},
+        {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5, false, 0, false},
     }};
 
 BoardConfig *currentBoardConfig = nullptr;
