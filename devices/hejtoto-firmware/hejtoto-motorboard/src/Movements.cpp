@@ -38,21 +38,21 @@ boolean homeDevice(const String &stepperName) {
 }
 
 boolean moveDevice(const String &stepperName, double position, int maxSpeedPercentage, int driveCurrentPercentage) {
-    // if (currentBoardConfig == nullptr) {
-    //     Serial.println("Error: Board configuration not initialized.");
-    //     return false;
-    // }
+    if (currentBoardConfig == nullptr) {
+        Serial.println("Error: Board configuration not initialized.");
+        return false;
+    }
 
-    // // Validate percentage inputs
-    // if (driveCurrentPercentage < 0 || driveCurrentPercentage > 100) {
-    //     Serial.println("Error: Drive current percentage must be between 0 and 100.");
-    //     return false;
-    // }
+    // Validate percentage inputs
+    if (driveCurrentPercentage < 0 || driveCurrentPercentage > 100) {
+        Serial.println("Error: Drive current percentage must be between 0 and 100.");
+        return false;
+    }
 
-    // if (maxSpeedPercentage < 0 || maxSpeedPercentage > 100) {
-    //     Serial.println("Error: Max speed percentage must be between 0 and 100.");
-    //     return false;
-    // }
+    if (maxSpeedPercentage < 0 || maxSpeedPercentage > 100) {
+        Serial.println("Error: Max speed percentage must be between 0 and 100.");
+        return false;
+    }
 
     // Find the index of the stepper by friendly name
     for (int i = 0; i < 6; ++i) {

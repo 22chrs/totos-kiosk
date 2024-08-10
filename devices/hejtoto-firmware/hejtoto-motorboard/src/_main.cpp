@@ -36,28 +36,33 @@ void setup() {
     init_Mosfet();             // Initialize Mosfets
     init_TemperatureSensor();  // Initialize temperature and humidity sensor
     init_Fan();
+    //
 
     // init_TOF200C(3);
     // pwmFan(3, 0);
 
     // homeDevice("Lift_A");
-    //      homeDevice("Schleuse");
-    //      homeDevice("Shield");
-    //            homeDevice("Snackbar");
-    // homeDevice("Becherschubse");
-    // homeDevice("Schleuse");
-    // homeDevice("Becherschubse");
+    //   homeDevice("Schleuse");
+    //   moveDevice("Schleuse", 100, 100, 100);
+    //   moveDevice("Lift_A", -10, 100, 100);
+    //           homeDevice("Shield");
+    //    homeDevice("Snackbar");
+    //    homeDevice("Becherschubse");
+    // homeDevice("Snackbar");
+
+    homeDevice("Shield");
 
     // moveDevice("Shield", 192, 50, 50);
+    //  moveDevice("Becherschubse", -10, 100, 100);
 
-    // moveDevice("Snackbar", 950, 100, 100);
+    // moveDevice("Lift_C", 1, 100, 100);
 
     // pwmMosfet(1, 20);
     // delay(1000);
     // pwmMosfet(1, 0);
     // moveDevice("Rodell_A", 10, 100, 100);
-    // moveDevice("Lift_A", 10, 100, 100);
-    // homeDevice("Rodell_A");
+    // moveDevice("Lift_A", -10, 100, 100);
+    // homeDevice("Lift_A");
 }
 
 void loop() {
