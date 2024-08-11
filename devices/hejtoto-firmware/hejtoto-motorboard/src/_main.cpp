@@ -41,18 +41,17 @@ void setup() {
     // init_TOF200C(3);
     // pwmFan(3, 0);
 
-    // homeDevice("Lift_A");
-    //   homeDevice("Schleuse");
-    //   moveDevice("Schleuse", 100, 100, 100);
-    //   moveDevice("Lift_A", -10, 100, 100);
-    //           homeDevice("Shield");
-    //    homeDevice("Snackbar");
-    // homeDevice("Becherschubse");
-    // homeDevice("Snackbar");
+    homeDevice("Rodell_A");
 
-    homeDevice("Shield");
+    // moveDevice("Lift_A", 629, 100, 100);
+    //     homeDevice("Schleuse");
+    //     moveDevice("Schleuse", 100, 100, 100);
+    //     moveDevice("Lift_A", -10, 100, 100);
+    //             homeDevice("Shield");
+    //      homeDevice("Snackbar");
+    //   homeDevice("Becherschubse");
+    //   homeDevice("Snackbar");
 
-    moveDevice("Shield", 192, 100, 100);
     //        moveDevice("Becherschubse", -10, 100, 100);
 
     // moveDevice("Lift_C", 1, 100, 100);
