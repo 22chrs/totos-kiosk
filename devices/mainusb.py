@@ -8,7 +8,7 @@ if __name__ == '__main__':
     print("Starting event loop")
     loop = asyncio.get_event_loop()
 
-    # Create a UsbSerialManager instance to handle Teensy 4.1 devices
+    # Create a UsbSerialManager instance to handle Teensy devices
     usb_manager = UsbSerialManager(vid=0x16C0, pid=0x0483, baudrate=115200, timeout=0.1, required_aliases=teensys)
 
     # Define a coroutine that periodically sends messages to Teensy devices

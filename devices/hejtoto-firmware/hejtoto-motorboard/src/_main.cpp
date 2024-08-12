@@ -5,13 +5,15 @@
 #include <MCP23017.h>  //0x20
 #include <Mosfet.h>
 #include <Movements.h>
-// #include <SerialCommunication.h>
 #include <Stepper.h>
 #include <TCA9548A.h>     //0x70
 #include <Temperature.h>  //0x45
 #include <ToF.h>          //0x29 (TOF050C)
 #include <_global.h>
-// #include <USB.h>
+
+// Define the alias for this device
+#include "SerialController.h"
+SerialController serialController("ServiceCube");
 
 Chrono helperChrono;
 
@@ -23,25 +25,24 @@ void setup() {
     Wire.begin();           // Initialize I2C
     Wire.setClock(400000);  // Set I2C speed to 400kHz (Standard 100kHz)
 
-    Serial.begin(115200);  // Start serial communication at 9600 baud
-    Serial.println("Serial started.");
+    // Serial.begin(115200);  // Start serial communication at 9600 baud
+    // Serial.println("Serial started.");
 
     init_TCA9548A();
     init_MCP23017();  // Initialize pins of MCP23017 I/O Expander
 
-    init_BoardSelect();  // Check which board this code runs on
-    init_Stepper();      // Initialize stepper motor drivers
+    // init_BoardSelect();  // Check which board this code runs on
+    init_Stepper();  // Initialize stepper motor drivers
     init_LimitSwitch();
     init_doorSensor();
     init_Mosfet();             // Initialize Mosfets
     init_TemperatureSensor();  // Initialize temperature and humidity sensor
     init_Fan();
-    //
 
     // init_TOF200C(3);
     // pwmFan(3, 0);
 
-    homeDevice("Rodell_A");
+    // homeDevice("Rodell_A");
 
     // moveDevice("Lift_A", 629, 100, 100);
     //     homeDevice("Schleuse");
@@ -62,9 +63,15 @@ void setup() {
     // moveDevice("Rodell_A", 10, 100, 100);
     // moveDevice("Lift_A", -10, 100, 100);
     // homeDevice("Lift_A");
+
+    serialController.begin(115200);
+
+    buildInLEDBlik();
 }
 
 void loop() {
+    serialController.update();
+
     // if (helperChrono.hasPassed(500)) {
     //     stepperCheckObstruction();  // Call the function
 

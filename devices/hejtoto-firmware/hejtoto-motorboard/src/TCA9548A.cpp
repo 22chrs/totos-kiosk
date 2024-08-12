@@ -1,16 +1,15 @@
 // TCA9548A.cpp
 
 #include <TCA9548A.h>
+
 #include "TCA9548.h"
 
 TCA9548 MP(0x70);
 
 uint8_t channels = 0;
 
-void init_TCA9548A()
-{
-    if (MP.begin() == false)
-    {
+void init_TCA9548A() {
+    if (MP.begin() == false) {
         Serial.println("COULD NOT CONNECT");
     }
 
@@ -54,7 +53,6 @@ void init_TCA9548A()
     // Serial.println("done...");
 }
 
-void TCA9548ASelectChannel(byte Channel)
-{
+void TCA9548ASelectChannel(byte Channel) {
     MP.selectChannel(Channel);
 }
