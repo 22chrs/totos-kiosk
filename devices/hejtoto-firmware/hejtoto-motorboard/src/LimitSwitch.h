@@ -5,13 +5,6 @@
 
 #include <_global.h>
 
-// #define ES_1_PIN 11
-// #define ES_2_PIN 12
-// #define ES_3_PIN 5
-// #define ES_4_PIN 27
-// #define ES_5_PIN 16
-// #define ES_6_PIN 17
-
 void init_LimitSwitch();
 boolean check_limitSwitch(byte limitSwitchNumber);
 void check_limitSwitches();

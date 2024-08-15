@@ -31,8 +31,8 @@ void setup() {
     init_TCA9548A();
     init_MCP23017();  // Initialize pins of MCP23017 I/O Expander
 
-    // init_BoardSelect();  // Check which board this code runs on
-    init_Stepper();  // Initialize stepper motor drivers
+    init_BoardSelect();  // Check which board this code runs on
+    init_Stepper();      // Initialize stepper motor drivers
     init_LimitSwitch();
     init_doorSensor();
     init_Mosfet();             // Initialize Mosfets
@@ -61,16 +61,26 @@ void setup() {
     // delay(1000);
     // pwmMosfet(1, 0);
     // moveDevice("Rodell_A", 10, 100, 100);
-    // moveDevice("Lift_A", -10, 100, 100);
-    // homeDevice("Lift_A");
+    // moveDevice("Lift_A", 100, 100, 100);
+    // moveDevice("Lift_B", 100, 100, 100);
+    // moveDevice("Lift_C", 100, 100, 100);
 
-    serialController.begin(115200);
+    // homeDevice("Lift_A");
+    homeDevice("Lift_B");
+    // homeDevice("Lift_C");
+    //      // homeDevice("Lift_A");
+
+    homeDevice("Rodell_A");
+    homeDevice("Rodell_B");
+    homeDevice("Rodell_C");
+
+    // serialController.begin(115200);
 
     buildInLEDBlik();
 }
 
 void loop() {
-    serialController.update();
+    // serialController.update();
 
     // if (helperChrono.hasPassed(500)) {
     //     stepperCheckObstruction();  // Call the function
@@ -143,7 +153,7 @@ void loop() {
     // }
 
     // check_doorSensor();
-    // check_limitSwitches();
+    check_limitSwitches();
 
     // check_TemperatureSensor();
     // readTOF200C(2);

@@ -24,7 +24,7 @@ boolean check_limitSwitch(byte limitSwitchNumber) {
     } else if (limitSwitchNumber == 1) {
         limitSwitchNumber = ES2_PIN;
     } else if (limitSwitchNumber == 2) {
-        limitSwitchNumber = ES4_PIN;
+        limitSwitchNumber = ES3_PIN;
     } else if (limitSwitchNumber == 3) {
         limitSwitchNumber = ES4_PIN;
     } else if (limitSwitchNumber == 4) {
