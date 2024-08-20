@@ -2,6 +2,7 @@ import asyncio
 import serial
 import time
 from serial.tools import list_ports
+
 class DeviceSerial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
         # Initialize the DeviceSerial object with given parameters
@@ -19,7 +20,7 @@ class DeviceSerial:
         try:
             self.serial_connection = serial.Serial(self.device_info['port'], self.baudrate, timeout=self.timeout)
             print(f"Connected to device at {self.device_info['port']}")
-            self.serial_connection.write("REQUEST_ALIAS\n".encode())  # Send REQUEST_ALIAS command
+            self.send_data("REQUEST_ALIAS")  # Send REQUEST_ALIAS command
         except Exception as e:
             print(f"Error connecting to {self.device_info['port']}: {str(e)}")
             return
@@ -46,7 +47,7 @@ class DeviceSerial:
             if self.serial_connection.in_waiting > 0:
                 data = self.serial_connection.readline().decode().strip()
                 if data:
-                    print(f"Received alias: {data}")
+                    print(f"### Received: {data}")  # Forward received data
                     if data in self.valid_aliases:
                         self.device_info["alias"] = data
                         # Send "connected" message after receiving the alias
@@ -76,6 +77,7 @@ class DeviceSerial:
             return
         try:
             self.serial_connection.write((message + '\n').encode())
+            print(f"### Sent: {message}")  # Forward sent data
         except serial.SerialException as e:
             print(f"Error sending data to {self.device_info['alias']}: {str(e)}")
             self.serial_connection = None
