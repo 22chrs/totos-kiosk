@@ -1,5 +1,5 @@
 import asyncio
-from usbserial.usbserial import UsbSerialManager, DeviceSerial
+from usbserial.usbserial import UsbSerialManager, boardserial
 
 teensys = {"ServiceCube", "RoboCubeFront", "RoboCubeBack"}
 
@@ -8,14 +8,14 @@ if __name__ == '__main__':
     print("Starting event loop")
     loop = asyncio.get_event_loop()
 
-    # Create a UsbSerialManager instance to handle Teensy devices
+    # Create a UsbSerialManager instance to handle Teensy boards
     usb_manager = UsbSerialManager(vid=0x16C0, pid=0x0483, baudrate=115200, timeout=0.1, required_aliases=teensys)
 
-    # Define a coroutine that periodically sends messages to Teensy devices
+    # Define a coroutine that periodically sends messages to Teensy boards
     async def send_periodically():
         while True:
-            #print(f"Device alias: {DeviceSerial.device_info['alias']}")
-            # Send "Hello, World!" to the Teensy devices
+            #print(f"board alias: {boardserial.board_info['alias']}")
+            # Send "Hello, World!" to the Teensy boards
             #usb_manager.send_message("ServiceCube", "Hello, World!")
 
             #usb_manager.print_object_properties()
