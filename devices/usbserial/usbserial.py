@@ -2,9 +2,8 @@ import asyncio
 import serial
 import time
 from serial.tools import list_ports
-
 class DeviceSerial:
-    def __init__(self, port, baudrate, timeout, alias_timeout=5):
+    def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
         # Initialize the DeviceSerial object with given parameters
         self.port = port
         self.baudrate = baudrate
@@ -13,6 +12,7 @@ class DeviceSerial:
         self.device_info = {'port': port, 'alias': None}
         self.serial_connection = None
         self.received_ack = asyncio.Event()
+        self.valid_aliases = valid_aliases if valid_aliases is not None else set()
 
     def connect(self):
         # Connect to the serial device and request its alias
@@ -47,9 +47,13 @@ class DeviceSerial:
                 data = self.serial_connection.readline().decode().strip()
                 if data:
                     print(f"Received alias: {data}")
-                    self.device_info["alias"] = data
-                    # Send "connected" message after receiving the alias
-                    self.send_data("connected")
+                    if data in self.valid_aliases:
+                        self.device_info["alias"] = data
+                        # Send "connected" message after receiving the alias
+                        self.send_data("connected")
+                    else:
+                        print(f"Alias '{data}' is not in the list of valid aliases. Ignoring device.")
+                        self.serial_connection.close()
                     break
             else:
                 print("Waiting for alias ...")
@@ -57,7 +61,7 @@ class DeviceSerial:
 
     async def send_periodic_ack(self):
         while True:
-            if self.serial_connection is not None:
+            if self.serial_connection is not None and self.device_info["alias"]:
                 self.send_data("ACK:" + self.device_info["alias"])
             await asyncio.sleep(1)
 
@@ -136,7 +140,7 @@ class UsbSerialManager:
             # Skip devices that are already connected
             if any(device.device_info['port'] == port_info.device for device in self.devices.values()):
                 continue
-            device = DeviceSerial(port_info.device, self.baudrate, self.timeout)
+            device = DeviceSerial(port_info.device, self.baudrate, self.timeout, valid_aliases=self.required_aliases)
             await device.async_connect()
             if device.device_info['alias']:
                 self.devices[device.device_info['alias']] = device

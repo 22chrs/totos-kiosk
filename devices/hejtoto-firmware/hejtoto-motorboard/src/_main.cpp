@@ -13,7 +13,7 @@
 
 // Define the alias for this device
 #include "SerialController.h"
-SerialController serialController("ServiceCube");
+SerialController serialController;
 
 Chrono helperChrono;
 
@@ -31,8 +31,9 @@ void setup() {
     init_TCA9548A();
     init_MCP23017();  // Initialize pins of MCP23017 I/O Expander
 
-    init_BoardSelect();  // Check which board this code runs on
-    init_Stepper();      // Initialize stepper motor drivers
+    init_BoardSelect();                                        // Check which board this code runs on
+    serialController.setAlias(currentBoardConfig->boardName);  // Alias für Serial Communication zuordnen
+    init_Stepper();                                            // Initialize stepper motor drivers
     init_LimitSwitch();
     init_doorSensor();
     init_Mosfet();             // Initialize Mosfets
@@ -58,14 +59,14 @@ void setup() {
     // moveDevice("Lift_C", 1, 100, 100);
 
     pwmMosfet(5, 20);
-    // delay(1000);
-    // pwmMosfet(1, 0);
-    // moveDevice("Rodell_A", 10, 100, 100);
-    // moveDevice("Rodell_B", 10, 100, 100);
-    // moveDevice("Rodell_C", 10, 100, 100);
-    // moveDevice("Lift_A", 100, 100, 100);
-    // moveDevice("Lift_B", 100, 100, 100);
-    // moveDevice("Lift_C", 100, 100, 100);
+    //  delay(1000);
+    //  pwmMosfet(1, 0);
+    //  moveDevice("Rodell_A", 10, 100, 100);
+    //  moveDevice("Rodell_B", 10, 100, 100);
+    //  moveDevice("Rodell_C", 10, 100, 100);
+    //  moveDevice("Lift_A", 100, 100, 100);
+    //  moveDevice("Lift_B", 100, 100, 100);
+    //  moveDevice("Lift_C", 100, 100, 100);
 
     // homeDevice("Lift_A");
     // homeDevice("Lift_B");
@@ -76,16 +77,16 @@ void setup() {
     // homeDevice("Rodell_B");
     // homeDevice("Rodell_C");
 
-    // serialController.begin(115200);
+    serialController.begin(115200);
 
     buildInLEDBlik();
     openDoor(5);
 }
 
 void loop() {
-    checkAndCloseDoors();  //! DO NOT DELETE!
+    checkAndCloseDoors();  //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
 
-    // serialController.update();
+    serialController.update();
 
     // if (helperChrono.hasPassed(500)) {
     //     stepperCheckObstruction();  // Call the function
@@ -158,7 +159,7 @@ void loop() {
     // }
 
     // check_doorSensor();
-    check_limitSwitches();
+    // check_limitSwitches();
 
     // check_TemperatureSensor();
     // readTOF200C(2);

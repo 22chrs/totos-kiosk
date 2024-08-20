@@ -55,7 +55,6 @@ void pwmMosfet(int MosfetX, int percent) {
     }
 
     int value = map(percent, 0, 100, 0, 255);
-    Serial.println(percent);
     analogWrite(pinNumber, value);
 }
 

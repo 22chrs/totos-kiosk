@@ -82,23 +82,33 @@ BoardConfig RoboCubeBackConfig = {
 BoardConfig *currentBoardConfig = nullptr;
 
 void init_BoardSelect() {
-    mcp.pinMode(J1_PIN, INPUT);
-    mcp.pinMode(J2_PIN, INPUT);
-
-    bool J1 = mcp.digitalRead(J1_PIN);
-    bool J2 = mcp.digitalRead(J2_PIN);
-
-    if ((J1 == LOW) && (J2 == LOW)) {
-        currentBoardConfig = &ServiceCubeConfig;
-        Serial.println("Board = ServiceCube");
-        board = SERVICE_CUBE;
-    } else if ((J1 == HIGH) && (J2 == LOW)) {
+    if (!mcp.begin_I2C(0x20))  // A0,A1,A2=GND
+    {
         currentBoardConfig = &RoboCubeFrontConfig;
         Serial.println("Board = RoboCube Front");
         board = ROBOCUBE_FRONT;
-    } else if ((J1 == LOW) && (J2 == HIGH)) {
-        currentBoardConfig = &RoboCubeBackConfig;
-        Serial.println("Board = RoboCube Back");
-        board = ROBOCUBE_BACK;
+    } else {
+        mcp.pinMode(J1_PIN, INPUT);
+        mcp.pinMode(J2_PIN, INPUT);
+
+        bool J1 = mcp.digitalRead(J1_PIN);
+        bool J2 = mcp.digitalRead(J2_PIN);
+        Serial.println("init Boardselect doing");
+
+        if ((J1 == LOW) && (J2 == LOW)) {
+            currentBoardConfig = &ServiceCubeConfig;
+            Serial.println("Board = ServiceCube");
+            board = SERVICE_CUBE;
+        } else if ((J1 == HIGH) && (J2 == LOW)) {
+            currentBoardConfig = &RoboCubeFrontConfig;
+            Serial.println("Board = RoboCube Front");
+            board = ROBOCUBE_FRONT;
+        } else if ((J1 == LOW) && (J2 == HIGH)) {
+            currentBoardConfig = &RoboCubeBackConfig;
+            Serial.println("Board = RoboCube Back");
+            board = ROBOCUBE_BACK;
+        } else {
+            Serial.println("Boardselect Jumper not readable.");
+        }
     }
 }

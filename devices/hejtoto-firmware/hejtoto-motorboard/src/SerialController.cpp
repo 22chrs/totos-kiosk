@@ -1,12 +1,21 @@
 // SerialController.cpp
 #include "SerialController.h"
 
-SerialController::SerialController(const String &alias)
-    : alias(alias), connectionStatus(false), lastReceivedMessage(0), connectionTimeout(2500) {
+#include "BoardSelect.h"
+
+SerialController::SerialController()
+    : alias("Unknown"),  // Default alias
+      connectionStatus(false),
+      lastReceivedMessage(0),
+      connectionTimeout(2500) {
 }
 
 void SerialController::begin(uint32_t baudRate) {
     Serial.begin(baudRate);
+}
+
+void SerialController::setAlias(const String &alias) {
+    this->alias = alias;
 }
 
 void SerialController::update() {

@@ -14,7 +14,8 @@ class SerialController {
     void handleReceivedMessage(const String &message);
 
    public:
-    SerialController(const String &alias);
+    SerialController();
+    void setAlias(const String &alias);
     void begin(uint32_t baudRate);
     void update();
     bool isConnected();
