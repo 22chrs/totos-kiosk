@@ -20,7 +20,7 @@ Chrono helperChrono;
 void setup() {
     init_LEDs();
     buildInLEDBlik();
-    Neopixel(GREEN);
+    Neopixel(RED);
 
     Wire.begin();           // Initialize I2C
     Wire.setClock(400000);  // Set I2C speed to 400kHz (Standard 100kHz)
@@ -57,29 +57,34 @@ void setup() {
 
     // moveDevice("Lift_C", 1, 100, 100);
 
-    // pwmMosfet(1, 20);
+    pwmMosfet(5, 20);
     // delay(1000);
     // pwmMosfet(1, 0);
     // moveDevice("Rodell_A", 10, 100, 100);
+    // moveDevice("Rodell_B", 10, 100, 100);
+    // moveDevice("Rodell_C", 10, 100, 100);
     // moveDevice("Lift_A", 100, 100, 100);
     // moveDevice("Lift_B", 100, 100, 100);
     // moveDevice("Lift_C", 100, 100, 100);
 
     // homeDevice("Lift_A");
-    homeDevice("Lift_B");
+    // homeDevice("Lift_B");
     // homeDevice("Lift_C");
     //      // homeDevice("Lift_A");
 
-    homeDevice("Rodell_A");
-    homeDevice("Rodell_B");
-    homeDevice("Rodell_C");
+    // homeDevice("Rodell_A");
+    // homeDevice("Rodell_B");
+    // homeDevice("Rodell_C");
 
     // serialController.begin(115200);
 
     buildInLEDBlik();
+    openDoor(5);
 }
 
 void loop() {
+    checkAndCloseDoors();  //! DO NOT DELETE!
+
     // serialController.update();
 
     // if (helperChrono.hasPassed(500)) {

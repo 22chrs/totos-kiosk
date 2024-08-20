@@ -16,17 +16,17 @@ BoardConfig ServiceCubeConfig = {
         // Lift A (Zähnezahl 20 -> Zähnezahl 38, Pitch 2) => 20/38*2 mm/U = 20/19 mm/U
         {"Lift_A", 1500, 1500, 8500, 9000, ((20.0 * 2.0) / 32.0), 629, -2.0, false, false, 1.0, false, 0, false},
         // Rodell A (Zähnezahl 20 -> Zähnezahl ###) => ### 20/### mm/U
-        {"Rodell_A", 1500, 1500, 500, 100, (20.0 / 130.0), 1.0, -0.011, false, false, 0.3, false, 0, false},
+        {"Rodell_A", 1500, 1500, 7000, 500, (20.0 / 130.0), 1.0, -0.011, false, false, 0.3, false, 0, false},
 
         // Lift B (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
         {"Lift_B", 1500, 1500, 8500, 9000, ((20.0 * 2.0) / 32.0), 629, -2.0, false, false, 1.0, false, 0, false},
         // Rodell B (Zähnezahl 20 -> Zähnezahl ###)
-        {"Rodell_B", 1500, 1500, 1000, 1000, (20.0 / 130.0), 1.0, -0.011, true, false, 0.15, false, 0, false},
+        {"Rodell_B", 1500, 1500, 7000, 500, (20.0 / 130.0), 1.0, -0.011, true, false, 0.15, false, 0, false},
 
         // Lift C (Zähnezahl 20 -> Zähnezahl 38, Pitch 2)
         {"Lift_C", 1500, 1500, 8500, 9000, ((20.0 * 2.0) / 32.0), 629, -2.0, false, false, 1.0, false, 0, false},
         // Rodell C (Zähnezahl 20 -> Zähnezahl ###)
-        {"Rodell_C", 1500, 1500, 1000, 1000, (20.0 / 130.0), 1.0, -0.011, false, false, 0.15, false, 0, false},
+        {"Rodell_C", 1500, 1500, 7000, 500, (20.0 / 130.0), 1.0, -0.011, false, false, 0.15, false, 0, false},
 
     }};
 
