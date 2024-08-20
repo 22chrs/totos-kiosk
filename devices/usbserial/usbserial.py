@@ -76,20 +76,36 @@ class UsbSerialManager:
             board_ack_alias = await board.wait_for_acknowledgment()
             print(f"Received acknowledgment from {board_ack_alias}")
 
-    def send_message(self, alias, message):
+    async def send_message(self, alias, message):
         if not self.all_required_aliases_connected():
             print("Error: Cannot send message, not all required aliases are connected.")
             return
         if alias in self.boards:
             print(f"{alias}: {message}")
             self.boards[alias].send_data(message)
+
+            # Wait for acknowledgment from the Teensy asynchronously
+            ack = await self.boards[alias].wait_for_acknowledgment()
+            if ack and ack.startswith("ACK:"):
+                print(f"Acknowledgment received: {ack}")
+            else:
+                print(f"Error: No acknowledgment received for {message}")
         else:
             print(f"Error: Alias {alias} not found among connected boards.")
 
+    # Method to wait for acknowledgment in boardserial class
+    def wait_for_acknowledgment(self):
+        start_time = time.time()
+        while time.time() - start_time < self.timeout:
+            if self.serial_connection.in_waiting > 0:
+                ack = self.serial_connection.readline().decode().strip()
+                return ack
+        return None
+    
     def send_move_device_command(self, alias, stepperName, position, maxSpeedPercentage, driveCurrentPercentage):
         # Construct the command string using the provided stepperName
         command = f'moveDevice("{stepperName}", {position}, {maxSpeedPercentage}, {driveCurrentPercentage})'
-        self.send_message(alias, command)
+        asyncio.create_task(self.send_message(alias, command))
 
     async def start(self):
         await self.discover_boards()
@@ -97,7 +113,6 @@ class UsbSerialManager:
         asyncio.ensure_future(self.reconnect_boards())
         for board in self.boards.values():
             asyncio.ensure_future(board.send_periodic_ack())
-
 class boardserial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
         self.port = port
@@ -152,6 +167,17 @@ class boardserial:
             else:
                 print("Waiting for alias ...")
                 time.sleep(0.1)
+
+    async def wait_for_acknowledgment(self):
+        """Asynchronously wait for an acknowledgment from the board."""
+        start_time = time.time()
+        while time.time() - start_time < self.timeout:
+            if self.serial_connection.in_waiting > 0:
+                ack = self.serial_connection.readline().decode().strip()
+                if ack:
+                    return ack
+            await asyncio.sleep(0.01)  # Non-blocking wait
+        return None
 
     async def send_periodic_ack(self):
         while True:

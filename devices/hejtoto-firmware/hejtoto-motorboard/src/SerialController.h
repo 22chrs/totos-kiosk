@@ -2,6 +2,7 @@
 #ifndef SerialController_h
 #define SerialController_h
 
+#include <Arduino.h>  // Include Arduino core for String and Serial
 #include <_global.h>
 
 class SerialController {
@@ -12,6 +13,7 @@ class SerialController {
     const unsigned long connectionTimeout;
 
     void handleReceivedMessage(const String &message);
+    bool processMoveDeviceCommand(const String &message);
 
    public:
     SerialController();
