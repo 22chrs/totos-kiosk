@@ -1,4 +1,5 @@
 // SerialController.cpp
+
 #include "SerialController.h"
 
 #include "BoardSelect.h"
@@ -25,8 +26,10 @@ void SerialController::update() {
         handleReceivedMessage(message);
     }
 
+    // Check if the connection has timed out
     if (isConnected() && millis() - lastReceivedMessage > connectionTimeout) {
-        connectionStatus = false;
+        connectionStatus = false;  // Mark as disconnected
+        Serial.println("Connection lost");
     }
 }
 
@@ -38,11 +41,14 @@ void SerialController::handleReceivedMessage(const String &message) {
     if (message == "REQUEST_ALIAS") {
         Serial.println(alias);
     } else if (message == "connected") {
-        connectionStatus = true;
+        connectionStatus = true;  // Set connection status to true when "connected" message is received
     } else if (message.startsWith("ACK:")) {
         String senderAlias = message.substring(4);
         if (senderAlias == alias) {
-            Serial.println("ACK:" + alias);
+            if (!connectionStatus) {
+                connectionStatus = true;         // Ensure the device is marked as connected
+                Serial.println("ACK:" + alias);  // Send the ACK only if not already connected
+            }
         }
     }
 }

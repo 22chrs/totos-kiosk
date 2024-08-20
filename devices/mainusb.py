@@ -16,7 +16,7 @@ if __name__ == '__main__':
         while True:
             #print(f"Device alias: {DeviceSerial.device_info['alias']}")
             # Send "Hello, World!" to the Teensy devices
-            usb_manager.send_message("ServiceCube", "Hello, World!")
+            #usb_manager.send_message("ServiceCube", "Hello, World!")
 
             #usb_manager.print_object_properties()
             #usb_manager.send_message("Motorsteuerung_B", "Hello, World!")

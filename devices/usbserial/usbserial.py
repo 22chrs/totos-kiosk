@@ -5,7 +5,6 @@ from serial.tools import list_ports
 
 class DeviceSerial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
-        # Initialize the DeviceSerial object with given parameters
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
@@ -14,13 +13,13 @@ class DeviceSerial:
         self.serial_connection = None
         self.received_ack = asyncio.Event()
         self.valid_aliases = valid_aliases if valid_aliases is not None else set()
+        self.is_ack_sent = False  # Track if ACK has been sent after connection
 
     def connect(self):
-        # Connect to the serial device and request its alias
         try:
             self.serial_connection = serial.Serial(self.device_info['port'], self.baudrate, timeout=self.timeout)
             print(f"Connected to device at {self.device_info['port']}")
-            self.send_data("REQUEST_ALIAS")  # Send REQUEST_ALIAS command
+            self.send_data("REQUEST_ALIAS", formatted=False)  # Send REQUEST_ALIAS command without ### prefix
         except Exception as e:
             print(f"Error connecting to {self.device_info['port']}: {str(e)}")
             return
@@ -36,7 +35,6 @@ class DeviceSerial:
         return False
 
     def receive_initial_alias(self):
-        # Receive the initial alias from the serial device
         start_time = time.time()
         while True:
             current_time = time.time()
@@ -47,11 +45,11 @@ class DeviceSerial:
             if self.serial_connection.in_waiting > 0:
                 data = self.serial_connection.readline().decode().strip()
                 if data:
-                    print(f"### Received: {data}")  # Forward received data
+                    print(f"### Received: {data}")  # Prefix with ### because it's from the Teensy
                     if data in self.valid_aliases:
                         self.device_info["alias"] = data
-                        # Send "connected" message after receiving the alias
-                        self.send_data("connected")
+                        self.is_ack_sent = False  # Reset ACK sent status
+                        self.send_data("connected", formatted=False)  # Send "connected" without ### prefix
                     else:
                         print(f"Alias '{data}' is not in the list of valid aliases. Ignoring device.")
                         self.serial_connection.close()
@@ -63,21 +61,25 @@ class DeviceSerial:
     async def send_periodic_ack(self):
         while True:
             if self.serial_connection is not None and self.device_info["alias"]:
-                self.send_data("ACK:" + self.device_info["alias"])
+                if not self.is_ack_sent:  # Send ACK only if it hasn't been sent
+                    self.send_data("ACK:" + self.device_info["alias"], formatted=True)  # Send ACK with ### prefix
+                    self.is_ack_sent = True  # Set ACK sent status to True
             await asyncio.sleep(1)
 
     async def async_connect(self):
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, self.connect)
 
-    def send_data(self, message):
-        # Send data to the serial device
+    def send_data(self, message, formatted=True):
         if self.serial_connection is None:
             print(f"Error sending data to {self.device_info['alias']}: Serial connection is None")
             return
         try:
             self.serial_connection.write((message + '\n').encode())
-            print(f"### Sent: {message}")  # Forward sent data
+            if formatted:
+                print(f"### Sent: {message}")  # Prefix with ### if it is serial output
+            else:
+                print(f"Sent: {message}")  # No prefix for internal Python output
         except serial.SerialException as e:
             print(f"Error sending data to {self.device_info['alias']}: {str(e)}")
             self.serial_connection = None
@@ -122,18 +124,27 @@ class UsbSerialManager:
     async def reconnect_devices(self):
         # Continuously check for and attempt to reconnect to missing devices
         all_connected = self.all_required_aliases_connected()
+        last_log_time = time.time()  # Track the last time we logged the missing devices
+        log_interval = 10  # Interval to log missing devices in seconds
+
         while True:
             self.check_device_connections()
             if not self.all_required_aliases_connected():
                 missing_aliases = [alias for alias in self.required_aliases if alias not in self.devices]
-                print(f"Attempting to reconnect to missing devices: {', '.join(missing_aliases)}")
+
+                current_time = time.time()
+                if current_time - last_log_time >= log_interval:
+                    print(f"Attempting to reconnect to missing devices: {', '.join(missing_aliases)}")
+                    last_log_time = current_time
+
                 await self.discover_devices()
                 all_connected = False
             else:
                 if not all_connected:
                     print("All required devices are connected back again.")
                     all_connected = True
-            await asyncio.sleep(2)
+
+            await asyncio.sleep(0.5)  # Try to reconnect every 0.5 seconds
 
     async def discover_devices(self):
         # Discover devices with the specified VID and PID and establish a connection
