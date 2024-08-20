@@ -58,15 +58,14 @@ void setup() {
 
     // moveDevice("Lift_C", 1, 100, 100);
 
-    pwmMosfet(5, 20);
-    //  delay(1000);
-    //  pwmMosfet(1, 0);
-    //  moveDevice("Rodell_A", 10, 100, 100);
-    //  moveDevice("Rodell_B", 10, 100, 100);
-    //  moveDevice("Rodell_C", 10, 100, 100);
-    //  moveDevice("Lift_A", 100, 100, 100);
-    //  moveDevice("Lift_B", 100, 100, 100);
-    //  moveDevice("Lift_C", 100, 100, 100);
+    //   delay(1000);
+    //   pwmMosfet(1, 0);
+    //   moveDevice("Rodell_A", 10, 100, 100);
+    //   moveDevice("Rodell_B", 10, 100, 100);
+    //   moveDevice("Rodell_C", 10, 100, 100);
+    //   moveDevice("Lift_A", 100, 100, 100);
+    //   moveDevice("Lift_B", 100, 100, 100);
+    //   moveDevice("Lift_C", 100, 100, 100);
 
     // homeDevice("Lift_A");
     // homeDevice("Lift_B");
@@ -80,7 +79,7 @@ void setup() {
     serialController.begin(115200);
 
     buildInLEDBlik();
-    openDoor(5);
+    // openDoor(5);
 }
 
 void loop() {

@@ -6,7 +6,7 @@
 
 class SerialController {
    private:
-    const String alias;
+    String alias;
     bool connectionStatus;
     unsigned long lastReceivedMessage;
     const unsigned long connectionTimeout;
