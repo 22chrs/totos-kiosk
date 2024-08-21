@@ -1,9 +1,9 @@
 // SerialController.h
-#ifndef SerialController_h
-#define SerialController_h
 
-#include <Arduino.h>  // Include Arduino core for String and Serial
-#include <_global.h>
+#ifndef SERIALCONTROLLER_H
+#define SERIALCONTROLLER_H
+
+#include <Arduino.h>
 
 class SerialController {
    private:
@@ -14,6 +14,7 @@ class SerialController {
 
     void handleReceivedMessage(const String &message);
     bool processMoveDeviceCommand(const String &message);
+    void sendMessage(const String &message);
 
    public:
     SerialController();

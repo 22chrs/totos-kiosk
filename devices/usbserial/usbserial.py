@@ -311,7 +311,7 @@ class BoardSerial:
         try:
             self.serial_connection.write((message + '\n').encode())
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
-            print(f"@{alias} -> {message}")
+            print(f"@{alias} -------> {message}")
         except serial.SerialException as e:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
             self.disconnect()

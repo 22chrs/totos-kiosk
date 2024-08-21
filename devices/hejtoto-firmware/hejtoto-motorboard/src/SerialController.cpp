@@ -1,7 +1,6 @@
 #include "SerialController.h"
 
-#include "BoardSelect.h"
-#include "Movements.h"
+#include <Movements.h>
 
 SerialController::SerialController()
     : alias("Unknown"),
@@ -13,7 +12,7 @@ SerialController::SerialController()
 void SerialController::begin(uint32_t baudRate) {
     Serial.begin(baudRate);
     while (!Serial) {
-        ;  // Wait for the serial port to connect.
+        // Wait for the serial port to connect.
     }
 }
 
@@ -31,7 +30,7 @@ void SerialController::update() {
     // Check if the connection has timed out
     if (isConnected() && millis() - lastReceivedMessage > connectionTimeout) {
         connectionStatus = false;
-        Serial.println("Connection lost");
+        sendMessage("Connection lost");
     }
 }
 
@@ -41,7 +40,7 @@ bool SerialController::isConnected() {
 
 void SerialController::handleReceivedMessage(const String &message) {
     if (message == "REQUEST_ALIAS") {
-        Serial.println(alias);
+        sendMessage(alias);
     } else if (message == "connected") {
         connectionStatus = true;
     } else if (message.startsWith("ACK:")) {
@@ -49,22 +48,20 @@ void SerialController::handleReceivedMessage(const String &message) {
         if (senderAlias == alias) {
             if (!connectionStatus) {
                 connectionStatus = true;
-                Serial.println("ACK:" + alias);
+                sendMessage("ACK:" + alias);
             }
         }
     } else if (message.startsWith("moveDevice")) {
         bool success = processMoveDeviceCommand(message);
         if (success) {
-            Serial.println("ACK: moveDevice");
+            sendMessage("ACK: moveDevice");
         } else {
-            Serial.println("ERROR: Failed to execute moveDevice");
+            sendMessage("ERROR: Failed to execute moveDevice");
         }
     }
 }
 
 bool SerialController::processMoveDeviceCommand(const String &message) {
-    Serial.println("Processing moveDevice command...");
-
     int firstQuote = message.indexOf('"');
     int secondQuote = message.indexOf('"', firstQuote + 1);
     String stepperName = message.substring(firstQuote + 1, secondQuote);
@@ -79,4 +76,8 @@ bool SerialController::processMoveDeviceCommand(const String &message) {
 
     bool result = moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage);
     return result;
+}
+
+void SerialController::sendMessage(const String &message) {
+    Serial.println("->" + message);
 }
