@@ -24,12 +24,12 @@ if __name__ == '__main__':
     async def send_periodically():
         while True:
             # Example commands for each board alias
-            if "RoboCubeFront" in usb_manager.boards:
-                await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 100, 100, 100)
-            if "ServiceCube" in usb_manager.boards:
-                await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 120, 100, 100)
-            if "RoboCubeBack" in usb_manager.boards:
-                await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 10, 100, 100)
+            # if "RoboCubeFront" in usb_manager.boards:
+            #     await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 100, 100, 100)
+            # if "ServiceCube" in usb_manager.boards:
+            #     await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 120, 100, 100)
+            # if "RoboCubeBack" in usb_manager.boards:
+            #     await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 10, 100, 100)
 
             await asyncio.sleep(3)  # Wait 3 seconds before sending the next round of commands
 

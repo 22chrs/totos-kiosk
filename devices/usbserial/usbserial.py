@@ -93,7 +93,7 @@ class ConnectionManager:
                 print(f"Connected to board at {self.board_info['port']}")
                 self.connected = True
                 if not self.board_info['alias']:
-                    self.send_data("REQUEST_ALIAS", formatted=False)
+                    self.send_data("REQUEST_ALIAS")
                     self.receive_initial_alias()
             except Exception as e:
                 print(f"Error connecting to {self.board_info['port']}: {str(e)}")
@@ -124,7 +124,7 @@ class ConnectionManager:
                         if data in self.valid_aliases:
                             self.board_info["alias"] = data
                             self.is_ack_sent = False
-                            self.send_data("connected", formatted=False)
+                            self.send_data("connected")
                             return  # Alias successfully received, exit the function
                         else:
                             print(f"Alias '{data}' is not in the list of valid aliases. Ignoring invalid alias.")
@@ -152,7 +152,7 @@ class ConnectionManager:
             while True:
                 if self.serial_connection is not None and self.board_info["alias"]:
                     if not self.is_ack_sent:
-                        self.send_data(f"ACK:{self.board_info['alias']}", formatted=True)
+                        self.send_data(f"ACK:{self.board_info['alias']}")
                         self.is_ack_sent = True
                 await asyncio.sleep(1)
 
@@ -160,18 +160,16 @@ class ConnectionManager:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self.connect)
 
-        def send_data(self, message, formatted=True):
+        def send_data(self, message):
             if self.serial_connection is None:
-                print(f"Error: Cannot send data to {self.board_info['alias']} - Serial connection is None")
+                print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
                 return
             try:
                 self.serial_connection.write((message + '\n').encode())
-                if formatted:
-                    print(f"Sent2: {message}")
-                else:
-                    print(f"Sent3: {message}")
+                alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
+                print(f"@{alias} -------> {message}")
             except serial.SerialException as e:
-                print(f"Error: Sending data to {self.board_info['alias']} failed: {str(e)}")
+                print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
                 self.disconnect()
 
         def disconnect(self):
@@ -242,7 +240,7 @@ class BoardSerial:
             print(f"Connected to board at {self.board_info['port']}")
             self.connected = True
             if not self.board_info['alias']:
-                self.send_data("REQUEST_ALIAS", formatted=False)
+                self.send_data("REQUEST_ALIAS")
                 self.receive_initial_alias()
         except Exception as e:
             print(f"Error connecting to {self.board_info['port']}: {str(e)}")
@@ -273,7 +271,7 @@ class BoardSerial:
                     if data in self.valid_aliases:
                         self.board_info["alias"] = data
                         self.is_ack_sent = False
-                        self.send_data("connected", formatted=False)
+                        self.send_data("connected")
                     else:
                         print(f"Alias '{data}' is not in the list of valid aliases. Ignoring board.")
                         self.disconnect()
@@ -298,7 +296,7 @@ class BoardSerial:
         while True:
             if self.serial_connection is not None and self.board_info["alias"]:
                 if not self.is_ack_sent:
-                    self.send_data(f"ACK:{self.board_info['alias']}", formatted=True)
+                    self.send_data(f"ACK:{self.board_info['alias']}")
                     self.is_ack_sent = True
             await asyncio.sleep(1)
 
@@ -306,18 +304,16 @@ class BoardSerial:
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, self.connect)
 
-    def send_data(self, message, formatted=True):
+    def send_data(self, message):
         if self.serial_connection is None:
-            print(f"Error: Cannot send data to {self.board_info['alias']} - Serial connection is None")
+            print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
             return
         try:
             self.serial_connection.write((message + '\n').encode())
-            if formatted:
-                print(f"Sent: {message}")
-            else:
-                print(f"Sent2: {message}")
+            alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
+            print(f"@{alias} -> {message}")
         except serial.SerialException as e:
-            print(f"Error: Sending data to {self.board_info['alias']} failed: {str(e)}")
+            print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
             self.disconnect()
 
     def disconnect(self):
@@ -326,4 +322,3 @@ class BoardSerial:
         self.connected = False
         self.board_info['alias'] = None
         print(f"Disconnected from board at {self.port}")
-
