@@ -87,38 +87,17 @@ class ConnectionManager:
             self.is_ack_sent = False
             self.connected = False
 
-        async def async_connect(self):
-            loop = asyncio.get_event_loop()
-            await loop.run_in_executor(None, self.connect)
-            if self.connected:
-                await self.receive_initial_alias()
-
         def connect(self):
             try:
-                self.serial_connection = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-                print(f"Connected to board at {self.port}")
+                self.serial_connection = serial.Serial(self.board_info['port'], self.baudrate, timeout=self.timeout)
+                print(f"Connected to board at {self.board_info['port']}")
                 self.connected = True
+                if not self.board_info['alias']:
+                    self.send_data("REQUEST_ALIAS", formatted=False)
+                    self.receive_initial_alias()
             except Exception as e:
-                print(f"Error connecting to {self.port}: {str(e)}")
+                print(f"Error connecting to {self.board_info['port']}: {str(e)}")
                 self.connected = False
-
-        async def receive_initial_alias(self):
-            start_time = time.time()
-            while time.time() - start_time < self.alias_timeout:
-                if self.serial_connection.in_waiting > 0:
-                    data = await self._async_readline()
-                    if data in self.valid_aliases:
-                        self.board_info["alias"] = data
-                        self.is_ack_sent = False
-                        await self.send_data("connected", formatted=False)
-                        return
-                    else:
-                        print(f"Alias '{data}' is not in the list of valid aliases. Ignoring board.")
-                        self.disconnect()
-                        return
-                await asyncio.sleep(0.1)
-            print("Alias timeout reached.")
-            self.disconnect()
 
         def is_connected(self):
             if self.serial_connection:
@@ -127,21 +106,41 @@ class ConnectionManager:
                     return True
                 except Exception:
                     self.connected = False
+                    return False
             return False
 
-        async def send_periodic_ack(self):
+        def receive_initial_alias(self):
+            start_time = time.time()
             while True:
-                if self.serial_connection is not None and self.board_info["alias"]:
-                    if not self.is_ack_sent:
-                        await self.send_data(f"ACK:{self.board_info['alias']}", formatted=True)
-                        self.is_ack_sent = True
-                await asyncio.sleep(1)
+                current_time = time.time()
+                if current_time - start_time > self.alias_timeout:
+                    print("Alias timeout reached.")
+                    break
+
+                if self.serial_connection.in_waiting > 0:
+                    data = self.serial_connection.readline().decode().strip()
+                    if data:
+                        print(f"### Received: {data}")
+                        if data in self.valid_aliases:
+                            self.board_info["alias"] = data
+                            self.is_ack_sent = False
+                            self.send_data("connected", formatted=False)
+                            return  # Alias successfully received, exit the function
+                        else:
+                            print(f"Alias '{data}' is not in the list of valid aliases. Ignoring invalid alias.")
+                else:
+                    time.sleep(0.1)
+
+            # If we reached this point, it means alias was not set within timeout
+            if not self.board_info["alias"]:
+                print("Failed to receive a valid alias within the timeout. Disconnecting.")
+                self.disconnect()
 
         async def wait_for_acknowledgment(self):
             start_time = time.time()
             while time.time() - start_time < self.timeout:
                 if self.serial_connection.in_waiting > 0:
-                    ack = await self._async_readline()
+                    ack = self.serial_connection.readline().decode().strip()
                     if ack:
                         print(f"### Acknowledgment received: {ack}")
                         return ack
@@ -149,12 +148,24 @@ class ConnectionManager:
             print(f"### Error: No acknowledgment received within timeout for {self.board_info['alias']}")
             return None
 
-        async def send_data(self, message, formatted=True):
+        async def send_periodic_ack(self):
+            while True:
+                if self.serial_connection is not None and self.board_info["alias"]:
+                    if not self.is_ack_sent:
+                        self.send_data(f"ACK:{self.board_info['alias']}", formatted=True)
+                        self.is_ack_sent = True
+                await asyncio.sleep(1)
+
+        async def async_connect(self):
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, self.connect)
+
+        def send_data(self, message, formatted=True):
             if self.serial_connection is None:
                 print(f"Error: Cannot send data to {self.board_info['alias']} - Serial connection is None")
                 return
             try:
-                await self._async_write(f"{message}\n")
+                self.serial_connection.write((message + '\n').encode())
                 if formatted:
                     print(f"### Sent: {message}")
                 else:
@@ -162,14 +173,6 @@ class ConnectionManager:
             except serial.SerialException as e:
                 print(f"Error: Sending data to {self.board_info['alias']} failed: {str(e)}")
                 self.disconnect()
-
-        async def _async_readline(self):
-            return await asyncio.get_event_loop().run_in_executor(
-                None, lambda: self.serial_connection.readline().decode().strip()
-            )
-
-        async def _async_write(self, data):
-            await asyncio.get_event_loop().run_in_executor(None, self.serial_connection.write, data.encode())
 
         def disconnect(self):
             if self.serial_connection and self.serial_connection.is_open:
