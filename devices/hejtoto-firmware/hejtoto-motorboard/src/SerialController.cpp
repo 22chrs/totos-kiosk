@@ -1,4 +1,3 @@
-// SerialController.cpp
 #include "SerialController.h"
 
 #include "BoardSelect.h"
@@ -56,15 +55,17 @@ void SerialController::handleReceivedMessage(const String &message) {
 
         // Send back an acknowledgment of the command processing
         if (success) {
-            Serial.println("ACK: " + message);  // Send acknowledgment with the original message
+            Serial.println("ACK: moveDevice");  // Send a clear acknowledgment
         } else {
-            Serial.println("ERROR: Failed to execute " + message);  // Send an error message if it failed
+            Serial.println("ERROR: Failed to execute moveDevice");  // Send an error message if it failed
         }
     }
 }
 
 // Function to process the moveDevice command
 bool SerialController::processMoveDeviceCommand(const String &message) {
+    Serial.println("Processing moveDevice command...");
+
     // Example: moveDevice("Schleuse", 100, 100, 100)
     // Parse the message to extract the parameters (device name, position, etc.)
     // Assuming the message format is well-formed

@@ -86,7 +86,7 @@ class UsbSerialManager:
 
             # Wait for acknowledgment from the Teensy asynchronously
             ack = await self.boards[alias].wait_for_acknowledgment()
-            if ack and ack.startswith("ACK:"):
+            if ack and ack.startswith("ACK: moveDevice"):
                 print(f"Acknowledgment received: {ack}")
             else:
                 print(f"Error: No acknowledgment received for {message}")
@@ -113,6 +113,7 @@ class UsbSerialManager:
         asyncio.ensure_future(self.reconnect_boards())
         for board in self.boards.values():
             asyncio.ensure_future(board.send_periodic_ack())
+
 class boardserial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
         self.port = port
@@ -204,3 +205,20 @@ class boardserial:
         except serial.SerialException as e:
             print(f"Error sending data to {self.board_info['alias']}: {str(e)}")
             self.serial_connection = None
+
+    async def monitor_serial_input(self):
+        """Continuously monitor the serial input and print incoming messages."""
+        while True:
+            if self.serial_connection.in_waiting > 0:
+                incoming_data = self.serial_connection.readline().decode().strip()
+                if incoming_data:
+                    alias = self.board_info.get('alias')
+                    if alias:
+                        print(f"### ({alias}) {incoming_data}")
+                    else:
+                        print(f"### {incoming_data}")
+            await asyncio.sleep(0.01)  # Slight delay to avoid busy-waiting
+
+    async def async_connect_and_monitor(self):
+        await self.async_connect()
+        asyncio.ensure_future(self.monitor_serial_input())

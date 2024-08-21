@@ -86,6 +86,8 @@ void loop() {
     checkAndCloseDoors();  //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
 
     serialController.update();
+    delay(1000);
+    Serial.println("Hallo");
 
     // if (helperChrono.hasPassed(500)) {
     //     stepperCheckObstruction();  // Call the function
