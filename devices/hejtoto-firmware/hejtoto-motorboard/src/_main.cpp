@@ -36,6 +36,7 @@ void setup() {
     init_Stepper();                                            // Initialize stepper motor drivers
     init_LimitSwitch();
     init_doorSensor();
+
     init_Mosfet();             // Initialize Mosfets
     init_TemperatureSensor();  // Initialize temperature and humidity sensor
     init_Fan();
@@ -76,7 +77,7 @@ void setup() {
     // homeDevice("Rodell_B");
     // homeDevice("Rodell_C");
 
-    serialController.begin(115200);
+    serialController.begin(500000);
 
     buildInLEDBlik();
     // openDoor(5);
@@ -86,8 +87,8 @@ void loop() {
     checkAndCloseDoors();  //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
 
     serialController.update();
-    delay(1000);
-    Serial.println("Hallo");
+    // delay(1000);
+    // Serial.println("Hallo");
 
     // if (helperChrono.hasPassed(500)) {
     //     stepperCheckObstruction();  // Call the function

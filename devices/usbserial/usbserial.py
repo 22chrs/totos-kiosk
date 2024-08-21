@@ -2,6 +2,7 @@ import asyncio
 import serial
 import time
 from serial.tools import list_ports
+
 class UsbSerialManager:
     def __init__(self, vid, pid, baudrate, timeout, required_aliases):
         self.vid = vid
@@ -82,7 +83,7 @@ class UsbSerialManager:
             return
         if alias in self.boards:
             print(f"{alias}: {message}")
-            self.boards[alias].send_data(message)
+            self.boards[alias].send_data(message)  # Corrected: No await here
 
             # Wait for acknowledgment from the Teensy asynchronously
             ack = await self.boards[alias].wait_for_acknowledgment()
@@ -93,19 +94,12 @@ class UsbSerialManager:
         else:
             print(f"Error: Alias {alias} not found among connected boards.")
 
-    # Method to wait for acknowledgment in boardserial class
-    def wait_for_acknowledgment(self):
-        start_time = time.time()
-        while time.time() - start_time < self.timeout:
-            if self.serial_connection.in_waiting > 0:
-                ack = self.serial_connection.readline().decode().strip()
-                return ack
-        return None
-    
-    def send_move_device_command(self, alias, stepperName, position, maxSpeedPercentage, driveCurrentPercentage):
-        # Construct the command string using the provided stepperName
-        command = f'moveDevice("{stepperName}", {position}, {maxSpeedPercentage}, {driveCurrentPercentage})'
-        asyncio.create_task(self.send_message(alias, command))
+    async def send_move_device_command(self, alias, stepper_name, position, max_speed_percentage, drive_current_percentage):
+        if alias in self.boards:
+            command = f'moveDevice("{stepper_name}", {position}, {max_speed_percentage}, {drive_current_percentage})'
+            await self.send_message(alias, command)
+        else:
+            print(f"Error: Alias {alias} not found among connected boards.")
 
     async def start(self):
         await self.discover_boards()
@@ -113,6 +107,8 @@ class UsbSerialManager:
         asyncio.ensure_future(self.reconnect_boards())
         for board in self.boards.values():
             asyncio.ensure_future(board.send_periodic_ack())
+
+
 
 class boardserial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
@@ -125,23 +121,27 @@ class boardserial:
         self.received_ack = asyncio.Event()
         self.valid_aliases = valid_aliases if valid_aliases is not None else set()
         self.is_ack_sent = False
+        self.connected = False
 
     def connect(self):
         try:
             self.serial_connection = serial.Serial(self.board_info['port'], self.baudrate, timeout=self.timeout)
             print(f"Connected to board at {self.board_info['port']}")
-            self.send_data("REQUEST_ALIAS", formatted=False)
+            self.connected = True
+            if not self.board_info['alias']:
+                self.send_data("REQUEST_ALIAS", formatted=False)
+                self.receive_initial_alias()
         except Exception as e:
             print(f"Error connecting to {self.board_info['port']}: {str(e)}")
-            return
-        self.receive_initial_alias()
+            self.connected = False
 
     def is_connected(self):
         if self.serial_connection:
             try:
                 self.serial_connection.write(b'\n')
                 return True
-            except Exception as e:
+            except Exception:
+                self.connected = False
                 return False
         return False
 
@@ -163,10 +163,9 @@ class boardserial:
                         self.send_data("connected", formatted=False)
                     else:
                         print(f"Alias '{data}' is not in the list of valid aliases. Ignoring board.")
-                        self.serial_connection.close()
+                        self.disconnect()
                     break
             else:
-                print("Waiting for alias ...")
                 time.sleep(0.1)
 
     async def wait_for_acknowledgment(self):
@@ -176,25 +175,30 @@ class boardserial:
             if self.serial_connection.in_waiting > 0:
                 ack = self.serial_connection.readline().decode().strip()
                 if ack:
+                    print(f"### Acknowledgment received: {ack}")
                     return ack
             await asyncio.sleep(0.01)  # Non-blocking wait
+        print(f"### Error: No acknowledgment received within timeout for {self.board_info['alias']}")
         return None
 
     async def send_periodic_ack(self):
+        """Periodically send ACK messages to keep the connection alive."""
         while True:
             if self.serial_connection is not None and self.board_info["alias"]:
                 if not self.is_ack_sent:
-                    self.send_data("ACK:" + self.board_info["alias"], formatted=True)
+                    self.send_data(f"ACK:{self.board_info['alias']}", formatted=True)
                     self.is_ack_sent = True
             await asyncio.sleep(1)
 
     async def async_connect(self):
+        """Asynchronously connect to the board."""
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, self.connect)
 
     def send_data(self, message, formatted=True):
+        """Send data over the serial connection."""
         if self.serial_connection is None:
-            print(f"Error sending data to {self.board_info['alias']}: Serial connection is None")
+            print(f"Error: Cannot send data to {self.board_info['alias']} - Serial connection is None")
             return
         try:
             self.serial_connection.write((message + '\n').encode())
@@ -203,13 +207,13 @@ class boardserial:
             else:
                 print(f"Sent: {message}")
         except serial.SerialException as e:
-            print(f"Error sending data to {self.board_info['alias']}: {str(e)}")
-            self.serial_connection = None
+            print(f"Error: Sending data to {self.board_info['alias']} failed: {str(e)}")
+            self.disconnect()
 
     async def monitor_serial_input(self):
         """Continuously monitor the serial input and print incoming messages."""
         while True:
-            if self.serial_connection.in_waiting > 0:
+            if self.serial_connection and self.serial_connection.in_waiting > 0:
                 incoming_data = self.serial_connection.readline().decode().strip()
                 if incoming_data:
                     alias = self.board_info.get('alias')
@@ -217,8 +221,18 @@ class boardserial:
                         print(f"### ({alias}) {incoming_data}")
                     else:
                         print(f"### {incoming_data}")
-            await asyncio.sleep(0.01)  # Slight delay to avoid busy-waiting
+            await asyncio.sleep(0.01)
 
     async def async_connect_and_monitor(self):
+        """Connect to the board and start monitoring the serial input."""
         await self.async_connect()
-        asyncio.ensure_future(self.monitor_serial_input())
+        if self.connected:
+            asyncio.ensure_future(self.monitor_serial_input())
+
+    def disconnect(self):
+        """Properly disconnect the serial connection."""
+        if self.serial_connection and self.serial_connection.is_open:
+            self.serial_connection.close()
+        self.connected = False
+        self.board_info['alias'] = None
+        print(f"Disconnected from board at {self.port}")
