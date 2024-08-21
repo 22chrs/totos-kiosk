@@ -120,7 +120,7 @@ class ConnectionManager:
                 if self.serial_connection.in_waiting > 0:
                     data = self.serial_connection.readline().decode().strip()
                     if data:
-                        print(f"### Received: {data}")
+                        print(f"Unknown device -> {data}")
                         if data in self.valid_aliases:
                             self.board_info["alias"] = data
                             self.is_ack_sent = False
@@ -142,10 +142,10 @@ class ConnectionManager:
                 if self.serial_connection.in_waiting > 0:
                     ack = self.serial_connection.readline().decode().strip()
                     if ack:
-                        print(f"### Acknowledgment received: {ack}")
+                        print(f"Acknowledgment received: {ack}")
                         return ack
                 await asyncio.sleep(0.01)
-            print(f"### Error: No acknowledgment received within timeout for {self.board_info['alias']}")
+            print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
             return None
 
         async def send_periodic_ack(self):
@@ -167,9 +167,9 @@ class ConnectionManager:
             try:
                 self.serial_connection.write((message + '\n').encode())
                 if formatted:
-                    print(f"### Sent: {message}")
+                    print(f"Sent2: {message}")
                 else:
-                    print(f"Sent: {message}")
+                    print(f"Sent3: {message}")
             except serial.SerialException as e:
                 print(f"Error: Sending data to {self.board_info['alias']} failed: {str(e)}")
                 self.disconnect()
@@ -206,7 +206,7 @@ class SerialCommandForwarder:
                 if board.serial_connection and board.serial_connection.in_waiting > 0:
                     incoming_data = board.serial_connection.readline().decode().strip()
                     if incoming_data:
-                        print(f"### {board.board_info['alias']} {incoming_data}")
+                        print(f"{board.board_info['alias']} -> {incoming_data}")
             await asyncio.sleep(0.01)
 
 # Class to handle sending commands to the Teensy and processing acknowledgments
@@ -269,7 +269,7 @@ class BoardSerial:
             if self.serial_connection.in_waiting > 0:
                 data = self.serial_connection.readline().decode().strip()
                 if data:
-                    print(f"### Received: {data}")
+                    print(f"-> Received: {data}")
                     if data in self.valid_aliases:
                         self.board_info["alias"] = data
                         self.is_ack_sent = False
@@ -283,14 +283,15 @@ class BoardSerial:
 
     async def wait_for_acknowledgment(self):
         start_time = time.time()
-        while time.time() - start_time < self.timeout:
+        print(f"Waiting for acknowledgment from {self.board_info['alias']}")
+        while time.time() - start_time < self.timeout:  # You may increase self.timeout here
             if self.serial_connection.in_waiting > 0:
                 ack = self.serial_connection.readline().decode().strip()
                 if ack:
-                    print(f"### Acknowledgment received: {ack}")
+                    print(f"Acknowledgment received: {ack}")
                     return ack
             await asyncio.sleep(0.01)
-        print(f"### Error: No acknowledgment received within timeout for {self.board_info['alias']}")
+        print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
         return None
 
     async def send_periodic_ack(self):
@@ -312,9 +313,9 @@ class BoardSerial:
         try:
             self.serial_connection.write((message + '\n').encode())
             if formatted:
-                print(f"### Sent: {message}")
-            else:
                 print(f"Sent: {message}")
+            else:
+                print(f"Sent2: {message}")
         except serial.SerialException as e:
             print(f"Error: Sending data to {self.board_info['alias']} failed: {str(e)}")
             self.disconnect()

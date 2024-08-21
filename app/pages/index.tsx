@@ -64,6 +64,12 @@ const Kiosk = () => {
   };
 
   useEffect(() => {
+    const handleVideoEnd = () => {
+      setCurrentVideoIndex(
+        (prevIndex) => (prevIndex + 1) % videoSources.length,
+      );
+    };
+
     const videoElement = ref.current;
     if (videoElement) {
       videoElement.addEventListener('ended', handleVideoEnd);
@@ -73,7 +79,7 @@ const Kiosk = () => {
         videoElement.removeEventListener('ended', handleVideoEnd);
       }
     };
-  }, []);
+  }, [videoSources.length]);
 
   return (
     <ScaleFade

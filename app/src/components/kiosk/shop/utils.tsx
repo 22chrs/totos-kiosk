@@ -7,6 +7,7 @@ export type FormatPriceProps = {
   amount: number;
   country?: string;
   currency?: string;
+  showDecimals?: boolean;
 };
 
 export const formatPrice = ({
@@ -14,8 +15,8 @@ export const formatPrice = ({
   country = shopData.country,
   currency = shopData.currency,
   showDecimals = true,
-}) => {
-  const options = {
+}: FormatPriceProps) => {
+  const options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: currency,
     minimumFractionDigits: showDecimals ? 2 : 0,
