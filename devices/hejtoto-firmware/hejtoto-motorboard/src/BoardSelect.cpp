@@ -89,7 +89,7 @@ void init_BoardSelect() {
         // board = ROBOCUBE_FRONT;
 
         currentBoardConfig = &RoboCubeBackConfig;
-        Serial.println("Board = RoboCube BACK");
+        Serial.println("Board = RoboCubeBACK");
         board = ROBOCUBE_BACK;
     } else {
         mcp.pinMode(J1_PIN, INPUT);
@@ -105,11 +105,11 @@ void init_BoardSelect() {
             board = SERVICE_CUBE;
         } else if ((J1 == HIGH) && (J2 == LOW)) {
             currentBoardConfig = &RoboCubeFrontConfig;
-            Serial.println("Board = RoboCube Front");
+            Serial.println("Board = RoboCubeFront");
             board = ROBOCUBE_FRONT;
         } else if ((J1 == LOW) && (J2 == HIGH)) {
             currentBoardConfig = &RoboCubeBackConfig;
-            Serial.println("Board = RoboCube Back");
+            Serial.println("Board = RoboCubeBack");
             board = ROBOCUBE_BACK;
         } else {
             Serial.println("Boardselect Jumper not readable.");

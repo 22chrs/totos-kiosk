@@ -30,7 +30,7 @@ if __name__ == '__main__':
                     await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 0, 100, 100)
                     await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 0, 100, 100)
                     await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 0, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 0, 100, 100)
+                    #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 0, 100, 100)
                 if "RoboCubeBack" in usb_manager.boards:
                     await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 0, 100, 100)
                     await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 0, 100, 100)
@@ -45,7 +45,7 @@ if __name__ == '__main__':
                     await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 150, 100, 100)
                     await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 500, 100, 100)
                     await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 120, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 400, 100, 100)
+                    #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 400, 100, 100)
                 if "RoboCubeBack" in usb_manager.boards:
                     await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 150, 100, 100)
                     await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 500, 100, 100)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
                     await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 0.5, 100, 100)
 
             counter += 1  # Increment the counter after each iteration
-            await asyncio.sleep(20)  # Wait 10 seconds before sending the next round of commands
+            await asyncio.sleep(10)  # Wait 10 seconds before sending the next round of commands
 
     async def main():
         await usb_manager.start()  # Start the connection manager

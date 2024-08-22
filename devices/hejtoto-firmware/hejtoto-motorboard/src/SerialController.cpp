@@ -1,5 +1,6 @@
 #include "SerialController.h"
 
+#include <Led.h>
 #include <Movements.h>
 
 SerialController::SerialController()
@@ -30,6 +31,7 @@ void SerialController::update() {
     // Check if the connection has timed out
     if (isConnected() && millis() - lastReceivedMessage > connectionTimeout) {
         connectionStatus = false;
+        Neopixel(RED);
         sendMessage("Connection lost");
     }
 }
@@ -44,11 +46,13 @@ void SerialController::handleReceivedMessage(const String &message) {
         sendMessage(alias);
     } else if (message == "connected") {
         connectionStatus = true;
+        Neopixel(GREEN);
     } else if (message.startsWith("ACK:")) {
         String senderAlias = message.substring(4);
         if (senderAlias == alias) {
             if (!connectionStatus) {
                 connectionStatus = true;
+                Neopixel(GREEN);
                 sendMessage("ACK:" + alias);
             }
         }

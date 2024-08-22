@@ -31,7 +31,9 @@ void setup() {
     init_TCA9548A();
     init_MCP23017();  // Initialize pins of MCP23017 I/O Expander
 
-    init_BoardSelect();                                        // Check which board this code runs on
+    init_BoardSelect();
+
+    // Check which board this code runs on
     serialController.setAlias(currentBoardConfig->boardName);  // Alias für Serial Communication zuordnen
     init_Stepper();                                            // Initialize stepper motor drivers
     init_LimitSwitch();
