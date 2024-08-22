@@ -48,12 +48,14 @@ void setup() {
 
     // moveDevice("Lift_A", 629, 100, 100);
     homeDevice("Schleuse");
+    homeDevice("Becherschubse");
+    homeDevice("Shield");
+    homeDevice("Snackbar");
+
     //     moveDevice("Schleuse", 100, 100, 100);
     //     moveDevice("Lift_A", -10, 100, 100);
     //             homeDevice("Shield");
     //      homeDevice("Snackbar");
-    homeDevice("Becherschubse");
-    homeDevice("Snackbar");
 
     //        moveDevice("Becherschubse", -10, 100, 100);
 
@@ -68,14 +70,14 @@ void setup() {
     //   moveDevice("Lift_B", 100, 100, 100);
     //   moveDevice("Lift_C", 100, 100, 100);
 
-    // homeDevice("Lift_A");
-    // homeDevice("Lift_B");
-    // homeDevice("Lift_C");
+    homeDevice("Lift_A");
+    homeDevice("Lift_B");
+    homeDevice("Lift_C");
     //      // homeDevice("Lift_A");
 
-    // homeDevice("Rodell_A");
-    // homeDevice("Rodell_B");
-    // homeDevice("Rodell_C");
+    homeDevice("Rodell_A");
+    homeDevice("Rodell_B");
+    homeDevice("Rodell_C");
 
     serialController.begin(500000);
 
