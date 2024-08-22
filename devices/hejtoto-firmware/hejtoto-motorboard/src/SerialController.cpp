@@ -40,6 +40,7 @@ bool SerialController::isConnected() {
 
 void SerialController::handleReceivedMessage(const String &message) {
     if (message == "REQUEST_ALIAS") {
+        // Serial.println("AAAAALIAS");
         sendMessage(alias);
     } else if (message == "connected") {
         connectionStatus = true;

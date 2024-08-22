@@ -215,11 +215,16 @@ class SerialCommandForwarder:
     async def monitor_and_forward(self):
         """Continuously monitor all boards and forward their messages."""
         while True:
-            for board in self.connection_manager.boards.values():
-                if board.serial_connection and board.serial_connection.in_waiting > 0:
-                    incoming_data = board.serial_connection.readline().decode().strip()
-                    if incoming_data:
-                        print(f"{board.board_info['alias']} -> {incoming_data}")
+            for alias, board in list(self.connection_manager.boards.items()):
+                try:
+                    if board.serial_connection and board.serial_connection.in_waiting > 0:
+                        incoming_data = board.serial_connection.readline().decode().strip()
+                        if incoming_data:
+                            print(f"{board.board_info['alias']} -> {incoming_data}")
+                except (OSError, serial.SerialException) as e:
+                    print(f"Error: {str(e)} - Disconnecting board '{alias}'")
+                    board.disconnect()  # Disconnect and cleanup
+                    del self.connection_manager.boards[alias]  # Remove the board from the manager
             await asyncio.sleep(0.01)
 
 # Class to handle sending commands to the Teensy and processing acknowledgments
@@ -327,7 +332,7 @@ class BoardSerial:
             self.serial_connection.write((message + '\n').encode())
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
             print(f"@{alias} -------> {message}")
-        except serial.SerialException as e:
+        except (serial.SerialException, OSError) as e:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
             self.disconnect()
 
