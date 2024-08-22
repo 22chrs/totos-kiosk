@@ -95,11 +95,14 @@ class ConnectionManager:
             if processed_data.startswith("->"):
                 # Slice off the '->' from the start of the string
                 processed_data = processed_data[2:].strip()  # Remove the '->' and any leading/trailing whitespace after slicing
+                print(f"Valid message received: {processed_data}")  # Debugging valid messages
             else:
-                # Determine the alias to print
+                # If not valid, print for debugging and then clear processed_data
                 alias_to_print = alias if alias else "unknown alias"
-                #print(f"{alias_to_print} -> {processed_data}")
+                print(f"Debug: {alias_to_print} -> {processed_data} (Invalid message)")
+                processed_data = ""  # Clear processed data as it's not a valid message
             
+            print(f"Processed data: '{processed_data}'")  # Debugging statement to ensure correct processing
             return processed_data
 
         def connect(self):
@@ -150,7 +153,7 @@ class ConnectionManager:
         async def wait_for_acknowledgment(self):
             start_time = time.time()
             print(f"Waiting for acknowledgment from {self.board_info['alias']}")
-            while time.time() - start_time < self.timeout:
+            while time.time() - start_time < self.timeout:  # Increase timeout if necessary
                 if self.serial_connection.in_waiting > 0:
                     raw_data = self.serial_connection.readline().decode().strip()
                     processed_data = self.preprocess_data(raw_data)  # Use processed data
@@ -158,7 +161,7 @@ class ConnectionManager:
                     if processed_data:  # Ensure there's data to process
                         print(f"Processed Acknowledgment received: {processed_data}")
                         return processed_data  # Return processed data instead of raw data
-                await asyncio.sleep(0.01)
+                await asyncio.sleep(0.05)  # Increase sleep to give more time for acknowledgment
 
             print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
             return None
@@ -199,13 +202,15 @@ class ConnectionManager:
 class SerialCommandForwarder:
     def __init__(self, connection_manager):
         self.connection_manager = connection_manager
-
+        
     async def forward_command(self, alias, message):
         if alias in self.connection_manager.boards:
             board = self.connection_manager.boards[alias]
             board.send_data(message)
             ack = await board.wait_for_acknowledgment()
             expected_ack = f"{message}started"
+            print(f"Expected: '{expected_ack}', Received: '{ack}'")  # Debugging statement
+
             if ack and ack == expected_ack:
                 print(f"Acknowledgment received: {ack}")
             else:
