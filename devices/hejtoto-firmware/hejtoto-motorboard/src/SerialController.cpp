@@ -57,11 +57,12 @@ void SerialController::handleReceivedMessage(const String &message) {
             }
         }
     } else if (message.startsWith("moveDevice")) {
+        sendMessage(message + "started");
         bool success = processMoveDeviceCommand(message);
         if (success) {
-            sendMessage("ACK: moveDevice");
+            sendMessage(message + "finished");
         } else {
-            sendMessage("ERROR: Failed to execute moveDevice");
+            sendMessage(message + "failed");
         }
     }
 }

@@ -205,10 +205,11 @@ class SerialCommandForwarder:
             board = self.connection_manager.boards[alias]
             board.send_data(message)
             ack = await board.wait_for_acknowledgment()
-            if ack and ack.startswith("ACK: moveDevice"):
+            expected_ack = f"{message}started"
+            if ack and ack == expected_ack:
                 print(f"Acknowledgment received: {ack}")
             else:
-                print(f"Error: No acknowledgment received for {message}")
+                print(f"Error: No correct acknowledgment received for {message}. Expected: {expected_ack}, Received: {ack if ack else 'None'}")
         else:
             print(f"Error: Alias {alias} not found among connected boards.")
 

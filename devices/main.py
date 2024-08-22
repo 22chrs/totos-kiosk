@@ -2,7 +2,8 @@ import asyncio
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController  # Import necessary classes
 
 # Define the aliases for the boards you want to test with
-teensys = {"RoboCubeFront", "RoboCubeBack", "ServiceCube"}  # Example set of board aliases
+#teensys = {"RoboCubeFront", "RoboCubeBack", "ServiceCube"}  # Example set of board aliases
+teensys = {"RoboCubeBack"}  # Example set of board aliases
 
 if __name__ == '__main__':
     print("Starting event loop")
@@ -24,36 +25,38 @@ if __name__ == '__main__':
     async def send_periodically():
         counter = 0  # Initialize a counter to track the number of iterations
         while True:
-            if counter % 2 == 0:
-                # Execute the "move back to 0" commands every 2nd iteration
-                if "RoboCubeFront" in usb_manager.boards:
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 0, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 0, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 0, 100, 100)
-                    #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 0, 100, 100)
-                if "RoboCubeBack" in usb_manager.boards:
-                    await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 0, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 0, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeBack", "Shield", 0, 100, 100)
-                if "ServiceCube" in usb_manager.boards:
-                    await teensy_controller.send_move_device_command("ServiceCube", "Rodell_A", 0, 100, 100)
-                    await teensy_controller.send_move_device_command("ServiceCube", "Rodell_B", 0, 100, 100)
-                    await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 0, 100, 100)
-            else:
-                # Execute the other commands every 1st iteration
-                if "RoboCubeFront" in usb_manager.boards:
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 150, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 500, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 120, 100, 100)
-                    #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 400, 100, 100)
-                if "RoboCubeBack" in usb_manager.boards:
-                    await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 150, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 500, 100, 100)
-                    await teensy_controller.send_move_device_command("RoboCubeBack", "Shield", 120, 100, 100)
-                if "ServiceCube" in usb_manager.boards:
-                    await teensy_controller.send_move_device_command("ServiceCube", "Rodell_A", 0.5, 100, 100)
-                    await teensy_controller.send_move_device_command("ServiceCube", "Rodell_B", 0.5, 100, 100)
-                    await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 0.5, 100, 100)
+            await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 0, 100, 100)
+
+            # if counter % 2 == 0:
+            #     # Execute the "move back to 0" commands every 2nd iteration
+            #     if "RoboCubeFront" in usb_manager.boards:
+            #         await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 0, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 0, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 0, 100, 100)
+            #         #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 0, 100, 100)
+            #     if "RoboCubeBack" in usb_manager.boards:
+            #         await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 0, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 0, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeBack", "Shield", 0, 100, 100)
+            #     if "ServiceCube" in usb_manager.boards:
+            #         await teensy_controller.send_move_device_command("ServiceCube", "Rodell_A", 0, 100, 100)
+            #         await teensy_controller.send_move_device_command("ServiceCube", "Rodell_B", 0, 100, 100)
+            #         await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 0, 100, 100)
+            # else:
+            #     # Execute the other commands every 1st iteration
+            #     if "RoboCubeFront" in usb_manager.boards:
+            #         await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 150, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 500, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 120, 100, 100)
+            #         #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 400, 100, 100)
+            #     if "RoboCubeBack" in usb_manager.boards:
+            #         await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 150, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 500, 100, 100)
+            #         await teensy_controller.send_move_device_command("RoboCubeBack", "Shield", 120, 100, 100)
+            #     if "ServiceCube" in usb_manager.boards:
+            #         await teensy_controller.send_move_device_command("ServiceCube", "Rodell_A", 0.5, 100, 100)
+            #         await teensy_controller.send_move_device_command("ServiceCube", "Rodell_B", 0.5, 100, 100)
+            #         await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 0.5, 100, 100)
 
             counter += 1  # Increment the counter after each iteration
             await asyncio.sleep(10)  # Wait 10 seconds before sending the next round of commands
