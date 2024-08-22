@@ -47,13 +47,13 @@ void setup() {
     // homeDevice("Rodell_A");
 
     // moveDevice("Lift_A", 629, 100, 100);
-    //     homeDevice("Schleuse");
+    homeDevice("Schleuse");
     //     moveDevice("Schleuse", 100, 100, 100);
     //     moveDevice("Lift_A", -10, 100, 100);
     //             homeDevice("Shield");
     //      homeDevice("Snackbar");
-    //   homeDevice("Becherschubse");
-    //   homeDevice("Snackbar");
+    homeDevice("Becherschubse");
+    homeDevice("Snackbar");
 
     //        moveDevice("Becherschubse", -10, 100, 100);
 
@@ -85,10 +85,7 @@ void setup() {
 
 void loop() {
     checkAndCloseDoors();  //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
-
     serialController.update();
-    delay(3000);
-    Serial.println("Hallo");
 
     // if (helperChrono.hasPassed(500)) {
     //     stepperCheckObstruction();  // Call the function

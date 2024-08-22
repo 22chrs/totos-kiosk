@@ -84,13 +84,13 @@ BoardConfig *currentBoardConfig = nullptr;
 void init_BoardSelect() {
     if (!mcp.begin_I2C(0x20))  // A0,A1,A2=GND
     {
-        currentBoardConfig = &RoboCubeFrontConfig;
-        Serial.println("Board = RoboCube Front");
-        board = ROBOCUBE_FRONT;
+        // currentBoardConfig = &RoboCubeFrontConfig;
+        // Serial.println("Board = RoboCube Front");
+        // board = ROBOCUBE_FRONT;
 
-        // currentBoardConfig = &RoboCubeBackConfig;
-        // Serial.println("Board = RoboCube BACK");
-        // board = ROBOCUBE_BACK;
+        currentBoardConfig = &RoboCubeBackConfig;
+        Serial.println("Board = RoboCube BACK");
+        board = ROBOCUBE_BACK;
     } else {
         mcp.pinMode(J1_PIN, INPUT);
         mcp.pinMode(J2_PIN, INPUT);
