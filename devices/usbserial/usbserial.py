@@ -87,6 +87,21 @@ class ConnectionManager:
             self.is_ack_sent = False
             self.connected = False
 
+        def preprocess_data(self, data, alias=None):
+            # Remove leading/trailing whitespace
+            processed_data = data.strip()
+            
+            # Check if the processed data starts with '->'
+            if processed_data.startswith("->"):
+                # Slice off the '->' from the start of the string
+                processed_data = processed_data[2:].strip()  # Remove the '->' and any leading/trailing whitespace after slicing
+            else:
+                # Determine the alias to print
+                alias_to_print = alias if alias else "unknown alias"
+                #print(f"{alias_to_print} -> {processed_data}")
+            
+            return processed_data
+
         def connect(self):
             try:
                 self.serial_connection = serial.Serial(self.board_info['port'], self.baudrate, timeout=self.timeout)
@@ -108,7 +123,7 @@ class ConnectionManager:
                     self.connected = False
                     return False
             return False
-
+        
         def receive_initial_alias(self):
             start_time = time.time()
             while True:
@@ -118,33 +133,33 @@ class ConnectionManager:
                     break
 
                 if self.serial_connection.in_waiting > 0:
-                    data = self.serial_connection.readline().decode().strip()
-                    if data:
-                        print(f"Unknown device -> {data}")
-                        if data in self.valid_aliases:
-                            self.board_info["alias"] = data
+                    raw_data = self.serial_connection.readline().decode().strip()
+                    processed_data = self.preprocess_data(raw_data)  # Use processed data
+                    if processed_data:  # Ensure there's data to process  
+                        if processed_data in self.valid_aliases:
+                            self.board_info["alias"] = processed_data
                             self.is_ack_sent = False
                             self.send_data("connected")
-                            return  # Alias successfully received, exit the function
                         else:
-                            print(f"Alias '{data}' is not in the list of valid aliases. Ignoring invalid alias.")
+                            print(f"Alias '{processed_data}' is not in the list of valid aliases. Ignoring board.")
+                            self.disconnect()
+                        break
                 else:
                     time.sleep(0.1)
 
-            # If we reached this point, it means alias was not set within timeout
-            if not self.board_info["alias"]:
-                print("Failed to receive a valid alias within the timeout. Disconnecting.")
-                self.disconnect()
-
         async def wait_for_acknowledgment(self):
             start_time = time.time()
+            print(f"Waiting for acknowledgment from {self.board_info['alias']}")
             while time.time() - start_time < self.timeout:
                 if self.serial_connection.in_waiting > 0:
-                    ack = self.serial_connection.readline().decode().strip()
-                    if ack:
-                        print(f"Acknowledgment received: {ack}")
-                        return ack
+                    raw_data = self.serial_connection.readline().decode().strip()
+                    processed_data = self.preprocess_data(raw_data)  # Use processed data
+
+                    if processed_data:  # Ensure there's data to process
+                        print(f"Processed Acknowledgment received: {processed_data}")
+                        return processed_data  # Return processed data instead of raw data
                 await asyncio.sleep(0.01)
+
             print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
             return None
 

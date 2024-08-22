@@ -87,7 +87,7 @@ void loop() {
     checkAndCloseDoors();  //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
 
     serialController.update();
-    delay(1000);
+    delay(3000);
     Serial.println("Hallo");
 
     // if (helperChrono.hasPassed(500)) {
