@@ -1,4 +1,5 @@
-websockets==12.0
+websockets==13.0
 pyserial==3.5
 #pynput==1.7.6
-schedule==1.2.1
+schedule==1.2.2
+pySerialTransfer==2.6.9
