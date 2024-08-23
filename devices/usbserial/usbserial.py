@@ -202,7 +202,7 @@ class ConnectionManager:
 class SerialCommandForwarder:
     def __init__(self, connection_manager):
         self.connection_manager = connection_manager
-        
+
     async def forward_command(self, alias, message):
         if alias in self.connection_manager.boards:
             board = self.connection_manager.boards[alias]
@@ -307,14 +307,24 @@ class BoardSerial:
 
     async def wait_for_acknowledgment(self):
         start_time = time.time()
+        expected_ack = f"{self.last_command}started"  # Assuming self.last_command holds the last command sent
+
         print(f"Waiting for acknowledgment from {self.board_info['alias']}")
-        while time.time() - start_time < self.timeout:  # You may increase self.timeout here
+        while time.time() - start_time < self.timeout:  # Set your desired timeout here
             if self.serial_connection.in_waiting > 0:
-                ack = self.serial_connection.readline().decode().strip()
-                if ack:
-                    print(f"Acknowledgment received: {ack}")
-                    return ack
-            await asyncio.sleep(0.01)
+                raw_data = self.serial_connection.readline().decode().strip()
+                processed_data = self.preprocess_data(raw_data)  # Use processed data
+
+                if processed_data:  # Ensure there's data to process
+                    print(f"Processed data: '{processed_data}'")
+                    if processed_data == expected_ack:
+                        print(f"Correct acknowledgment received: {processed_data}")
+                        return processed_data
+                    else:
+                        print(f"Ignoring message: {processed_data}")  # Other non-matching messages
+
+            await asyncio.sleep(0.01)  # Short sleep to yield control and allow other async tasks to run
+
         print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
         return None
 
@@ -336,6 +346,7 @@ class BoardSerial:
             return
         try:
             self.serial_connection.write((message + '\n').encode())
+            self.last_command = message  # Store the last command
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
             print(f"@{alias} -------> {message}")
         except (serial.SerialException, OSError) as e:
