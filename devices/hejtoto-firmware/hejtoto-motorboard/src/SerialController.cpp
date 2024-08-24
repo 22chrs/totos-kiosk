@@ -83,6 +83,7 @@ bool SerialController::isValidMessage(const String &message) {
 
     return false;
 }
+
 void SerialController::handleReceivedMessage(const String &message) {
     // Ensure that the message starts with <STX> and ends with <ETX>
     if (message.startsWith("<STX>") && message.endsWith("<ETX>")) {
@@ -95,23 +96,32 @@ void SerialController::handleReceivedMessage(const String &message) {
             // Extract the actual command content before the CRC
             String cmdContent = command.substring(0, crcIndex);
 
-            // Process known commands
-            if (cmdContent == "heartbeat") {
-                sendMessage("heartbeat");
-            } else if (cmdContent == "REQUEST_ALIAS") {
-                sendMessage(alias);
-            } else if (cmdContent == "connected") {
-                Neopixel(GREEN);
-                connectionStatus = true;
-                // Serial.println("connection success");
-            } else if (cmdContent.startsWith("moveDevice")) {
-                sendMessage(cmdContent + "started");
-                bool success = processMoveDeviceCommand(cmdContent);
-                if (success) {
-                    sendMessage(cmdContent + "finished");
-                } else {
-                    sendMessage(cmdContent + "failed");
+            // Assuming the timestamp is always at the beginning, find the first '|' separator
+            int firstPipeIndex = cmdContent.indexOf('|');
+            if (firstPipeIndex > 0) {
+                // Extract the command without the timestamp
+                String cmdWithoutTimestamp = cmdContent.substring(firstPipeIndex + 1);
+
+                // Process known commands
+                if (cmdWithoutTimestamp == "heartbeat") {
+                    sendMessage("heartbeat");
+                } else if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
+                    sendMessage(alias);
+                } else if (cmdWithoutTimestamp == "connected") {
+                    Neopixel(GREEN);
+                    connectionStatus = true;
+                    // Serial.println("connection success");
+                } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
+                    sendMessage(cmdWithoutTimestamp + "started");
+                    bool success = processMoveDeviceCommand(cmdWithoutTimestamp);
+                    if (success) {
+                        sendMessage(cmdWithoutTimestamp + "finished");
+                    } else {
+                        sendMessage(cmdWithoutTimestamp + "failed");
+                    }
                 }
+            } else {
+                Serial.println("Invalid message format: Timestamp separator '|' not found");
             }
         } else {
             Serial.println("Invalid message format: CRC separator '|' not found");

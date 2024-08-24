@@ -2,7 +2,6 @@ import asyncio
 import serial
 import time
 from serial.tools import list_ports
-
 class BoardSerial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
         self.port = port
@@ -15,6 +14,7 @@ class BoardSerial:
         self.is_heartbeat_sent = False
         self.connected = False
         self.last_command = None
+        self.last_timestamp = 0
 
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
@@ -31,7 +31,6 @@ class BoardSerial:
             print(f"{alias_to_print} -> {message}")
             return message
         else:
-            
             print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from teensys serial.print commands
             return ""
 
@@ -124,24 +123,45 @@ class BoardSerial:
             print(f"Error during async_connect: {str(e)}")
             self.disconnect()
 
+    def generate_timestamp(self):
+        current_time = time.localtime()  # Get the current local time
+        millis = int((time.time() % 1) * 1000)  # Get the current milliseconds
+        # Calculate milliseconds since midnight
+        milliseconds_since_midnight = (
+            current_time.tm_hour * 3600 * 1000
+            + current_time.tm_min * 60 * 1000
+            + current_time.tm_sec * 1000
+            + millis
+        )
+
+        # Extract the relevant parts of the timestamp
+        year = current_time.tm_year % 100  # Last two digits of the year
+        month = current_time.tm_mon  # Month as a two-digit number
+        day = current_time.tm_mday  # Day of the month as a two-digit number
+
+        # Format the timestamp as yymmddssss with ssss always having 8 digits
+        return f"{year:02}{month:02}{day:02}{milliseconds_since_midnight:08}"
+
     def send_data(self, message):
         if self.serial_connection is None:
             print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
             return
         try:
-            message_with_crc = self.add_crc_and_frame(message)
+            timestamp = self.generate_timestamp()
+            message_with_crc = self.add_crc_and_frame(message, timestamp)
             self.serial_connection.write((message_with_crc + '\n').encode())
             self.last_command = message
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
-            print(f"@{alias} -------> {message}")
+            print(f"@{alias} -------> {timestamp}|{message}")
         except (serial.SerialException, OSError) as e:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
             self.disconnect()
 
-    def add_crc_and_frame(self, message):
+    def add_crc_and_frame(self, message, timestamp): 
         # Add STX, ETX, and CRC to the message
-        crc = self.calculate_crc(message)
-        return f"<STX>{message}|{crc}<ETX>" 
+        message_with_timestamp = f"{timestamp}|{message}"
+        crc = self.calculate_crc(message_with_timestamp)
+        return f"<STX>{message_with_timestamp}|{crc}<ETX>" 
 
     def calculate_crc(self, message):
         # CRC-16-CCITT calculation
@@ -162,6 +182,7 @@ class BoardSerial:
         self.board_info['alias'] = None
         print(f"Disconnected from board at {self.port}")
 
+        
 class ConnectionManager:
     def __init__(self, vid, pid, baudrate, timeout, required_aliases):
         self.vid = vid
