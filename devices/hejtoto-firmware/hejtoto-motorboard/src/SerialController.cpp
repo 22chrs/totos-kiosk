@@ -83,39 +83,41 @@ bool SerialController::isValidMessage(const String &message) {
 
     return false;
 }
-
 void SerialController::handleReceivedMessage(const String &message) {
-    // Extract command from message
-    String command = message.substring(5, message.length() - 5);  // Removing <STX> and <ETX>
+    // Ensure that the message starts with <STX> and ends with <ETX>
+    if (message.startsWith("<STX>") && message.endsWith("<ETX>")) {
+        // Extract command from message, removing <STX> and <ETX>
+        String command = message.substring(5, message.length() - 5);  // Extract content inside <STX> and <ETX>
 
-    if (command.startsWith("CMD:")) {
+        // Find the index of the CRC separator '|'
         int crcIndex = command.lastIndexOf('|');
-        String cmdContent = command.substring(4, crcIndex);  // Extract content before the CRC
+        if (crcIndex > 0) {
+            // Extract the actual command content before the CRC
+            String cmdContent = command.substring(0, crcIndex);
 
-        if (cmdContent == "heartbeat") {
-            sendMessage("heartbeat");
-        }
-
-        if (cmdContent == "REQUEST_ALIAS") {
-            sendMessage(alias);
-            // Process the specific command
-        }
-
-        else if (cmdContent == "connected") {
-            Neopixel(GREEN);
-            connectionStatus = true;
-            // Serial.println("connection success");
-        }
-
-        else if (cmdContent.startsWith("moveDevice")) {
-            sendMessage(cmdContent + "started");
-            bool success = processMoveDeviceCommand(cmdContent);
-            if (success) {
-                sendMessage(cmdContent + "finished");
-            } else {
-                sendMessage(cmdContent + "failed");
+            // Process known commands
+            if (cmdContent == "heartbeat") {
+                sendMessage("heartbeat");
+            } else if (cmdContent == "REQUEST_ALIAS") {
+                sendMessage(alias);
+            } else if (cmdContent == "connected") {
+                Neopixel(GREEN);
+                connectionStatus = true;
+                // Serial.println("connection success");
+            } else if (cmdContent.startsWith("moveDevice")) {
+                sendMessage(cmdContent + "started");
+                bool success = processMoveDeviceCommand(cmdContent);
+                if (success) {
+                    sendMessage(cmdContent + "finished");
+                } else {
+                    sendMessage(cmdContent + "failed");
+                }
             }
+        } else {
+            Serial.println("Invalid message format: CRC separator '|' not found");
         }
+    } else {
+        Serial.println("Invalid message format: Missing <STX> or <ETX>");
     }
 }
 

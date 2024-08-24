@@ -226,9 +226,8 @@ class ConnectionManager:
 
         def add_crc_and_frame(self, message):
             # Add STX, ETX, and CRC to the message
-            message_to_send = f"CMD:{message}"
-            crc = self.calculate_crc(message_to_send)
-            return f"<STX>{message_to_send}|{crc}<ETX>"
+            crc = self.calculate_crc(message)
+            return f"<STX>{message}|{crc}<ETX>"
 
         def calculate_crc(self, message):
             # CRC-16-CCITT calculation
@@ -259,7 +258,7 @@ class SerialCommandForwarder:
             board = self.connection_manager.boards[alias]
             board.send_data(message)
             ack = await board.wait_for_acknowledgment()
-            expected_ack = f"CMD:{message}started"
+            expected_ack = f"{message}started"
             print(f"Expected: '{expected_ack}', Received: '{ack}'")
 
             if ack and ack == expected_ack:
@@ -364,7 +363,7 @@ class BoardSerial:
 
     async def wait_for_acknowledgment(self):
         start_time = time.time()
-        expected_ack = f"CMD:{self.last_command}started"  # Ensuring CMD prefix in expected ack
+        expected_ack = f"{self.last_command}started"  # Ensuring CMD prefix in expected ack
 
         print(f"Waiting for acknowledgment from {self.board_info['alias']}")
         while time.time() - start_time < self.timeout:
@@ -412,9 +411,8 @@ class BoardSerial:
 
     def add_crc_and_frame(self, message):
         # Add STX, ETX, and CRC to the message
-        message_to_send = f"CMD:{message}"
-        crc = self.calculate_crc(message_to_send)
-        return f"<STX>{message_to_send}|{crc}<ETX>"
+        crc = self.calculate_crc(message)
+        return f"<STX>{message}|{crc}<ETX>"
 
     def calculate_crc(self, message):
         # CRC-16-CCITT calculation
@@ -446,15 +444,15 @@ class SerialCommandForwarder:
             board = self.connection_manager.boards[alias]
             board.send_data(message)
             ack = await board.wait_for_acknowledgment()
-            expected_ack = f"CMD:{message}started"
+            expected_ack = f"{message}started"
             print(f"Expected: '{expected_ack}', Received: '{ack}'")
 
             if ack and ack == expected_ack:
                 print(f"Acknowledgment received: {ack}")
             else:
                 print(f"Error: No correct acknowledgment received for {message}. Expected: {expected_ack}, Received: {ack if ack else 'None'}")
-        else:
-            print(f"Error: Alias {alias} not found among connected boards.")
+        #else:
+            #print(f"Error: Alias {alias} not found among connected boards.")
 
     async def monitor_and_forward(self):
         """Continuously monitor all boards and forward their messages."""
@@ -483,5 +481,5 @@ class TeensyController:
         if alias in self.connection_manager.boards:
             command = f'moveDevice("{stepper_name}", {position}, {max_speed_percentage}, {drive_current_percentage})'
             await self.command_forwarder.forward_command(alias, command)
-        else:
-            print(f"Error: Alias {alias} not found among connected boards.")
+        #else:
+        #    print(f"Error: Alias {alias} not found among connected boards.")
