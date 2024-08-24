@@ -38,7 +38,6 @@ class ConnectionManager:
                 del self.boards[alias]
 
     async def reconnect_boards(self):
-        print("reconnect missing board")
         last_log_time = time.time()
         log_interval = 10
 
@@ -79,8 +78,8 @@ class ConnectionManager:
         await self.check_required_aliases()
         asyncio.ensure_future(self.reconnect_boards())
         # Schedule send_periodic_ack for each board after initial discovery
-        for board in self.boards.values():
-            asyncio.ensure_future(board.send_periodic_ack())
+        # for board in self.boards.values():
+        #     asyncio.ensure_future(board.send_periodic_ack())
 
     class BoardSerial:
         def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
@@ -181,11 +180,13 @@ class ConnectionManager:
         async def send_periodic_ack(self):
             while True:
                 try:
+                    await asyncio.sleep(3)  # Initial delay before sending the first heartbeat and between subsequent heartbeats
+
                     if self.serial_connection is not None and self.board_info["alias"]:
                         if not self.is_heartbeat_sent:
                             self.send_data("heartbeat")
                             self.is_heartbeat_sent = True
-                    await asyncio.sleep(1)  # Adjust the sleep interval as needed
+
                     self.is_heartbeat_sent = False  # Reset flag to ensure periodic sending
                 except Exception as e:
                     print(f"Error in send_periodic_ack: {str(e)}")
@@ -195,6 +196,16 @@ class ConnectionManager:
             try:
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(None, self.connect)
+            except Exception as e:
+                print(f"Error during async_connect: {str(e)}")
+                self.disconnect()
+
+        async def async_connect(self):
+            try:
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(None, self.connect)
+                asyncio.ensure_future(self.send_periodic_ack()) 
+              
             except Exception as e:
                 print(f"Error during async_connect: {str(e)}")
                 self.disconnect()
