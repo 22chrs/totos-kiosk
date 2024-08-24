@@ -77,7 +77,7 @@ bool SerialController::isValidMessage(const String &message) {
 }
 
 void SerialController::sendAckMessage(const String &timestamp) {
-    String ackMessage = "ack:" + timestamp;
+    String ackMessage = "ACK:" + timestamp;
 
     // Generate the current timestamp with a unique letter suffix
     String timestampToSend = generateTimestampWithSuffix();
@@ -104,8 +104,8 @@ void SerialController::handleReceivedMessage(const String &message) {
                     timestampMillisOffset = millis();
                     sendMessage(alias);
                     Serial.println(getCurrentTime());
-                } else if (cmdWithoutTimestamp == "heartbeat") {
-                    sendMessage("heartbeat");
+                    // } else if (cmdWithoutTimestamp == "heartbeat") {
+                    //     sendMessage("heartbeat");
                 } else if (cmdWithoutTimestamp == "connected") {
                     Neopixel(GREEN);
                     connectionStatus = true;
