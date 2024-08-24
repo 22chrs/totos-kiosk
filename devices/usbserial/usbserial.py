@@ -19,21 +19,29 @@ class BoardSerial:
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
         alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
+        
         if processed_data.startswith("<STX>") and processed_data.endswith("<ETX>"):
             # Extract the content between <STX> and <ETX>
             processed_data = processed_data[5:-5]  # Remove <STX> and <ETX>
             
             # Validate and extract the message part before the CRC check
-            message, crc = processed_data.rsplit("|", 1)
-            
-            # You might want to add a CRC check here to validate the integrity of the message.
-            # For now, we're assuming that if the structure is correct, the message is valid.
-            print(f"{alias_to_print} -> {message}")
-            return message
-        else:
-            print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from teensys serial.print commands
-            return ""
+            try:
+                message, crc = processed_data.rsplit("|", 1)
+                
+                # Now, remove the timestamp from the start of the message
+                if '|' in message:
+                    _, message = message.split('|', 1)
 
+                # You might want to add a CRC check here to validate the integrity of the message.
+                # For now, we're assuming that if the structure is correct, the message is valid.
+                print(f"{alias_to_print} -> {message}")
+                return message
+            except ValueError:
+                print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
+                return ""
+        else:
+            print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from Teensys serial.print commands
+            return ""
     def connect(self):
         try:
             self.serial_connection = serial.Serial(self.board_info['port'], self.baudrate, timeout=self.timeout)
