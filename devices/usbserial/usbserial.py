@@ -15,7 +15,8 @@ class BoardSerial:
         self.connected = False
         self.last_command = None
         self.last_timestamp = 0
-        self.received_timestamps = {}  # Store received timestamps for later acknowledgment check
+        self.received_timestamps = {}  
+        self.sent_messages = []
 
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
@@ -35,7 +36,13 @@ class BoardSerial:
                     self.received_timestamps[timestamp] = message  # Store the timestamp and message
 
                 # Print for debugging
-                print(f"{alias_to_print} -> {message} (timestamp: {timestamp})")
+                print(f"{alias_to_print} -> {message}")
+
+                # Check if the message is an acknowledgment
+                if message.startswith("ACK:"):
+                    ack_timestamp = message.split("ACK:")[1].strip()
+                    self.check_acknowledgment(ack_timestamp)
+
                 return message
             except ValueError:
                 print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
@@ -44,9 +51,19 @@ class BoardSerial:
             print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from Teensy's serial.print commands
             return ""
 
-    def check_for_ack(self, timestamp):
-        """Check if a specific acknowledgment has been received."""
-        return self.received_timestamps.get(timestamp, None)
+    def check_acknowledgment(self, ack_timestamp):
+        """Check if the acknowledgment timestamp is in the list of sent messages and remove it if found."""
+        found_index = None
+        for i, msg in enumerate(self.sent_messages):
+            if msg.startswith(ack_timestamp):
+                found_index = i
+                break
+
+        if found_index is not None:
+            print(f"ACK received for timestamp {ack_timestamp}: FOUND in sent messages. Removing it.")
+            del self.sent_messages[found_index]  # Remove the message from the list
+        else:
+            print(f"ACK received for timestamp {ack_timestamp}: !!!!!!!!!!! NOT FOUND in sent messages.")
 
         
     def connect(self):
@@ -93,26 +110,6 @@ class BoardSerial:
                     break
             else:
                 time.sleep(0.1)
-
-    async def wait_for_acknowledgment(self):
-        start_time = time.time()
-        expected_ack = f"{self.last_command}started"
-
-        print(f"Waiting for acknowledgment from {self.board_info['alias']}")
-        while time.time() - start_time < self.timeout:
-            if self.serial_connection.in_waiting > 0:
-                raw_data = self.serial_connection.readline().decode().strip()
-                processed_data = self.preprocess_data(raw_data)
-                if processed_data:
-                    # Check if the acknowledgment with the correct timestamp was received
-                    ack_message = self.check_for_ack(self.last_timestamp)
-                    if ack_message and processed_data == expected_ack:
-                        print(f"Correct acknowledgment received: {processed_data}")
-                        return processed_data
-            await asyncio.sleep(0.05)
-
-        print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
-        return None
 
     async def send_periodic_ack(self):
         while True:
@@ -178,6 +175,10 @@ class BoardSerial:
             self.last_command = message
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
             print(f"@{alias} -------> {timestamp}|{message}")
+
+            # Store the sent message with its timestamp
+            self.sent_messages.append(f"{timestamp}|{message}")
+
         except (serial.SerialException, OSError) as e:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
             self.disconnect()
