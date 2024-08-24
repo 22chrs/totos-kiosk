@@ -14,12 +14,18 @@ class SerialController {
     String receivedTimestamp;
     unsigned long timestampMillisOffset;
 
+    // Variables to handle timestamp suffix logic
+    String lastSentTimestamp;  // Last sent timestamp
+    char timestampSuffix;      // Suffix to append to the timestamp
+
     void handleReceivedMessage(const String &message);
     bool processMoveDeviceCommand(const String &message);
     void sendMessage(const String &message);
     bool isValidMessage(const String &message);
     String calculateCRC(const String &message);
     unsigned long getMillisFromTimestamp(const String &timestamp);
+
+    String generateTimestampWithSuffix();  // Method to generate a timestamp with a suffix
 
    public:
     SerialController();

@@ -135,7 +135,21 @@ class BoardSerial:
         minutes = current_time.tm_min  # Minutes as a two-digit number
 
         # Format the timestamp as yymmddhhmmssss with ssss as milliseconds
-        return f"{year:02}{month:02}{day:02}{hour:02}{minutes:02}{millis:04}"
+        new_timestamp = f"{year:02}{month:02}{day:02}{hour:02}{minutes:02}{millis:04}"
+
+        # Check if this timestamp is the same as the last one
+        if new_timestamp == self.last_timestamp:
+            # Increment the suffix if the timestamp is the same
+            self.timestamp_suffix = chr(ord(self.timestamp_suffix) + 1)
+            if self.timestamp_suffix > 'Z':  # Reset if we go past 'Z'
+                self.timestamp_suffix = 'A'
+        else:
+            # Reset suffix if the timestamp is new
+            self.timestamp_suffix = 'A'
+            self.last_timestamp = new_timestamp
+
+        # Return the timestamp with the suffix
+        return new_timestamp + self.timestamp_suffix
 
     def send_data(self, message):
         if self.serial_connection is None:
@@ -152,11 +166,11 @@ class BoardSerial:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
             self.disconnect()
 
-    def add_crc_and_frame(self, message, timestamp): 
+    def add_crc_and_frame(self, message, timestamp):
         # Add STX, ETX, and CRC to the message
         message_with_timestamp = f"{timestamp}|{message}"
         crc = self.calculate_crc(message_with_timestamp)
-        return f"<STX>{message_with_timestamp}|{crc}<ETX>" 
+        return f"<STX>{message_with_timestamp}|{crc}<ETX>"
 
     def calculate_crc(self, message):
         # CRC-16-CCITT calculation
