@@ -26,6 +26,7 @@ if __name__ == '__main__':
         counter = 0  # Initialize a counter to track the number of iterations
         while True:
             await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 0, 100, 100)
+            await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse2", 0, 100, 100)
 
             # if counter % 2 == 0:
             #     # Execute the "move back to 0" commands every 2nd iteration

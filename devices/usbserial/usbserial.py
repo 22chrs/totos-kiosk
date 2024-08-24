@@ -126,21 +126,16 @@ class BoardSerial:
     def generate_timestamp(self):
         current_time = time.localtime()  # Get the current local time
         millis = int((time.time() % 1) * 1000)  # Get the current milliseconds
-        # Calculate milliseconds since midnight
-        milliseconds_since_midnight = (
-            current_time.tm_hour * 3600 * 1000
-            + current_time.tm_min * 60 * 1000
-            + current_time.tm_sec * 1000
-            + millis
-        )
 
         # Extract the relevant parts of the timestamp
         year = current_time.tm_year % 100  # Last two digits of the year
         month = current_time.tm_mon  # Month as a two-digit number
         day = current_time.tm_mday  # Day of the month as a two-digit number
+        hour = current_time.tm_hour  # Hour as a two-digit number
+        minutes = current_time.tm_min  # Minutes as a two-digit number
 
-        # Format the timestamp as yymmddssss with ssss always having 8 digits
-        return f"{year:02}{month:02}{day:02}{milliseconds_since_midnight:08}"
+        # Format the timestamp as yymmddhhmmssss with ssss as milliseconds
+        return f"{year:02}{month:02}{day:02}{hour:02}{minutes:02}{millis:04}"
 
     def send_data(self, message):
         if self.serial_connection is None:
