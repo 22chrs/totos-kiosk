@@ -54,17 +54,29 @@ class BoardSerial:
     def check_acknowledgment(self, ack_timestamp):
         """Check if the acknowledgment timestamp is in the list of sent messages and remove it if found."""
         found_index = None
-        for i, msg in enumerate(self.sent_messages):
+        for i, (_, msg) in enumerate(self.sent_messages):  # Unpack the tuple (send_time, message)
             if msg.startswith(ack_timestamp):
                 found_index = i
                 break
 
         if found_index is not None:
-            print(f"ACK received for timestamp {ack_timestamp}: FOUND in sent messages. Removing it.")
+            print(f"ACK received for timestamp {ack_timestamp}")
             del self.sent_messages[found_index]  # Remove the message from the list
         else:
             print(f"ACK received for timestamp {ack_timestamp}: !!!!!!!!!!! NOT FOUND in sent messages.")
 
+    async def check_old_ack_messages(self):
+        while True:
+            try:
+                current_time = time.time()
+                for i, (send_time, message) in enumerate(self.sent_messages[:]):
+                    if current_time - send_time > 5:
+                        print(f"WARNING: Message '{message}' has not been acknowledged in over 5 seconds.")
+                        del self.sent_messages[i]  # Remove the old message from the list
+                await asyncio.sleep(1)  # Check every second
+            except Exception as e:
+                print(f"Error in check_old_ack_messages: {str(e)}")
+                break
         
     def connect(self):
         try:
@@ -131,7 +143,7 @@ class BoardSerial:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self.connect)
             asyncio.ensure_future(self.send_periodic_ack()) 
-          
+            asyncio.ensure_future(self.check_old_ack_messages())  # Start checking for old ACK messages
         except Exception as e:
             print(f"Error during async_connect: {str(e)}")
             self.disconnect()
@@ -176,8 +188,8 @@ class BoardSerial:
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
             print(f"@{alias} -------> {timestamp}|{message}")
 
-            # Store the sent message with its timestamp
-            self.sent_messages.append(f"{timestamp}|{message}")
+            # Store the sent message with its timestamp (store as a tuple: (send_time, message_with_timestamp))
+            self.sent_messages.append((time.time(), f"{timestamp}|{message}"))
 
         except (serial.SerialException, OSError) as e:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")

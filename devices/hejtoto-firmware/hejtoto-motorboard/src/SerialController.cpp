@@ -99,15 +99,22 @@ void SerialController::handleReceivedMessage(const String &message) {
                 String timestamp = cmdContent.substring(0, firstPipeIndex);
                 String cmdWithoutTimestamp = cmdContent.substring(firstPipeIndex + 1);
 
+                // Add the acknowledgment response here
+                if (connectionStatus == true) {
+                    sendAckMessage(timestamp);
+                }
+
                 if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
                     receivedTimestamp = timestamp;
                     timestampMillisOffset = millis();
                     sendMessage(alias);
+                    sendAckMessage(timestamp);
                     Serial.println(getCurrentTime());
                     // } else if (cmdWithoutTimestamp == "heartbeat") {
                     //     sendMessage("heartbeat");
                 } else if (cmdWithoutTimestamp == "connected") {
                     Neopixel(GREEN);
+                    sendAckMessage(timestamp);
                     connectionStatus = true;
                 } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
                     sendMessage(cmdWithoutTimestamp + "started");
@@ -119,8 +126,6 @@ void SerialController::handleReceivedMessage(const String &message) {
                     }
                 }
 
-                // Add the acknowledgment response here
-                sendAckMessage(timestamp);
             } else {
                 Serial.println("Invalid message format: Timestamp separator '|' not found");
             }
@@ -224,3 +229,7 @@ String SerialController::generateTimestampWithSuffix() {
 
     return newTimestamp + timestampSuffix;
 }
+
+// eyJhIjoiNzkxOWI0ODU3NGI2MjU3ZWFlYjQzMzgyZjhkNGZkMGIiLCJ0IjoiZDlkZjRlNjYtYWE2ZC00ZTk5LTk5ODktY2FkZTkxZmRlYTM4IiwicyI6IlpqUTFNVGxoWTJRdFlXRmxaUzAwT0RWakxXSmhZbUl0WldNMVlqa3hPREJoWm1NMCJ9
+
+// https://github.com/brenner-tobias/addon-cloudflared/wiki/How-tos#how-to-configure-remote-tunnels
