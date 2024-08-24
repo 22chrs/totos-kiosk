@@ -89,7 +89,7 @@ void init_BoardSelect() {
         // board = ROBOCUBE_FRONT;
 
         currentBoardConfig = &RoboCubeBackConfig;
-        Serial.println("Board = RoboCubeBACK");
+        Serial.println("Board = RoboCubeBack");
         board = ROBOCUBE_BACK;
     } else {
         mcp.pinMode(J1_PIN, INPUT);

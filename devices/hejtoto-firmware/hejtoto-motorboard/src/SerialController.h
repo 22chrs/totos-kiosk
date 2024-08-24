@@ -1,5 +1,3 @@
-// SerialController.h
-
 #ifndef SERIALCONTROLLER_H
 #define SERIALCONTROLLER_H
 
@@ -15,6 +13,8 @@ class SerialController {
     void handleReceivedMessage(const String &message);
     bool processMoveDeviceCommand(const String &message);
     void sendMessage(const String &message);
+    bool isValidMessage(const String &message);
+    String calculateCRC(const String &message);
 
    public:
     SerialController();

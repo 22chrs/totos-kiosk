@@ -3,7 +3,6 @@ import serial
 import time
 from serial.tools import list_ports
 
-# Class to manage connection, reconnection, alias management, and serial communication
 class ConnectionManager:
     def __init__(self, vid, pid, baudrate, timeout, required_aliases):
         self.vid = vid
@@ -39,25 +38,32 @@ class ConnectionManager:
                 del self.boards[alias]
 
     async def reconnect_boards(self):
+        print("reconnect missing board")
         last_log_time = time.time()
         log_interval = 10
 
         while True:
-            self.check_board_connections()
-            if not self.all_required_aliases_connected():
-                missing_aliases = [alias for alias in self.required_aliases if alias not in self.boards]
-                current_time = time.time()
-                if current_time - last_log_time >= log_interval:
-                    print(f"Attempting to reconnect to missing boards: {', '.join(missing_aliases)}")
-                    last_log_time = current_time
-                await self.discover_boards()
+            try:
+                self.check_board_connections()
+                if not self.all_required_aliases_connected():
+                    missing_aliases = [alias for alias in self.required_aliases if alias not in self.boards]
+                    current_time = time.time()
+                    if current_time - last_log_time >= log_interval:
+                        print(f"Attempting to reconnect to missing boards: {', '.join(missing_aliases)}")
+                        last_log_time = current_time
+                    await self.discover_boards()
+            except Exception as e:
+                print(f"Error in reconnect_boards: {str(e)}")
             await asyncio.sleep(0.5)
 
     async def discover_boards(self):
         available_ports = self._get_ports_with_pid_and_vid(self.vid, self.pid)
         for port_info in available_ports:
+            # Skip the port only if it is actively being used by a connected board
             if any(board.port == port_info.device for board in self.boards.values()):
                 continue
+            
+            # Attempt to reconnect
             board = self.BoardSerial(
                 port_info.device, self.baudrate, self.timeout, valid_aliases=self.required_aliases
             )
@@ -72,6 +78,7 @@ class ConnectionManager:
         await self.discover_boards()
         await self.check_required_aliases()
         asyncio.ensure_future(self.reconnect_boards())
+        # Schedule send_periodic_ack for each board after initial discovery
         for board in self.boards.values():
             asyncio.ensure_future(board.send_periodic_ack())
 
@@ -84,26 +91,28 @@ class ConnectionManager:
             self.board_info = {'port': port, 'alias': None}
             self.serial_connection = None
             self.valid_aliases = valid_aliases if valid_aliases is not None else set()
-            self.is_ack_sent = False
+            self.is_heartbeat_sent = False
             self.connected = False
+            self.last_command = None
 
         def preprocess_data(self, data, alias=None):
-            # Remove leading/trailing whitespace
             processed_data = data.strip()
-            
-            # Check if the processed data starts with '->'
-            if processed_data.startswith("->"):
-                # Slice off the '->' from the start of the string
-                processed_data = processed_data[2:].strip()  # Remove the '->' and any leading/trailing whitespace after slicing
-                print(f"Valid message received: {processed_data}")  # Debugging valid messages
+            alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
+            if processed_data.startswith("<STX>") and processed_data.endswith("<ETX>"):
+                # Extract the content between <STX> and <ETX>
+                processed_data = processed_data[5:-5]  # Remove <STX> and <ETX>
+                
+                # Validate and extract the message part before the CRC check
+                message, crc = processed_data.rsplit("|", 1)
+                
+                # You might want to add a CRC check here to validate the integrity of the message.
+                # For now, we're assuming that if the structure is correct, the message is valid.
+                print(f"{alias_to_print} -> {message}")
+                return message
             else:
-                # If not valid, print for debugging and then clear processed_data
-                alias_to_print = alias if alias else "unknown alias"
-                print(f"Debug: {alias_to_print} -> {processed_data} (Invalid message)")
-                processed_data = ""  # Clear processed data as it's not a valid message
-            
-            print(f"Processed data: '{processed_data}'")  # Debugging statement to ensure correct processing
-            return processed_data
+                
+                print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from teensys serial.print commands
+                return ""
 
         def connect(self):
             try:
@@ -126,7 +135,7 @@ class ConnectionManager:
                     self.connected = False
                     return False
             return False
-        
+
         def receive_initial_alias(self):
             start_time = time.time()
             while True:
@@ -137,11 +146,11 @@ class ConnectionManager:
 
                 if self.serial_connection.in_waiting > 0:
                     raw_data = self.serial_connection.readline().decode().strip()
-                    processed_data = self.preprocess_data(raw_data)  # Use processed data
-                    if processed_data:  # Ensure there's data to process  
+                    processed_data = self.preprocess_data(raw_data)
+                    if processed_data:
                         if processed_data in self.valid_aliases:
                             self.board_info["alias"] = processed_data
-                            self.is_ack_sent = False
+                            self.is_heartbeat_sent = False
                             self.send_data("connected")
                         else:
                             print(f"Alias '{processed_data}' is not in the list of valid aliases. Ignoring board.")
@@ -152,43 +161,75 @@ class ConnectionManager:
 
         async def wait_for_acknowledgment(self):
             start_time = time.time()
+            expected_ack = f"{self.last_command}started"
+
             print(f"Waiting for acknowledgment from {self.board_info['alias']}")
-            while time.time() - start_time < self.timeout:  # Increase timeout if necessary
+            while time.time() - start_time < self.timeout:
                 if self.serial_connection.in_waiting > 0:
                     raw_data = self.serial_connection.readline().decode().strip()
-                    processed_data = self.preprocess_data(raw_data)  # Use processed data
-
-                    if processed_data:  # Ensure there's data to process
+                    processed_data = self.preprocess_data(raw_data)
+                    if processed_data:
                         print(f"Processed Acknowledgment received: {processed_data}")
-                        return processed_data  # Return processed data instead of raw data
-                await asyncio.sleep(0.05)  # Increase sleep to give more time for acknowledgment
+                        if processed_data == expected_ack:
+                            print(f"Correct acknowledgment received: {processed_data}")
+                            return processed_data
+                await asyncio.sleep(0.05)
 
             print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
             return None
 
         async def send_periodic_ack(self):
             while True:
-                if self.serial_connection is not None and self.board_info["alias"]:
-                    if not self.is_ack_sent:
-                        self.send_data(f"ACK:{self.board_info['alias']}")
-                        self.is_ack_sent = True
-                await asyncio.sleep(1)
+                try:
+                    if self.serial_connection is not None and self.board_info["alias"]:
+                        if not self.is_heartbeat_sent:
+                            self.send_data("heartbeat")
+                            self.is_heartbeat_sent = True
+                    await asyncio.sleep(1)  # Adjust the sleep interval as needed
+                    self.is_heartbeat_sent = False  # Reset flag to ensure periodic sending
+                except Exception as e:
+                    print(f"Error in send_periodic_ack: {str(e)}")
+                    break  # Break the loop if there's a critical error
 
         async def async_connect(self):
-            loop = asyncio.get_event_loop()
-            await loop.run_in_executor(None, self.connect)
+            try:
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(None, self.connect)
+            except Exception as e:
+                print(f"Error during async_connect: {str(e)}")
+                self.disconnect()
 
         def send_data(self, message):
             if self.serial_connection is None:
                 print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
                 return
             try:
-                self.serial_connection.write((message + '\n').encode())
+                message_with_crc = self.add_crc_and_frame(message)
+                self.serial_connection.write((message_with_crc + '\n').encode())
+                self.last_command = message
                 alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
                 print(f"@{alias} -------> {message}")
-            except serial.SerialException as e:
+            except (serial.SerialException, OSError) as e:
                 print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
                 self.disconnect()
+
+        def add_crc_and_frame(self, message):
+            # Add STX, ETX, and CRC to the message
+            message_to_send = f"CMD:{message}"
+            crc = self.calculate_crc(message_to_send)
+            return f"<STX>{message_to_send}|{crc}<ETX>"
+
+        def calculate_crc(self, message):
+            # CRC-16-CCITT calculation
+            crc = 0xFFFF
+            for char in message:
+                crc ^= ord(char)
+                for _ in range(8):
+                    if crc & 1:
+                        crc = (crc >> 1) ^ 0x8408
+                    else:
+                        crc >>= 1
+            return f"{crc:04X}".lower()  # Convert the CRC to lowercase
 
         def disconnect(self):
             if self.serial_connection and self.serial_connection.is_open:
@@ -198,7 +239,6 @@ class ConnectionManager:
             print(f"Disconnected from board at {self.port}")
 
 
-# Class to forward serial commands from known aliases to the monitor with special formatting
 class SerialCommandForwarder:
     def __init__(self, connection_manager):
         self.connection_manager = connection_manager
@@ -208,8 +248,8 @@ class SerialCommandForwarder:
             board = self.connection_manager.boards[alias]
             board.send_data(message)
             ack = await board.wait_for_acknowledgment()
-            expected_ack = f"{message}started"
-            print(f"Expected: '{expected_ack}', Received: '{ack}'")  # Debugging statement
+            expected_ack = f"CMD:{message}started"
+            print(f"Expected: '{expected_ack}', Received: '{ack}'")
 
             if ack and ack == expected_ack:
                 print(f"Acknowledgment received: {ack}")
@@ -221,19 +261,23 @@ class SerialCommandForwarder:
     async def monitor_and_forward(self):
         """Continuously monitor all boards and forward their messages."""
         while True:
-            for alias, board in list(self.connection_manager.boards.items()):
-                try:
-                    if board.serial_connection and board.serial_connection.in_waiting > 0:
-                        incoming_data = board.serial_connection.readline().decode().strip()
-                        if incoming_data:
-                            print(f"{board.board_info['alias']} -> {incoming_data}")
-                except (OSError, serial.SerialException) as e:
-                    print(f"Error: {str(e)} - Disconnecting board '{alias}'")
-                    board.disconnect()  # Disconnect and cleanup
-                    del self.connection_manager.boards[alias]  # Remove the board from the manager
+            try:
+                for alias, board in list(self.connection_manager.boards.items()):
+                    try:
+                        if board.serial_connection and board.serial_connection.in_waiting > 0:
+                            incoming_data = board.serial_connection.readline().decode().strip()
+                            processed_data = board.preprocess_data(incoming_data)
+                            if processed_data.startswith("CMD:"):
+                                print(f"{board.board_info['alias']} -> {processed_data}")
+                    except (OSError, serial.SerialException) as e:
+                        print(f"Error: {str(e)} - Disconnecting board '{alias}'")
+                        board.disconnect()  # Disconnect and cleanup
+                        del self.connection_manager.boards[alias]  # Remove the board from the manager
+            except Exception as e:
+                print(f"Error in monitor_and_forward: {str(e)}")
             await asyncio.sleep(0.01)
 
-# Class to handle sending commands to the Teensy and processing acknowledgments
+
 class TeensyController:
     def __init__(self, connection_manager, command_forwarder):
         self.connection_manager = connection_manager
@@ -246,6 +290,7 @@ class TeensyController:
         else:
             print(f"Error: Alias {alias} not found among connected boards.")
 
+
 # BoardSerial class remains largely the same but without unnecessary methods
 class BoardSerial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
@@ -257,8 +302,9 @@ class BoardSerial:
         self.serial_connection = None
         self.received_ack = asyncio.Event()
         self.valid_aliases = valid_aliases if valid_aliases is not None else set()
-        self.is_ack_sent = False
+        self.is_heartbeat_sent = False
         self.connected = False
+        self.last_command = None
 
     def connect(self):
         try:
@@ -296,7 +342,7 @@ class BoardSerial:
                     print(f"-> Received: {data}")
                     if data in self.valid_aliases:
                         self.board_info["alias"] = data
-                        self.is_ack_sent = False
+                        self.is_heartbeat_sent = False
                         self.send_data("connected")
                     else:
                         print(f"Alias '{data}' is not in the list of valid aliases. Ignoring board.")
@@ -307,23 +353,22 @@ class BoardSerial:
 
     async def wait_for_acknowledgment(self):
         start_time = time.time()
-        expected_ack = f"{self.last_command}started"  # Assuming self.last_command holds the last command sent
+        expected_ack = f"CMD:{self.last_command}started"  # Ensuring CMD prefix in expected ack
 
         print(f"Waiting for acknowledgment from {self.board_info['alias']}")
-        while time.time() - start_time < self.timeout:  # Set your desired timeout here
+        while time.time() - start_time < self.timeout:
             if self.serial_connection.in_waiting > 0:
                 raw_data = self.serial_connection.readline().decode().strip()
-                processed_data = self.preprocess_data(raw_data)  # Use processed data
-
-                if processed_data:  # Ensure there's data to process
+                processed_data = self.preprocess_data(raw_data)
+                if processed_data:
                     print(f"Processed data: '{processed_data}'")
                     if processed_data == expected_ack:
                         print(f"Correct acknowledgment received: {processed_data}")
                         return processed_data
                     else:
-                        print(f"Ignoring message: {processed_data}")  # Other non-matching messages
+                        print(f"Ignoring message: {processed_data}")
 
-            await asyncio.sleep(0.01)  # Short sleep to yield control and allow other async tasks to run
+            await asyncio.sleep(0.01)
 
         print(f"Error: No acknowledgment received within timeout for {self.board_info['alias']}")
         return None
@@ -331,9 +376,9 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             if self.serial_connection is not None and self.board_info["alias"]:
-                if not self.is_ack_sent:
-                    self.send_data(f"ACK:{self.board_info['alias']}")
-                    self.is_ack_sent = True
+                if not self.is_heartbeat_sent:
+                    self.send_data("heartbeat")
+                    self.is_heartbeat_sent = True
             await asyncio.sleep(1)
 
     async def async_connect(self):
@@ -345,13 +390,32 @@ class BoardSerial:
             print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
             return
         try:
-            self.serial_connection.write((message + '\n').encode())
-            self.last_command = message  # Store the last command
+            message_with_crc = self.add_crc_and_frame(message)
+            self.serial_connection.write((message_with_crc + '\n').encode())
+            self.last_command = message
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
-            print(f"@{alias} -------> {message}")
+            print(f"@{alias} -------> {message_with_crc}")
         except (serial.SerialException, OSError) as e:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
             self.disconnect()
+
+    def add_crc_and_frame(self, message):
+        # Add STX, ETX, and CRC to the message
+        message_to_send = f"CMD:{message}"
+        crc = self.calculate_crc(message_to_send)
+        return f"<STX>{message_to_send}|{crc}<ETX>"
+
+    def calculate_crc(self, message):
+        # CRC-16-CCITT calculation
+        crc = 0xFFFF
+        for char in message:
+            crc ^= ord(char)
+            for _ in range(8):
+                if crc & 1:
+                    crc = (crc >> 1) ^ 0x8408
+                else:
+                    crc >>= 1
+        return f"{crc:04X}"
 
     def disconnect(self):
         if self.serial_connection and self.serial_connection.is_open:
@@ -359,3 +423,54 @@ class BoardSerial:
         self.connected = False
         self.board_info['alias'] = None
         print(f"Disconnected from board at {self.port}")
+
+
+# Class to forward serial commands from known aliases to the monitor with special formatting
+class SerialCommandForwarder:
+    def __init__(self, connection_manager):
+        self.connection_manager = connection_manager
+
+    async def forward_command(self, alias, message):
+        if alias in self.connection_manager.boards:
+            board = self.connection_manager.boards[alias]
+            board.send_data(message)
+            ack = await board.wait_for_acknowledgment()
+            expected_ack = f"CMD:{message}started"
+            print(f"Expected: '{expected_ack}', Received: '{ack}'")
+
+            if ack and ack == expected_ack:
+                print(f"Acknowledgment received: {ack}")
+            else:
+                print(f"Error: No correct acknowledgment received for {message}. Expected: {expected_ack}, Received: {ack if ack else 'None'}")
+        else:
+            print(f"Error: Alias {alias} not found among connected boards.")
+
+    async def monitor_and_forward(self):
+        """Continuously monitor all boards and forward their messages."""
+        while True:
+            for alias, board in list(self.connection_manager.boards.items()):
+                try:
+                    if board.serial_connection and board.serial_connection.in_waiting > 0:
+                        incoming_data = board.serial_connection.readline().decode().strip()
+                        processed_data = board.preprocess_data(incoming_data)
+                        if processed_data.startswith("CMD:"):
+                            print(f"{board.board_info['alias']} -> {processed_data}")
+                except (OSError, serial.SerialException) as e:
+                    print(f"Error: {str(e)} - Disconnecting board '{alias}'")
+                    board.disconnect()  # Disconnect and cleanup
+                    del self.connection_manager.boards[alias]  # Remove the board from the manager
+            await asyncio.sleep(0.01)
+
+
+# Class to handle sending commands to the Teensy and processing acknowledgments
+class TeensyController:
+    def __init__(self, connection_manager, command_forwarder):
+        self.connection_manager = connection_manager
+        self.command_forwarder = command_forwarder
+
+    async def send_move_device_command(self, alias, stepper_name, position, max_speed_percentage, drive_current_percentage):
+        if alias in self.connection_manager.boards:
+            command = f'moveDevice("{stepper_name}", {position}, {max_speed_percentage}, {drive_current_percentage})'
+            await self.command_forwarder.forward_command(alias, command)
+        else:
+            print(f"Error: Alias {alias} not found among connected boards.")

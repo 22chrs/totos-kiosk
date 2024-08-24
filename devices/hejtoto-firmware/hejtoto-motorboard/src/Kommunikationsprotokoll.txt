@@ -1,0 +1,28 @@
+1. Befehlserkennung und -Unterscheidung:
+
+	•	Präfixe verwenden: Nutze ein spezielles Präfix (z.B. “CMD:”), um echte Befehle von Debug-Ausgaben zu unterscheiden.
+	•	Beispiel: “CMD:RoboCubeFront” vs. “Hallo123Test”
+	•	Nachrichtenformat: Halte ein striktes Nachrichtenformat ein, z.B. CMD:.
+
+2. Checksummen zur Fehlererkennung:
+
+	•	Synchronisation: Verwende Start- und End-Bytes (<STX> und <ETX>), um den Anfang und das Ende einer Nachricht klar zu kennzeichnen. Dies stellt sicher, dass der Beginn und das Ende einer Nachricht korrekt erkannt wird und verhindert, dass Teile einer Nachricht fälschlicherweise als gültig angesehen werden.
+	•	Checksumme berechnen: Berechne eine einfache Prüfsumme (CRC-16-Prüfsumme aller Bytes im Befehl).
+	•	Checksumme anhängen: Füge die Checksumme am Ende des Befehls hinzu.
+	•	Beispiel: “<STX>CMD:RoboCubeFront|<CRC><ETX>”
+
+3. Acknowledge und Retry-Mechanismus:
+
+	•	ACK/NACK: Der Teensy sendet eine Bestätigung (ACK) oder eine Fehlermeldung (NACK) zurück.
+	•	Timeout: Wenn der PC kein ACK innerhalb eines definierten Zeitraums erhält, sendet er den Befehl erneut (Retry).
+	•	Retry-Limit: Begrenze die Anzahl der Wiederholungsversuche, um Endlosschleifen zu vermeiden.
+
+4. Serial.print-Debugging trennen:
+
+	•	Debug-Ausgaben filtern: Auf dem PC werden nur Nachrichten mit dem Präfix CMD: als Befehle verarbeitet; andere werden ignoriert.
+
+5. Protokollfluss:
+
+	•	1. Schritt: PC sendet <STX>CMD:RoboCubeFront|<ETX>.
+	•	2. Schritt: Teensy prüft die Checksumme und sendet ACK oder NACK zurück.
+	•	3. Schritt: Bei ACK ist der Befehl erfolgreich abgeschlossen; bei NACK oder Timeout erfolgt ein erneuter Sendeversuch bis zum Erreichen des Retry-Limits.
