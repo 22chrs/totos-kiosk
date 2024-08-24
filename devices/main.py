@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     async def main():
         await usb_manager.start()  # Start the connection manager
-        #asyncio.create_task(send_periodically())  # Start the periodic command sender
+        asyncio.create_task(send_periodically())  # Start the periodic command sender
         await command_forwarder.monitor_and_forward()  # Start monitoring and forwarding commands
 
     loop.run_until_complete(main())  # Run the main loop

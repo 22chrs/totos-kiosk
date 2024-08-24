@@ -224,7 +224,7 @@ class ConnectionManager:
         def add_crc_and_frame(self, message):
             # Add STX, ETX, and CRC to the message
             crc = self.calculate_crc(message)
-            return f"<STX>{message}|{crc}<ETX>"
+            return f"<STX>{message}|{crc}<ETX>" 
 
         def calculate_crc(self, message):
             # CRC-16-CCITT calculation
@@ -254,28 +254,18 @@ class SerialCommandForwarder:
         if alias in self.connection_manager.boards:
             board = self.connection_manager.boards[alias]
             board.send_data(message)
-            ack = await board.wait_for_acknowledgment()
-            expected_ack = f"{message}started"
-            print(f"Expected: '{expected_ack}', Received: '{ack}'")
-
-            if ack and ack == expected_ack:
-                print(f"Acknowledgment received: {ack}")
-            else:
-                print(f"Error: No correct acknowledgment received for {message}. Expected: {expected_ack}, Received: {ack if ack else 'None'}")
         else:
             print(f"Error: Alias {alias} not found among connected boards.")
 
-    async def monitor_and_forward(self):
-        """Continuously monitor all boards and forward their messages."""
+    async def monitor_and_forward(self): #Poststelle, empfanfen und weiterleiten
         while True:
             try:
                 for alias, board in list(self.connection_manager.boards.items()):
                     try:
                         if board.serial_connection and board.serial_connection.in_waiting > 0:
                             incoming_data = board.serial_connection.readline().decode().strip()
-                            processed_data = board.preprocess_data(incoming_data)
-                            if processed_data.startswith("CMD:"):
-                                print(f"{board.board_info['alias']} -> {processed_data}")
+                            board.preprocess_data(incoming_data)
+
                     except (OSError, serial.SerialException) as e:
                         print(f"Error: {str(e)} - Disconnecting board '{alias}'")
                         board.disconnect()  # Disconnect and cleanup
