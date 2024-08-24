@@ -76,6 +76,17 @@ bool SerialController::isValidMessage(const String &message) {
     return false;
 }
 
+void SerialController::sendAckMessage(const String &timestamp) {
+    String ackMessage = "ack:" + timestamp;
+
+    // Generate the current timestamp with a unique letter suffix
+    String timestampToSend = generateTimestampWithSuffix();
+
+    // Add STX, ETX, and CRC to the acknowledgment message
+    String messageToSend = "<STX>" + timestampToSend + "|" + ackMessage + "|" + calculateCRC(timestampToSend + "|" + ackMessage) + "<ETX>";
+    Serial.println(messageToSend);
+}
+
 void SerialController::handleReceivedMessage(const String &message) {
     if (message.startsWith("<STX>") && message.endsWith("<ETX>")) {
         String command = message.substring(5, message.length() - 5);
@@ -107,6 +118,9 @@ void SerialController::handleReceivedMessage(const String &message) {
                         sendMessage(cmdWithoutTimestamp + "failed");
                     }
                 }
+
+                // Add the acknowledgment response here
+                sendAckMessage(timestamp);
             } else {
                 Serial.println("Invalid message format: Timestamp separator '|' not found");
             }

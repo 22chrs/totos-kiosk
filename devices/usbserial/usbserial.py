@@ -15,6 +15,7 @@ class BoardSerial:
         self.connected = False
         self.last_command = None
         self.last_timestamp = 0
+        self.received_timestamps = {}  # Store received timestamps for later acknowledgment check
 
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
@@ -28,20 +29,26 @@ class BoardSerial:
             try:
                 message, crc = processed_data.rsplit("|", 1)
                 
-                # Now, remove the timestamp from the start of the message
+                # Now, remove the timestamp from the start of the message and store it
                 if '|' in message:
-                    _, message = message.split('|', 1)
+                    timestamp, message = message.split('|', 1)
+                    self.received_timestamps[timestamp] = message  # Store the timestamp and message
 
-                # You might want to add a CRC check here to validate the integrity of the message.
-                # For now, we're assuming that if the structure is correct, the message is valid.
-                print(f"{alias_to_print} -> {message}")
+                # Print for debugging
+                print(f"{alias_to_print} -> {message} (timestamp: {timestamp})")
                 return message
             except ValueError:
                 print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
                 return ""
         else:
-            print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from Teensys serial.print commands
+            print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from Teensy's serial.print commands
             return ""
+
+    def check_for_ack(self, timestamp):
+        """Check if a specific acknowledgment has been received."""
+        return self.received_timestamps.get(timestamp, None)
+
+        
     def connect(self):
         try:
             self.serial_connection = serial.Serial(self.board_info['port'], self.baudrate, timeout=self.timeout)
@@ -97,8 +104,9 @@ class BoardSerial:
                 raw_data = self.serial_connection.readline().decode().strip()
                 processed_data = self.preprocess_data(raw_data)
                 if processed_data:
-                    print(f"Processed Acknowledgment received: {processed_data}")
-                    if processed_data == expected_ack:
+                    # Check if the acknowledgment with the correct timestamp was received
+                    ack_message = self.check_for_ack(self.last_timestamp)
+                    if ack_message and processed_data == expected_ack:
                         print(f"Correct acknowledgment received: {processed_data}")
                         return processed_data
             await asyncio.sleep(0.05)

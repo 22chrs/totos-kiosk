@@ -17,7 +17,7 @@ class SerialController {
     // Variables to handle timestamp suffix logic
     String lastSentTimestamp;  // Last sent timestamp
     char timestampSuffix;      // Suffix to append to the timestamp
-
+    void sendAckMessage(const String &timestamp);
     void handleReceivedMessage(const String &message);
     bool processMoveDeviceCommand(const String &message);
     void sendMessage(const String &message);
