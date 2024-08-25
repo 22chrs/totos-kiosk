@@ -6,7 +6,7 @@
 class SerialController {
    private:
     String alias;
-    bool connectionStatus;
+    boolean connectionStatus;
     unsigned long lastReceivedMessage;
     const unsigned long connectionTimeout;
 
@@ -19,9 +19,9 @@ class SerialController {
     char timestampSuffix;      // Suffix to append to the timestamp
     void sendAckMessage(const String &timestamp);
     void handleReceivedMessage(const String &message);
-    bool processMoveDeviceCommand(const String &message);
+    void processMoveDeviceCommand(const String &message);
     void sendMessage(const String &message);
-    bool isValidMessage(const String &message);
+    boolean isValidMessage(const String &message);
     String calculateCRC(const String &message);
     unsigned long getMillisFromTimestamp(const String &timestamp);
 
@@ -32,7 +32,7 @@ class SerialController {
     void setAlias(const String &alias);
     void begin(uint32_t baudRate);
     void update();
-    bool isConnected();
+    boolean isConnected();
     String getReceivedTimestamp() const;             // Method to get the received timestamp
     unsigned long getTimestampMillisOffset() const;  // Method to get the millis offset
     String getCurrentTime();                         // Method to calculate the current exact time

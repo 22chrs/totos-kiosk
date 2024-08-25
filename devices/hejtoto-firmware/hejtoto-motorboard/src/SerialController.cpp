@@ -45,11 +45,11 @@ void SerialController::update() {
     }
 }
 
-bool SerialController::isConnected() {
+boolean SerialController::isConnected() {
     return connectionStatus;
 }
 
-bool SerialController::isValidMessage(const String &message) {
+boolean SerialController::isValidMessage(const String &message) {
     // Check if the message starts with <STX> and ends with <ETX>
     if (message.startsWith("<STX>") && message.endsWith("<ETX>")) {
         String command = message.substring(5, message.length() - 5);
@@ -117,13 +117,7 @@ void SerialController::handleReceivedMessage(const String &message) {
                     sendAckMessage(timestamp);
                     connectionStatus = true;
                 } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
-                    sendMessage(cmdWithoutTimestamp + "started");
-                    bool success = processMoveDeviceCommand(cmdWithoutTimestamp);
-                    if (success) {
-                        sendMessage(cmdWithoutTimestamp + "finished");
-                    } else {
-                        sendMessage(cmdWithoutTimestamp + "failed");
-                    }
+                    processMoveDeviceCommand(cmdWithoutTimestamp);
                 }
 
             } else {
@@ -137,7 +131,7 @@ void SerialController::handleReceivedMessage(const String &message) {
     }
 }
 
-bool SerialController::processMoveDeviceCommand(const String &message) {
+void SerialController::processMoveDeviceCommand(const String &message) {
     int firstQuote = message.indexOf('"');
     int secondQuote = message.indexOf('"', firstQuote + 1);
     String stepperName = message.substring(firstQuote + 1, secondQuote);
@@ -150,8 +144,7 @@ bool SerialController::processMoveDeviceCommand(const String &message) {
     int maxSpeedPercentage = message.substring(secondComma + 1, thirdComma).toInt();
     int driveCurrentPercentage = message.substring(thirdComma + 1).toInt();
 
-    bool result = moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage);
-    return result;
+    moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage);
 }
 
 void SerialController::sendMessage(const String &message) {
@@ -229,7 +222,5 @@ String SerialController::generateTimestampWithSuffix() {
 
     return newTimestamp + timestampSuffix;
 }
-
-// eyJhIjoiNzkxOWI0ODU3NGI2MjU3ZWFlYjQzMzgyZjhkNGZkMGIiLCJ0IjoiZDlkZjRlNjYtYWE2ZC00ZTk5LTk5ODktY2FkZTkxZmRlYTM4IiwicyI6IlpqUTFNVGxoWTJRdFlXRmxaUzAwT0RWakxXSmhZbUl0WldNMVlqa3hPREJoWm1NMCJ9
 
 // https://github.com/brenner-tobias/addon-cloudflared/wiki/How-tos#how-to-configure-remote-tunnels
