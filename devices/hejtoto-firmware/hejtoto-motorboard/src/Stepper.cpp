@@ -28,6 +28,9 @@ void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current)
 
 void moveMotorToAbsPosition(byte stepperX, double newPosition) {
     newPosition = newPosition * MICROSTEPS * RESOLUTION / currentBoardConfig->stepper[stepperX].ratio;
+    stepperMotors[stepperX].state.startPosition = stepperMotors[stepperX].stepper->getPosition();
+    stepperMotors[stepperX].state.destinationPosition = newPosition;
+    stepperMotors[stepperX].state.isActivated = true;
     stepperMotors[stepperX].stepper->moveAbsAsync(newPosition);
 }
 
@@ -48,6 +51,11 @@ void init_Stepper() {
         stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].driveCurrent);
         stepperMotors[i].driver->shaft(currentBoardConfig->stepper[i].inverseDirection);  // Set direction inversion based on configuration
 
+        stepperMotors[i].state.isActivated = false;        // Initialize
+        stepperMotors[i].state.isHomed = false;            // Initialize
+        stepperMotors[i].state.startPosition = 0.0;        // Initialize
+        stepperMotors[i].state.destinationPosition = 0.0;  // Initialize
+
         //! new
         // stepperMotors[i].driver->pdn_disable(true);      // Use UART
         // stepperMotors[i].driver->I_scale_analog(false);  // Set current scaling
@@ -65,14 +73,6 @@ void init_Stepper() {
         stepperMotors[i].stepper->setPosition(0);
         deactivateDriverViaUART(i);  // Treiber alle deaktiveren via UART
         delay(5);
-
-        // stepperMotors[0].stepper->setPosition(0);
-        // stepperMotors[1].stepper->setPosition(0);
-
-        // moveMotorToAbsPosition(1, -100);
-        // delay(100);
-        // stepperMotors[1].stepper->moveAbsAsync(-3300);
-        //  stepperMotors[0].stepper->moveAbsAsync(3300);
     }
 }
 
@@ -136,10 +136,16 @@ void moveMotorToRelPosition(byte stepperX, double newPosition) {
 
 boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition) {
     newPosition = newPosition * MICROSTEPS * RESOLUTION / currentBoardConfig->stepper[stepperX].ratio;
-    double newPosition_A = newPosition;
-    double newPosition_B = newPosition;
-    stepperMotors[stepperX].stepper->moveAbsAsync(newPosition_A);
-    stepperMotors[stepperY].stepper->moveAbsAsync(newPosition_B);
+
+    stepperMotors[stepperX].state.startPosition = stepperMotors[stepperX].stepper->getPosition();
+    stepperMotors[stepperY].state.startPosition = stepperMotors[stepperY].stepper->getPosition();
+    stepperMotors[stepperX].state.destinationPosition = newPosition;
+    stepperMotors[stepperY].state.destinationPosition = newPosition;
+    stepperMotors[stepperX].state.isActivated = true;
+    stepperMotors[stepperY].state.isActivated = true;
+
+    stepperMotors[stepperX].stepper->moveAbsAsync(newPosition);
+    stepperMotors[stepperY].stepper->moveAbsAsync(newPosition);
 
     // Set target positions for each stepper
     // stepperMotors[stepperX ].stepper->setTargetAbs(newPosition_A);
@@ -156,6 +162,7 @@ boolean motorMovingState(byte stepperX) {
 }
 
 void stopMotor(byte stepperX) {
+    stepperMotors[stepperX].state.isActivated = true;  // that the status will be checked next time
     stepperMotors[stepperX].stepper->stop();
 }
 
@@ -205,7 +212,7 @@ boolean homeMotor(byte stepperX) {
         Serial.println("Endstop reverse triggered. Stop.");
         if (failedHoming == true) {
             Serial.println("Endstop not reached. Homing failed.");
-            currentBoardConfig->stepper[stepperX].isHomed = false;
+            stepperMotors[stepperX].state.isHomed = false;
             return false;
         }
 
@@ -238,7 +245,7 @@ boolean homeMotor(byte stepperX) {
         }
         if (failedHoming == true) {
             Serial.println("Endstop not cleared. Homing failed.");
-            currentBoardConfig->stepper[stepperX].isHomed = false;
+            stepperMotors[stepperX].state.isHomed = false;
             return false;
         }
         Serial.println("Endstop triggered. Stop.");
@@ -276,7 +283,7 @@ boolean homeMotor(byte stepperX) {
 
         if (failedHoming == true) {
             Serial.println("Endstop not cleared. Homing failed.");
-            currentBoardConfig->stepper[stepperX].isHomed = false;
+            stepperMotors[stepperX].state.isHomed = false;
             return false;
         }
 
@@ -293,12 +300,16 @@ boolean homeMotor(byte stepperX) {
         setPositionMotor(stepperX, 0);
         Serial.println("Position saved as 0");
         Serial.println("Homing Successful.");
-        currentBoardConfig->stepper[stepperX].isHomed = true;
+        stepperMotors[stepperX].state.isHomed = true;
+
+        stepperMotors[stepperX].state.isActivated = false;
+        stepperMotors[stepperX].state.startPosition = 0;
+        stepperMotors[stepperX].state.destinationPosition = 0;
         return true;
     }
     // If none of the conditions for a successful homing are met, return false
     Serial.println("Homing failed.");  // Optional: add this line if you want to log the failure before returning
-    currentBoardConfig->stepper[stepperX].isHomed = false;
+    stepperMotors[stepperX].state.isHomed = false;
     return false;
 }
 
@@ -331,8 +342,8 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         }
         if (failedHoming == true) {
             Serial.println("Homing failed");
-            currentBoardConfig->stepper[stepperX].isHomed = false;
-            currentBoardConfig->stepper[stepperY].isHomed = false;
+            stepperMotors[stepperX].state.isHomed = false;
+            stepperMotors[stepperY].state.isHomed = false;
             return false;
         }
     }
@@ -380,8 +391,8 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         }
         if (failedHoming == true) {
             Serial.println("Homing failed");
-            currentBoardConfig->stepper[stepperX].isHomed = false;
-            currentBoardConfig->stepper[stepperY].isHomed = false;
+            stepperMotors[stepperX].state.isHomed = false;
+            stepperMotors[stepperY].state.isHomed = false;
             return false;
         }
     }
@@ -405,14 +416,22 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
 
     Serial.println("Position saved as 0.");
     Serial.println("Homing Successful.");
-    currentBoardConfig->stepper[stepperX].isHomed = true;
-    currentBoardConfig->stepper[stepperY].isHomed = true;
+    stepperMotors[stepperX].state.isHomed = true;
+    stepperMotors[stepperY].state.isHomed = true;
+
+    stepperMotors[stepperX].state.isActivated = false;
+    stepperMotors[stepperY].state.isActivated = false;
+    stepperMotors[stepperX].state.startPosition = 0;
+    stepperMotors[stepperY].state.startPosition = 0;
+    stepperMotors[stepperX].state.destinationPosition = 0;
+    stepperMotors[stepperY].state.destinationPosition = 0;
+
     return true;
 
     // If none of the conditions for a successful homing are met, return false
     Serial.println("Homing failed.");  // Optional: add this line if you want to log the failure before returning
-    currentBoardConfig->stepper[stepperX].isHomed = false;
-    currentBoardConfig->stepper[stepperY].isHomed = false;
+    stepperMotors[stepperX].state.isHomed = false;
+    stepperMotors[stepperY].state.isHomed = false;
     return false;
 }
 
@@ -427,9 +446,34 @@ void testSerialCommunication() {
     // Serial.println(msread);
 }
 
-double currentMotorPosition(byte stepperX) {
-    double currentPosition = 0;
-    currentPosition = stepperMotors[stepperX].stepper->getPosition();
-    Serial.println(currentPosition);
-    return currentPosition;
+double stepperMovementPercentageCompleted(byte stepperX) {
+    double currentPosition = stepperMotors[stepperX].stepper->getPosition();
+    double destinationPosition = stepperMotors[stepperX].state.destinationPosition;
+
+    if (stepperMotors[stepperX].state.isActivated == true) {
+        double totalDistance = abs(destinationPosition - stepperMotors[stepperX].state.startPosition);
+
+        if (totalDistance == 0) {
+            // If totalDistance is zero, it means start and destination are the same.
+            stepperMotors[stepperX].state.isActivated = false;
+            return 100.0;
+        }
+
+        if (motorMovingState(stepperX) == true) {
+            // Calculate the absolute difference between current and destination positions
+            double distanceToCover = abs(destinationPosition - currentPosition);
+
+            // Calculate the percentage completion
+            double percentageCompleted = ((totalDistance - distanceToCover) / totalDistance) * 100.0;
+
+            return percentageCompleted;
+        } else {
+            // If the motor has stopped, assume the destination has been reached
+            stepperMotors[stepperX].state.destinationPosition = stepperMotors[stepperX].stepper->getPosition();
+            stepperMotors[stepperX].state.isActivated = false;
+            return 100.0;
+        }
+    } else {
+        return 100.0;
+    }
 }

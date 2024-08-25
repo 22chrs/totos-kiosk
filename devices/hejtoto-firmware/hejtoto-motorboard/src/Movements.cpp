@@ -122,29 +122,3 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
     Serial.println(" not found.");
     return false;
 }
-
-void deviceStatus(const String &stepperName) {
-    Serial.println("");
-    Serial.println("--- ");
-    Serial.print(stepperName);
-    Serial.print(" ---");
-
-    // Find the index of the stepper by friendly name
-    for (int i = 0; i < 6; ++i) {
-        if (currentBoardConfig->stepper[i].name == stepperName) {
-            currentBoardConfig->stepper[i].currentPosition = currentMotorPosition(i);
-            currentBoardConfig->stepper[i].isMoving = motorMovingState(i);
-
-            Serial.println("isHomed: ");
-            Serial.print(currentBoardConfig->stepper[i].isHomed);
-            Serial.println("currentPosition: ");
-            Serial.print(currentBoardConfig->stepper[i].currentPosition);
-            Serial.println("isMoving: ");
-            Serial.print(currentBoardConfig->stepper[i].isMoving);
-
-            return;  // falls Dual Motor Betrieb wird der erste Motor nur erfasst.
-        }
-    }
-
-    Serial.println("--- --- --- ");
-}

@@ -55,12 +55,20 @@ inline HardwareSerial &USED_SERIAL_PORT_6 = Serial5;
 
 const byte StepperCount = 6;
 
+struct StepperState {
+    boolean isActivated;
+    boolean isHomed;
+    double startPosition;
+    double destinationPosition;
+};
+
 // Stepper motor pin definitions and driver instances
 struct StepperMotor {
     HardwareSerial *serialPort;
     uint8_t enPin, dirPin, stepPin;
     TMC2209Stepper *driver;
     Stepper *stepper;
+    StepperState state;
 };
 
 inline StepperMotor stepperMotors[6] = {
@@ -85,9 +93,9 @@ void moveMotorToAbsPosition(byte stepperX, double newPosition);
 void moveMotorToRelPosition(byte stepperX, double newPosition);
 boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition);
 void stopMotor(byte stepperX);
-double currentMotorPosition(byte stepperX);
 boolean motorMovingState(byte stepperX);
 boolean homeMotor(byte stepperX);
 boolean homeCombinedMotors(byte stepperX, byte stepperY);
+double stepperMovementPercentageCompleted(byte stepperX);
 
 #endif

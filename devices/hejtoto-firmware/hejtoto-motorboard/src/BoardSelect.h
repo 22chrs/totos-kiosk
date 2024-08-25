@@ -22,9 +22,6 @@ struct StepperConfig {
     const boolean inverseDirection;        // true/false
     const boolean inverseEndstopPosition;  // true/false
     const double homingSpeedFactor;        // true/false
-    boolean isHomed;                       // true/false
-    double currentPosition;                // mm
-    boolean isMoving;                      // true/false
 };
 
 struct BoardConfig {
