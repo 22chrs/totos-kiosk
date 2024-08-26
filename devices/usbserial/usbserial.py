@@ -373,7 +373,7 @@ class SerialCommandForwarder:
         self.connection_manager = connection_manager
 
     async def forward_command(self, alias, message):
-        print(f"[DEBUG] Forwarding command to alias '{alias}': {message}")
+        #print(f"[DEBUG] Forwarding command to alias '{alias}': {message}")
         if alias in self.connection_manager.boards:
             board = self.connection_manager.boards[alias]
             board.send_data(message)

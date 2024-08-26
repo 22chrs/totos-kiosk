@@ -117,7 +117,7 @@ void SerialController::handleReceivedMessage(const String &message) {
                 if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
                     receivedTimestamp = timestamp;
                     timestampMillisOffset = millis();
-                    // sendAckMessage(timestamp);
+                    // sendAckMessage(timestamp); //! here not: REQUEST_ALIAS
                     sendMessage(alias);
 
                     //  Serial.println(getCurrentTime());
@@ -151,7 +151,7 @@ void SerialController::processHomeDeviceCommand(const String &message, const Str
     String stepperName = message.substring(firstQuote + 1, secondQuote);
 
     // Call the homeDevice function with the extracted stepperName
-    homeDevice(stepperName);
+    homeDevice(stepperName, timestamp);
 
     // Send an acknowledgment message after processing
     // sendAckMessage(timestamp);

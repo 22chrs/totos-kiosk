@@ -1,7 +1,7 @@
 // Movements.cpp
 #include <Movements.h>
 
-boolean homeDevice(const String &stepperName) {
+boolean homeDevice(const String &stepperName, String timestamp) {
     if (currentBoardConfig == nullptr) {
         Serial.println("Error: Board configuration not initialized.");
         return false;
@@ -17,10 +17,12 @@ boolean homeDevice(const String &stepperName) {
                     // Serial.print(" and ");
                     // Serial.println(currentBoardConfig->stepper[j].name);
                     // Call the function to home combined motors
+                    serialController.sendAckMessage(timestamp);
                     return homeCombinedMotors(i, j);  // Use indices of combined motors
                 }
             }
             // If no combined motors, home single motor
+            serialController.sendAckMessage(timestamp);
             return homeMotor(i);  // Pass the index as a byte (or unsigned char)
         }
     }
@@ -30,7 +32,7 @@ boolean homeDevice(const String &stepperName) {
     return false;
 }
 
-boolean moveDevice(const String &stepperName, double position, int maxSpeedPercentage, int driveCurrentPercentage, double desiredRingPercentage, String messageID) {
+boolean moveDevice(const String &stepperName, double position, int maxSpeedPercentage, int driveCurrentPercentage, double desiredRingPercentage, String timestamp) {
     if (currentBoardConfig == nullptr) {
         Serial.println("Error: Board configuration not initialized.");
         return false;
@@ -48,7 +50,7 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
     for (int i = 0; i < 6; ++i) {
         if (currentBoardConfig->stepper[i].name == stepperName) {
             stepperMotors[i].state.desiredRingPercentage = desiredRingPercentage;
-            stepperMotors[i].state.messageID = messageID;
+            stepperMotors[i].state.messageID = timestamp;
 
             const StepperConfig &config = currentBoardConfig->stepper[i];  //! ?? why const
 
@@ -58,6 +60,8 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
 
             changeCurrentStateMotor(i, driveCurrent);
             setSpeedMotor(i, maxSpeed);
+            serialController.sendAckMessage(timestamp);
+
             // Check for combined motors by name
             for (int j = 0; j < 6; ++j) {
                 if (i != j && currentBoardConfig->stepper[j].name == stepperName) {
