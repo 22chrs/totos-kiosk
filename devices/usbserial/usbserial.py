@@ -105,32 +105,35 @@ class BoardSerial:
         """Check if the acknowledgment timestamp is in the list of sent messages and remove it if found."""
         with self.lock:  # Use lock to synchronize access
             found_index = None
-            for i, (_, msg) in enumerate(self.sent_messages):  # Unpack the tuple (send_time, message)
+            for i, (_, msg) in enumerate(self.sent_messages):
                 if msg.startswith(ack_timestamp):
                     found_index = i
                     break
 
             if found_index is not None:
-                print(f"ACK received for timestamp {ack_timestamp}")
                 del self.sent_messages[found_index]  # Remove the message from the list
             else:
-                print(f"ACK received for timestamp {ack_timestamp}: !!!!!!!!!!! NOT FOUND in sent messages.")
+                print(f"ACK received for timestamp {ack_timestamp}: NOT FOUND in sent messages.")
 
     async def check_old_ack_messages(self):
-            while True:
-                try:
-                    current_time = time.time()
-                    with self.lock:  # Use lock to synchronize access
-                        # Create a copy of the list to iterate over while modifying the original list
-                        for i in range(len(self.sent_messages) - 1, -1, -1):  # Iterate backwards for safe pop
-                            send_time, message = self.sent_messages[i]
-                            if current_time - send_time > 5:
-                                print(f"WARNING: Message '{message}' has not been acknowledged in over 5 seconds.")
-                                self.sent_messages.pop(i)  # Use pop() to remove the element safely
-                    await asyncio.sleep(1)  # Check every second
-                except Exception as e:
-                    print(f"Error in check_old_ack_messages: {str(e)}")
-                    break
+        while True:
+            try:
+                current_time = time.time()
+                with self.lock:
+                    # Create a copy of the list to iterate over while modifying the original list
+                    to_remove = []
+                    for i in range(len(self.sent_messages) - 1, -1, -1):
+                        send_time, message = self.sent_messages[i]
+                        if current_time - send_time > 5:
+                            print(f"WARNING: Message '{message}' has not been acknowledged in over 5 seconds.")
+                            to_remove.append(i)
+
+                    for index in to_remove:
+                        self.sent_messages.pop(index)  # Remove the element safely
+                await asyncio.sleep(1)
+            except Exception as e:
+                print(f"Error in check_old_ack_messages: {str(e)}")
+                break
 
         
     def connect(self):
