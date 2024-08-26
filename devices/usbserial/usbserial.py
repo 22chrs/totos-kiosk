@@ -47,6 +47,7 @@ class BoardSerial:
         processed_data = data.strip()
         alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
         
+        # Check if the message starts with <STX> and ends with <ETX>
         if processed_data.startswith("<STX>") and processed_data.endswith("<ETX>"):
             # Extract the content between <STX> and <ETX>
             processed_data = processed_data[5:-5]  # Remove <STX> and <ETX>
@@ -73,7 +74,8 @@ class BoardSerial:
                 print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
                 return ""
         else:
-            print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from Teensy's serial.print commands
+            # If the message does not start with <STX>, print it directly for debugging
+            print(f"### {alias_to_print} -> {processed_data} ###")
             return ""
 
     def check_acknowledgment(self, ack_timestamp):
@@ -156,14 +158,14 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(10)  # Initial delay before sending the first heartbeat and between subsequent heartbeats
+                await asyncio.sleep(2)  # Initial delay before sending the first heartbeat and between subsequent heartbeats
 
-                # if self.serial_connection is not None and self.board_info["alias"]:
-                #     if not self.is_heartbeat_sent:
-                #         self.send_data("heartbeat")
-                #         self.is_heartbeat_sent = True
+                if self.serial_connection is not None and self.board_info["alias"]:
+                    if not self.is_heartbeat_sent:
+                        self.send_data("heartbeat")
+                        self.is_heartbeat_sent = True
 
-                # self.is_heartbeat_sent = False  # Reset flag to ensure periodic sending
+                self.is_heartbeat_sent = False  # Reset flag to ensure periodic sending
             except Exception as e:
                 print(f"Error in send_periodic_ack: {str(e)}")
                 break  # Break the loop if there's a critical error
@@ -218,8 +220,10 @@ class BoardSerial:
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
             print(f"@{alias} -------> {timestamp}|{message}")
 
-            # Store the sent message with its timestamp (store as a tuple: (send_time, message_with_timestamp))
-            self.sent_messages.append((time.time(), f"{timestamp}|{message}"))
+            # Exclude certain messages from acknowledgment tracking
+            if "REQUEST_ALIAS" not in message:
+                # Store the sent message with its timestamp (store as a tuple: (send_time, message_with_timestamp))
+                self.sent_messages.append((time.time(), f"{timestamp}|{message}"))
 
         except (serial.SerialException, OSError) as e:
             print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
