@@ -1,5 +1,6 @@
 // Stepper.cpp
 
+#include <SerialController.h>
 #include <Stepper.h>
 
 void enableMotor(byte stepperX, boolean isEnabled) {
@@ -51,10 +52,12 @@ void init_Stepper() {
         stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].driveCurrent);
         stepperMotors[i].driver->shaft(currentBoardConfig->stepper[i].inverseDirection);  // Set direction inversion based on configuration
 
-        stepperMotors[i].state.isActivated = false;        // Initialize
-        stepperMotors[i].state.isHomed = false;            // Initialize
-        stepperMotors[i].state.startPosition = 0.0;        // Initialize
-        stepperMotors[i].state.destinationPosition = 0.0;  // Initialize
+        stepperMotors[i].state.isActivated = false;            // Initialize
+        stepperMotors[i].state.isHomed = false;                // Initialize
+        stepperMotors[i].state.startPosition = 0.0;            // Initialize
+        stepperMotors[i].state.destinationPosition = 0.0;      // Initialize
+        stepperMotors[i].state.desiredRingPercentage = 100.0;  // Initialize
+        stepperMotors[i].state.messageID = 'null';             // Initialize
 
         //! new
         // stepperMotors[i].driver->pdn_disable(true);      // Use UART
@@ -475,5 +478,31 @@ double stepperMovementPercentageCompleted(byte stepperX) {
         }
     } else {
         return 100.0;
+    }
+}
+
+Chrono checkIntervalChrono;
+
+void loop_StepperReachedDesiredRingPercentage() {
+    // Check if 500 milliseconds have passed since the last check
+    if (checkIntervalChrono.hasPassed(500)) {
+        for (int i = 0; i < StepperCount; i++) {                                     // Loop over all stepper motors
+            if (stepperMotors[i].state.isActivated) {                                // Check if the stepper is currently activated
+                double percentageCompleted = stepperMovementPercentageCompleted(i);  // Calculate the percentage completed
+
+                // Check if the stepper has reached or exceeded the desired ring percentage
+                if (percentageCompleted >= stepperMotors[i].state.desiredRingPercentage) {
+                    Serial.print("Stepper ");
+                    Serial.print(i);
+                    Serial.println(" has reached the desired ring percentage.");
+                    serialController.sendMessage(stepperMotors[i].state.messageID + "Ring");
+
+                    // Optionally, you might want to deactivate further checks for this stepper
+                    // stepperMotors[i].state.isActivated = false;
+                }
+            }
+        }
+        // Restart the chrono for the next interval
+        checkIntervalChrono.restart();
     }
 }

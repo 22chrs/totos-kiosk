@@ -126,14 +126,14 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(3)  # Initial delay before sending the first heartbeat and between subsequent heartbeats
+                await asyncio.sleep(10)  # Initial delay before sending the first heartbeat and between subsequent heartbeats
 
-                if self.serial_connection is not None and self.board_info["alias"]:
-                    if not self.is_heartbeat_sent:
-                        self.send_data("heartbeat")
-                        self.is_heartbeat_sent = True
+                # if self.serial_connection is not None and self.board_info["alias"]:
+                #     if not self.is_heartbeat_sent:
+                #         self.send_data("heartbeat")
+                #         self.is_heartbeat_sent = True
 
-                self.is_heartbeat_sent = False  # Reset flag to ensure periodic sending
+                # self.is_heartbeat_sent = False  # Reset flag to ensure periodic sending
             except Exception as e:
                 print(f"Error in send_periodic_ack: {str(e)}")
                 break  # Break the loop if there's a critical error
@@ -331,9 +331,14 @@ class TeensyController:
         self.connection_manager = connection_manager
         self.command_forwarder = command_forwarder
 
-    async def send_move_device_command(self, alias, stepper_name, position, max_speed_percentage, drive_current_percentage):
+    async def send_move_device_command(self, alias, stepper_name, position, max_speed_percentage, drive_current_percentage, desiredRingPercentage):
         if alias in self.connection_manager.boards:
-            command = f'moveDevice("{stepper_name}", {position}, {max_speed_percentage}, {drive_current_percentage})'
+            command = f'moveDevice("{stepper_name}", {position}, {max_speed_percentage}, {drive_current_percentage}, {desiredRingPercentage})'
+            await self.command_forwarder.forward_command(alias, command)
+
+    async def send_home_device_command(self, alias, stepper_name):
+        if alias in self.connection_manager.boards:
+            command = f'homeDevice("{stepper_name}")'
             await self.command_forwarder.forward_command(alias, command)
         #else:
         #    print(f"Error: Alias {alias} not found among connected boards.")

@@ -15,6 +15,6 @@
 void init_Mosfet();
 void pwmMosfet(int MosfetX, int percent);
 void openDoor(int MosfetX);
-void checkAndCloseDoors();
+void loop_checkAndCloseDoors();
 
 #endif

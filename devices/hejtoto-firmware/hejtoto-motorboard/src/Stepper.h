@@ -60,6 +60,8 @@ struct StepperState {
     boolean isHomed;
     double startPosition;
     double destinationPosition;
+    double desiredRingPercentage;
+    String messageID;
 };
 
 // Stepper motor pin definitions and driver instances
@@ -97,5 +99,6 @@ boolean motorMovingState(byte stepperX);
 boolean homeMotor(byte stepperX);
 boolean homeCombinedMotors(byte stepperX, byte stepperY);
 double stepperMovementPercentageCompleted(byte stepperX);
+void loop_StepperReachedDesiredRingPercentage();
 
 #endif

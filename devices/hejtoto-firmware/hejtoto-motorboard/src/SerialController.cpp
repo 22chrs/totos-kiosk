@@ -3,6 +3,8 @@
 #include <Led.h>
 #include <Movements.h>
 
+SerialController serialController;
+
 SerialController::SerialController()
     : alias("Unknown"),
       connectionStatus(false),
@@ -117,7 +119,9 @@ void SerialController::handleReceivedMessage(const String &message) {
                     sendAckMessage(timestamp);
                     connectionStatus = true;
                 } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
-                    processMoveDeviceCommand(cmdWithoutTimestamp);
+                    processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
+                } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
+                    processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
                 }
 
             } else {
@@ -131,7 +135,20 @@ void SerialController::handleReceivedMessage(const String &message) {
     }
 }
 
-void SerialController::processMoveDeviceCommand(const String &message) {
+void SerialController::processHomeDeviceCommand(const String &message, const String &timestamp) {
+    // Extract the stepper name from the command
+    int firstQuote = message.indexOf('"');
+    int secondQuote = message.indexOf('"', firstQuote + 1);
+    String stepperName = message.substring(firstQuote + 1, secondQuote);
+
+    // Call the homeDevice function with the extracted stepperName
+    homeDevice(stepperName);
+
+    // Send an acknowledgment message after processing
+    // sendAckMessage(timestamp);
+}
+
+void SerialController::processMoveDeviceCommand(const String &message, const String &timestamp) {
     int firstQuote = message.indexOf('"');
     int secondQuote = message.indexOf('"', firstQuote + 1);
     String stepperName = message.substring(firstQuote + 1, secondQuote);
@@ -139,12 +156,14 @@ void SerialController::processMoveDeviceCommand(const String &message) {
     int firstComma = message.indexOf(',', secondQuote);
     int secondComma = message.indexOf(',', firstComma + 1);
     int thirdComma = message.indexOf(',', secondComma + 1);
+    int fourthComma = message.indexOf(',', thirdComma + 1);  // Add this line to get the index of the fourth comma
 
     float position = message.substring(firstComma + 1, secondComma).toFloat();
     int maxSpeedPercentage = message.substring(secondComma + 1, thirdComma).toInt();
-    int driveCurrentPercentage = message.substring(thirdComma + 1).toInt();
+    int driveCurrentPercentage = message.substring(thirdComma + 1, fourthComma).toInt();  // Update to extract the correct substring
+    int ringPercentage = message.substring(fourthComma + 1).toInt();                      // Extract the ringPercentage
 
-    moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage);
+    moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage, ringPercentage, timestamp);  // Pass the ringPercentage to moveDevice
 }
 
 void SerialController::sendMessage(const String &message) {

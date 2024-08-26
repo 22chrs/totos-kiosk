@@ -13,7 +13,6 @@
 
 // Define the alias for this device
 #include "SerialController.h"
-SerialController serialController;
 
 Chrono helperChrono;
 
@@ -88,7 +87,8 @@ void setup() {
 }
 
 void loop() {
-    checkAndCloseDoors();  //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
+    loop_checkAndCloseDoors();                   //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
+    loop_StepperReachedDesiredRingPercentage();  //! For Stepper ring if the reach some destinations! 🛸
     serialController.update();
 
     // if (helperChrono.hasPassed(500)) {

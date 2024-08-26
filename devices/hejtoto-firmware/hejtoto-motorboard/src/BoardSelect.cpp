@@ -39,7 +39,7 @@ BoardConfig RoboCubeFrontConfig = {
         {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5},
 
         // Schleuse (Pitch 8)
-        {"Schleuse", 1700, 1700, 7000, 8000, 8.0, 193, -3, false, false, 0.3},
+        {"Schleuse", 1700, 1700, 6500, 5000, 8.0, 193, -3, false, false, 0.25},
 
         // Leer
         {"Leer", 0, 0, 0, 0, 0, 0, 0, false, false, 0.15},
@@ -64,7 +64,7 @@ BoardConfig RoboCubeBackConfig = {
         {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5},
 
         // Schleuse (Pitch 8)
-        {"Schleuse", 1700, 1700, 7000, 8000, 8.0, 193, -3, false, false, 0.15},
+        {"Schleuse", 1700, 1700, 6500, 5000, 8.0, 193, -3, false, false, 0.25},
 
         // Leer
         {"Leer", 0, 0, 0, 0, 0, 0, 0, false, false, 0.15},

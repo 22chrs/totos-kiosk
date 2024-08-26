@@ -19,8 +19,8 @@ class SerialController {
     char timestampSuffix;      // Suffix to append to the timestamp
     void sendAckMessage(const String &timestamp);
     void handleReceivedMessage(const String &message);
-    void processMoveDeviceCommand(const String &message);
-    void sendMessage(const String &message);
+    void processHomeDeviceCommand(const String &message, const String &timestamp);
+    void processMoveDeviceCommand(const String &message, const String &timestamp);
     boolean isValidMessage(const String &message);
     String calculateCRC(const String &message);
     unsigned long getMillisFromTimestamp(const String &timestamp);
@@ -29,6 +29,7 @@ class SerialController {
 
    public:
     SerialController();
+    void sendMessage(const String &message);
     void setAlias(const String &alias);
     void begin(uint32_t baudRate);
     void update();
@@ -37,5 +38,7 @@ class SerialController {
     unsigned long getTimestampMillisOffset() const;  // Method to get the millis offset
     String getCurrentTime();                         // Method to calculate the current exact time
 };
+
+extern SerialController serialController;
 
 #endif
