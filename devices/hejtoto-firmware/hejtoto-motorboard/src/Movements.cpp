@@ -23,6 +23,7 @@ boolean homeDevice(const String &stepperName, String timestamp) {
             }
             // If no combined motors, home single motor
             serialController.sendAckMessage(timestamp);
+
             return homeMotor(i);  // Pass the index as a byte (or unsigned char)
         }
     }

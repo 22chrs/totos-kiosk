@@ -29,7 +29,7 @@ class SerialController {
 
    public:
     SerialController();
-    void sendMessage(const String &message);
+    String sendMessage(const String &message);
     void sendAckMessage(const String &timestamp);
     void setAlias(const String &alias);
     void begin(uint32_t baudRate);

@@ -31,6 +31,9 @@ if __name__ == '__main__':
 
         # Now send the home command to the "RoboCubeFront"
         await teensy_controller.send_home_device_command("RoboCubeFront", "Schleuse")
+        await teensy_controller.send_home_device_command("RoboCubeFront", "Becherschubse")
+        await teensy_controller.send_home_device_command("RoboCubeFront", "Shield")
+        await teensy_controller.send_home_device_command("RoboCubeFront", "Snackbar")
 
         # Start monitoring and forwarding commands
         await command_forwarder.monitor_and_forward()

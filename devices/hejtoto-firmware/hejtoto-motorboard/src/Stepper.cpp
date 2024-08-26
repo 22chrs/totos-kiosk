@@ -52,8 +52,14 @@ void init_Stepper() {
         stepperMotors[i].driver->rms_current(currentBoardConfig->stepper[i].driveCurrent);
         stepperMotors[i].driver->shaft(currentBoardConfig->stepper[i].inverseDirection);  // Set direction inversion based on configuration
 
-        stepperMotors[i].state.isActivated = false;            // Initialize
-        stepperMotors[i].state.isHomed = false;                // Initialize
+        stepperMotors[i].state.isActivated = false;  // Initialize
+
+        if (currentBoardConfig->stepper[i].name == "Leer") {
+            stepperMotors[i].state.isHomed = true;
+        } else {
+            stepperMotors[i].state.isHomed = false;
+        }
+
         stepperMotors[i].state.startPosition = 0.0;            // Initialize
         stepperMotors[i].state.destinationPosition = 0.0;      // Initialize
         stepperMotors[i].state.desiredRingPercentage = 100.0;  // Initialize
@@ -308,6 +314,8 @@ boolean homeMotor(byte stepperX) {
         stepperMotors[stepperX].state.isActivated = false;
         stepperMotors[stepperX].state.startPosition = 0;
         stepperMotors[stepperX].state.destinationPosition = 0;
+
+        checkAndSendAllSteppersHomed();
         return true;
     }
     // If none of the conditions for a successful homing are met, return false
@@ -429,6 +437,8 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     stepperMotors[stepperX].state.destinationPosition = 0;
     stepperMotors[stepperY].state.destinationPosition = 0;
 
+    checkAndSendAllSteppersHomed();
+
     return true;
 
     // If none of the conditions for a successful homing are met, return false
@@ -504,5 +514,29 @@ void loop_StepperReachedDesiredRingPercentage() {
         }
         // Restart the chrono for the next interval
         checkIntervalChrono.restart();
+    }
+}
+
+void checkAndSendAllSteppersHomed() {
+    bool allSteppersHomed = true;
+    String homedState = "";  // String to accumulate the isHomed states
+
+    for (int i = 0; i < StepperCount; i++) {
+        if (stepperMotors[i].state.isHomed) {
+            homedState += "1";  // Append '1' if the stepper is homed
+        } else {
+            homedState += "0";         // Append '0' if the stepper is not homed
+            allSteppersHomed = false;  // Set the flag to false if any stepper is not homed
+        }
+    }
+
+    // Serial print the homed state string
+    Serial.print("Steppers homed state: ");
+    Serial.println(homedState);
+
+    if (allSteppersHomed) {  // Only send the message if all steppers are homed
+        String timestamp = serialController.sendMessage("allhomed");
+        // Optionally, you could implement logic to wait and retry for ACK if needed
+        //! wait and retry for ACK
     }
 }

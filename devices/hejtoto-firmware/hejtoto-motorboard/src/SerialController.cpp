@@ -95,6 +95,8 @@ void SerialController::sendAckMessage(const String &timestamp) {
     // Add STX, ETX, and CRC to the acknowledgment message
     String messageToSend = "<STX>" + timestampToSend + "|" + ackMessage + "|" + calculateCRC(timestampToSend + "|" + ackMessage) + "<ETX>";
     Serial.println(messageToSend);
+    // Ensure the data is fully sent
+    Serial.flush();
 }
 
 void SerialController::handleReceivedMessage(const String &message) {
@@ -174,13 +176,16 @@ void SerialController::processMoveDeviceCommand(const String &message, const Str
     moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage, ringPercentage, timestamp);  // Pass the ringPercentage to moveDevice
 }
 
-void SerialController::sendMessage(const String &message) {
+String SerialController::sendMessage(const String &message) {
     // Generate the current timestamp with a unique letter suffix
     String timestamp = generateTimestampWithSuffix();
-
     // Add STX, ETX, and CRC to the message
     String messageToSend = "<STX>" + timestamp + "|" + message + "|" + calculateCRC(timestamp + "|" + message) + "<ETX>";
+    // Send the message
     Serial.println(messageToSend);
+    // Ensure the data is fully sent
+    Serial.flush();
+    return timestamp;
 }
 
 String SerialController::calculateCRC(const String &message) {

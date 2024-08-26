@@ -108,8 +108,8 @@ class BoardSerial:
                     to_remove = []
                     for i in range(len(self.sent_messages) - 1, -1, -1):
                         send_time, message = self.sent_messages[i]
-                        if current_time - send_time > 5:  # Increased timeout to 10 seconds
-                            print(f"WARNING: Message '{message}' has not been acknowledged in over 5 seconds.")
+                        if current_time - send_time > 10:  # Increased timeout to 10 seconds
+                            print(f"WARNING: Message '{message}' has not been acknowledged in over 10 seconds.")
                             to_remove.append(i)
 
                     for index in to_remove:
@@ -197,7 +197,7 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(2)
+                await asyncio.sleep(20)
 
                 if self.serial_connection is not None and self.board_info["alias"]:
                     if not self.is_heartbeat_sent:
