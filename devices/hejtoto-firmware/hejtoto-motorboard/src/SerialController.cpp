@@ -117,7 +117,7 @@ void SerialController::handleReceivedMessage(const String &message) {
                 if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
                     receivedTimestamp = timestamp;
                     timestampMillisOffset = millis();
-                    sendAckMessage(timestamp);
+                    // sendAckMessage(timestamp);
                     sendMessage(alias);
 
                     //  Serial.println(getCurrentTime());

@@ -17,7 +17,29 @@ class BoardSerial:
         self.last_timestamp = 0
         self.received_timestamps = {}  
         self.sent_messages = []
-    
+        self.read_buffer = ""
+        
+
+    def read_from_serial(self):
+            """Read from the serial port and handle incomplete data."""
+            try:
+                while self.serial_connection.in_waiting > 0:
+                    incoming_data = self.serial_connection.read(self.serial_connection.in_waiting).decode()
+                    self.read_buffer += incoming_data
+
+                    # Check if there's a complete message in the buffer
+                    while "<STX>" in self.read_buffer and "<ETX>" in self.read_buffer:
+                        start_index = self.read_buffer.index("<STX>")
+                        end_index = self.read_buffer.index("<ETX>") + len("<ETX>")
+
+                        full_message = self.read_buffer[start_index:end_index]
+                        self.read_buffer = self.read_buffer[end_index:]  # Remove processed message from buffer
+
+                        # Now process the complete message
+                        self.preprocess_data(full_message)
+            except Exception as e:
+                print(f"Error reading from serial: {str(e)}")
+
 
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
@@ -309,22 +331,20 @@ class SerialCommandForwarder:
         else:
             print(f"Error: Alias {alias} not found among connected boards.")
 
-    async def monitor_and_forward(self): #Poststelle, empfanfen und weiterleiten
-        while True:
-            try:
-                for alias, board in list(self.connection_manager.boards.items()):
-                    try:
-                        if board.serial_connection and board.serial_connection.in_waiting > 0:
-                            incoming_data = board.serial_connection.readline().decode().strip()
-                            board.preprocess_data(incoming_data)
-
-                    except (OSError, serial.SerialException) as e:
-                        print(f"Error: {str(e)} - Disconnecting board '{alias}'")
-                        board.disconnect()  # Disconnect and cleanup
-                        del self.connection_manager.boards[alias]  # Remove the board from the manager
-            except Exception as e:
-                print(f"Error in monitor_and_forward: {str(e)}")
-            await asyncio.sleep(0.01)
+    async def monitor_and_forward(self):
+            while True:
+                try:
+                    for alias, board in list(self.connection_manager.boards.items()):
+                        try:
+                            if board.serial_connection:
+                                board.read_from_serial()
+                        except (OSError, serial.SerialException) as e:
+                            print(f"Error: {str(e)} - Disconnecting board '{alias}'")
+                            board.disconnect()  # Disconnect and cleanup
+                            del self.connection_manager.boards[alias]  # Remove the board from the manager
+                except Exception as e:
+                    print(f"Error in monitor_and_forward: {str(e)}")
+                await asyncio.sleep(0.01)
 
 
 # Class to handle sending commands to the Teensy and processing acknowledgments
