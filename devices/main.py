@@ -29,8 +29,6 @@ if __name__ == '__main__':
             print("Waiting for all required aliases to connect...")
             await asyncio.sleep(1)  # Check every second
 
-        print("All required aliases are connected.")
-
         # Now send the home command to the "RoboCubeFront"
         await teensy_controller.send_home_device_command("RoboCubeFront", "Schleuse")
 

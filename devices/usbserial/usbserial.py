@@ -23,31 +23,55 @@ class BoardSerial:
         self.lock = threading.Lock()
 
     def read_from_serial(self):
-            """Read from the serial port and handle incomplete data."""
-            try:
-                while self.serial_connection.in_waiting > 0:
-                    incoming_data = self.serial_connection.read(self.serial_connection.in_waiting).decode()
-                    self.read_buffer += incoming_data
+        """Read from the serial port and handle incomplete data."""
+        try:
+            while self.serial_connection.in_waiting > 0:
+                incoming_data = self.serial_connection.read(self.serial_connection.in_waiting).decode()
+                self.read_buffer += incoming_data
 
-                    # Check if there's a complete message in the buffer
-                    while "<STX>" in self.read_buffer and "<ETX>" in self.read_buffer:
-                        start_index = self.read_buffer.index("<STX>")
-                        end_index = self.read_buffer.index("<ETX>") + len("<ETX>")
+                # Get the alias of the device, or use 'unknown device' if it's not set
+                alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
 
-                        full_message = self.read_buffer[start_index:end_index]
-                        self.read_buffer = self.read_buffer[end_index:]  # Remove processed message from buffer
+                # Process and print incomplete data whenever a newline is encountered
+                while '\n' in self.read_buffer:
+                    # Split the buffer on the first newline to separate the data to be processed
+                    line, self.read_buffer = self.read_buffer.split('\n', 1)
+                    line = line.strip()
 
-                        # Now process the complete message
-                        self.preprocess_data(full_message)
-            except Exception as e:
-                print(f"Error reading from serial: {str(e)}")
+                    # Check if the line contains a complete message
+                    if "<STX>" in line and "<ETX>" in line:
+                        # Process complete message
+                        self.preprocess_data(line)
+                    else:
+                        # If it's not a complete message, treat it as incomplete/stray data
+                        if line:
+                            print(f"### {alias_to_print} -> {line} ###")
 
+                # Now handle any remaining complete messages in the buffer
+                while "<STX>" in self.read_buffer and "<ETX>" in self.read_buffer:
+                    start_index = self.read_buffer.index("<STX>")
+                    end_index = self.read_buffer.index("<ETX>") + len("<ETX>")
+
+                    # Extract the full message
+                    full_message = self.read_buffer[start_index:end_index]
+                    
+                    # Process the complete message
+                    self.preprocess_data(full_message)
+                    
+                    # Update the buffer by removing the processed message
+                    self.read_buffer = self.read_buffer[end_index:]
+
+                # If there is any leftover incomplete data, print it
+                if self.read_buffer:
+                    print(f"### {alias_to_print} -> {self.read_buffer.strip()} ###")
+
+        except Exception as e:
+            print(f"Error reading from serial: {str(e)}")
 
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
         alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
         
-        # Check if the message starts with <STX> and ends with <ETX>
         if processed_data.startswith("<STX>") and processed_data.endswith("<ETX>"):
             # Extract the content between <STX> and <ETX>
             processed_data = processed_data[5:-5]  # Remove <STX> and <ETX>
@@ -74,8 +98,7 @@ class BoardSerial:
                 print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
                 return ""
         else:
-            # If the message does not start with <STX>, print it directly for debugging
-            print(f"### {alias_to_print} -> {processed_data} ###")
+            print(f"### {alias_to_print} -> {processed_data} ###")  # Debug messages from Teensy's serial.print commands
             return ""
 
     def check_acknowledgment(self, ack_timestamp):

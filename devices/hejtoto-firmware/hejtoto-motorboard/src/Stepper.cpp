@@ -186,6 +186,7 @@ boolean homeMotor(byte stepperX) {
 
     boolean failedHoming = false;
     boolean startedWithEndstopTriggered = false;
+
     int inverseEndstopPosition = 1;
     if (currentBoardConfig->stepper[stepperX].homeShift == true) {
         inverseEndstopPosition = -1;
