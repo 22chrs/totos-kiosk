@@ -111,9 +111,9 @@ void SerialController::handleReceivedMessage(const String &message) {
                     timestampMillisOffset = millis();
                     sendMessage(alias);
                     sendAckMessage(timestamp);
-                    Serial.println(getCurrentTime());
-                    // } else if (cmdWithoutTimestamp == "heartbeat") {
-                    //     sendMessage("heartbeat");
+                    // Serial.println(getCurrentTime());
+                    //  } else if (cmdWithoutTimestamp == "heartbeat") {
+                    //      sendMessage("heartbeat");
                 } else if (cmdWithoutTimestamp == "connected") {
                     Neopixel(GREEN);
                     sendAckMessage(timestamp);

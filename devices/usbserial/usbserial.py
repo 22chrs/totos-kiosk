@@ -69,10 +69,11 @@ class BoardSerial:
         while True:
             try:
                 current_time = time.time()
+                # Create a copy of the list to iterate over while modifying the original list
                 for i, (send_time, message) in enumerate(self.sent_messages[:]):
                     if current_time - send_time > 5:
                         print(f"WARNING: Message '{message}' has not been acknowledged in over 5 seconds.")
-                        del self.sent_messages[i]  # Remove the old message from the list
+                        self.sent_messages.pop(i)  # Use pop() to remove the element safely
                 await asyncio.sleep(1)  # Check every second
             except Exception as e:
                 print(f"Error in check_old_ack_messages: {str(e)}")

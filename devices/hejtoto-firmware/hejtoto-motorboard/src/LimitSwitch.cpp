@@ -42,6 +42,7 @@ boolean check_limitSwitch(byte limitSwitchNumber) {
 
 // Chrono objects for debouncing
 Chrono chronoLimitSwitch;
+
 void check_limitSwitches() {
     if (chronoLimitSwitch.hasPassed(200)) {  // Adjust debounce time as necessary
         chronoLimitSwitch.restart();
@@ -60,7 +61,6 @@ void check_limitSwitches() {
         } else {
             Serial.println("No board configuration selected.");
         }
-
         Serial.println();
     }
 }

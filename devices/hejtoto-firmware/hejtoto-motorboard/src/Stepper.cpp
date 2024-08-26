@@ -86,9 +86,8 @@ void stepperCheckObstruction() {
         // Print stall value for debugging
         stallValue = stepperMotors[i].driver->SG_RESULT();
         // Check for a stall condition
-        Serial.println(stallValue);
+        // Serial.println(stallValue);
     }
-    Serial.println("");
 }
 
 // Helper functions to activate/deactivate a specific driver
@@ -111,8 +110,8 @@ void activateDriverViaUART(byte stepperX) {
     iholdIrun |= (driveCurrent & 0b11111);  // Set IRUN to driveCurrent bits
     driver.IHOLD_IRUN(iholdIrun);
 
-    Serial.print("Driver activated with drive current.");
-    Serial.println(driveCurrent);
+    // Serial.print("Driver activated with drive current.");
+    // Serial.println(driveCurrent);
 }
 
 void deactivateDriverViaUART(byte stepperX) {
@@ -156,7 +155,7 @@ boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double new
     // Create a stepper group and move synchronously
     // controller = {*stepperMotors[stepperX ].stepper, *stepperMotors[stepperY ].stepper};
     // StepperGroup{*stepperMotors[stepperX ].stepper, *stepperMotors[stepperY ].stepper}.move();
-    Serial.println("finished.");
+    // Serial.println("finished.");
     return true;  // Indicate success
 }
 
@@ -197,13 +196,13 @@ boolean homeMotor(byte stepperX) {
 
     //! Fall 1: Endstop ist bereits getriggert
     if (check_limitSwitch(stepperX) == true) {
-        Serial.println("Fall 1: Endstop ist bereits getriggert");
+        // Serial.println("Fall 1: Endstop ist bereits getriggert");
         startedWithEndstopTriggered = true;
 
         //! aus dem Endstop raus fahren bis dieser just nicht mehr getriggert ist
         moveMotorToRelPosition(stepperX, currentBoardConfig->stepper[stepperX].maxTravel * 0.1 * inverseEndstopPosition);
         failedHoming = true;
-        Serial.println("Move out of endstop.");
+        // Serial.println("Move out of endstop.");
         while (motorMovingState(stepperX) == true)  // Motor is moving
         {
             delay(1);
@@ -212,9 +211,9 @@ boolean homeMotor(byte stepperX) {
                 failedHoming = false;
             }
         }
-        Serial.println("Endstop reverse triggered. Stop.");
+        // Serial.println("Endstop reverse triggered. Stop.");
         if (failedHoming == true) {
-            Serial.println("Endstop not reached. Homing failed.");
+            // Serial.println("Endstop not reached. Homing failed.");
             stepperMotors[stepperX].state.isHomed = false;
             return false;
         }
@@ -228,16 +227,16 @@ boolean homeMotor(byte stepperX) {
     }
 
     //! Fall 2: Endstop nicht getriggert
-    Serial.println(check_limitSwitch(stepperX));
+    // Serial.println(check_limitSwitch(stepperX));
     if (check_limitSwitch(stepperX) == false)  // Endstop is not triggered
     {
         setPositionMotor(stepperX, 0);
-        Serial.println("Fall 2: Endstop nicht getriggert.");
+        // Serial.println("Fall 2: Endstop nicht getriggert.");
 
         //! in den Entstop reinfahren, bis dieser getriggert wird
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX].maxTravel * (-1) * inverseEndstopPosition);  // In Endstop fahren
         failedHoming = true;
-        Serial.println("Homing started. Moving inside endstop.");
+        // Serial.println("Homing started. Moving inside endstop.");
         while (motorMovingState(stepperX) == true)  // Motor is moving
         {
             delay(1);
@@ -251,7 +250,7 @@ boolean homeMotor(byte stepperX) {
             stepperMotors[stepperX].state.isHomed = false;
             return false;
         }
-        Serial.println("Endstop triggered. Stop.");
+        // Serial.println("Endstop triggered. Stop.");
         setPositionMotor(stepperX, 0);
 
         //! SLOWER nun weil Präzision:
@@ -259,13 +258,13 @@ boolean homeMotor(byte stepperX) {
         //! ein kleines Stück weiter aus dem bereits enttriggerten Endstop rausfahren, falls nicht startedWithEndstopTriggered
         if (startedWithEndstopTriggered == false) {
             moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX].maxTravel * 0.0 * inverseEndstopPosition);
-            Serial.println("Was not startedWithEndstopTriggered.");
+            // Serial.println("Was not startedWithEndstopTriggered.");
             while (motorMovingState(stepperX) == true) {
                 delay(1);
             }
         }
 
-        Serial.println("Begin slow homing routine.");
+        // Serial.println("Begin slow homing routine.");
 
         setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX].maxSpeed * 0.05);
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX].acceleration * 2.0);  // schnellere Beschleunigung, um schnellen Stop zu haben
@@ -282,10 +281,10 @@ boolean homeMotor(byte stepperX) {
                 failedHoming = false;
             }
         }
-        Serial.println("Endstop slowly cleared.");
+        // Serial.println("Endstop slowly cleared.");
 
         if (failedHoming == true) {
-            Serial.println("Endstop not cleared. Homing failed.");
+            // Serial.println("Endstop not cleared. Homing failed.");
             stepperMotors[stepperX].state.isHomed = false;
             return false;
         }
@@ -293,16 +292,16 @@ boolean homeMotor(byte stepperX) {
         setSpeedMotor(stepperX, currentBoardConfig->stepper[stepperX].maxSpeed);             // normal speed
         setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX].acceleration);  // normal acceleration
         //! Motor zu homeShift bewegen
-        Serial.println("Move Motor to homeShift.");
+        // Serial.println("Move Motor to homeShift.");
         moveMotorToAbsPosition(stepperX, (currentBoardConfig->stepper[stepperX].homeShift));
-        Serial.println("Waiting for move Motor to homeShift");
+        // Serial.println("Waiting for move Motor to homeShift");
         while (motorMovingState(stepperX) == true) {  // Wait for the motor to stop moving
             delay(1);
         }
 
         setPositionMotor(stepperX, 0);
-        Serial.println("Position saved as 0");
-        Serial.println("Homing Successful.");
+        // Serial.println("Position saved as 0");
+        // Serial.println("Homing Successful.");
         stepperMotors[stepperX].state.isHomed = true;
 
         stepperMotors[stepperX].state.isActivated = false;
@@ -332,7 +331,7 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX].maxTravel * 0.1);
         moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY].maxTravel * 0.1);
         // moveCombinedMotorsToAbsPosition(stepperX, stepperY, currentBoardConfig->stepper[stepperX].homeShift + currentBoardConfig->stepper[stepperX].maxTravel * 0.1);  // Rückwärts fahren
-        Serial.println("Move out of endstop.");
+        // Serial.println("Move out of endstop.");
         failedHoming = true;
         while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
         {
@@ -357,23 +356,23 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX].maxTravel * (-1));
     moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY].maxTravel * (-1));
 
-    Serial.println("Homing started. Moving backwards.");
+    // Serial.println("Homing started. Moving backwards.");
 
     while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
     {
         if (check_limitSwitch(stepperX) == true) {
             stopMotor(stepperX);
-            Serial.println("Endstop X triggered. Stop.");
+            // Serial.println("Endstop X triggered. Stop.");
         }
 
         if (check_limitSwitch(stepperY) == true) {
             stopMotor(stepperY);
-            Serial.println("Endstop Y triggered. Stop.");
+            // Serial.println("Endstop Y triggered. Stop.");
         }
         delay(1);
     }
 
-    Serial.println("Begin slow homing routine.");
+    // Serial.println("Begin slow homing routine.");
     setPositionMotor(stepperX, 0);
     setPositionMotor(stepperY, 0);
 
@@ -381,7 +380,7 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     if (startedWithEndstopTriggered == false) {
         moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX].maxTravel * 0.1);
         moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY].maxTravel * 0.1);
-        Serial.println("Was not startedWithEndstopTriggered.");
+        // Serial.println("Was not startedWithEndstopTriggered.");
         failedHoming = true;
         while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true))  // Motor is moving
         {
@@ -406,10 +405,10 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     setSpeedMotor(stepperY, currentBoardConfig->stepper[stepperX].maxSpeed);             // normal speed
     setAccelerationMotor(stepperX, currentBoardConfig->stepper[stepperX].acceleration);  // normal acceleration
     setAccelerationMotor(stepperY, currentBoardConfig->stepper[stepperX].acceleration);  // normal acceleration
-    Serial.println("Move Motors to homeShift.");
+    // Serial.println("Move Motors to homeShift.");
     moveMotorToAbsPosition(stepperX, currentBoardConfig->stepper[stepperX].homeShift);
     moveMotorToAbsPosition(stepperY, currentBoardConfig->stepper[stepperY].homeShift);
-    Serial.println("Waiting for move Motor to homeShift");
+    // Serial.println("Waiting for move Motor to homeShift");
     while ((motorMovingState(stepperX) == true) or (motorMovingState(stepperY) == true)) {
         delay(1);  // Wait for the motor to stop moving
     }
@@ -417,8 +416,8 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     setPositionMotor(stepperX, 0);
     setPositionMotor(stepperY, 0);
 
-    Serial.println("Position saved as 0.");
-    Serial.println("Homing Successful.");
+    // Serial.println("Position saved as 0.");
+    // Serial.println("Homing Successful.");
     stepperMotors[stepperX].state.isHomed = true;
     stepperMotors[stepperY].state.isHomed = true;
 

@@ -12,5 +12,5 @@ void init_MCP23017() {
             return;  // Exit the function after timeout
         }
     }
-    Serial.println("MCP23017 initialized successfully");
+    // Serial.println("MCP23017 initialized successfully");
 }

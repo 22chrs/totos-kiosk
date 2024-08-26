@@ -91,12 +91,12 @@ void loop() {
     loop_StepperReachedDesiredRingPercentage();  //! For Stepper ring if the reach some destinations! 🛸
     serialController.update();
 
-    // if (helperChrono.hasPassed(500)) {
-    //     stepperCheckObstruction();  // Call the function
+    if (helperChrono.hasPassed(10000)) {
+        Serial.println("123");
 
-    //     // Reset the Chrono timer
-    //     helperChrono.restart();
-    // }
+        // Reset the Chrono timer
+        helperChrono.restart();
+    }
 
     // delay(10000);
     // moveDevice("Snackbar", 0, 100, 100);
