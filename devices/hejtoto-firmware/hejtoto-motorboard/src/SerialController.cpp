@@ -109,12 +109,11 @@ void SerialController::handleReceivedMessage(const String &message) {
                 String timestamp = cmdContent.substring(0, firstPipeIndex);
                 String cmdWithoutTimestamp = cmdContent.substring(firstPipeIndex + 1);
 
-                // Add the acknowledgment response here
-                if (connectionStatus == true) {
+                if (cmdWithoutTimestamp == "heartbeat") {
                     sendAckMessage(timestamp);
                 }
 
-                if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
+                else if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
                     receivedTimestamp = timestamp;
                     timestampMillisOffset = millis();
                     // sendAckMessage(timestamp); //! here not: REQUEST_ALIAS
@@ -232,8 +231,7 @@ String SerialController::getCurrentTime() {
     String dd = receivedTimestamp.substring(4, 6);
 
     char currentTimeStr[15];
-    snprintf(currentTimeStr, sizeof(currentTimeStr), "%02s%02s%02s%02lu%02lu%04lu",
-             yy.c_str(), mm.c_str(), dd.c_str(), currentHour, currentMinute, currentMillisOnly);
+    snprintf(currentTimeStr, sizeof(currentTimeStr), "%s%s%s%02lu%02lu%04lu", yy.c_str(), mm.c_str(), dd.c_str(), currentHour, currentMinute, currentMillisOnly);
 
     return String(currentTimeStr);
 }

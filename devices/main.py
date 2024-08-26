@@ -12,7 +12,7 @@ if __name__ == '__main__':
     usb_manager = ConnectionManager(
         vid=0x16C0, 
         pid=0x0483, 
-        baudrate=9600,
+        baudrate=115200,
         timeout=0.2, 
         required_aliases=teensys
     )

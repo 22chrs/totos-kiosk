@@ -80,7 +80,7 @@ void setup() {
     // homeDevice("Rodell_B");
     // homeDevice("Rodell_C");
 
-    serialController.begin(9600);
+    serialController.begin(115200);
 
     buildInLEDBlik();
     // openDoor(5);
