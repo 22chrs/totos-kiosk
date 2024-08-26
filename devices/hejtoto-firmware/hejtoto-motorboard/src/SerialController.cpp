@@ -28,6 +28,14 @@ void SerialController::setAlias(const String &alias) {
 }
 
 void SerialController::update() {
+    if (!Serial) {  // Check if the Serial connection is still active
+        connectionStatus = false;
+        Neopixel(RED);
+        Serial.end();
+        begin(9600);  // Attempt to reinitialize with the default baud rate
+        return;
+    }
+
     while (Serial.available() > 0) {
         String message = Serial.readStringUntil('\n');
         lastReceivedMessage = millis();
@@ -109,11 +117,12 @@ void SerialController::handleReceivedMessage(const String &message) {
                 if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
                     receivedTimestamp = timestamp;
                     timestampMillisOffset = millis();
-                    sendMessage(alias);
                     sendAckMessage(timestamp);
-                    // Serial.println(getCurrentTime());
-                    //  } else if (cmdWithoutTimestamp == "heartbeat") {
-                    //      sendMessage("heartbeat");
+                    sendMessage(alias);
+
+                    //  Serial.println(getCurrentTime());
+                    //   } else if (cmdWithoutTimestamp == "heartbeat") {
+                    //       sendMessage("heartbeat");
                 } else if (cmdWithoutTimestamp == "connected") {
                     Neopixel(GREEN);
                     sendAckMessage(timestamp);

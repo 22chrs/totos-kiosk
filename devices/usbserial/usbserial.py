@@ -17,6 +17,7 @@ class BoardSerial:
         self.last_timestamp = 0
         self.received_timestamps = {}  
         self.sent_messages = []
+    
 
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
@@ -119,7 +120,7 @@ class BoardSerial:
                         self.send_data("connected")
                     else:
                         print(f"Alias '{processed_data}' is not in the list of valid aliases. Ignoring board.")
-                        self.disconnect()
+                        #self.disconnect()
                     break
             else:
                 time.sleep(0.1)
