@@ -226,25 +226,25 @@ class BoardSerial:
             self.disconnect()
 
     def generate_timestamp(self):
-        current_time = time.localtime()
-        millis = int((time.time() % 1) * 1000)
+        current_time = time.time()  # Get current time in seconds (with sub-second precision)
+        local_time = time.localtime(current_time)  # Convert to local time tuple
+        millis = int((current_time % 1) * 1000)  # Extract milliseconds
 
-        year = current_time.tm_year % 100
-        month = current_time.tm_mon
-        day = current_time.tm_mday
-        hour = current_time.tm_hour
-        minutes = current_time.tm_min
+        # Format timestamp as YYMMDDHHMMSSmmm
+        new_timestamp = f"{local_time.tm_year % 100:02}{local_time.tm_mon:02}{local_time.tm_mday:02}"
+        new_timestamp += f"{local_time.tm_hour:02}{local_time.tm_min:02}{local_time.tm_sec:02}{millis:03}"
 
-        new_timestamp = f"{year:02}{month:02}{day:02}{hour:02}{minutes:02}{millis:04}"
-
-        if new_timestamp == self.last_timestamp:
-            self.timestamp_suffix = chr(ord(self.timestamp_suffix) + 1)
-            if self.timestamp_suffix > 'Z':
+        with self.lock:  # Lock to ensure this operation is thread-safe
+            if new_timestamp == self.last_timestamp:
+                self.timestamp_suffix = chr(ord(self.timestamp_suffix) + 1)
+                if self.timestamp_suffix > 'Z':  # Reset if it exceeds 'Z'
+                    self.timestamp_suffix = 'A'
+            else:
                 self.timestamp_suffix = 'A'
-        else:
-            self.timestamp_suffix = 'A'
-            self.last_timestamp = new_timestamp
-        return new_timestamp + self.timestamp_suffix
+                self.last_timestamp = new_timestamp
+
+            # Return the final timestamp with suffix
+            return new_timestamp + self.timestamp_suffix
 
     def send_data(self, message):
         if self.serial_connection is None:

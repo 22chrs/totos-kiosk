@@ -9,7 +9,7 @@ SerialController::SerialController()
     : alias("Unknown"),
       connectionStatus(false),
       lastReceivedMessage(0),
-      connectionTimeout(2500),
+      connectionTimeout(25),
       receivedTimestamp(""),
       timestampMillisOffset(0),
       lastSentTimestamp(""),
