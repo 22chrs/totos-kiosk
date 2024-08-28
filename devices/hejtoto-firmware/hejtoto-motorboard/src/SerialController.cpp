@@ -120,11 +120,7 @@ void SerialController::handleReceivedMessage(const String &message) {
                 String timestamp = cmdContent.substring(0, firstPipeIndex);
                 String cmdWithoutTimestamp = cmdContent.substring(firstPipeIndex + 1);
 
-                if (cmdWithoutTimestamp == "heartbeat") {
-                    sendAckMessage(timestamp);
-                }
-
-                else if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
+                if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
                     receivedTimestamp = timestamp;
                     timestampMillisOffset = millis();
                     // sendAckMessage(timestamp); //! here not: REQUEST_ALIAS
@@ -133,9 +129,12 @@ void SerialController::handleReceivedMessage(const String &message) {
                     //  Serial.println(getCurrentTime());
                     //   } else if (cmdWithoutTimestamp == "heartbeat") {
                     //       sendMessage("heartbeat");
-                } else if (cmdWithoutTimestamp == "connected") {
-                    Neopixel(GREEN);
+                } else {
                     sendAckMessage(timestamp);
+                }
+
+                if (cmdWithoutTimestamp == "connected") {
+                    Neopixel(GREEN);
                     connectionStatus = true;
                 } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
                     processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);

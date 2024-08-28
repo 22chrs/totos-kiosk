@@ -17,12 +17,11 @@ boolean homeDevice(const String &stepperName, String timestamp) {
                     // Serial.print(" and ");
                     // Serial.println(currentBoardConfig->stepper[j].name);
                     // Call the function to home combined motors
-                    serialController.sendAckMessage(timestamp);
+
                     return homeCombinedMotors(i, j);  // Use indices of combined motors
                 }
             }
             // If no combined motors, home single motor
-            serialController.sendAckMessage(timestamp);
 
             return homeMotor(i);  // Pass the index as a byte (or unsigned char)
         }
@@ -61,7 +60,6 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
 
             changeCurrentStateMotor(i, driveCurrent);
             setSpeedMotor(i, maxSpeed);
-            serialController.sendAckMessage(timestamp);
 
             // Check for combined motors by name
             for (int j = 0; j < 6; ++j) {
