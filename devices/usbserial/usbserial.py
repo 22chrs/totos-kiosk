@@ -61,7 +61,7 @@ class BoardSerial:
         except Exception as e:
             print(f"Error reading from serial: {str(e)}")
 
-    def send_ack_immediately(self):
+    def send_ack_retry(self):
         """Send 'ack123' immediately if the flag is set."""
         if self.serial_connection is not None and self.board_info["alias"]:
             if self.need_to_send_ack:
@@ -86,7 +86,7 @@ class BoardSerial:
                 print(f"[DEBUG] Failed to find acknowledgment for timestamp: {ack_timestamp}")
 
             # Trigger the immediate ACK sending if needed
-            self.send_ack_immediately()
+            self.send_ack_retry()
 
     async def check_old_ack_messages(self):
         while True:
@@ -107,7 +107,7 @@ class BoardSerial:
                         print(f"[DEBUG] Removing message '{removed_message}' from sent_messages.")
 
                 # Trigger the immediate ACK sending if needed
-                self.send_ack_immediately()
+                self.send_ack_retry()
 
                 await asyncio.sleep(0.01)  # Check more frequently for unacknowledged messages
             except Exception as e:
@@ -202,7 +202,7 @@ class BoardSerial:
                 self.is_heartbeat_sent = False
 
                 # Trigger the immediate ACK sending if needed
-                self.send_ack_immediately()
+                self.send_ack_retry()
 
             except Exception as e:
                 print(f"Error in send_periodic_ack: {str(e)}")
