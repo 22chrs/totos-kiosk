@@ -21,6 +21,7 @@ class BoardSerial:
         self.sent_messages = []
         self.read_buffer = ""
         self.lock = threading.Lock()
+        self.need_to_send_ack = False
 
     def read_from_serial(self):
         """Read from the serial port and handle incomplete data."""
@@ -60,6 +61,14 @@ class BoardSerial:
         except Exception as e:
             print(f"Error reading from serial: {str(e)}")
 
+    def send_ack_immediately(self):
+        """Send 'ack123' immediately if the flag is set."""
+        if self.serial_connection is not None and self.board_info["alias"]:
+            if self.need_to_send_ack:
+                self.need_to_send_ack = False  # Reset the flag after sending
+                self.send_data("heartbeat")
+                
+
     def check_acknowledgment(self, ack_timestamp):
         with self.lock:
             found_index = None
@@ -76,6 +85,9 @@ class BoardSerial:
             else:
                 print(f"[DEBUG] Failed to find acknowledgment for timestamp: {ack_timestamp}")
 
+            # Trigger the immediate ACK sending if needed
+            self.send_ack_immediately()
+
     async def check_old_ack_messages(self):
         while True:
             try:
@@ -84,20 +96,24 @@ class BoardSerial:
                     to_remove = []
                     for i in range(len(self.sent_messages)):
                         send_time, message = self.sent_messages[i]
-                        if current_time - send_time > 0.05: 
-                            # Print warning immediately after detecting the unacknowledged message
-                            print(f"WARNING: Message '{message}' has not been acknowledged.")
+                        if current_time - send_time > 0.05:
+                            # Set flag to send ack123 instead of printing warning
+                            self.need_to_send_ack = True
                             to_remove.append(i)
                             break  # Stop checking further messages after the first unacknowledged one
 
                     for index in to_remove:
                         removed_message = self.sent_messages.pop(index)
                         print(f"[DEBUG] Removing message '{removed_message}' from sent_messages.")
-                
+
+                # Trigger the immediate ACK sending if needed
+                self.send_ack_immediately()
+
                 await asyncio.sleep(0.01)  # Check more frequently for unacknowledged messages
             except Exception as e:
                 print(f"Error in check_old_ack_messages: {str(e)}")
                 break
+
 
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
@@ -184,6 +200,10 @@ class BoardSerial:
                         self.is_heartbeat_sent = True
 
                 self.is_heartbeat_sent = False
+
+                # Trigger the immediate ACK sending if needed
+                self.send_ack_immediately()
+
             except Exception as e:
                 print(f"Error in send_periodic_ack: {str(e)}")
                 break

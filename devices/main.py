@@ -25,18 +25,18 @@ if __name__ == '__main__':
         await usb_manager.start()  # Start the connection manager
 
         # Wait until all required aliases are connected
-        while not usb_manager.all_required_aliases_connected():
-            print("Waiting for all required aliases to connect...")
-            await asyncio.sleep(1)  # Check every second
+        # while not usb_manager.all_required_aliases_connected():
+        #     print("Waiting for all required aliases to connect...")
+        #     await asyncio.sleep(1)  # Check every second
 
         # Now send the home command to the "RoboCubeFront"
         # await teensy_controller.send_home_device_command("RoboCubeFront", "Schleuse")
-        await teensy_controller.send_home_device_command("RoboCubeFront", "Becherschubse")
+        #await teensy_controller.send_home_device_command("RoboCubeFront", "Becherschubse")
         # await teensy_controller.send_home_device_command("RoboCubeFront", "Shield")
         # await teensy_controller.send_home_device_command("RoboCubeFront", "Snackbar")
 
         #await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 200, 100, 100, 100)
-        #await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 300, 100, 100, 100)
+        #await teensy_controller.send_move_deviSce_command("RoboCubeFront", "Becherschubse", 300, 100, 100, 100)
 
         # Start monitoring and forwarding commands
         await command_forwarder.monitor_and_forward()
