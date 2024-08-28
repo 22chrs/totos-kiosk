@@ -10,8 +10,7 @@
 #define NEOPIXEL_PIN 10
 #define NUM_LEDS 1
 
-enum ColorName
-{
+enum ColorName {
     RED,
     ORANGE,
     GREEN,
@@ -27,5 +26,6 @@ void init_LEDs();
 void buildInLEDBlik();
 void Neopixel(ColorName colorName);
 void setBuiltInLEDState(bool state);
+void flipBuiltInLED();
 
 #endif

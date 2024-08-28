@@ -94,7 +94,13 @@ void SerialController::sendAckMessage(const String &timestamp) {
 
     // Add STX, ETX, and CRC to the acknowledgment message
     String messageToSend = "<STX>" + timestampToSend + "|" + ackMessage + "|" + calculateCRC(timestampToSend + "|" + ackMessage) + "<ETX>";
+
+    // Ensure the serial buffer is clear before sending a new message
+    Serial.flush();
+
+    // Send the message
     Serial.println(messageToSend);
+
     // Ensure the data is fully sent
     Serial.flush();
 }
@@ -105,6 +111,9 @@ void SerialController::handleReceivedMessage(const String &message) {
 
         int crcIndex = command.lastIndexOf('|');
         if (crcIndex > 0) {
+            // flip the led
+
+            flipBuiltInLED();
             String cmdContent = command.substring(0, crcIndex);
             int firstPipeIndex = cmdContent.indexOf('|');
             if (firstPipeIndex > 0) {
@@ -181,10 +190,16 @@ String SerialController::sendMessage(const String &message) {
     String timestamp = generateTimestampWithSuffix();
     // Add STX, ETX, and CRC to the message
     String messageToSend = "<STX>" + timestamp + "|" + message + "|" + calculateCRC(timestamp + "|" + message) + "<ETX>";
+
+    // Ensure the serial buffer is clear before sending a new message
+    Serial.flush();
+
     // Send the message
     Serial.println(messageToSend);
+
     // Ensure the data is fully sent
     Serial.flush();
+
     return timestamp;
 }
 

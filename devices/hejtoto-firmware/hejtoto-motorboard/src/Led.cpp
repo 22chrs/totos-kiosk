@@ -68,6 +68,24 @@ void buildInLEDBlik() {
     setBuiltInLEDState(LOW);
 }
 
+unsigned long previousMillis = 0;  // Stores the last time the LED was updated
+const long interval = 100;         // Interval at which to blink (in milliseconds)
+bool ledState = LOW;               // Stores the current state of the built-in LED
+
+void flipBuiltInLED() {
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - previousMillis >= interval) {
+        previousMillis = currentMillis;  // Save the last time the LED was updated
+
+        // If the LED is off, turn it on, and vice-versa
+        ledState = !ledState;
+
+        // Set the LED with the ledState of the variable
+        setBuiltInLEDState(ledState);
+    }
+}
+
 void setBuiltInLEDState(bool state) {
     digitalWrite(BUILD_IN_LED_PIN, state ? HIGH : LOW);  // Set the state of the built-in LED
 }

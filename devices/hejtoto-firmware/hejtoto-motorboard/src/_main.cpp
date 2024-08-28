@@ -63,7 +63,8 @@ void setup() {
     // moveDevice("Lift_C", 1, 100, 100);
 
     //   delay(1000);
-    //   pwmMosfet(1, 0);
+    //   pwmMosfet(4, 0);
+    //   pwmMosfet(5, 0);
     //   moveDevice("Rodell_A", 10, 100, 100);
     //   moveDevice("Rodell_B", 10, 100, 100);
     //   moveDevice("Rodell_C", 10, 100, 100);
@@ -84,6 +85,9 @@ void setup() {
 
     buildInLEDBlik();
     // openDoor(5);
+    // openDoor(4);
+
+    // delay(10000);
 }
 
 void loop() {

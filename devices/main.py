@@ -2,7 +2,7 @@ import asyncio
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController  # Import necessary classes
 
 # Define the aliases for the boards you want to test with
-teensys = {"RoboCubeFront"}  # Example set of board aliases
+teensys = {"RoboCubeBack"}  # Example set of board aliases
 
 if __name__ == '__main__':
     print("Starting event loop")
@@ -30,13 +30,18 @@ if __name__ == '__main__':
             await asyncio.sleep(1)  # Check every second
 
         # Now send the home command to the "RoboCubeFront"
-        await teensy_controller.send_home_device_command("RoboCubeFront", "Schleuse")
+        # await teensy_controller.send_home_device_command("RoboCubeFront", "Schleuse")
         await teensy_controller.send_home_device_command("RoboCubeFront", "Becherschubse")
-        await teensy_controller.send_home_device_command("RoboCubeFront", "Shield")
-        await teensy_controller.send_home_device_command("RoboCubeFront", "Snackbar")
+        # await teensy_controller.send_home_device_command("RoboCubeFront", "Shield")
+        # await teensy_controller.send_home_device_command("RoboCubeFront", "Snackbar")
+
+        #await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 200, 100, 100, 100)
+        #await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 300, 100, 100, 100)
 
         # Start monitoring and forwarding commands
         await command_forwarder.monitor_and_forward()
+
+       
 
     loop.run_until_complete(main())  # Run the main loop
 

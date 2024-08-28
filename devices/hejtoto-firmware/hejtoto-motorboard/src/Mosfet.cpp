@@ -71,7 +71,7 @@ void openDoor(int MosfetX) {
 
 void loop_checkAndCloseDoors() {
     for (int i = 0; i < NUM_MOSFETS; i++) {
-        if (isDoorOpen[i] && doorChronos[i].hasPassed(1000)) {  // Check if 1000 ms has passed for this Mosfet
+        if (isDoorOpen[i] && doorChronos[i].hasPassed(1500)) {  // Check if 1000 ms has passed for this Mosfet
             pwmMosfet(i + 1, 0);                                // Stop the Mosfet (i+1 because MosfetX is 1-based)
             isDoorOpen[i] = false;                              // Reset state for this Mosfet
         }
