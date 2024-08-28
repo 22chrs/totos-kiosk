@@ -22,7 +22,7 @@ class BoardSerial:
         self.read_buffer = ""
         self.lock = threading.Lock()
         self.need_to_send_ack = False
-        self.last_unacknowledged_message = None  
+        self.last_unacknowledged_message = None  #! include the orginally timestamp of that message pls -> timestamp|message @chatgpt
 
     def read_from_serial(self):
         """Read from the serial port and handle incomplete data."""
@@ -69,7 +69,7 @@ class BoardSerial:
                     # Resend the exact original message
                     self.send_data(self.last_unacknowledged_message)
                     alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
-                    print(f"[DEBUG] Resending original message '{self.last_unacknowledged_message}' to '{alias}'")
+                    print(f"@{alias} -------> timestamp|{self.last_unacknowledged_message}")
                 
 
     def check_acknowledgment(self, ack_timestamp):
@@ -82,7 +82,7 @@ class BoardSerial:
                         original_message = msg.split('|', 1)[1]  # Extract the original message part
                         self.last_unacknowledged_message = original_message  # Store the last unacknowledged message
                         offset_time = time.time() - send_time
-                        print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
+                        #print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
                         break
 
                 if found_index is not None:
@@ -109,7 +109,7 @@ class BoardSerial:
 
                     for index in to_remove:
                         removed_message = self.sent_messages.pop(index)
-                        print(f"[DEBUG] Removing message '{removed_message}' from sent_messages.")
+                        #print(f"[DEBUG] Removing message '{removed_message}' from sent_messages.")
 
                 self.send_ack_retry()
 
