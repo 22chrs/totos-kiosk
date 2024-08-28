@@ -22,6 +22,7 @@ class BoardSerial:
         self.read_buffer = ""
         self.lock = threading.Lock()
         self.need_to_send_ack = False
+        self.last_unacknowledged_message = None  
 
     def read_from_serial(self):
         """Read from the serial port and handle incomplete data."""
@@ -62,31 +63,35 @@ class BoardSerial:
             print(f"Error reading from serial: {str(e)}")
 
     def send_ack_retry(self):
-        """Send 'ack123' immediately if the flag is set."""
-        if self.serial_connection is not None and self.board_info["alias"]:
-            if self.need_to_send_ack:
-                self.need_to_send_ack = False  # Reset the flag after sending
-                self.send_data("heartbeat")
+            if self.serial_connection is not None and self.board_info["alias"]:
+                if self.need_to_send_ack and self.last_unacknowledged_message:
+                    self.need_to_send_ack = False  # Reset the flag after sending
+                    # Resend the exact original message
+                    self.send_data(self.last_unacknowledged_message)
+                    alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
+                    print(f"[DEBUG] Resending original message '{self.last_unacknowledged_message}' to '{alias}'")
                 
 
     def check_acknowledgment(self, ack_timestamp):
-        with self.lock:
-            found_index = None
-            for i, (send_time, msg) in enumerate(self.sent_messages):
-                if msg.startswith(ack_timestamp):
-                    found_index = i
-                    # Calculate the offset time
-                    offset_time = time.time() - send_time
-                    print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
-                    break
+            with self.lock:
+                found_index = None
+                original_message = None
+                for i, (send_time, msg) in enumerate(self.sent_messages):
+                    if msg.startswith(ack_timestamp):
+                        found_index = i
+                        original_message = msg.split('|', 1)[1]  # Extract the original message part
+                        self.last_unacknowledged_message = original_message  # Store the last unacknowledged message
+                        offset_time = time.time() - send_time
+                        print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
+                        break
 
-            if found_index is not None:
-                del self.sent_messages[found_index]
-            else:
-                print(f"[DEBUG] Failed to find acknowledgment for timestamp: {ack_timestamp}")
+                if found_index is not None:
+                    del self.sent_messages[found_index]
+                else:
+                    print(f"[DEBUG] Failed to find acknowledgment for timestamp: {ack_timestamp}")
 
-            # Trigger the immediate ACK sending if needed
-            self.send_ack_retry()
+                if self.last_unacknowledged_message:
+                    self.send_ack_retry()
 
     async def check_old_ack_messages(self):
         while True:
@@ -97,19 +102,18 @@ class BoardSerial:
                     for i in range(len(self.sent_messages)):
                         send_time, message = self.sent_messages[i]
                         if current_time - send_time > 0.05:
-                            # Set flag to send ack123 instead of printing warning
                             self.need_to_send_ack = True
+                            self.last_unacknowledged_message = message.split('|', 1)[1]  # Store the message for retry
                             to_remove.append(i)
-                            break  # Stop checking further messages after the first unacknowledged one
+                            break
 
                     for index in to_remove:
                         removed_message = self.sent_messages.pop(index)
                         print(f"[DEBUG] Removing message '{removed_message}' from sent_messages.")
 
-                # Trigger the immediate ACK sending if needed
                 self.send_ack_retry()
 
-                await asyncio.sleep(0.01)  # Check more frequently for unacknowledged messages
+                await asyncio.sleep(0.01)
             except Exception as e:
                 print(f"Error in check_old_ack_messages: {str(e)}")
                 break
