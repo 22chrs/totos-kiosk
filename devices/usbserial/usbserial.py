@@ -60,33 +60,6 @@ class BoardSerial:
         except Exception as e:
             print(f"Error reading from serial: {str(e)}")
 
-    def preprocess_data(self, data, alias=None):
-        processed_data = data.strip()
-        alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
-
-        if processed_data.startswith("<STX>") and processed_data.endswith("<ETX>"):
-            processed_data = processed_data[5:-5]
-            
-            try:
-                message, crc = processed_data.rsplit("|", 1)
-
-                if '|' in message:
-                    timestamp, message = message.split('|', 1)
-                    self.received_timestamps[timestamp] = message
-
-                print(f"{alias_to_print} -> {message}")
-
-                if message.startswith("ACK:"):
-                    ack_timestamp = message.split("ACK:")[1].strip()
-                    self.check_acknowledgment(ack_timestamp)
-
-                return message
-            except ValueError:
-                print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
-        else:
-            print(f"### {alias_to_print} -> {processed_data} ###")
-
-
     def check_acknowledgment(self, ack_timestamp):
         with self.lock:
             found_index = None
