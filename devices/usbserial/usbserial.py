@@ -68,9 +68,6 @@ class BoardSerial:
                     self.need_to_send_ack = False  # Reset the flag after sending
                     # Resend the exact original message
                     self.send_data(self.last_unacknowledged_message_and_timestamp)
-                    alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
-                    #print(f"@{alias} -------> timestamp|{self.last_unacknowledged_message_and_timestamp}")
-                
 
     def check_acknowledgment(self, ack_timestamp):
         with self.lock:
@@ -81,7 +78,7 @@ class BoardSerial:
                     found_index = i
                     original_message = msg  # Store the entire message (timestamp|message)
                     self.last_unacknowledged_message_and_timestamp = original_message  # Store the last unacknowledged message
-                    offset_time = time.time() - send_time
+                    #offset_time = time.time() - send_time
                     #print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
                     break
 
@@ -242,13 +239,20 @@ class BoardSerial:
 
             # Return the final timestamp with suffix
             return new_timestamp + self.timestamp_suffix
-
+        
     def send_data(self, message):
         if self.serial_connection is None:
             print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
             return
+        timestamp = self.generate_timestamp()
         try:
-            timestamp = self.generate_timestamp()
+            # Check if the message is a retry message
+            if '|' in message and len(message.split('|')[0]) == 16 and message[:15].isdigit():
+                retry_timestamp, retry_message = message.split('|', 1)
+                #print(f"Retry: {retry_timestamp} | {retry_message}")
+                message = retry_message  # Use the part after | as the actual message
+                timestamp = retry_timestamp  # Use the part after | as the actual message
+
             message_with_crc = self.add_crc_and_frame(message, timestamp)
             self.serial_connection.write((message_with_crc + '\n').encode())
             self.last_command = message
