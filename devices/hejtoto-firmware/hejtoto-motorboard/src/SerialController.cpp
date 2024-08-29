@@ -9,7 +9,7 @@ SerialController::SerialController()
     : alias("Unknown"),
       connectionStatus(false),
       lastReceivedMessage(0),
-      connectionTimeout(25),
+      connectionTimeout(40),
       receivedTimestamp(""),
       timestampMillisOffset(0),
       lastSentTimestamp(""),
@@ -27,23 +27,37 @@ void SerialController::setAlias(const String &alias) {
     this->alias = alias;
 }
 
-void SerialController::update() {
+void SerialController::update(uint32_t baudRate) {
     if (!Serial) {  // Check if the Serial connection is still active
         connectionStatus = false;
         Neopixel(RED);
         Serial.end();
-        begin(9600);  // Attempt to reinitialize with the default baud rate
+        begin(baudRate);  // Attempt to reinitialize with the default baud rate
         return;
     }
 
+    // Use a static buffer to reduce memory allocation overhead
+    static char buffer[256];  // Adjust size as needed
+    static size_t index = 0;
+
     while (Serial.available() > 0) {
-        String message = Serial.readStringUntil('\n');
-        lastReceivedMessage = millis();
-        if (isValidMessage(message)) {
-            handleReceivedMessage(message);
+        char incomingChar = Serial.read();  // Read a single character
+
+        // Process only if not exceeding buffer size
+        if (index < sizeof(buffer) - 1) {
+            if (incomingChar == '\n') {  // Check if the end of the message is reached
+                buffer[index] = '\0';    // Null-terminate the string
+                if (isValidMessage(buffer)) {
+                    handleReceivedMessage(buffer);
+                }
+                index = 0;                       // Reset the buffer index for the next message
+                lastReceivedMessage = millis();  // Reset the last received message time
+            } else {
+                buffer[index++] = incomingChar;  // Append to the buffer
+            }
         } else {
-            // Serial.print("Not valid message: ");
-            // Serial.println(message);
+            // Buffer overflow; reset and ignore the message
+            index = 0;
         }
     }
 

@@ -33,7 +33,7 @@ class SerialController {
     void sendAckMessage(const String &timestamp);
     void setAlias(const String &alias);
     void begin(uint32_t baudRate);
-    void update();
+    void update(uint32_t baudRate);
     boolean isConnected();
     String getReceivedTimestamp() const;             // Method to get the received timestamp
     unsigned long getTimestampMillisOffset() const;  // Method to get the millis offset

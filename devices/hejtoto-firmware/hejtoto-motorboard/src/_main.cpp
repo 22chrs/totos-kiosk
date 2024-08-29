@@ -81,7 +81,7 @@ void setup() {
     // homeDevice("Rodell_B");
     // homeDevice("Rodell_C");
 
-    serialController.begin(115200);
+    serialController.begin(BaudRateSerial);
 
     buildInLEDBlik();
     // openDoor(5);
@@ -90,10 +90,27 @@ void setup() {
     // delay(10000);
 }
 
+unsigned long previousMillis2 = 0;  // Store the last time a task was executed
+const long interval2 = 1000;
+
+void chrono() {
+    unsigned long currentMillis = millis();  // Get the current time
+
+    // Check if enough time has passed since the last task execution
+    if (currentMillis - previousMillis2 >= interval2) {
+        // Save the last time the task was executed
+        previousMillis2 = currentMillis;
+
+        // Simulate a small blocking delay (e.g., 200 ms)
+        delay(1300);
+    }
+}
+
 void loop() {
     loop_checkAndCloseDoors();                   //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
     loop_StepperReachedDesiredRingPercentage();  //! For Stepper ring if the reach some destinations! 🛸
-    serialController.update();
+    serialController.update(BaudRateSerial);
+    // chrono();
 
     // if (helperChrono.hasPassed(1000)) {
     //     Serial.println("123");

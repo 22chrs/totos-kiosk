@@ -22,7 +22,7 @@ class BoardSerial:
         self.read_buffer = ""
         self.lock = threading.Lock()
         self.need_to_send_ack = False
-        self.last_unacknowledged_message = None  #! include the orginally timestamp of that message pls -> timestamp|message @chatgpt
+        self.last_unacknowledged_message_and_timestamp = None  #! include the orginally timestamp of that message pls -> timestamp|message
 
     def read_from_serial(self):
         """Read from the serial port and handle incomplete data."""
@@ -64,34 +64,34 @@ class BoardSerial:
 
     def send_ack_retry(self):
             if self.serial_connection is not None and self.board_info["alias"]:
-                if self.need_to_send_ack and self.last_unacknowledged_message:
+                if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
                     self.need_to_send_ack = False  # Reset the flag after sending
                     # Resend the exact original message
-                    self.send_data(self.last_unacknowledged_message)
+                    self.send_data(self.last_unacknowledged_message_and_timestamp)
                     alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
-                    print(f"@{alias} -------> timestamp|{self.last_unacknowledged_message}")
+                    #print(f"@{alias} -------> timestamp|{self.last_unacknowledged_message_and_timestamp}")
                 
 
     def check_acknowledgment(self, ack_timestamp):
-            with self.lock:
-                found_index = None
-                original_message = None
-                for i, (send_time, msg) in enumerate(self.sent_messages):
-                    if msg.startswith(ack_timestamp):
-                        found_index = i
-                        original_message = msg.split('|', 1)[1]  # Extract the original message part
-                        self.last_unacknowledged_message = original_message  # Store the last unacknowledged message
-                        offset_time = time.time() - send_time
-                        #print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
-                        break
+        with self.lock:
+            found_index = None
+            original_message = None
+            for i, (send_time, msg) in enumerate(self.sent_messages):
+                if msg.startswith(ack_timestamp):
+                    found_index = i
+                    original_message = msg  # Store the entire message (timestamp|message)
+                    self.last_unacknowledged_message_and_timestamp = original_message  # Store the last unacknowledged message
+                    offset_time = time.time() - send_time
+                    #print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
+                    break
 
-                if found_index is not None:
-                    del self.sent_messages[found_index]
-                else:
-                    print(f"[DEBUG] Failed to find acknowledgment for timestamp: {ack_timestamp}")
+            if found_index is not None:
+                del self.sent_messages[found_index]
+            #else:
+                #print(f"[DEBUG] Failed to find acknowledgment for timestamp: {ack_timestamp}")
 
-                if self.last_unacknowledged_message:
-                    self.send_ack_retry()
+            if self.last_unacknowledged_message_and_timestamp:
+                self.send_ack_retry()
 
     async def check_old_ack_messages(self):
         while True:
@@ -103,7 +103,7 @@ class BoardSerial:
                         send_time, message = self.sent_messages[i]
                         if current_time - send_time > 0.05:
                             self.need_to_send_ack = True
-                            self.last_unacknowledged_message = message.split('|', 1)[1]  # Store the message for retry
+                            self.last_unacknowledged_message_and_timestamp = message  # Store the entire message (timestamp|message) for retry
                             to_remove.append(i)
                             break
 
