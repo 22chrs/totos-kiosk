@@ -23,6 +23,7 @@ class BoardSerial:
         self.lock = threading.Lock()
         self.need_to_send_ack = False
         self.last_unacknowledged_message_and_timestamp = None  #! include the orginally timestamp of that message pls -> timestamp|message
+        self.retry_count = 0
 
     def read_from_serial(self):
         """Read from the serial port and handle incomplete data."""
@@ -65,9 +66,12 @@ class BoardSerial:
     def send_ack_retry(self):
             if self.serial_connection is not None and self.board_info["alias"]:
                 if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
+                    self.retry_count += 1  # Increment the retry count
+
+                    # Append the retry count to the original message
+                    retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
+                    self.send_data(retry_message)
                     self.need_to_send_ack = False  # Reset the flag after sending
-                    # Resend the exact original message
-                    self.send_data(self.last_unacknowledged_message_and_timestamp)
 
     def check_acknowledgment(self, ack_timestamp):
         with self.lock:
@@ -78,17 +82,38 @@ class BoardSerial:
                     found_index = i
                     original_message = msg  # Store the entire message (timestamp|message)
                     self.last_unacknowledged_message_and_timestamp = original_message  # Store the last unacknowledged message
-                    #offset_time = time.time() - send_time
-                    #print(f"[DEBUG] ACK received for '{ack_timestamp}' with offset time: {offset_time:.3f} seconds")
                     break
 
             if found_index is not None:
                 del self.sent_messages[found_index]
-            #else:
-                #print(f"[DEBUG] Failed to find acknowledgment for timestamp: {ack_timestamp}")
+                self.retry_count = 0  # Reset the retry count on acknowledgment
 
             if self.last_unacknowledged_message_and_timestamp:
                 self.send_ack_retry()
+
+    async def check_old_ack_messages(self):
+        while True:
+            try:
+                current_time = time.time()
+                with self.lock:
+                    to_remove = []
+                    for i in range(len(self.sent_messages)):
+                        send_time, message = self.sent_messages[i]
+                        if current_time - send_time > 0.05:
+                            self.need_to_send_ack = True
+                            self.last_unacknowledged_message_and_timestamp = message  # Store the entire message (timestamp|message) for retry
+                            to_remove.append(i)
+                            break
+
+                    for index in to_remove:
+                        removed_message = self.sent_messages.pop(index)
+
+                self.send_ack_retry()
+
+                await asyncio.sleep(0.01)
+            except Exception as e:
+                print(f"Error in check_old_ack_messages: {str(e)}")
+                break
 
     async def check_old_ack_messages(self):
         while True:
@@ -249,7 +274,6 @@ class BoardSerial:
             # Check if the message is a retry message
             if '|' in message and len(message.split('|')[0]) == 16 and message[:15].isdigit():
                 retry_timestamp, retry_message = message.split('|', 1)
-                #print(f"Retry: {retry_timestamp} | {retry_message}")
                 message = retry_message  # Use the part after | as the actual message
                 timestamp = retry_timestamp  # Use the part after | as the actual message
 
