@@ -78,8 +78,10 @@ class BoardSerial:
 
                     self.retry_count += 1  # Increment the retry count
 
-                    # Append the retry count to the original message
-                    retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
+                    # Strip existing retry number if present, then add the new retry count
+                    base_message = self.last_unacknowledged_message_and_timestamp.split('|')[0]
+                    retry_message = f"{base_message}|{self.retry_count + 1}"
+                    
                     self.send_data(retry_message)
                     self.need_to_send_ack = False  # Reset the flag after sending
 
@@ -294,11 +296,13 @@ class BoardSerial:
             return
         timestamp = self.generate_timestamp()
         try:
-            # Check if the message is a retry message
+            # Check if the message is a retry message and strip any existing retry count
             if '|' in message and len(message.split('|')[0]) == 16 and message[:15].isdigit():
                 retry_timestamp, retry_message = message.split('|', 1)
+                if '|' in retry_message:
+                    retry_message = retry_message.split('|')[0]  # Remove existing retry count
                 message = retry_message  # Use the part after | as the actual message
-                timestamp = retry_timestamp  # Use the part after | as the actual message
+                timestamp = retry_timestamp  # Use the original timestamp
 
             message_with_crc = self.add_crc_and_frame(message, timestamp)
             self.serial_connection.write((message_with_crc + '\n').encode())
