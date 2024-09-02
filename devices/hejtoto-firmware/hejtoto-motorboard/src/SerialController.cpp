@@ -154,33 +154,34 @@ void SerialController::handleReceivedMessage(const String &message) {
                     timestampMillisOffset = millis();
                     sendMessage(alias);
 
-                    // } else if (!cmdWithoutTimestamp.startsWith("ACK:")) {
-                    //     sendAckMessage(timestamp);
-                    // }
-
-                } else {
+                } else if (!cmdWithoutTimestamp.startsWith("ACK:")) {
                     sendAckMessage(timestamp);
                 }
-                if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt – (das ACK könnte ja verlohren gehen)
-                    if (cmdWithoutTimestamp == "connected") {
-                        Neopixel(GREEN);
-                        connectionStatus = true;
-                    } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
-                        processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
-                    } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
-                        processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
-                    }
-                }
-                updateTimestampBuffer(timestamp);
+
             } else {
-                Serial.println("Invalid message format: Timestamp separator '|' not found");
+                sendAckMessage(timestamp);
             }
+            if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt – (das ACK könnte ja verlohren gehen)
+                if (cmdWithoutTimestamp == "connected") {
+                    Neopixel(GREEN);
+                    connectionStatus = true;
+                } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
+                    processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
+                } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
+                    processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                }
+            }
+            updateTimestampBuffer(timestamp);
         } else {
-            Serial.println("Invalid message format: CRC separator '|' not found");
+            Serial.println("Invalid message format: Timestamp separator '|' not found");
         }
     } else {
-        Serial.println("Invalid message format: Missing <STX> or <ETX>");
+        Serial.println("Invalid message format: CRC separator '|' not found");
     }
+}
+else {
+    Serial.println("Invalid message format: Missing <STX> or <ETX>");
+}
 }
 
 void SerialController::processHomeDeviceCommand(const String &message, const String &timestamp) {
