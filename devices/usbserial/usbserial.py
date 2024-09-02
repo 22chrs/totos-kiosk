@@ -70,6 +70,7 @@ class BoardSerial:
 
                     # Append the retry count to the original message
                     retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
+                    print("ACK retry")
                     self.send_data(retry_message)
                     self.need_to_send_ack = False  # Reset the flag after sending
 
@@ -140,11 +141,6 @@ class BoardSerial:
                 print(f"Error in check_old_ack_messages: {str(e)}")
                 break
 
-    # The new function to send an acknowledgment message
-    def send_acknowledgment(self, timestamp_received):
-        ack_message = f"ACK:{timestamp_received}"
-        self.send_data(ack_message)
-
     # The updated preprocess_data function with the conditional call to send_acknowledgment
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
@@ -159,10 +155,6 @@ class BoardSerial:
                     self.received_timestamps[timestamp_received] = message_content
 
                 print(f"{alias_to_print} -> {timestamp_received}|{message_content}")
-                
-                # Call send_acknowledgment only if message_content does not start with "ACK:"
-                if not message_content.startswith("ACK:"):
-                    self.send_acknowledgment(timestamp_received)
 
                 # Additional logging for ACKs
                 if message_content.startswith("ACK:"):

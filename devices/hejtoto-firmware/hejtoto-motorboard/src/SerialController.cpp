@@ -154,11 +154,14 @@ void SerialController::handleReceivedMessage(const String &message) {
                     timestampMillisOffset = millis();
                     sendMessage(alias);
 
-                } else {  //! ACK wird auch bei wiederholter gleicher Nachricht gesendet – (das ACK könnte ja verlohren gehen)
+                    // } else if (!cmdWithoutTimestamp.startsWith("ACK:")) {
+                    //     sendAckMessage(timestamp);
+                    // }
+
+                } else {
                     sendAckMessage(timestamp);
                 }
-
-                if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt
+                if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt – (das ACK könnte ja verlohren gehen)
                     if (cmdWithoutTimestamp == "connected") {
                         Neopixel(GREEN);
                         connectionStatus = true;
