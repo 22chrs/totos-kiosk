@@ -75,7 +75,7 @@ class BoardSerial:
 
                 # Append the retry count to the original message
                 retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
-                print(f"ACK retry {self.retry_count}")  # Debug: Show the retry count
+                #print(f"ACK retry {self.retry_count}")  # Debug: Show the retry count
                 self.send_data(retry_message)
                 self.need_to_send_ack = False  # Reset the flag after sending
 
@@ -283,7 +283,9 @@ class BoardSerial:
         if self.serial_connection is None:
             print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
             return
+
         timestamp = self.generate_timestamp()
+        
         try:
             # Check if the message is a retry message
             if '|' in message and len(message.split('|')[0]) == 16 and message[:15].isdigit():
@@ -297,7 +299,8 @@ class BoardSerial:
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
             print(f"@{alias} -------> {timestamp}|{message}")
 
-            if "REQUEST_ALIAS" not in message:
+            # Skip adding to sent_messages if the message contains "ACK:"
+            if "REQUEST_ALIAS" not in message and "ACK:" not in message:
                 with self.lock:
                     self.sent_messages.append((time.time(), f"{timestamp}|{message}"))
 
