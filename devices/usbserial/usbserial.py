@@ -456,4 +456,3 @@ class TeensyController:
             await self.command_forwarder.forward_command(alias, command)
         else:
             print(f"[DEBUG] Failed to send homeDevice command. Alias '{alias}' not found.")
-

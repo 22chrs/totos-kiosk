@@ -263,21 +263,32 @@ unsigned long SerialController::getMillisFromTimestamp(const String &timestamp) 
 String SerialController::getCurrentTime() {
     unsigned long receivedTimeMillis = getMillisFromTimestamp(receivedTimestamp);
     unsigned long currentMillis = millis();
-    unsigned long elapsedMillis = (currentMillis >= timestampMillisOffset) ? (currentMillis - timestampMillisOffset) : (0xFFFFFFFF - timestampMillisOffset + currentMillis + 1);
 
+    // Calculate the elapsed time since the timestamp was synced
+    unsigned long elapsedMillis = currentMillis - timestampMillisOffset;
+
+    // Calculate the new current time by adding the elapsed time to the received timestamp
     unsigned long currentTimeMillis = receivedTimeMillis + elapsedMillis;
-    currentTimeMillis = currentTimeMillis % (24UL * 3600UL * 1000UL);
+    currentTimeMillis %= (24UL * 3600UL * 1000UL);  // Ensure it wraps around correctly in a 24-hour format
 
     unsigned long currentHour = (currentTimeMillis / 3600000UL) % 24;
     unsigned long currentMinute = (currentTimeMillis / 60000UL) % 60;
+    unsigned long currentSecond = (currentTimeMillis / 1000UL) % 60;
     unsigned long currentMillisOnly = currentTimeMillis % 1000;
 
     String yy = receivedTimestamp.substring(0, 2);
     String mm = receivedTimestamp.substring(2, 4);
     String dd = receivedTimestamp.substring(4, 6);
 
-    char currentTimeStr[15];
-    snprintf(currentTimeStr, sizeof(currentTimeStr), "%s%s%s%02lu%02lu%04lu", yy.c_str(), mm.c_str(), dd.c_str(), currentHour, currentMinute, currentMillisOnly);
+    // Generate the timestamp string including seconds for better resolution
+    char currentTimeStr[17];  // Adjust buffer size to accommodate new format
+    snprintf(currentTimeStr, sizeof(currentTimeStr), "%s%s%s%02lu%02lu%02lu%03lu",
+             yy.c_str(), mm.c_str(), dd.c_str(),
+             currentHour, currentMinute, currentSecond, currentMillisOnly);
+
+    // Debug: Print the final generated timestamp
+    // Serial.print("Generated Timestamp: ");
+    // Serial.println(currentTimeStr);
 
     return String(currentTimeStr);
 }
@@ -285,9 +296,12 @@ String SerialController::getCurrentTime() {
 String SerialController::generateTimestampWithSuffix() {
     String newTimestamp = getCurrentTime();
 
+    // If the new timestamp is the same as the last one, increment the suffix
     if (newTimestamp == lastSentTimestamp) {
+        // Increment the suffix (A-Z) and wrap around if needed
         timestampSuffix = (timestampSuffix == 'Z') ? 'A' : (timestampSuffix + 1);
     } else {
+        // Reset the suffix and update the lastSentTimestamp
         timestampSuffix = 'A';
         lastSentTimestamp = newTimestamp;
     }
