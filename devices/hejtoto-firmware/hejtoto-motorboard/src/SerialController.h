@@ -22,6 +22,19 @@ class SerialController {
     String lastTimestamps[20];  // Array to store the last 20 timestamps
     int timestampIndex = 0;     // Index to keep track of the current position in the buffer
 
+    // Data structure to store sent messages for retry mechanism
+    struct SentMessage {
+        String timestamp;
+        String message;
+        unsigned long sentTime;
+        unsigned long lastRetryTime;
+        int retryCount;
+    };
+
+    SentMessage sentMessages[10];     // Buffer to store up to 10 sent messages
+    int sentMessageCount = 0;         // Count of currently stored messages
+    unsigned long ackTimeout = 5000;  // Timeout in milliseconds for ACK
+
     // Private methods for internal operations
     void handleReceivedMessage(const String &message);
     void processHomeDeviceCommand(const String &message, const String &timestamp);
@@ -30,6 +43,7 @@ class SerialController {
     String calculateCRC(const String &message);
     unsigned long getMillisFromTimestamp(const String &timestamp);
     String generateTimestampWithSuffix();  // Method to generate a timestamp with a suffix
+    void checkForAckTimeouts();            // Method to check for ACK timeouts and resend messages
 
     // Methods to check and update the timestamp buffer
     bool isRepeatedTimestamp(const String &timestamp);    // Method to check if a timestamp is repeated

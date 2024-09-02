@@ -26,51 +26,74 @@ void SerialController::begin(uint32_t baudRate) {
 void SerialController::setAlias(const String &alias) {
     this->alias = alias;
 }
-
 void SerialController::update(uint32_t baudRate) {
-    if (!Serial) {  // Check if the Serial connection is still active
+    if (!Serial) {
         connectionStatus = false;
         Neopixel(RED);
         Serial.end();
-        begin(baudRate);  // Attempt to reinitialize with the default baud rate
+        begin(baudRate);
         return;
     }
 
-    // Use a static buffer to reduce memory allocation overhead
-    static char buffer[256];  // Adjust size as needed
+    static char buffer[256];
     static size_t index = 0;
 
     while (Serial.available() > 0) {
-        char incomingChar = Serial.read();  // Read a single character
+        char incomingChar = Serial.read();
 
-        // Process only if not exceeding buffer size
         if (index < sizeof(buffer) - 1) {
-            if (incomingChar == '\n') {  // Check if the end of the message is reached
-                buffer[index] = '\0';    // Null-terminate the string
+            if (incomingChar == '\n') {
+                buffer[index] = '\0';
                 if (isValidMessage(buffer)) {
                     handleReceivedMessage(buffer);
                 }
-                index = 0;                       // Reset the buffer index for the next message
-                lastReceivedMessage = millis();  // Reset the last received message time
+                index = 0;
+                lastReceivedMessage = millis();
             } else {
-                buffer[index++] = incomingChar;  // Append to the buffer
+                buffer[index++] = incomingChar;
             }
         } else {
-            // Buffer overflow; reset and ignore the message
             index = 0;
         }
     }
 
-    // Check if the connection has timed out
     if (isConnected() && millis() - lastReceivedMessage > connectionTimeout) {
         connectionStatus = false;
         Neopixel(RED);
-        //! ToDo sent alias or wait and do nothing
     }
+
+    checkForAckTimeouts();  // Check for ACK timeouts and retry messages if necessary
 }
 
 boolean SerialController::isConnected() {
     return connectionStatus;
+}
+
+void SerialController::checkForAckTimeouts() {
+    unsigned long currentMillis = millis();
+
+    for (int i = 0; i < sentMessageCount; ++i) {
+        if (sentMessages[i].retryCount >= 10) {
+            // If the message has been retried 10 times, remove it from the list
+            for (int j = i; j < sentMessageCount - 1; ++j) {
+                sentMessages[j] = sentMessages[j + 1];
+            }
+            --sentMessageCount;
+            i--;  // Adjust the index to account for the removed message
+            continue;
+        }
+
+        // Check if enough time has passed since the last retry attempt
+        if (currentMillis - sentMessages[i].lastRetryTime >= 50) {
+            // Retry sending the message
+            Serial.println(sentMessages[i].message);
+            Serial.flush();
+
+            // Update the last retry time and increment the retry count
+            sentMessages[i].lastRetryTime = currentMillis;
+            sentMessages[i].retryCount++;
+        }
+    }
 }
 
 boolean SerialController::isValidMessage(const String &message) {
@@ -140,7 +163,6 @@ void SerialController::handleReceivedMessage(const String &message) {
 
         int crcIndex = command.lastIndexOf('|');
         if (crcIndex > 0) {
-            // Flip the LED
             flipBuiltInLED();
 
             String cmdContent = command.substring(0, crcIndex);
@@ -149,29 +171,43 @@ void SerialController::handleReceivedMessage(const String &message) {
                 String timestamp = cmdContent.substring(0, firstPipeIndex);
                 String cmdWithoutTimestamp = cmdContent.substring(firstPipeIndex + 1);
 
-                if (cmdWithoutTimestamp == "REQUEST_ALIAS") {  //! ALIAS REQUEST geschieht ohne ACK
+                if (cmdWithoutTimestamp.startsWith("ACK:")) {
+                    String ackedTimestamp = cmdWithoutTimestamp.substring(4);
+
+                    // Remove the acknowledged message from the retry list
+                    for (int i = 0; i < sentMessageCount; ++i) {
+                        if (sentMessages[i].timestamp == ackedTimestamp) {
+                            // Shift the remaining messages down
+                            for (int j = i; j < sentMessageCount - 1; ++j) {
+                                sentMessages[j] = sentMessages[j + 1];
+                            }
+                            --sentMessageCount;
+                            break;
+                        }
+                    }
+                }
+
+                if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
                     receivedInitialTimestamp = timestamp;
                     timestampMillisOffset = millis();
                     sendMessage(alias);
                 } else {
                     if (!cmdWithoutTimestamp.startsWith("ACK:")) {
                         sendAckMessage(timestamp);
-
-                        // Serial.println(timestamp + " debug");
                     }
-                }
 
-                if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt – (das ACK könnte ja verlohren gehen)
-                    if (cmdWithoutTimestamp == "connected") {
-                        Neopixel(GREEN);
-                        connectionStatus = true;
-                    } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
-                        processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
-                    } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
-                        processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                    if (!isRepeatedTimestamp(timestamp)) {
+                        if (cmdWithoutTimestamp == "connected") {
+                            Neopixel(GREEN);
+                            connectionStatus = true;
+                        } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
+                            processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
+                        } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
+                            processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                        }
                     }
+                    updateTimestampBuffer(timestamp);
                 }
-                updateTimestampBuffer(timestamp);
             } else {
                 Serial.println("Invalid message format: Timestamp separator '|' not found");
             }
@@ -215,19 +251,17 @@ void SerialController::processMoveDeviceCommand(const String &message, const Str
 }
 
 String SerialController::sendMessage(const String &message) {
-    // Generate the current timestamp with a unique letter suffix
     String timestamp = generateTimestampWithSuffix();
-    // Add STX, ETX, and CRC to the message
     String messageToSend = "<STX>" + timestamp + "|" + message + "|" + calculateCRC(timestamp + "|" + message) + "<ETX>";
 
-    // Ensure the serial buffer is clear before sending a new message
     Serial.flush();
-
-    // Send the message
     Serial.println(messageToSend);
-
-    // Ensure the data is fully sent
     Serial.flush();
+
+    // Store the sent message for potential retries
+    if (sentMessageCount < 10) {  // Ensure we do not exceed the buffer size
+        sentMessages[sentMessageCount++] = {timestamp, messageToSend, millis(), millis(), 0};
+    }
 
     return timestamp;
 }
