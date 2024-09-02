@@ -10,7 +10,7 @@ SerialController::SerialController()
       connectionStatus(false),
       lastReceivedMessage(0),
       connectionTimeout(40),
-      receivedTimestamp(""),
+      receivedInitialTimestamp(""),
       timestampMillisOffset(0),
       lastSentTimestamp(""),
       timestampSuffix('A') {
@@ -150,38 +150,37 @@ void SerialController::handleReceivedMessage(const String &message) {
                 String cmdWithoutTimestamp = cmdContent.substring(firstPipeIndex + 1);
 
                 if (cmdWithoutTimestamp == "REQUEST_ALIAS") {  //! ALIAS REQUEST geschieht ohne ACK
-                    receivedTimestamp = timestamp;
+                    receivedInitialTimestamp = timestamp;
                     timestampMillisOffset = millis();
                     sendMessage(alias);
+                } else {
+                    if (!cmdWithoutTimestamp.startsWith("ACK:")) {
+                        sendAckMessage(timestamp);
 
-                } else if (!cmdWithoutTimestamp.startsWith("ACK:")) {
-                    sendAckMessage(timestamp);
+                        // Serial.println(timestamp + " debug");
+                    }
                 }
 
+                if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt – (das ACK könnte ja verlohren gehen)
+                    if (cmdWithoutTimestamp == "connected") {
+                        Neopixel(GREEN);
+                        connectionStatus = true;
+                    } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
+                        processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
+                    } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
+                        processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                    }
+                }
+                updateTimestampBuffer(timestamp);
             } else {
-                sendAckMessage(timestamp);
+                Serial.println("Invalid message format: Timestamp separator '|' not found");
             }
-            if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt – (das ACK könnte ja verlohren gehen)
-                if (cmdWithoutTimestamp == "connected") {
-                    Neopixel(GREEN);
-                    connectionStatus = true;
-                } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
-                    processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
-                } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
-                    processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
-                }
-            }
-            updateTimestampBuffer(timestamp);
         } else {
-            Serial.println("Invalid message format: Timestamp separator '|' not found");
+            Serial.println("Invalid message format: CRC separator '|' not found");
         }
     } else {
-        Serial.println("Invalid message format: CRC separator '|' not found");
+        Serial.println("Invalid message format: Missing <STX> or <ETX>");
     }
-}
-else {
-    Serial.println("Invalid message format: Missing <STX> or <ETX>");
-}
 }
 
 void SerialController::processHomeDeviceCommand(const String &message, const String &timestamp) {
@@ -248,8 +247,8 @@ String SerialController::calculateCRC(const String &message) {
     return String(crc, HEX);
 }
 
-String SerialController::getReceivedTimestamp() const {
-    return receivedTimestamp;
+String SerialController::getInitialTimestamp() const {
+    return receivedInitialTimestamp;
 }
 
 unsigned long SerialController::getTimestampMillisOffset() const {
@@ -265,7 +264,7 @@ unsigned long SerialController::getMillisFromTimestamp(const String &timestamp) 
 }
 
 String SerialController::getCurrentTime() {
-    unsigned long receivedTimeMillis = getMillisFromTimestamp(receivedTimestamp);
+    unsigned long receivedTimeMillis = getMillisFromTimestamp(receivedInitialTimestamp);
     unsigned long currentMillis = millis();
 
     // Calculate the elapsed time since the timestamp was synced
@@ -280,9 +279,9 @@ String SerialController::getCurrentTime() {
     unsigned long currentSecond = (currentTimeMillis / 1000UL) % 60;
     unsigned long currentMillisOnly = currentTimeMillis % 1000;
 
-    String yy = receivedTimestamp.substring(0, 2);
-    String mm = receivedTimestamp.substring(2, 4);
-    String dd = receivedTimestamp.substring(4, 6);
+    String yy = receivedInitialTimestamp.substring(0, 2);
+    String mm = receivedInitialTimestamp.substring(2, 4);
+    String dd = receivedInitialTimestamp.substring(4, 6);
 
     // Generate the timestamp string including seconds for better resolution
     char currentTimeStr[17];  // Adjust buffer size to accommodate new format

@@ -64,15 +64,20 @@ class BoardSerial:
             print(f"Error reading from serial: {str(e)}")
 
     def send_ack_retry(self):
-            if self.serial_connection is not None and self.board_info["alias"]:
-                if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
-                    self.retry_count += 1  # Increment the retry count
+        if self.serial_connection is not None and self.board_info["alias"]:
+            if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
+                if self.retry_count >= 10:
+                    print(f"Maximum retry limit reached for message: {self.last_unacknowledged_message_and_timestamp}")
+                    self.need_to_send_ack = False  # Stop retrying after reaching the limit
+                    return
 
-                    # Append the retry count to the original message
-                    retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
-                    print("ACK retry")
-                    self.send_data(retry_message)
-                    self.need_to_send_ack = False  # Reset the flag after sending
+                self.retry_count += 1  # Increment the retry count
+
+                # Append the retry count to the original message
+                retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
+                print(f"ACK retry {self.retry_count}")  # Debug: Show the retry count
+                self.send_data(retry_message)
+                self.need_to_send_ack = False  # Reset the flag after sending
 
     def check_acknowledgment(self, ack_timestamp):
         with self.lock:
@@ -457,3 +462,4 @@ class TeensyController:
             await self.command_forwarder.forward_command(alias, command)
         else:
             print(f"[DEBUG] Failed to send homeDevice command. Alias '{alias}' not found.")
+

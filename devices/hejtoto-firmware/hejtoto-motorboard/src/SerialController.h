@@ -11,7 +11,7 @@ class SerialController {
     const unsigned long connectionTimeout;
 
     // Variables to store the timestamp and millis offset
-    String receivedTimestamp;
+    String receivedInitialTimestamp;
     unsigned long timestampMillisOffset;
 
     // Variables to handle timestamp suffix logic
@@ -43,7 +43,7 @@ class SerialController {
     void begin(uint32_t baudRate);
     void update(uint32_t baudRate);
     boolean isConnected();
-    String getReceivedTimestamp() const;             // Method to get the received timestamp
+    String getInitialTimestamp() const;              // Method to get the received timestamp
     unsigned long getTimestampMillisOffset() const;  // Method to get the millis offset
     String getCurrentTime();                         // Method to calculate the current exact time
 };
