@@ -100,6 +100,21 @@ boolean SerialController::isValidMessage(const String &message) {
     return false;
 }
 
+bool SerialController::isRepeatedTimestamp(const String &timestamp) {
+    for (int i = 0; i < 20; ++i) {
+        if (lastTimestamps[i] == timestamp) {
+            // Serial.println("Repeated" + timestamp);
+            return true;
+        }
+    }
+    return false;
+}
+
+void SerialController::updateTimestampBuffer(const String &timestamp) {
+    lastTimestamps[timestampIndex] = timestamp;
+    timestampIndex = (timestampIndex + 1) % 20;  // Wrap around to keep within 20 entries
+}
+
 void SerialController::sendAckMessage(const String &timestamp) {
     String ackMessage = "ACK:" + timestamp;
 
@@ -125,37 +140,35 @@ void SerialController::handleReceivedMessage(const String &message) {
 
         int crcIndex = command.lastIndexOf('|');
         if (crcIndex > 0) {
-            // flip the led
-
+            // Flip the LED
             flipBuiltInLED();
+
             String cmdContent = command.substring(0, crcIndex);
             int firstPipeIndex = cmdContent.indexOf('|');
             if (firstPipeIndex > 0) {
                 String timestamp = cmdContent.substring(0, firstPipeIndex);
                 String cmdWithoutTimestamp = cmdContent.substring(firstPipeIndex + 1);
 
-                if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
+                if (cmdWithoutTimestamp == "REQUEST_ALIAS") {  //! ALIAS REQUEST geschieht ohne ACK
                     receivedTimestamp = timestamp;
                     timestampMillisOffset = millis();
-                    // sendAckMessage(timestamp); //! here not: REQUEST_ALIAS
                     sendMessage(alias);
 
-                    //  Serial.println(getCurrentTime());
-                    //   } else if (cmdWithoutTimestamp == "heartbeat") {
-                    //       sendMessage("heartbeat");
-                } else {
+                } else {  //! ACK wird auch bei wiederholter gleicher Nachricht gesendet – (das ACK könnte ja verlohren gehen)
                     sendAckMessage(timestamp);
                 }
 
-                if (cmdWithoutTimestamp == "connected") {
-                    Neopixel(GREEN);
-                    connectionStatus = true;
-                } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
-                    processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
-                } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
-                    processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                if (isRepeatedTimestamp(timestamp) == false) {  //! Aber nur die erste Nachricht wird auch ausgeführt
+                    if (cmdWithoutTimestamp == "connected") {
+                        Neopixel(GREEN);
+                        connectionStatus = true;
+                    } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
+                        processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
+                    } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
+                        processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                    }
                 }
-
+                updateTimestampBuffer(timestamp);
             } else {
                 Serial.println("Invalid message format: Timestamp separator '|' not found");
             }
@@ -281,5 +294,3 @@ String SerialController::generateTimestampWithSuffix() {
 
     return newTimestamp + timestampSuffix;
 }
-
-// https://github.com/brenner-tobias/addon-cloudflared/wiki/How-tos#how-to-configure-remote-tunnels

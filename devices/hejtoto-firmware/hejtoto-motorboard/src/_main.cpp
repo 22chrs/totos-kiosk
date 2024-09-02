@@ -102,7 +102,7 @@ void chrono() {
         previousMillis2 = currentMillis;
 
         // Simulate a small blocking delay (e.g., 200 ms)
-        delay(1300);
+        delay(120);
     }
 }
 
@@ -110,7 +110,7 @@ void loop() {
     loop_checkAndCloseDoors();                   //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
     loop_StepperReachedDesiredRingPercentage();  //! For Stepper ring if the reach some destinations! 🛸
     serialController.update(BaudRateSerial);
-    // chrono();
+    chrono();
 
     // if (helperChrono.hasPassed(1000)) {
     //     Serial.println("123");

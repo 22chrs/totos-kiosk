@@ -18,14 +18,22 @@ class SerialController {
     String lastSentTimestamp;  // Last sent timestamp
     char timestampSuffix;      // Suffix to append to the timestamp
 
+    // Buffer to store the last 20 timestamps
+    String lastTimestamps[20];  // Array to store the last 20 timestamps
+    int timestampIndex = 0;     // Index to keep track of the current position in the buffer
+
+    // Private methods for internal operations
     void handleReceivedMessage(const String &message);
     void processHomeDeviceCommand(const String &message, const String &timestamp);
     void processMoveDeviceCommand(const String &message, const String &timestamp);
     boolean isValidMessage(const String &message);
     String calculateCRC(const String &message);
     unsigned long getMillisFromTimestamp(const String &timestamp);
-
     String generateTimestampWithSuffix();  // Method to generate a timestamp with a suffix
+
+    // Methods to check and update the timestamp buffer
+    bool isRepeatedTimestamp(const String &timestamp);    // Method to check if a timestamp is repeated
+    void updateTimestampBuffer(const String &timestamp);  // Method to update the timestamp buffer
 
    public:
     SerialController();
