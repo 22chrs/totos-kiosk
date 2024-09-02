@@ -91,7 +91,7 @@ void setup() {
 }
 
 unsigned long previousMillis2 = 0;  // Store the last time a task was executed
-const long interval2 = 1000;
+const long interval2 = 5000;
 
 void chrono() {
     unsigned long currentMillis = millis();  // Get the current time
@@ -101,8 +101,10 @@ void chrono() {
         // Save the last time the task was executed
         previousMillis2 = currentMillis;
 
+        serialController.sendMessage("Hallo!!!");
+
         // Simulate a small blocking delay (e.g., 200 ms)
-        delay(120);
+        // delay(120);
     }
 }
 

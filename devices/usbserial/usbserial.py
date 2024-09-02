@@ -150,11 +150,11 @@ class BoardSerial:
                 message, crc = processed_data[5:-5].rsplit("|", 1)
 
                 if '|' in message:
-                    timestamp, message_content = message.split('|', 1)
-                    self.received_timestamps[timestamp] = message_content
+                    timestamp_received, message_content = message.split('|', 1)
+                    self.received_timestamps[timestamp_received] = message_content
 
-                print(f"{alias_to_print} -> {message_content}")
-                
+                print(f"{alias_to_print} -> {timestamp_received}|{message_content}")
+                #! @chatgpt add here a call of a new function which inputs timestamp_received alias_to_print and message_content which than sents a new message to alias_to_print which will have the format: ACK:timestamp_received|message_content
                 # Additional logging for ACKs
                 if message_content.startswith("ACK:"):
                     ack_timestamp = message_content.split("ACK:")[1].strip()
