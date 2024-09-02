@@ -64,56 +64,31 @@ class BoardSerial:
             print(f"Error reading from serial: {str(e)}")
 
     def send_ack_retry(self):
-        if self.serial_connection is not None and self.board_info["alias"]:
-            if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
-                if self.retry_count < 5:  # Limit the number of retries to 5
-                    if self.retry_count < 3:
-                        delay = 0.05  # Use normal delay for the first 3 retries
-                    elif self.retry_count == 3:
-                        delay = 0.2  # 4th retry with 4 times the normal delay
-                    else:
-                        delay = 0.25  # 5th retry with 5 times the normal delay
-
-                    time.sleep(delay)  # Apply the calculated delay
-
+            if self.serial_connection is not None and self.board_info["alias"]:
+                if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
                     self.retry_count += 1  # Increment the retry count
 
-                    # Strip existing retry number if present, then add the new retry count
-                    base_message = self.last_unacknowledged_message_and_timestamp.split('|')[0]
-                    retry_message = f"{base_message}|{self.retry_count + 1}"
-                    
+                    # Append the retry count to the original message
+                    retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
                     self.send_data(retry_message)
                     self.need_to_send_ack = False  # Reset the flag after sending
 
-                else:
-                    # If maximum retries reached, print a message and stop retrying
-                    print(f"[DEBUG] Max retries reached for message: {self.last_unacknowledged_message_and_timestamp}. No ACK received.")
-                    self.need_to_send_ack = False  # Reset the flag
-                    self.retry_count = 0  # Reset the retry count
-                    self.last_unacknowledged_message_and_timestamp = None  # Clear the last unacknowledged message
-
     def check_acknowledgment(self, ack_timestamp):
         with self.lock:
-            # Ignore ACKs for messages that have already failed after max retries
-            if not self.last_unacknowledged_message_and_timestamp or not ack_timestamp.startswith(self.last_unacknowledged_message_and_timestamp[:15]):
-                return
-            
             found_index = None
             original_message = None
             for i, (send_time, msg) in enumerate(self.sent_messages):
                 if msg.startswith(ack_timestamp):
                     found_index = i
                     original_message = msg  # Store the entire message (timestamp|message)
+                    self.last_unacknowledged_message_and_timestamp = original_message  # Store the last unacknowledged message
                     break
 
             if found_index is not None:
                 del self.sent_messages[found_index]
                 self.retry_count = 0  # Reset the retry count on acknowledgment
-                self.last_unacknowledged_message_and_timestamp = None  # Clear the last unacknowledged message
-                self.need_to_send_ack = False  # Clear the need to send ACK flag
-            else:
-                # If the message was not acknowledged, proceed to retry
-                self.need_to_send_ack = True
+
+            if self.last_unacknowledged_message_and_timestamp:
                 self.send_ack_retry()
 
     async def check_old_ack_messages(self):
@@ -296,13 +271,11 @@ class BoardSerial:
             return
         timestamp = self.generate_timestamp()
         try:
-            # Check if the message is a retry message and strip any existing retry count
+            # Check if the message is a retry message
             if '|' in message and len(message.split('|')[0]) == 16 and message[:15].isdigit():
                 retry_timestamp, retry_message = message.split('|', 1)
-                if '|' in retry_message:
-                    retry_message = retry_message.split('|')[0]  # Remove existing retry count
                 message = retry_message  # Use the part after | as the actual message
-                timestamp = retry_timestamp  # Use the original timestamp
+                timestamp = retry_timestamp  # Use the part after | as the actual message
 
             message_with_crc = self.add_crc_and_frame(message, timestamp)
             self.serial_connection.write((message_with_crc + '\n').encode())
