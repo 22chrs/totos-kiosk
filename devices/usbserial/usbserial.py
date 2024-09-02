@@ -140,7 +140,12 @@ class BoardSerial:
                 print(f"Error in check_old_ack_messages: {str(e)}")
                 break
 
+    # The new function to send an acknowledgment message
+    def send_acknowledgment(self, timestamp_received):
+        ack_message = f"ACK:{timestamp_received}"
+        self.send_data(ack_message)
 
+    # The updated preprocess_data function with the conditional call to send_acknowledgment
     def preprocess_data(self, data, alias=None):
         processed_data = data.strip()
         alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
@@ -154,7 +159,11 @@ class BoardSerial:
                     self.received_timestamps[timestamp_received] = message_content
 
                 print(f"{alias_to_print} -> {timestamp_received}|{message_content}")
-                #! @chatgpt add here a call of a new function which inputs timestamp_received alias_to_print and message_content which than sents a new message to alias_to_print which will have the format: ACK:timestamp_received|message_content
+                
+                # Call send_acknowledgment only if message_content does not start with "ACK:"
+                if not message_content.startswith("ACK:"):
+                    self.send_acknowledgment(timestamp_received)
+
                 # Additional logging for ACKs
                 if message_content.startswith("ACK:"):
                     ack_timestamp = message_content.split("ACK:")[1].strip()
@@ -167,7 +176,6 @@ class BoardSerial:
         else:
             print(f"### {alias_to_print} -> {processed_data} ###")
             return ""
-        
 
     def connect(self):
         try:
@@ -448,3 +456,4 @@ class TeensyController:
             await self.command_forwarder.forward_command(alias, command)
         else:
             print(f"[DEBUG] Failed to send homeDevice command. Alias '{alias}' not found.")
+
