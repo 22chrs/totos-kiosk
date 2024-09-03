@@ -166,7 +166,7 @@ export function ModalProductCard({
               borderColor: 'transparent',
             }}
             _hover={{ bgColor: 'transparent', borderColor: 'transparent' }}
-            isDisabled={payment != 'waiting'} //!###
+            isDisabled={payment == 'processing'} //!###
           />
         </ModalHeader>
 
