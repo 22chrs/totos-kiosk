@@ -23,7 +23,7 @@ import { useCart } from '@/providers/CardContext';
 import { useStepper } from '@/providers/StepperContext';
 import { FaArrowRight, FaPlus } from 'react-icons/fa';
 import { KIOSK_HEIGHTCONTENT_MODAL } from 'src/constants';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useWebSocket } from '@/websocket/WebSocketContext';
 
 function ShopModalStepWarenkorb({ onClose }) {

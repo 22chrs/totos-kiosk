@@ -226,22 +226,22 @@ const AuswahlMenuZucker = ({ productCart }) => {
     {
       text: 'Kein Zucker',
       icons: [BanRegular],
-      compareValue: '0',
+      compareValue: 'zero',
     },
     {
       text: 'Wenig Zucker',
       icons: [RxCube],
-      compareValue: '1',
+      compareValue: 's',
     },
     {
       text: 'Mittel',
       icons: [RxCube, RxCube],
-      compareValue: '2',
+      compareValue: 'm',
     },
     {
       text: 'Viel Zucker',
       icons: [RxCube, RxCube, RxCube],
-      compareValue: '3',
+      compareValue: 'l',
     },
   ];
 

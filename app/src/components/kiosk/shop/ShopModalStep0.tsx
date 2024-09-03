@@ -49,7 +49,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
       //choosenSize: selectedSizeOption ? selectedSizeOption.size : undefined,
       vat: selectedProduct.vat,
       choosenSize: null,
-      choosenSugar: null,
+      choosenSugar: selectedSugarOption,
       choosenMug: null,
       choosenLid: null,
       quantity: 1,
@@ -243,7 +243,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                   }}
                 >
                   Weiter
-                  <Icon boxSize='2.5rem' as={FaArrowRight} />
+                  <Icon boxSize='2rem' as={FaArrowRight} />
                 </Button>
               </HStack>
             </VStack>
