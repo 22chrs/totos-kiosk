@@ -1,5 +1,4 @@
-import { Container, ContainerProps } from '@chakra-ui/react';
-import { Variants, motion } from 'framer-motion';
+import { Variants } from 'framer-motion';
 import { NextSeo } from 'next-seo';
 import { ReactNode, useEffect } from 'react';
 
@@ -9,8 +8,6 @@ type PageProps = {
   children: ReactNode;
   contentHeight: string;
 };
-
-const MotionContainer = motion<ContainerProps>(Container);
 
 const PageLayout = ({
   title,

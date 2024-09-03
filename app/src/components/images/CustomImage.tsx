@@ -2,8 +2,6 @@ import { Box } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-const MotionBox = motion(Box);
-
 export const CustomImage = ({ src, alt, width, height }) => {
   const fadeIn = {
     initial: { opacity: 0 },
@@ -11,22 +9,17 @@ export const CustomImage = ({ src, alt, width, height }) => {
   };
 
   return (
-    <MotionBox
-      borderRadius='1.2rem'
-      boxShadow='xl'
-      overflow='hidden'
-      initial='initial'
-      animate='animate'
-      variants={fadeIn}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        quality={70}
-        placeholder='empty'
-      />
-    </MotionBox>
+    <>
+      <Box borderRadius='1.2rem' boxShadow='xl' overflow='hidden'>
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          quality={70}
+          placeholder='empty'
+        />
+      </Box>
+    </>
   );
 };

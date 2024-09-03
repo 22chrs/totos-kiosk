@@ -1,4 +1,4 @@
-import { Container, ContainerProps } from '@chakra-ui/react';
+import { Box, Container, ContainerProps } from '@chakra-ui/react';
 import { Variants, motion } from 'framer-motion';
 import { NextSeo } from 'next-seo';
 import { ReactNode } from 'react';
@@ -8,8 +8,6 @@ type PageProps = {
   description?: string;
   children: ReactNode;
 };
-
-const MotionContainer = motion<ContainerProps>(Container);
 
 const PageLayout = ({ title, description, children }: PageProps) => {
   const variants: Variants = {
@@ -23,13 +21,13 @@ const PageLayout = ({ title, description, children }: PageProps) => {
       opacity: 1,
       x: 0,
       y: 0,
-      transition: { duration: 0.5, ease: 'easeIn' },
+      transition: { duration: 1.0, ease: 'easeIn' },
     },
     exit: {
       opacity: 0,
       x: -50,
       y: 0,
-      transition: { duration: 0.3, ease: 'easeIn' },
+      transition: { duration: 1.3, ease: 'easeIn' },
     },
   };
 
@@ -64,21 +62,16 @@ const PageLayout = ({ title, description, children }: PageProps) => {
           },
         ]}
       />
-      <MotionContainer
+      <Box
         display='flex'
         maxW='100%'
         w='100%'
         minH={{ base: 'auto', md: '100vh' }}
         //px={{ base: 4, lg: 8 }}
         px='0'
-        initial='hidden'
-        animate='enter'
-        exit='exit'
-        variants={variants}
-        centerContent
       >
         {children}
-      </MotionContainer>
+      </Box>
     </>
   );
 };

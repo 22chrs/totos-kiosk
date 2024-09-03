@@ -1,25 +1,6 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Icon,
-  Stack,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
+
 import NextImage from 'next/image';
-
-import {
-  ApplePay,
-  GooglePay,
-  CcVisa,
-  CcMastercard,
-  ContactlessIcon,
-  CcJcb,
-  CcDiscover,
-} from '@/components/icons/icons';
-
-const MotionBox = motion(Box);
 
 export const PaymentImagesFooter = () => {
   const width = '153';
@@ -152,7 +133,7 @@ export const PaymentImagesFooterIcon = () => {
       pt='5'
       pb='5'
       overflowX='auto'
-      gap='14'
+      gap='15'
     >
       <Image
         src={useColorModeValue(
@@ -207,8 +188,8 @@ export const PaymentImagesFooterIcon = () => {
           '/assets/payment/ApplePay_dark.svg',
         )}
         alt='ApplePay'
-        width='110'
-        height='110'
+        width='100'
+        height='100'
         quality='100'
       />
       <Image

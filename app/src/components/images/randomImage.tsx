@@ -1,25 +1,22 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
 import NextImage from 'next/image';
 
 import { useEffect, useState } from 'react';
 
-const MotionBox = motion(Box);
-
 export const randomImagesBox = () =>
   `/assets/images/midjourney/${String(
-    Math.floor(Math.random() * 33) + 1
+    Math.floor(Math.random() * 33) + 1,
   ).padStart(2, '0')}.jpg`;
 
 export const randomImagesBestBox = () =>
   `/assets/images/BestMidjourney/${String(
-    Math.floor(Math.random() * 8) + 1
+    Math.floor(Math.random() * 8) + 1,
   ).padStart(2, '0')}.jpg`;
 
 export const randomImagesArm = () =>
   `/assets/images/robotarm/${String(Math.floor(Math.random() * 3) + 1).padStart(
     2,
-    '0'
+    '0',
   )}.jpg`;
 
 export const RandomImage = ({ src, alt }) => {
@@ -34,16 +31,13 @@ export const RandomImage = ({ src, alt }) => {
   }, [src]);
 
   return (
-    <MotionBox
+    <Box
       key={key}
       boxShadow='xl'
-      initial='initial'
-      animate='animate'
-      variants={fadeIn}
       borderRadius='1.2rem'
       bgColor={useColorModeValue(
         'footerBGColor.lightMode',
-        'footerBGColor.darkMode'
+        'footerBGColor.darkMode',
       )}
     >
       <Box borderRadius='1.2rem' overflow='hidden'>
@@ -56,7 +50,7 @@ export const RandomImage = ({ src, alt }) => {
           priority
         />
       </Box>
-    </MotionBox>
+    </Box>
   );
 };
 
@@ -68,16 +62,13 @@ export const SimpleImage = ({ src, alt }) => {
   };
 
   return (
-    <MotionBox
+    <Box
       key={key}
       boxShadow='xl'
-      initial='initial'
-      animate='animate'
-      variants={fadeIn}
       borderRadius='1.2rem'
       bgColor={useColorModeValue(
         'footerBGColor.lightMode',
-        'footerBGColor.darkMode'
+        'footerBGColor.darkMode',
       )}
     >
       <Box borderRadius='1.2rem' overflow='hidden'>
@@ -90,7 +81,7 @@ export const SimpleImage = ({ src, alt }) => {
           priority
         />
       </Box>
-    </MotionBox>
+    </Box>
   );
 };
 

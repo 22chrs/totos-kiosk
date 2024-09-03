@@ -5,24 +5,20 @@ import { HeaderStartPage } from '@/components/layout/menuKiosk/header';
 import { useRouter } from '@/providers/DisplayContext';
 import { useInViewport } from 'react-in-viewport';
 
-import PageLayout from '@/components/page-layout/pageLayoutKiosk';
 import { DisplayContext } from '@/providers/DisplayContext';
 import {
   Box,
-  Flex,
   ScaleFade,
   Text,
   chakra,
   useColorModeValue,
 } from '@chakra-ui/react';
 
-//import { BackgroundImage } from '@/components/images/Backgroundimage';
 import { LanguagesTabsKiosk } from '@/components/kiosk/LanguagesKiosk';
-import { useLayoutContext } from '@/providers/LayoutContext';
-import { useContext, useEffect, useRef } from 'react';
+
+import { useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KIOSK_CONTENT_HEIGHT_STARTPAGE } from 'src/constants';
-import { TouchToStart } from '@/components/kiosk/touchToStart';
+
 import { InfoCircle, Start } from '@/components/kiosk/Info';
 
 const Video = chakra('video');

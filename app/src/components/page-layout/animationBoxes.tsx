@@ -22,8 +22,6 @@ const variants: Variants = {
   },
 };
 
-const MotionContainer = motion<ContainerProps>(Container);
-
 export const AnimationContainer = ({ children }) => {
   return (
     <>
