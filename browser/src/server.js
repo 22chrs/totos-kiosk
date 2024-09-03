@@ -138,8 +138,9 @@ let launchChromium = async function (url) {
 
   console.log(`Starting Chromium with flags: ${flags}`);
   console.log(`Displaying URL: ${startingUrl}`);
-
+  //flags = flags.concat(["--no-sandbox"]);
   const chrome = await chromeLauncher.launch({
+    chromePath: "/usr/bin/chromium-browser", //!###
     startingUrl: startingUrl,
     ignoreDefaultFlags: true,
     chromeFlags: flags,

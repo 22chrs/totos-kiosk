@@ -38,9 +38,7 @@ fi
 
 # rotate screen if env variable is set [normal, inverted, left or right]
 if [[ ! -z "$ROTATE_DISPLAY" ]]; then
-  ROTATE_DELAY="${ROTATE_DELAY:-3}"
-
-  sleep "$ROTATE_DELAY" && xrandr -o $ROTATE_DISPLAY
+  sleep 3 && xrandr -o $ROTATE_DISPLAY
 
   #If the display is rotated to left or right, we need to reverse the size and position coords
   if [[ "$ROTATE_DISPLAY" == "left" ]] || [[ "$ROTATE_DISPLAY" == "right" ]]; then
@@ -76,11 +74,45 @@ fi
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /data/chromium/'Local State' > /dev/null 2>&1 || true 
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/; s/"exit_type":"[^"]\+"/"exit_type":"Normal"/' /data/chromium/Default/Preferences > /dev/null 2>&1 || true 
 
+
+
 # Set chromium version into an EnVar for later
 export VERSION=`chromium-browser --version`
 echo "Installed browser version: $VERSION"
 
 # stop the screen blanking
 xset s off -dpms
+
+#! NEU START
+
+# #! beamer präsentation full hd
+#xrandr --fb 1920x1080
+# xinput set-prop 10 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
+# # For Screen 2 (HDMI-2)
+# xinput set-prop 11 "Coordinate Transformation Matrix" 1 0 -1 0 1 0 0 0 1
+# # Map touch input devices to their corresponding screens
+# xinput map-to-output 10 HDMI-2
+# xinput map-to-output 11 HDMI-1
+
+
+# #! working hej toto kiosk
+# xrandr --fb 2559x800
+# xinput set-prop 10 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
+# # For Screen 2 (HDMI-2)
+# xinput set-prop 11 "Coordinate Transformation Matrix" 1 0 -1 0 1 0 0 0 1
+# # Map touch input devices to their corresponding screens
+# xinput map-to-output 10 HDMI-2
+# xinput map-to-output 11 HDMI-1
+
+#! Pi 5
+# xrandr --fb 2559x800
+# xinput set-prop 6 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
+# # For Screen 2 (HDMI-2)
+# xinput set-prop 7 "Coordinate Transformation Matrix" 1 0 -1 0 1 0 0 0 1
+# # Map touch input devices to their corresponding screens
+# xinput map-to-output 6 HDMI-1
+# xinput map-to-output 7 HDMI-2
+
+#! NEU ENDE
 
 node /usr/src/app/server.js

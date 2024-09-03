@@ -1,78 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>balenalabs-browser</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="css/scrolling-nav.css" rel="stylesheet">
-
-</head>
-
-<body id="page-top">
-
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="https://www.balena.io"><img src="logo.svg" alt="balena"></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Split View with iFrames</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      #leftPane,
+      #rightPane {
+        width: 50%; /* Each pane takes up half the window */
+        height: 100%;
+        float: left;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="leftPane">
+      <iframe
+        src="https://app:8082?display=1"
+        name="leftFrame"
+        crossorigin="anonymous"
+      ></iframe>
     </div>
-  </nav>
-
-  <header class="my-auto bg-primary text-white">
-    <div class="container text-center ">
-      <h1>balenalabs-browser</h1>
-      <p class="lead">A balena block for browsing HTML</p>
+    <div id="rightPane">
+      <iframe
+        src="https://app:8082?display=2"
+        name="rightFrame"
+        crossorigin="anonymous"
+      ></iframe>
     </div>
-    </header>
+    <script>
+      const retryInterval = 5000; // Retry every 5 seconds
 
-    <section id="description" class="my-auto">
-        <div class="container-fluid ">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-            <h2>Choosing what to display</h2>
-            <p class="lead">You have a few options for choosing what to display here:</p>
-            <ul>
-                <li>You can create a service on this device serving HTTP over port 80 or 8080, or HTTPS over 443, and it'll display here automatically! **</li>
-                <li>You can set a Device Variable called <code>LAUNCH_URL</code></li>
-                <li>You can use the API on port 5011 to set the URL (see project readme for details)</li>
-            </ul>
-            <blockquote>** The balenalabs-browser service will need <code>network_mode: host</code> set.</blockquote>
-            </div>
-        </div>
-    </section>
+      // Function to check and reload iframe if it didn't load correctly
+      function checkAndReload(iframe) {
+        try {
+          // Try accessing the iframe's content
+          if (!iframe.contentWindow.document.body) {
+            throw new Error("Frame content not loaded.");
+          }
+        } catch (e) {
+          console.log(`Reloading ${iframe.name}: ${e.message}`);
+          // If access is denied or no content, reload
+          iframe.contentWindow.location.reload(true);
+        }
+      }
 
-    <!-- Footer -->
-  <footer class="py-5 bg-dark">
-    <div class="container">
-      <p class="m-0 text-center text-white">
-        Copyright 2021 Balena |
-        All Rights Reserved</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+      // Function to set up retry mechanism
+      function setupRetry(iframeId) {
+        const iframe = document.getElementsByName(iframeId)[0];
+        // Check immediately if the iframe has loaded
+        checkAndReload(iframe);
+        // Set interval to keep checking until the content is fully loaded
+        setInterval(() => checkAndReload(iframe), retryInterval);
+      }
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Plugin JavaScript -->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom JavaScript for this theme -->
-  <script src="js/scrolling-nav.js"></script>
-
-</body>
-
+      // Set up retries for both iframes
+      setupRetry("leftFrame");
+      setupRetry("rightFrame");
+    </script>
+  </body>
 </html>
