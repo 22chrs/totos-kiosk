@@ -1,80 +1,83 @@
+# main.py
+
 import asyncio
-from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController  # Import necessary classes
+import schedule
+import json
+from payment.payment_lib import PaymentTerminal
+from websocket.websocket import start_websocket_server, check_clients_connected
 
-# Define the aliases for the boards you want to test with
-teensys = {"RoboCubeBack"}  # Example set of board aliases
+# Global variables
+paymentTerminalIP_Front = "192.168.1.201"
+paymentTerminalIP_Back = "192.168.1.202"
+order_details = None
 
+# Payment Terminal Initialization
+paymentTerminalFront = PaymentTerminal(paymentTerminalIP_Front)
+paymentTerminalBack = PaymentTerminal(paymentTerminalIP_Back)
+
+# Payment-related functions
+def end_of_day_job():
+    paymentTerminalFront.endOfDay_uploadReceipts()
+    paymentTerminalBack.endOfDay_uploadReceipts()
+
+def schedule_payment_jobs():
+    # Schedule the end-of-day job
+    schedule.every().day.at("23:59").do(end_of_day_job)
+
+async def run_scheduled_payment_jobs():
+    while True:
+        schedule.run_pending()
+        await asyncio.sleep(1)
+
+# WebSocket message handler
+async def handle_order(websocket, message):
+    global order_details
+    try:
+        outer_data = json.loads(message)
+        order_details = outer_data
+        #print(f"order_details updated in handle_order: {order_details}")  # Diagnostic print
+        if "message" in outer_data:
+            inner_message = json.loads(outer_data["message"])  # Parse the inner JSON
+            if 'whichTerminal' in inner_message and 'totalPrice' in inner_message:
+                print("Valid order data found")
+                print("Payment started")
+                # Convert totalPrice to cents
+                total_price_cents = int(round(inner_message['totalPrice'] * 100))
+                terminal = paymentTerminalFront if inner_message['whichTerminal'] == 'front' else paymentTerminalBack
+                await terminal.auth_payment(total_price_cents, order_details)
+            else:
+                print("Order data is missing 'whichTerminal' or 'totalPrice'")
+        else:
+            print("Outer data is missing 'message' key")
+    except json.JSONDecodeError:
+        print("Error: Received message is not valid JSON.")
+
+
+# WebSocket-related functions
+async def check_connections_periodically():
+    while True:
+        message = await check_clients_connected(["app_1", "app_2"])
+        if message:
+            print(message)
+        await asyncio.sleep(3)
+
+
+# Entry point
 if __name__ == '__main__':
-    print("Starting event loop")
+ 
+
+    # Initialize asyncio event loop
     loop = asyncio.get_event_loop()
 
-    # Instantiate the ConnectionManager with the specified parameters
-    usb_manager = ConnectionManager(
-        vid=0x16C0, 
-        pid=0x0483, 
-        baudrate=115200,
-        timeout=0.2, 
-        required_aliases=teensys
-    )
+    # Schedule and run payment jobs
+    schedule_payment_jobs()
+    asyncio.ensure_future(run_scheduled_payment_jobs())
 
-    # Instantiate the SerialCommandForwarder and TeensyController
-    command_forwarder = SerialCommandForwarder(usb_manager)
-    teensy_controller = TeensyController(usb_manager, command_forwarder)
+    # Schedule and run WebSocket checks
+    asyncio.ensure_future(check_connections_periodically())
 
-    async def main():
-        await usb_manager.start()  # Start the connection manager
+    # Start WebSocket server with handle_order as callback
+    loop.create_task(start_websocket_server(handle_order))
 
-        # Wait until all required aliases are connected
-        # while not usb_manager.all_required_aliases_connected():
-        #     print("Waiting for all required aliases to connect...")
-        #     await asyncio.sleep(1)  # Check every second
-
-        # Now send the home command to the "RoboCubeFront"
-        # await teensy_controller.send_home_device_command("RoboCubeFront", "Schleuse")
-        #await teensy_controller.send_home_device_command("RoboCubeFront", "Becherschubse")
-        # await teensy_controller.send_home_device_command("RoboCubeFront", "Shield")
-        # await teensy_controller.send_home_device_command("RoboCubeFront", "Snackbar")
-
-        #await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 200, 100, 100, 100)
-        #await teensy_controller.send_move_deviSce_command("RoboCubeFront", "Becherschubse", 300, 100, 100, 100)
-
-        # Start monitoring and forwarding commands
-        await command_forwarder.monitor_and_forward()
-
-       
-
-    loop.run_until_complete(main())  # Run the main loop
-
-
-
-    # if "RoboCubeFront" in usb_manager.boards:
-    #                 await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 0, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 0, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 0, 100, 10, 1000)
-    #                 #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 0, 100, 100, 100)
-    #             if "RoboCubeBack" in usb_manager.boards:
-    #                 await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 0, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 0, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeBack", "Shield", 0, 100, 100, 100)
-    #             if "ServiceCube" in usb_manager.boards:
-    #                 await teensy_controller.send_move_device_command("ServiceCube", "Rodell_A", 0, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("ServiceCube", "Rodell_B", 0, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 0, 100, 100, 100)
-    #         else:
-    #             # Execute the other commands every 1st iteration
-    #             if "RoboCubeFront" in usb_manager.boards:
-    #                 await teensy_controller.send_move_device_command("RoboCubeFront", "Schleuse", 150, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeFront", "Becherschubse", 500, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeFront", "Shield", 120, 100, 100, 100)
-    #                 #await teensy_controller.send_move_device_command("RoboCubeFront", "Snackbar", 400, 100, 100, 100)
-    #             if "RoboCubeBack" in usb_manager.boards:
-    #                 await teensy_controller.send_move_device_command("RoboCubeBack", "Schleuse", 150, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeBack", "Becherschubse", 500, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("RoboCubeBack", "Shield", 120, 100, 100, 100)
-    #             if "ServiceCube" in usb_manager.boards:
-    #                 await teensy_controller.send_move_device_command("ServiceCube", "Rodell_A", 0.5, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("ServiceCube", "Rodell_B", 0.5, 100, 100, 100)
-    #                 await teensy_controller.send_move_device_command("ServiceCube", "Rodell_C", 0.5, 100, 100, 100)
-
-
-
+    # Run the asyncio event loop
+    loop.run_forever()

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Full Screen iFrame</title>
+    <title>Split View with iFrames</title>
     <style>
       body,
       html {
@@ -11,6 +11,12 @@
         padding: 0;
         height: 100%;
         overflow: hidden;
+      }
+      #leftPane,
+      #rightPane {
+        width: 50%; /* Each pane takes up half the window */
+        height: 100%;
+        float: left;
       }
       iframe {
         width: 100%;
@@ -20,50 +26,49 @@
     </style>
   </head>
   <body>
-    <iframe src="http://localhost:3000/" name="fullScreenFrame"></iframe>
+    <div id="leftPane">
+      <iframe
+        src="https://app:8082?display=1"
+        name="leftFrame"
+        crossorigin="anonymous"
+      ></iframe>
+    </div>
+    <div id="rightPane">
+      <iframe
+        src="https://app:8082?display=2"
+        name="rightFrame"
+        crossorigin="anonymous"
+      ></iframe>
+    </div>
     <script>
       const retryInterval = 5000; // Retry every 5 seconds
-      const iframeSrc = "http://localhost:3000/";
 
-      // Function to check if the connection was refused
-      async function isConnectionRefused(url) {
+      // Function to check and reload iframe if it didn't load correctly
+      function checkAndReload(iframe) {
         try {
-          const response = await fetch(url, {
-            method: "HEAD",
-            mode: "no-cors",
-          });
-          // If fetch succeeds, connection is not refused
-          return false;
-        } catch (error) {
-          // If fetch fails, connection might be refused
-          return true;
-        }
-      }
-
-      // Function to check and reload iframe if the connection was refused
-      async function checkAndReload(iframe) {
-        const connectionRefused = await isConnectionRefused(iframeSrc);
-        if (connectionRefused) {
-          console.log(`Reloading ${iframe.name} due to connection refused.`);
-          iframe.src = iframe.src;
+          // Try accessing the iframe's content
+          if (!iframe.contentWindow.document.body) {
+            throw new Error("Frame content not loaded.");
+          }
+        } catch (e) {
+          console.log(`Reloading ${iframe.name}: ${e.message}`);
+          // If access is denied or no content, reload
+          iframe.contentWindow.location.reload(true);
         }
       }
 
       // Function to set up retry mechanism
-      function setupRetry(iframeName) {
-        const iframe = document.getElementsByName(iframeName)[0];
-        if (iframe) {
-          // Check immediately if the iframe has loaded
-          checkAndReload(iframe);
-          // Set interval to keep checking until the content is fully loaded
-          setInterval(() => checkAndReload(iframe), retryInterval);
-        } else {
-          console.error(`Iframe with name "${iframeName}" not found.`);
-        }
+      function setupRetry(iframeId) {
+        const iframe = document.getElementsByName(iframeId)[0];
+        // Check immediately if the iframe has loaded
+        checkAndReload(iframe);
+        // Set interval to keep checking until the content is fully loaded
+        setInterval(() => checkAndReload(iframe), retryInterval);
       }
 
-      // Set up retries for the iframe
-      setupRetry("fullScreenFrame");
+      // Set up retries for both iframes
+      setupRetry("leftFrame");
+      setupRetry("rightFrame");
     </script>
   </body>
 </html>

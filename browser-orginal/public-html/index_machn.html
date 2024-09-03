@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Full Screen iFrame</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src="http://localhost:3000/" name="fullScreenFrame"></iframe>
+    <script>
+      const retryInterval = 5000; // Retry every 5 seconds
+      const iframeSrc = "http://localhost:3000/";
+
+      // Function to check if the connection was refused
+      async function isConnectionRefused(url) {
+        try {
+          const response = await fetch(url, {
+            method: "HEAD",
+            mode: "no-cors",
+          });
+          // If fetch succeeds, connection is not refused
+          return false;
+        } catch (error) {
+          // If fetch fails, connection might be refused
+          return true;
+        }
+      }
+
+      // Function to check and reload iframe if the connection was refused
+      async function checkAndReload(iframe) {
+        const connectionRefused = await isConnectionRefused(iframeSrc);
+        if (connectionRefused) {
+          console.log(`Reloading ${iframe.name} due to connection refused.`);
+          iframe.src = iframe.src;
+        }
+      }
+
+      // Function to set up retry mechanism
+      function setupRetry(iframeName) {
+        const iframe = document.getElementsByName(iframeName)[0];
+        if (iframe) {
+          // Check immediately if the iframe has loaded
+          checkAndReload(iframe);
+          // Set interval to keep checking until the content is fully loaded
+          setInterval(() => checkAndReload(iframe), retryInterval);
+        } else {
+          console.error(`Iframe with name "${iframeName}" not found.`);
+        }
+      }
+
+      // Set up retries for the iframe
+      setupRetry("fullScreenFrame");
+    </script>
+  </body>
+</html>
