@@ -90,6 +90,17 @@ async function getUrlToDisplayAsync() {
 
 // Launch the browser with the URL specified
 let launchChromium = async function (url) {
+  // Check if reload has already occurred, if not, reload once.
+  if (!global.hasReloaded) {
+    console.log("Reloading Chromium once.");
+    global.hasReloaded = true;
+    setTimeout(async () => {
+      await chromeLauncher.killAll();
+      await launchChromium(currentUrl);
+    }, 10000); // Reload after 10 seconds
+    return;
+  }
+
   await chromeLauncher.killAll();
 
   flags = [];
