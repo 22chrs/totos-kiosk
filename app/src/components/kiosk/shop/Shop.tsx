@@ -48,7 +48,7 @@ function Categories({ title, isSelected, onClick }) {
     'footerBGColor.lightMode',
   );
   const borderColor = useColorModeValue(
-    'footerBGColor.lightMode',
+    'footerBGColor.darkMode',
     'footerBGColor.darkMode',
   );
 
@@ -79,22 +79,38 @@ function Categories({ title, isSelected, onClick }) {
       width={isSelected ? '100%' : '100%'} // ausufern
     >
       <HStack>
-        <Box height='100vh' overflow='hidden' position='relative'>
-          <Heading
-            position='absolute'
-            p='6'
-            color={isSelected ? colorSelected : color}
-            variant='h2_Kiosk'
+        <Box height='100vh' overflow='hidden' position='relative' zIndex='5'>
+          {/* Wrap the image and heading in a container to overlap */}
+          <Box
+            width='500px'
+            height='500px'
+            position='relative'
+            overflow='hidden'
           >
-            {title}
-          </Heading>
-          <Box pl='50'>
+            {/* Heading is absolutely positioned over the image */}
+            <Heading
+              position='absolute' // Make the heading absolutely positioned
+              top='0' // Align it to the top of the image (adjust as needed)
+              left='0' // Align to the left of the image
+              p='6'
+              color={isSelected ? colorSelected : color}
+              zIndex='10' // Ensure heading has a higher zIndex than the image
+              variant='h2_Kiosk'
+            >
+              {title}
+            </Heading>
+
+            {/* Image behind the heading */}
             <Image
-              src={`/kiosk/products/images/${handleUmlauts(title)}.png`}
-              width={160}
-              height={300}
+              src={`/kiosk/products/images/${handleUmlauts(title)}.jpg`}
+              width={500}
+              height={500}
               alt={title}
-              //quality={90}
+              objectFit='cover' // Ensures the image covers the entire box
+              style={{
+                transform: 'scale(2.2)', // Zoom in by 2.5x
+                transformOrigin: '50% 110%', // Adjust the focus
+              }}
             />
           </Box>
         </Box>
@@ -286,8 +302,8 @@ export const Shop: React.FC<VerticalTabsProps> = ({
         overflowY='auto'
         width={KIOSK_CATEGORY_WIDTH}
         bgColor={useColorModeValue(
-          'pageBGColor.lightMode',
-          'pageBGColor.darkMode',
+          'footerBGColor.lightMode',
+          'footerBGColor.darkMode',
         )}
         color={useColorModeValue(
           'kioskBGColor.lightMode',
@@ -317,8 +333,8 @@ export const Shop: React.FC<VerticalTabsProps> = ({
         }}
         height={KIOSK_CONTENT_HEIGHT}
         bgColor={useColorModeValue(
-          'pageBGColor.lightMode',
-          'pageBGColor.darkMode',
+          'footerBGColor.lightMode',
+          'footerBGColor.darkMode',
         )}
         color={useColorModeValue(
           'primaryFontColor.lightMode',

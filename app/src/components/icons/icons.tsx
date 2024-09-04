@@ -1,6 +1,12 @@
 import { createIcon } from '@chakra-ui/react';
 // https://codesandbox.io/s/9lg5c
 
+export const XmarkSharpSolid = createIcon({
+  displayName: 'XmarkSharpSolid',
+  viewBox: '0 0 384 512',
+  d: 'M326.6 166.6l22.7-22.6L304 98.7l-22.6 22.6-89.4 89.4-89.4-89.4L80 98.7 34.7 144l22.6 22.6 89.4 89.4-89.3 89.4L34.7 368 80 413.3l22.6-22.6 89.4-89.4 89.4 89.4 22.6 22.6 45.3-45.3-22.6-22.6-89.4-89.4 89.4-89.4z',
+});
+
 export const XmarkSolid = createIcon({
   displayName: 'XmarkSolid',
   viewBox: '0 0 384 512',
@@ -145,6 +151,12 @@ export const CupTogoSharpLight = createIcon({
   displayName: 'CupTogoSharpLight',
   viewBox: '0 0 448 512',
   d: 'M80 0h299.5l3.6 10.9L411.5 96H448v32H0V96h36.5l28.3-85.1L68.5 0H80zm297.8 96l-21.3-64h-265L70.2 96h307.6zM80 512L47.4 160h32.1l5.9 64h277.1l5.9-64h32.1L368 512H80zm279.6-256H88.4l11.9 128h247.4l11.9-128zm-14.8 160H103.2l5.9 64h229.7l5.9-64z',
+});
+
+export const MugMarshmallowsLight = createIcon({
+  displayName: 'MugMarshmallowsLight',
+  viewBox: '0 0 512 512',
+  d: 'M357.7 103c6.6 6.6 10.3 15.6 10.3 25h-32c0-.9-.3-1.7-1-2.3l-57.8-57.9c-2.4-2.4-5.7-3.8-9.2-3.8s-6.7 1.4-9.2 3.8L201 125.7c-.6.6-1 1.5-1 2.3h-32c0-9.4 3.7-18.3 10.3-25l57.9-57.9C244.6 36.7 256.1 32 268 32s23.4 4.7 31.8 13.2l57.9 57.8zM64 80v48H32V80c0-26.5 21.5-48 48-48h124.1l-32 32H80c-8.8 0-16 7.2-16 16zM32 384c0 35.3 28.7 64 64 64h192c35.3 0 64-28.7 64-64V192H128v80c0 8.8-7.2 16-16 16s-16-7.2-16-16v-80H32v192zm0-224h368c61.9 0 112 50.1 112 112s-50.1 112-112 112h-16c0 53-43 96-96 96H96c-53 0-96-43-96-96V192c0-17.7 14.3-32 32-32zm352 192h16c44.2 0 80-35.8 80-80s-35.8-80-80-80h-16v160z',
 });
 
 export const MugHotLight = createIcon({

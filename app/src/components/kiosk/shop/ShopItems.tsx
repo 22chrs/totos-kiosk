@@ -1,4 +1,8 @@
-import { CartShoppingFastSharpRegular } from '@/components/icons/icons';
+import {
+  CartShoppingFastSharpRegular,
+  MugMarshmallowsLight,
+  XmarkSharpSolid,
+} from '@/components/icons/icons';
 import {
   Box,
   Button,
@@ -23,32 +27,44 @@ type FooterShopElementProps = {
 };
 
 export const ShopIcon: React.FC<FooterShopElementProps> = ({ itemCount }) => {
+  const bgColorZifferEmpty = useColorModeValue(
+    'pageBGColor.lightMode',
+    'pageBGColor.darkMode',
+  );
+  const bgColorZifferFilled = useColorModeValue('red.400', 'red.300');
+
   const colorZiffer = useColorModeValue(
     'footerBGColor.lightMode',
     'footerBGColor.darkMode',
   );
 
+  const colorIconEmpty = useColorModeValue(
+    'pageBGColor.lightMode',
+    'pageBGColor.darkMode',
+  );
+  const colorIconFilled = useColorModeValue(
+    'footerBGColor.darkMode',
+    'footerBGColor.lightMode',
+  );
+
   return (
     <Box position='relative' display='inline-block'>
       <Icon
-        as={CartShoppingFastSharpRegular}
+        as={MugMarshmallowsLight}
         boxSize='5rem'
-        color={useColorModeValue(
-          'primaryHeadingColor.lightMode',
-          'primaryHeadingColor.darkMode',
-        )}
+        color={itemCount == 0 ? colorIconEmpty : colorIconFilled} // Use strings, not objects
       />
 
-      {itemCount > 0 && (
+      {itemCount >= 0 && (
         <Center
           fontSize='3xl'
           position='absolute'
-          top='-3'
-          right='-6'
-          width='55%'
-          height='55%'
+          top='-4'
+          right='-5'
+          width='45.5%'
+          height='45%'
           borderRadius='50%'
-          bgColor='red.400'
+          bgColor={itemCount == 0 ? bgColorZifferEmpty : bgColorZifferFilled}
           color={colorZiffer}
           fontWeight={700}
         >
@@ -101,14 +117,10 @@ export const AbbruchButton = () => {
 
   return (
     <Box onClick={handleClick} style={{ textDecoration: 'none' }}>
-      <IconButton
+      <Icon
         aria-label='Cancel'
-        variant='outline'
-        icon={<FiX />}
-        colorScheme='red'
+        as={XmarkSharpSolid}
         color={bgColorButton}
-        isRound
-        borderWidth='0.35rem'
         // variant='solid'
         h='5rem'
         w='5rem'
