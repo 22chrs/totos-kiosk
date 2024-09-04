@@ -28,19 +28,24 @@ type FooterShopElementProps = {
 
 export const ShopIcon: React.FC<FooterShopElementProps> = ({ itemCount }) => {
   const bgColorZifferEmpty = useColorModeValue(
-    'pageBGColor.lightMode',
-    'pageBGColor.darkMode',
+    'footerBGColor.lightMode',
+    'footerBGColor.darkMode',
   );
   const bgColorZifferFilled = useColorModeValue('red.400', 'red.300');
 
-  const colorZiffer = useColorModeValue(
+  const colorZifferEmpty = useColorModeValue(
+    'pageBGColor.lightMode',
+    'pageBGColor.darkMode',
+  );
+
+  const colorZifferFilled = useColorModeValue(
     'footerBGColor.lightMode',
     'footerBGColor.darkMode',
   );
 
   const colorIconEmpty = useColorModeValue(
-    'pageBGColor.lightMode',
-    'pageBGColor.darkMode',
+    'footerBGColor.lightMode',
+    'footerBGColor.darkMode',
   );
   const colorIconFilled = useColorModeValue(
     'footerBGColor.darkMode',
@@ -51,7 +56,7 @@ export const ShopIcon: React.FC<FooterShopElementProps> = ({ itemCount }) => {
     <Box position='relative' display='inline-block'>
       <Icon
         as={MugMarshmallowsLight}
-        boxSize='5rem'
+        boxSize='4.5rem'
         color={itemCount == 0 ? colorIconEmpty : colorIconFilled} // Use strings, not objects
       />
 
@@ -59,13 +64,13 @@ export const ShopIcon: React.FC<FooterShopElementProps> = ({ itemCount }) => {
         <Center
           fontSize='3xl'
           position='absolute'
-          top='-4'
-          right='-5'
+          top='-3'
+          right='-6'
           width='45.5%'
           height='45%'
           borderRadius='50%'
           bgColor={itemCount == 0 ? bgColorZifferEmpty : bgColorZifferFilled}
-          color={colorZiffer}
+          color={itemCount == 0 ? colorZifferEmpty : colorZifferFilled}
           fontWeight={700}
         >
           {itemCount}

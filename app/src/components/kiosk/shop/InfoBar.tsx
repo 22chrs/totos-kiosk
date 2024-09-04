@@ -39,8 +39,8 @@ export function InfoBar(props) {
           flex='1'
           alignSelf='stretch'
           bgColor={useColorModeValue(
-            'footerBGColor.lightMode',
-            'footerBGColor.darkMode',
+            'pageBGColor.lightMode',
+            'pageBGColor.darkMode',
           )}
           color={useColorModeValue(
             'footerFontColor.lightMode',

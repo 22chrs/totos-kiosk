@@ -35,6 +35,11 @@ import {
 } from '@/components/kiosk/shop/Interface';
 import { handleUmlauts } from '@/components/kiosk/shop/utils';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import {
+  AnglesRightSolid,
+  ArrowIcon,
+  XmarkSolid,
+} from '@/components/icons/icons';
 
 // Kategorien
 function Categories({ title, isSelected, onClick }) {
@@ -67,7 +72,7 @@ function Categories({ title, isSelected, onClick }) {
     <Box
       zIndex={10}
       //shadow={useColorModeValue('md', 'xl')}
-      borderWidth={3}
+      borderWidth='0'
       borderRadius={isSelected ? KISOK_BORDERRADIUS : KISOK_BORDERRADIUS}
       cursor='pointer'
       bg={isSelected ? bgColorSelected : bgColor}
@@ -92,7 +97,7 @@ function Categories({ title, isSelected, onClick }) {
               position='absolute' // Make the heading absolutely positioned
               top='0' // Align it to the top of the image (adjust as needed)
               left='0' // Align to the left of the image
-              p='6'
+              p='5'
               color={isSelected ? colorSelected : color}
               zIndex='10' // Ensure heading has a higher zIndex than the image
               variant='h2_Kiosk'
@@ -138,13 +143,13 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
     setSelectedCategory(category);
     onOpen();
   };
-
   const handleNext = () => {
     const nextIndex = productIndex + 5;
+    // If the next index exceeds the length of the products, reset to the beginning
     if (nextIndex >= products.length) {
-      setProductIndex(0); // If at the end, loop back to the start
+      setProductIndex(0); // Start from the beginning
     } else {
-      setProductIndex(nextIndex);
+      setProductIndex(nextIndex); // Otherwise, move to the next set
     }
   };
 
@@ -178,8 +183,8 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
   return (
     <Grid
       templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }}
-      gap={3}
-      pr='0'
+      gap='3'
+      p='0'
       height='100%'
     >
       {displayedProducts.map((product) => (
@@ -215,7 +220,7 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           <CardFooter
             zIndex='10'
             pb='3'
-            pr='3'
+            pr='5'
             style={{
               position: 'absolute',
               bottom: '0',
@@ -232,33 +237,13 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
         </Card>
       ))}
 
-      <Flex justifyContent='space-between' width='100%'>
-        {showPrevIndicator && (
-          <Icon
-            as={FaChevronUp}
-            w={8}
-            h={8}
-            cursor='pointer'
-            onClick={handlePrev}
-          />
+      <Flex justifyContent='center' alignItems='center'>
+        {products.length > 5 && (
+          <Button gap='5' variant='kiosk_rainbow_big' onClick={handleNext}>
+            Weitere
+            <Icon boxSize='2.5rem' as={AnglesRightSolid} />
+          </Button>
         )}
-        {showMoreIndicator ? (
-          <Icon
-            as={FaChevronDown}
-            w={8}
-            h={8}
-            cursor='pointer'
-            onClick={handleNext}
-          />
-        ) : atEndOfList ? (
-          <Icon
-            as='feComponentTransfer'
-            w={8}
-            h={8}
-            cursor='pointer'
-            onClick={handleReset}
-          />
-        ) : null}
       </Flex>
 
       <ModalProductCard
@@ -287,6 +272,7 @@ export const Shop: React.FC<VerticalTabsProps> = ({
     );
 
   const { i18n } = useTranslation();
+
   return (
     <Flex>
       <VStack
@@ -298,7 +284,6 @@ export const Shop: React.FC<VerticalTabsProps> = ({
         pl='3'
         pr='3'
         height={KIOSK_CONTENT_HEIGHT}
-        //height='100vh'
         overflowY='auto'
         width={KIOSK_CATEGORY_WIDTH}
         bgColor={useColorModeValue(
@@ -315,14 +300,13 @@ export const Shop: React.FC<VerticalTabsProps> = ({
             key={category.name}
             title={category.name}
             isSelected={selectedTab === index}
-            onClick={() => setSelectedTab(index)}
+            onClick={() => setSelectedTab(index)} // Simply update the selected category
           />
         ))}
         <Spacer />
       </VStack>
 
       <Stack
-        // MAIN PAGE SECTION
         pt='3'
         pl='0'
         pr='3'
@@ -341,7 +325,9 @@ export const Shop: React.FC<VerticalTabsProps> = ({
           'primaryFontColor.darkMode',
         )}
       >
+        {/* The key prop ensures a re-render, resetting the state */}
         <Main
+          key={selectedTab} // This will reset the component when a new category is selected
           products={data[selectedTab].products}
           formatPrice={formatPrice}
           category={data[selectedTab]}
