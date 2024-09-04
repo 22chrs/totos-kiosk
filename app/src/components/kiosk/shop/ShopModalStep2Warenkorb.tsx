@@ -102,11 +102,11 @@ function ShopModalStepWarenkorb({ onClose }) {
           {/* <ScrollFade> */}
           <Stack overflowY='auto'>
             <VStack alignItems='flex-start'>
-              <Box maxW='80%' minW='80%' width='80vw' pb='4'>
-                <Heading pb='0' variant='h1_Kiosk'>
+              <Box maxW='80%' minW='80%' width='80vw' pb='0'>
+                <Heading pb='5' variant='h1_Kiosk'>
                   Deine Bestellung
                 </Heading>
-                <HStack>
+                {/* <HStack>
                   <Icon
                     pr='0.1rem'
                     boxSize='1.2rem'
@@ -115,7 +115,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                   <Text as='u' pt='0'>
                     Allgemeine Geschäftsbedingungen
                   </Text>
-                </HStack>
+                </HStack> */}
               </Box>
 
               <Box>
@@ -141,8 +141,9 @@ function ShopModalStepWarenkorb({ onClose }) {
           <HStack
             alignItems='flex-end'
             w={getCartTotalQuantity() === 0 ? '98.7%' : '100%'}
-            pt='12'
-            pb='11'
+            pt='6'
+            pb='8'
+            px='1'
             transform='translateY(0.8rem) translateX(0)'
           >
             <HStack
@@ -170,7 +171,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                 </HStack>
               </Box>
               <Spacer />
-              <HStack gap='15'>
+              <HStack gap='12'>
                 <Box transform='translateY(-0.4rem) translateX(0.4rem)'>
                   <Button
                     gap='3'

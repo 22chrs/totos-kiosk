@@ -104,15 +104,15 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
   };
 
   return (
-    <ModalBody pt='0'>
+    <ModalBody>
       {selectedProduct && (
         <Flex direction='column' height='100%'>
           <HStack spacing='10' alignItems='flex-start'>
-            <Box pt='2'>
+            <Box pt='0'>
               <Box
                 borderRadius={KISOK_BORDERRADIUS}
                 minH={KIOSK_HEIGHTCONTENT_MODAL}
-                minW={`calc(${KIOSK_HEIGHTCONTENT_MODAL} * 0.75)`}
+                minW={`calc(${KIOSK_HEIGHTCONTENT_MODAL} * 0.7)`}
                 position='relative'
                 overflow='hidden'
               >
@@ -133,7 +133,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
               height={KIOSK_HEIGHTCONTENT_MODAL}
             >
               <Box>
-                <Box maxW='80%'>
+                <Box maxW='93%'>
                   <Heading pb='0' variant='h1_Kiosk'>
                     Becherwahl
                   </Heading>
@@ -242,7 +242,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                 maxW='88%'
                 justifyContent='space-between'
                 gap='10'
-                transform='translateY(0.4rem) translateX(-0.2rem)'
+                //transform='translateY(0.4rem) translateX(-0.2rem)'
               >
                 {selectedReusableOption === 'mehrwegVariable' && (
                   <HStack pt='0'>

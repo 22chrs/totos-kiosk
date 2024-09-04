@@ -148,11 +148,11 @@ export function ModalProductCard({
         m='0'
         pt='0'
         pb='0'
-        px='5'
+        px='0'
         //bgColor={bgColorModal}
         borderRadius={KISOK_BORDERRADIUS}
       >
-        <ModalHeader pb='5' width='95%'>
+        <ModalHeader pb='0' width='95%'>
           {/* <StepperChoose steps={steps} /> */}
 
           <ModalCloseButton
