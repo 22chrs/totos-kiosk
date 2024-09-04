@@ -130,6 +130,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
             <VStack
               alignItems='flex-start'
               spacing='0'
+              w='100%'
               height={KIOSK_HEIGHTCONTENT_MODAL}
             >
               <Box>
@@ -239,9 +240,16 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
               <Spacer />
 
               <HStack
-                maxW='88%'
-                justifyContent='space-between'
+                style={{
+                  justifyContent:
+                    selectedReusableOption !== 'mehrwegVariable'
+                      ? 'flex-end'
+                      : 'space-between',
+                }}
                 gap='10'
+                w='100%'
+                pr='4'
+
                 //transform='translateY(0.4rem) translateX(-0.2rem)'
               >
                 {selectedReusableOption === 'mehrwegVariable' && (
@@ -259,8 +267,8 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                   style={{
                     transform:
                       selectedReusableOption !== 'mehrwegVariable'
-                        ? 'translateY(-0.4rem) translateX(0.4rem)'
-                        : 'none',
+                        ? 'translateY(-0.4rem)'
+                        : '',
                   }}
                 >
                   <Button

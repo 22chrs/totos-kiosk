@@ -105,6 +105,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
               </Box>
             </Box>
             <VStack
+              w='100%'
               alignItems='flex-start'
               spacing='0'
               height={KIOSK_HEIGHTCONTENT_MODAL}
@@ -223,8 +224,11 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
               <Spacer />
 
               <HStack
+                w='100%'
                 justifyContent='space-between'
                 gap='10'
+                pr='4'
+
                 //transform='translateY(0.4rem) translateX(-0.2rem)'
               >
                 <HStack pt='0'>
@@ -257,7 +261,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                     }}
                   >
                     Weiter
-                    <Icon boxSize='2rem' as={FaArrowRight} />
+                    <Icon boxSize='2.5rem' as={FaArrowRight} />
                   </Button>
                 </HStack>
               </HStack>

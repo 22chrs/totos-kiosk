@@ -163,10 +163,12 @@ function ShopModalStepWarenkorb({ onClose }) {
                       }
                     }}
                   >
-                    Summe:{' '}
-                    {formatPrice({
-                      amount: getCartTotalPrice() + getCartTotalPfand(),
-                    })}
+                    <Box>Gesamt:</Box>
+                    <Box>
+                      {formatPrice({
+                        amount: getCartTotalPrice() + getCartTotalPfand(),
+                      })}
+                    </Box>
                   </Button>
                 </HStack>
               </Box>
@@ -174,7 +176,7 @@ function ShopModalStepWarenkorb({ onClose }) {
               <HStack gap='12'>
                 <Box transform='translateY(-0.4rem) translateX(0.4rem)'>
                   <Button
-                    gap='3'
+                    gap='5'
                     variant='kiosk_rainbow_big'
                     onClick={() => {
                       onClose(); // Close the modal
@@ -186,7 +188,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                 </Box>
 
                 {getCartTotalQuantity() > 0 && (
-                  <Box transform='translateY(-0.4rem) translateX(-0.4rem)'>
+                  <Box transform='translateY(-0.4rem) translateX(-0.8rem)'>
                     <Button
                       gap='5'
                       variant='kiosk_rainbow_big'
