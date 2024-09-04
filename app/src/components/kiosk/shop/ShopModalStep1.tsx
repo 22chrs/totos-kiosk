@@ -107,7 +107,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
     <ModalBody pt='0'>
       {selectedProduct && (
         <Flex direction='column' height='100%'>
-          <HStack spacing='20' alignItems='flex-start'>
+          <HStack spacing='10' alignItems='flex-start'>
             <Box pt='2'>
               <Box
                 borderRadius={KISOK_BORDERRADIUS}
