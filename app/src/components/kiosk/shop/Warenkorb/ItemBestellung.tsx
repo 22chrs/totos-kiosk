@@ -68,12 +68,12 @@ export const ItemBestellung = ({ productCart }) => {
 
             <HStack pt='1'>
               <HStack gap='5'>
-                <HStack gap='3' transform='translateY(-0.1rem) translateX(0)'>
-                  <Button variant='kiosk_pricetag_mini'>
+                <HStack gap='5' transform='translateY(-0.1rem) translateX(0)'>
+                  <Button px='3' variant='kiosk_pricetag_mini'>
                     {formatPrice({ amount: productCart.calculatedPrice })}
                   </Button>
                   {productCart.choosenMug === 'mehrwegVariable' && (
-                    <Button variant='kiosk_pricetag_mini'>
+                    <Button px='3' variant='kiosk_pricetag_mini'>
                       {productCart.choosenLid === 'ohneDeckel'
                         ? '+ 1 € Pfand'
                         : '+ 2 € Pfand'}

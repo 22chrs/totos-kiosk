@@ -28,13 +28,13 @@ export const formatPrice = ({
 
 export function handleUmlauts(str) {
   var map = {
-    ä: 'ae',
-    ö: 'oe',
-    ü: 'ue',
-    Ä: 'Ae',
-    Ö: 'Oe',
-    Ü: 'Ue',
-    ß: 'ss',
+    '\u00e4': 'ae', // ä
+    '\u00f6': 'oe', // ö
+    '\u00fc': 'ue', // ü
+    '\u00c4': 'Ae', // Ä
+    '\u00d6': 'Oe', // Ö
+    '\u00dc': 'Ue', // Ü
+    '\u00df': 'ss', // ß
   };
 
   return str.replace(/[äöüÄÖÜß]/g, function (key) {

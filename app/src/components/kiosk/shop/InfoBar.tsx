@@ -29,13 +29,11 @@ export function InfoBar(props) {
   cart.forEach((item, index) => {
     console.log(`Item ${index + 1}:`, item);
   });
-
   return (
     <Box w='100%' height={KIOSK_FOOTER_HEIGHT}>
       <Flex w='100%' alignItems='left' justifyContent='center' h='100%'>
         <Box
           px='3'
-          pt='2'
           zIndex='0'
           overflow='hidden'
           flex='1'
@@ -49,62 +47,46 @@ export function InfoBar(props) {
             'footerFontColor.darkMode',
           )}
         >
-          <Stack
-            direction='row'
-            alignItems='center'
-            //bgColor='yellow'
-            //justifyContent='space-between'
-            h='100%'
-            spacing={0}
-          >
-            <HStack>
-              {/* <Flex alignItems='center' justifyContent='center' h='100%'>
-                <HStack gap='5' pr='20'>
-                  <AbbruchButton />
-                  <Box onClick={props.onLangChangeClick}>
-                    <LanguageButton />
-                  </Box>
-                </HStack>
-              </Flex> */}
-            </HStack>
+          <Stack direction='row' alignItems='center' h='100%' spacing={0}>
             <Spacer onClick={props.onClick} />
 
             <HStack
-              //bgColor='red'
               gap='10'
               onClick={props.onClick}
               width='full'
-              justifyContent='space-between'
+              justifyContent='center'
             >
               <Box
                 display='flex'
                 flex='1'
                 justifyContent='flex-start'
                 alignItems='center'
-                pb='3'
-                pl='10'
                 gap='5'
               >
-                <AbbruchButton />
-                <LanguageButton />
-                {/* <HStack gap='3'>
-                  <Button variant='kiosk_pricetag_big' fontWeight={700}>
-                    Summe: <Gesamtsumme amount={getCartTotalPrice()} />
-                  </Button>
-                  {getCartTotalPfand() !== 0 && (
-                    <Button variant='kiosk_pricetag_big' fontWeight={700}>
-                      +<GesamtsummePfand amount={getCartTotalPfand()} />
-                      &nbsp;Pfand
-                    </Button>
-                  )}
-                </HStack> */}
+                <Box pl='10'>
+                  <AbbruchButton />
+                </Box>
               </Box>
 
-              <Box display='flex' justifyContent='flex-end' flex='1' pr='2'>
+              <Box
+                flex='0.1'
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+              >
+                {getCartTotalQuantity() > 0 && <WarenkorbButton />}
+              </Box>
+
+              <Box
+                flex='1'
+                pt='3'
+                display='flex'
+                alignItems='center'
+                justifyContent='flex-end'
+              >
                 <Box pr='15'>
                   <ShopIcon itemCount={getCartTotalQuantity()} />
                 </Box>
-                {getCartTotalQuantity() > 0 && <WarenkorbButton />}
               </Box>
             </HStack>
           </Stack>

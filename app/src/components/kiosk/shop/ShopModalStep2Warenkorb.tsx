@@ -140,7 +140,7 @@ function ShopModalStepWarenkorb({ onClose }) {
 
           <HStack
             alignItems='flex-end'
-            w='100%'
+            w={getCartTotalQuantity() === 0 ? '98.7%' : '100%'}
             pt='12'
             pb='11'
             transform='translateY(0.8rem) translateX(0)'

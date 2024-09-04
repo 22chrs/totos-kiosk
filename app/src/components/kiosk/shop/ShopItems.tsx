@@ -16,12 +16,18 @@ import { formatPrice, FormatPriceProps } from '@/components/kiosk/shop/utils';
 import i18n, { standardSprache } from '@/internationalization/i18n';
 import { useCart } from '@/providers/CardContext';
 import { useRouter } from '@/providers/DisplayContext';
+import { FaArrowRight } from 'react-icons/fa';
 
 type FooterShopElementProps = {
   itemCount: number;
 };
 
 export const ShopIcon: React.FC<FooterShopElementProps> = ({ itemCount }) => {
+  const colorZiffer = useColorModeValue(
+    'footerBGColor.lightMode',
+    'footerBGColor.darkMode',
+  );
+
   return (
     <Box position='relative' display='inline-block'>
       <Icon
@@ -35,15 +41,15 @@ export const ShopIcon: React.FC<FooterShopElementProps> = ({ itemCount }) => {
 
       {itemCount > 0 && (
         <Center
-          fontSize='2xl'
+          fontSize='3xl'
           position='absolute'
           top='-3'
           right='-6'
           width='55%'
           height='55%'
           borderRadius='50%'
-          bgColor='red.500'
-          color='white'
+          bgColor='red.400'
+          color={colorZiffer}
           fontWeight={700}
         >
           {itemCount}
@@ -69,11 +75,13 @@ export const WarenkorbButton = () => {
   return (
     <Button
       variant='kiosk_rainbow_big'
+      gap='5'
       //zIndex='10'
       // colorScheme='brand'
     >
-      Warenkorb anzeigen
+      Deine Bestellung
       {/* <Icon pl='5' boxSize={'3.5rem'} as={FaWrench} /> */}
+      <Icon boxSize='2rem' as={FaArrowRight} />
     </Button>
   );
 };
