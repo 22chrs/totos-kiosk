@@ -125,7 +125,7 @@ function MyMenuButton({
             color={colorButton}
             fontSize='xl'
             h='2.5rem'
-            px='5'
+            px='4'
             variant='solid'
           >
             {selectedOption.text}

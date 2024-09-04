@@ -87,13 +87,14 @@ export const WarenkorbButton = () => {
 };
 
 export const AbbruchButton = () => {
-  const { clearCart } = useCart();
+  const { clearCart, setPayment } = useCart();
   const router = useRouter();
 
   const handleClick = () => {
     clearCart();
     i18n.changeLanguage(standardSprache);
     router.pushWithDisplay('/');
+    setPayment('waiting');
   };
 
   const bgColorButton = useColorModeValue('red.400', 'red.300');

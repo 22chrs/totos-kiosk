@@ -83,10 +83,24 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                 />
 
                 <Box position='absolute' bottom='5' left='8' zIndex='10'>
-                  <HStack gap='5'>
-                    {selectedProduct.glutenfree && <GlutenFreeEmblem />}
-                    {selectedProduct.vegan && <VeganEmblem />}
-                  </HStack>
+                  <VStack gap='8'>
+                    {selectedProduct.glutenfree && (
+                      <Image
+                        src='/assets/icons/glutenfree.svg' // Ensure the path to the SVG is correct
+                        alt='Gluten Free'
+                        width={95}
+                        height={95}
+                      />
+                    )}
+                    {selectedProduct.vegan && (
+                      <Image
+                        src='/assets/icons/vegan.svg' // Ensure the path to the SVG is correct
+                        alt='Vegan'
+                        width={90}
+                        height={90}
+                      />
+                    )}
+                  </VStack>
                 </Box>
               </Box>
             </Box>
