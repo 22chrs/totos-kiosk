@@ -106,14 +106,11 @@ export const ItemBestellung = ({ productCart }) => {
           >
             <VStack gap='5' style={{ alignItems: 'flex-start' }}>
               <HStack gap='5' style={{ alignItems: 'flex-start' }}>
-                {' '}
-                {/* Add this line */}
                 <AuswahlMenuSize productCart={productCart} />
+
                 <AuswahlMenuZucker productCart={productCart} />
               </HStack>
               <HStack gap='5' style={{ alignItems: 'flex-start' }}>
-                {' '}
-                {/* Add this line */}
                 <AuswahlMenuEinweg productCart={productCart} />
                 <AuswahlMenuDeckel productCart={productCart} />
               </HStack>

@@ -49,7 +49,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
       //choosenSize: selectedSizeOption ? selectedSizeOption.size : undefined,
       vat: selectedProduct.vat,
       choosenSize: null,
-      choosenSugar: selectedSugarOption,
+      choosenSugar: null,
       choosenMug: null,
       choosenLid: null,
       quantity: 1,

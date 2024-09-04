@@ -150,7 +150,7 @@
       ]
     },
     {
-      "name": "Schokodrinks",
+      "name": "More Drinks",
       "unit": "ml",
       "additives": [""],
       "mugs": ["disposable", "reusable"],
@@ -231,7 +231,7 @@
       ]
     },
     {
-      "name": "Schokoriegel",
+      "name": "Riegel",
       "unit": "Stück",
       "products": [
         {
