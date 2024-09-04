@@ -67,7 +67,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
               <Box
                 borderRadius={KISOK_BORDERRADIUS}
                 minH={KIOSK_HEIGHTCONTENT_MODAL}
-                minW={`calc(${KIOSK_HEIGHTCONTENT_MODAL} * 0.7)`}
+                minW={`calc(${KIOSK_HEIGHTCONTENT_MODAL} * 0.75)`}
                 position='relative'
                 overflow='hidden'
               >
@@ -223,7 +223,6 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
               <Spacer />
 
               <HStack
-                maxW='88%'
                 justifyContent='space-between'
                 gap='10'
                 //transform='translateY(0.4rem) translateX(-0.2rem)'
@@ -241,24 +240,26 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                   </Box>
                 </HStack>
 
-                <Button
-                  gap='5'
-                  variant='kiosk_rainbow_big'
-                  onClick={() => {
-                    if (
-                      !selectedCategory.mugs ||
-                      selectedCategory.mugs.length === 0
-                    ) {
-                      handleAddToCart();
-                      setActiveStep((prevStep) => prevStep + 2);
-                    } else {
-                      setActiveStep((prevStep) => prevStep + 1);
-                    }
-                  }}
-                >
-                  Weiter
-                  <Icon boxSize='2rem' as={FaArrowRight} />
-                </Button>
+                <HStack>
+                  <Button
+                    gap='5'
+                    variant='kiosk_rainbow_big'
+                    onClick={() => {
+                      if (
+                        !selectedCategory.mugs ||
+                        selectedCategory.mugs.length === 0
+                      ) {
+                        handleAddToCart();
+                        setActiveStep((prevStep) => prevStep + 2);
+                      } else {
+                        setActiveStep((prevStep) => prevStep + 1);
+                      }
+                    }}
+                  >
+                    Weiter
+                    <Icon boxSize='2rem' as={FaArrowRight} />
+                  </Button>
+                </HStack>
               </HStack>
             </VStack>
           </HStack>

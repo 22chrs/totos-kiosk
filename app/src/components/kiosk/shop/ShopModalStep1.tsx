@@ -112,7 +112,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
               <Box
                 borderRadius={KISOK_BORDERRADIUS}
                 minH={KIOSK_HEIGHTCONTENT_MODAL}
-                minW={`calc(${KIOSK_HEIGHTCONTENT_MODAL} * 0.7)`}
+                minW={`calc(${KIOSK_HEIGHTCONTENT_MODAL} * 0.75)`}
                 position='relative'
                 overflow='hidden'
               >
