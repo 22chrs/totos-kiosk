@@ -1,7 +1,4 @@
-//kiosk.tsx
-
 import { HeaderStartPage } from '@/components/layout/menuKiosk/header';
-
 import { useRouter } from '@/providers/DisplayContext';
 import { useInViewport } from 'react-in-viewport';
 
@@ -12,6 +9,7 @@ import {
   Text,
   chakra,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { LanguagesTabsKiosk } from '@/components/kiosk/LanguagesKiosk';
@@ -19,7 +17,8 @@ import { LanguagesTabsKiosk } from '@/components/kiosk/LanguagesKiosk';
 import { useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { InfoCircle, Start } from '@/components/kiosk/Info';
+import InfoCircle from '@/components/kiosk/Info';
+import InfoModal from '@/components/kiosk/infoModal';
 
 const Video = chakra('video');
 
@@ -30,6 +29,9 @@ const Kiosk = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const { displayNumber } = useContext(DisplayContext);
+
+  // Modal control from Chakra UI
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handlePageClick = () => {
     router.pushWithDisplay('/kiosk/shop');
@@ -78,9 +80,6 @@ const Kiosk = () => {
           right='0'
           pb='18vh'
           pl='9'
-          //pr='30vw'
-          // paddingX='5vw'
-          // paddingY='1vh'
           bgColor='transparent'
           color={useColorModeValue(
             'footerFontColor.lightMode',
@@ -91,7 +90,14 @@ const Kiosk = () => {
           <LanguagesTabsKiosk />
         </Box>
 
-        <InfoCircle />
+        {/* InfoCircle with modal trigger */}
+        <Box position='absolute' zIndex='1' top='5' right='5'>
+          {/* Pass the onOpen function from useDisclosure to InfoCircle */}
+          <InfoCircle onOpen={onOpen} />
+        </Box>
+
+        {/* Info modal */}
+        <InfoModal isOpen={isOpen} onClose={onClose} />
       </Box>
     </ScaleFade>
   );

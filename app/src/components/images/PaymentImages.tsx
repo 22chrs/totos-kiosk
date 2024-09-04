@@ -146,15 +146,14 @@ export const PaymentImagesFooterIcon = () => {
         quality='100'
       />
 
-      <Box px='2'>
-        <Image
-          src='/assets/payment/Girocard.svg'
-          alt='VPay'
-          width='55'
-          height='55'
-          quality='100'
-        />
-      </Box>
+      <Image
+        src='/assets/payment/Girocard.svg'
+        alt='Girocard'
+        width='50'
+        height='50'
+        quality='100'
+      />
+
       {/* <Box px='2'>
         <Image
           src='/assets/payment/V_Pay.svg'

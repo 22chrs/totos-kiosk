@@ -1,27 +1,31 @@
-import { Box, Button, HStack, Icon, useColorModeValue } from '@chakra-ui/react';
-import { ArrowIcon, CircleInfoRegular, RobotRegular } from '../icons/icons';
+import { Box, Icon, useColorModeValue } from '@chakra-ui/react';
+import { CircleInfoRegular } from '../icons/icons'; // Assuming you have these icons available
 
-export const InfoCircle = () => {
+const InfoCircle = ({ onOpen }) => {
+  const handleInfoClick = (e) => {
+    e.stopPropagation(); // Prevent the event from bubbling up and triggering handlePageClick
+    onOpen(); // Open the modal
+  };
+
   return (
     <Box
-      onClick={(e) => e.stopPropagation()}
-      p='10'
-      //bgColor='red'
+      py='10'
+      px='10'
       position='fixed'
-      borderRadius='10rem' // Add this property to create round corners
+      borderRadius='10rem' // Round corners
       right={useColorModeValue('2.3vw', '2.5vw')}
       top={useColorModeValue('2vh', '3vh')}
-      //transform='translateX(-50%)'
+      onClick={handleInfoClick} // Handle click on the circle icon
     >
       <Icon
         p={useColorModeValue('2', '0')}
         as={CircleInfoRegular}
         bg={useColorModeValue('rgba(255, 255, 255, 0.8)', 'rgba(0, 0, 0, 0.3)')}
         fontSize={useColorModeValue('7rem', '6rem')}
-        display='flex' // Add this property for centering the text
-        alignItems='center' // Add this property for centering the text
-        justifyContent='center' // Add this property for centering the text
-        borderRadius='10rem' // Add this property to create round corners
+        display='flex' // Centering the text/icon
+        alignItems='center' // Centering the text/icon
+        justifyContent='center' // Centering the text/icon
+        borderRadius='10rem' // Round corners
       >
         Touch me.
       </Icon>
@@ -29,37 +33,4 @@ export const InfoCircle = () => {
   );
 };
 
-export const Start = () => {
-  return (
-    <Box
-      p='10'
-      bgColor='red'
-      //bgColor='red'
-      position='fixed'
-      borderRadius='10rem' // Add this property to create round corners
-      bottom={useColorModeValue('2vh', '3vh')}
-      //transform='translateX(-50%)'
-    >
-      <HStack>
-        <Icon
-          p={useColorModeValue('2', '0')}
-          as={RobotRegular}
-          fontSize={useColorModeValue('7rem', '6rem')}
-          display='flex' // Add this property for centering the text
-          alignItems='center' // Add this property for centering the text
-          justifyContent='center' // Add this property for centering the text
-          borderRadius='10rem' // Add this property to create round corners
-        />
-        <Icon
-          p={useColorModeValue('2', '0')}
-          as={ArrowIcon}
-          fontSize={useColorModeValue('7rem', '6rem')}
-          display='flex' // Add this property for centering the text
-          alignItems='center' // Add this property for centering the text
-          justifyContent='center' // Add this property for centering the text
-          borderRadius='10rem' // Add this property to create round corners
-        />
-      </HStack>
-    </Box>
-  );
-};
+export default InfoCircle;
