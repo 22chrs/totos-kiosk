@@ -53,7 +53,6 @@ const Kiosk = () => {
   // Set up the timer and event listeners when the component mounts
   useEffect(() => {
     resetTimer();
-    setPayment('idle');
 
     const events = [
       'mousemove',

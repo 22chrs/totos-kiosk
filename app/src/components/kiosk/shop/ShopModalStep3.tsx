@@ -108,11 +108,12 @@ function ShopModalStep3({ herkunft, onClose }) {
   const handlePaymentWaiting = () => {
     //setShowTrinkgeld(false);
     //setShowTrinkgeldYes(false);
-    setPayment('waiting');
+    console.log('CLICK');
+    setPayment('idle');
 
     paymentErrorTimeout = setTimeout(() => {
       handlePaymentError();
-    }, 10000);
+    }, 3000);
   };
 
   const handlePaymentSuccess = () => {
@@ -140,16 +141,17 @@ function ShopModalStep3({ herkunft, onClose }) {
   useEffect(() => {
     if (ws) {
       const handleMessage = (data) => {
-        // Check if the received message has the code 'paymentSuccess'
         if (data.code && data.code === 'paymentSuccess') {
           setPayment('success');
-          handlePaymentSuccess(); // Assuming you have a method for handling success
+          handlePaymentSuccess(); // Correctly handling the success
+        } else if (data.code && data.code === 'paymentError') {
+          setPayment('error'); // Explicitly handle errors
         }
       };
 
       ws.handleMessage(handleMessage);
 
-      // Optional: Cleanup to remove the event listener when the component unmounts
+      // Cleanup WebSocket listener
       return () => {
         ws.removeEventListener('message', handleMessage);
       };
@@ -161,7 +163,7 @@ function ShopModalStep3({ herkunft, onClose }) {
     await addNewOrder(automatenID, orderData);
 
     clearCart();
-    setPayment('init');
+    setPayment('init'); // <-- Make sure this is called at the end of the process.
     onClose();
     i18n.changeLanguage(standardSprache);
     router.pushWithDisplay('/');
@@ -260,7 +262,7 @@ function ShopModalStep3({ herkunft, onClose }) {
                     </HStack>
 
                     <Text pt='15' variant='kiosk' pb='12' maxW='100%'>
-                      {payment === 'idle' && 'nothing here.'}
+                      {payment === 'idle' && 'nothing2 here.'}
                       {payment === 'processing' &&
                         'Bitte folge den Anweisungen am Kartenterminal.'}
                       {payment === 'waiting' &&
@@ -308,7 +310,11 @@ function ShopModalStep3({ herkunft, onClose }) {
                   <>
                     {payment !== 'success' ? (
                       <>
-                        <Button gap='5' variant='kiosk_pricetag_big'>
+                        <Button
+                          onClick={handlePaymentWaiting}
+                          gap='5'
+                          variant='kiosk_pricetag_big'
+                        >
                           <Box>Gesamt:</Box>
                           <Box>
                             {formatPrice({

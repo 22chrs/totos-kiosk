@@ -32,8 +32,13 @@ function ShopModalStepWarenkorb({ onClose }) {
 
   const { activeStep, setActiveStep } = useStepper();
 
-  const { cart, getCartTotalPrice, getCartTotalPfand, getCartTotalQuantity } =
-    useCart();
+  const {
+    cart,
+    getCartTotalPrice,
+    getCartTotalPfand,
+    getCartTotalQuantity,
+    setPayment,
+  } = useCart();
 
   const [Trinkgeld, setTrinkgeld] = useState(0);
 
@@ -78,7 +83,8 @@ function ShopModalStepWarenkorb({ onClose }) {
 
     console.log(bestellung); // Log the bestellung object
     if (ws) {
-      ws.send('devices', JSON.stringify(bestellung)); // Replace 'devices' with actual target
+      setPayment('processing');
+      ws.send('devices', JSON.stringify(bestellung)); // Replace 'devices' with actual target //! WICHTIG
     } else {
       console.log('WebSocket not connected. Bestellung not aufgegeben.');
     }

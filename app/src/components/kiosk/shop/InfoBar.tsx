@@ -16,6 +16,7 @@ import {
   Stack,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KIOSK_FOOTER_HEIGHT } from 'src/constants';
 
@@ -74,7 +75,11 @@ export function InfoBar(props) {
                 alignItems='center'
                 justifyContent='center'
               >
-                {getCartTotalQuantity() > 0 && <WarenkorbButton />}
+                {getCartTotalQuantity() > 0 && (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <WarenkorbButton />
+                  </Suspense>
+                )}
               </Box>
 
               <Box

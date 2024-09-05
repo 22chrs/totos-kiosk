@@ -138,7 +138,7 @@ function Categories({ title, isSelected, onClick }) {
               height={500}
               alt={title}
               style={{
-                transform: 'scale(2.2)', // Zoom in by 2.5x
+                //transform: 'scale(2.2)', // Zoom in by 2.5x
                 transformOrigin: '50% 110%', // Adjust the focus
                 objectFit: 'cover',
               }}

@@ -135,36 +135,27 @@ export const PaymentImagesFooterIcon = () => {
       overflowX='auto'
       gap='15'
     >
-      <Image
+      <NextImage
         src={useColorModeValue(
           '/assets/payment/contactless.svg',
           '/assets/payment/contactless_dark.svg',
         )}
         alt='ApplePay'
-        width='100'
-        height='100'
-        quality='100'
+        priority={true}
+        width={100} // Set a numeric value for width
+        height={100} // Set a matching numeric value or the appropriate aspect ratio
+        quality={100}
       />
-
-      <Image
+      <NextImage
         src='/assets/payment/Girocard.svg'
         alt='Girocard'
+        priority
         width='50'
         height='50'
         quality='100'
       />
 
-      {/* <Box px='2'>
-        <Image
-          src='/assets/payment/V_Pay.svg'
-          alt='VPay'
-          width='50'
-          height='50'
-          quality='100'
-        />
-      </Box> */}
-
-      <Image
+      <NextImage
         src={useColorModeValue(
           '/assets/payment/Maestro.svg',
           '/assets/payment/Maestro_dark.svg',
@@ -174,14 +165,14 @@ export const PaymentImagesFooterIcon = () => {
         height='70'
         quality='100'
       />
-      <Image
+      <NextImage
         src='/assets/payment/GooglePay.svg'
         alt='GooglePay'
         width='110'
         height='110'
         quality='100'
       />
-      <Image
+      <NextImage
         src={useColorModeValue(
           '/assets/payment/ApplePay.svg',
           '/assets/payment/ApplePay_dark.svg',
@@ -191,7 +182,7 @@ export const PaymentImagesFooterIcon = () => {
         height='100'
         quality='100'
       />
-      <Image
+      <NextImage
         src='/assets/payment/Visa.svg'
         alt='VPay'
         width='115'
@@ -199,7 +190,7 @@ export const PaymentImagesFooterIcon = () => {
         quality='100'
       />
 
-      <Image
+      <NextImage
         src={useColorModeValue(
           '/assets/payment/Mastercard.svg',
           '/assets/payment/Mastercard_dark.svg',
