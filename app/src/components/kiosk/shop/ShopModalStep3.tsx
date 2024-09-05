@@ -257,7 +257,7 @@ function ShopModalStep3({ herkunft, onClose }) {
                       </Text>
                     </HStack>
 
-                    <Text pt='8' variant='kiosk' pb='8' maxW='75%'>
+                    <Text pt='15' variant='kiosk' pb='12' maxW='100%'>
                       {payment === 'waiting' &&
                         'Bitte folge den Anweisungen am Kartenterminal.'}
                       {payment === 'success' &&
@@ -269,8 +269,8 @@ function ShopModalStep3({ herkunft, onClose }) {
                       <Video
                         rounded={KISOK_BORDERRADIUS}
                         autoPlay
-                        w='33rem'
-                        h='18rem'
+                        w='20rem'
+                        h='20rem'
                         loop
                         muted
                         //fill={true}
@@ -281,9 +281,9 @@ function ShopModalStep3({ herkunft, onClose }) {
                     )}
                   </Box>
                   {/* <Spacer /> */}
-                  <Box maxW='20%' pt={herkunft === 'shop' ? '5' : '14'} pr='0'>
+                  {/* <Box maxW='20%' pt={herkunft === 'shop' ? '5' : '14'} pr='0'>
                     <PaymentImagesFooter />
-                  </Box>
+                  </Box> */}
                 </HStack>
               </Box>
             </VStack>
@@ -291,7 +291,7 @@ function ShopModalStep3({ herkunft, onClose }) {
           {/* </ScrollFade> */}
           <Spacer />
 
-          <HStack alignItems='flex-end' w='100%' pb='11'>
+          <HStack alignItems='flex-end' w='100%' pb='8'>
             <HStack
               w='100%'
               justifyContent='flex-start'
@@ -304,10 +304,12 @@ function ShopModalStep3({ herkunft, onClose }) {
                     {payment !== 'success' ? (
                       <>
                         <Button gap='5' variant='kiosk_pricetag_big'>
-                          Summe:{' '}
-                          {formatPrice({
-                            amount: getCartTotalPrice() + getCartTotalPfand(),
-                          })}
+                          <Box>Gesamt:</Box>
+                          <Box>
+                            {formatPrice({
+                              amount: getCartTotalPrice() + getCartTotalPfand(),
+                            })}
+                          </Box>
                         </Button>
 
                         {Trinkgeld > 0 && (
