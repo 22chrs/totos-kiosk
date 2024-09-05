@@ -209,9 +209,11 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           <CardBody zIndex='5' p='0'>
             <Flex width='100%' pl='2' pt='2' justifyContent='flex-start'>
               <Box py='1.5' px='2' rounded='lg'>
-                <Heading variant='h2_Kiosk' color={cardFontColor}>
+                {/* <Heading variant='h2_Kiosk' color={cardFontColor}>
                   {product.name}
-                </Heading>
+                </Heading> */}
+
+                <Button variant='kiosk_nametag'>{product.name}</Button>
               </Box>
             </Flex>
           </CardBody>

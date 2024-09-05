@@ -159,6 +159,41 @@ const components = {
         };
       },
 
+      kiosk_nametag: (props) => {
+        const borderWidth = '0.2rem';
+
+        return {
+          color: mode(
+            colors.primaryHeadingColor.darkMode,
+            colors.primaryHeadingColor.lightMode,
+          )(props),
+
+          bgColor: mode(
+            colors.footerBGColor.darkMode,
+            colors.footerBGColor.lightMode,
+          )(props),
+
+          borderColor: mode(
+            colors.primaryHeadingColor.lightMode,
+            colors.primaryHeadingColor.darkMode,
+          )(props),
+
+          //borderWidth: borderWidth,
+
+          fontSize: '1.9rem',
+          fontWeight: '700',
+
+          px: '2',
+          py: '6',
+          h: '0px',
+          variant: 'outline',
+
+          position: 'relative',
+
+          borderRadius: 'md',
+        };
+      },
+
       kiosk_pricetag_medium: (props) => {
         const borderWidth = '0.3rem';
 
