@@ -250,7 +250,7 @@ const components = {
 
           //borderWidth: borderWidth,
 
-          fontSize: '2.9rem',
+          fontSize: '3.09rem',
           fontWeight: '700',
 
           px: '2',
