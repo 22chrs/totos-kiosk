@@ -25,6 +25,7 @@ import { FaArrowRight, FaPlus } from 'react-icons/fa';
 import { KIOSK_HEIGHTCONTENT_MODAL } from 'src/constants';
 import { useState } from 'react';
 import { useWebSocket } from '@/websocket/WebSocketContext';
+import { ArrowRightSharpSolid } from '@/components/icons/icons';
 
 function ShopModalStepWarenkorb({ onClose }) {
   const ws = useWebSocket();
@@ -172,22 +173,22 @@ function ShopModalStepWarenkorb({ onClose }) {
                 </HStack>
               </Box>
               <Spacer />
-              <HStack gap='12'>
+              <HStack gap='14'>
                 <Box transform='translateY(-0.4rem) translateX(0.4rem)'>
                   <Button
-                    gap='5'
+                    gap='4'
                     variant='kiosk_rainbow_big'
                     onClick={() => {
                       onClose(); // Close the modal
                     }}
                   >
                     Artikel hinzufügen
-                    <Icon boxSize='2.2rem' as={FaPlus} />
+                    <Icon boxSize='2.5rem' as={FaPlus} />
                   </Button>
                 </Box>
 
                 {getCartTotalQuantity() > 0 && (
-                  <Box transform='translateY(-0.4rem) translateX(-0.8rem)'>
+                  <Box transform='translateY(-0.4rem) translateX(-1.0rem)'>
                     <Button
                       gap='5'
                       variant='kiosk_rainbow_big'
@@ -199,7 +200,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                       }}
                     >
                       Zur Kasse
-                      <Icon boxSize='2.5rem' as={FaArrowRight} />
+                      <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
                     </Button>
                   </Box>
                 )}

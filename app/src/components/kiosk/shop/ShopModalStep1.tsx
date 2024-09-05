@@ -1,5 +1,6 @@
 // ShopModalStep1.tsx
 import {
+  ArrowRightSharpSolid,
   BanRegular,
   CirclePlusRegular,
   CupTogoRegular,
@@ -280,7 +281,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                     }}
                   >
                     Weiter
-                    <Icon boxSize='2.5rem' as={FaArrowRight} />
+                    <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
                   </Button>
                 </HStack>
               </HStack>

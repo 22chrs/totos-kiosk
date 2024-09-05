@@ -1,5 +1,21 @@
 import { createIcon } from '@chakra-ui/react';
 // https://codesandbox.io/s/9lg5c
+export const PlusSharpSolid = createIcon({
+  displayName: 'PlusSharpSolid',
+  viewBox: '0 0 448 512',
+  d: 'M256 80V48h-64v176H16v64h176v176h64V288h176v-64H256V80z',
+});
+export const ArrowUpSharpSolid = createIcon({
+  displayName: 'ArrowUpSharpSolid',
+  viewBox: '0 0 384 512',
+  d: 'M214.6 57.4L192 34.7l-22.6 22.7-144 144L2.7 224 48 269.2l22.6-22.6 89.4-89.4V480h64V157.3l89.4 89.4 22.6 22.5 45.3-45.2-22.6-22.6-144-144z',
+});
+
+export const ChevronsRightSharpSolid = createIcon({
+  displayName: 'ChevronsRightSharpSolid',
+  viewBox: '0 0 512 512',
+  d: 'M278.6 278.6l22.7-22.6-22.6-22.6-192-192L64 18.7 18.7 64l22.7 22.6L210.7 256 41.4 425.4 18.7 448 64 493.3l22.6-22.6 192-192zm192 0l22.7-22.6-22.6-22.6-192-192L256 18.7 210.7 64l22.6 22.6L402.7 256 233.4 425.4 210.7 448l45.3 45.3 22.6-22.6 192-192z',
+});
 
 export const AnglesRightSolid = createIcon({
   displayName: 'AnglesRightSolid',
@@ -29,6 +45,12 @@ export const ArrowIcon = createIcon({
   displayName: 'Arrow',
   viewBox: '0 0 448 512',
   d: 'M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z',
+});
+
+export const ArrowRightSharpSolid = createIcon({
+  displayName: 'ArrowRightSharpSolid',
+  viewBox: '0 0 448 512',
+  d: 'M422.6 278.6l22.7-22.6-22.6-22.6-144-144L256 66.7 210.8 112l22.6 22.6 89.4 89.4H0v64h322.7l-89.4 89.4-22.5 22.6 45.2 45.3 22.6-22.6 144-144z',
 });
 
 export const ContactlessIcon = createIcon({

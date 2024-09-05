@@ -38,7 +38,10 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import {
   AnglesRightSolid,
   ArrowIcon,
+  ChevronsRightSharpSolid,
+  ArrowRightSharpSolid,
   XmarkSolid,
+  ArrowUpSharpSolid,
 } from '@/components/icons/icons';
 
 // Kategorien
@@ -92,19 +95,42 @@ function Categories({ title, isSelected, onClick }) {
             position='relative'
             overflow='hidden'
           >
-            {/* Heading is absolutely positioned over the image */}
-            <Heading
+            <Box
               position='absolute' // Make the heading absolutely positioned
               top='0' // Align it to the top of the image (adjust as needed)
               left='0' // Align to the left of the image
-              p='5'
-              color={isSelected ? colorSelected : color}
-              zIndex='10' // Ensure heading has a higher zIndex than the image
-              variant='h2_Kiosk'
+              p='3'
+              zIndex='10'
             >
-              {title}
-            </Heading>
-
+              <Button
+                variant={
+                  isSelected
+                    ? 'kiosk_categoryTagSelected'
+                    : 'kiosk_categoryTagAselected'
+                }
+              >
+                {title}
+              </Button>
+              {isSelected ? (
+                <Box position='absolute' top='95%' left='0' pl='40' zIndex='10'>
+                  <Icon
+                    fontSize='8rem'
+                    as={ArrowRightSharpSolid}
+                    color='primaryHeadingColor.darkMode'
+                  />
+                  {/* This is for when isSelected is true */}
+                </Box>
+              ) : (
+                <Box position='absolute' top='100%' left='10%' zIndex='10'>
+                  <Icon
+                    fontSize='4rem'
+                    as={ArrowUpSharpSolid}
+                    color='primaryHeadingColor.darkMode'
+                  />
+                  {/* This is for when isSelected is false */}
+                </Box>
+              )}
+            </Box>
             {/* Image behind the heading */}
             <Image
               src={`/kiosk/products/images/${handleUmlauts(title)}.jpg`}
@@ -207,21 +233,15 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           />
 
           <CardBody zIndex='5' p='0'>
-            <Flex width='100%' pl='2' pt='2' justifyContent='flex-start'>
-              <Box py='1.5' px='2' rounded='lg'>
-                {/* <Heading variant='h2_Kiosk' color={cardFontColor}>
-                  {product.name}
-                </Heading> */}
-
-                <Button variant='kiosk_nametag'>{product.name}</Button>
-              </Box>
+            <Flex width='100%' pl='4' pt='4' justifyContent='flex-start'>
+              <Button variant='kiosk_nametag'>{product.name}</Button>
             </Flex>
           </CardBody>
 
           <CardFooter
             zIndex='10'
             pb='3'
-            pr='5'
+            pr='3'
             style={{
               position: 'absolute',
               bottom: '0',
@@ -242,7 +262,7 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
         {products.length > 5 && (
           <Button gap='5' variant='kiosk_rainbow_big' onClick={handleNext}>
             Weitere
-            <Icon boxSize='2.5rem' as={AnglesRightSolid} />
+            <Icon boxSize='2.5rem' as={ChevronsRightSharpSolid} />
           </Button>
         )}
       </Flex>

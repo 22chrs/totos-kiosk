@@ -18,7 +18,7 @@ import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { RxCube } from 'react-icons/rx';
 
 import { GlutenFreeEmblem, VeganEmblem } from '@/components/icons/emblems';
-import { BanRegular } from '@/components/icons/icons';
+import { ArrowRightSharpSolid, BanRegular } from '@/components/icons/icons';
 import { useCart } from '@/providers/CardContext';
 import { useStepper } from '@/providers/StepperContext';
 import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
@@ -261,7 +261,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                     }}
                   >
                     Weiter
-                    <Icon boxSize='2.5rem' as={FaArrowRight} />
+                    <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
                   </Button>
                 </HStack>
               </HStack>

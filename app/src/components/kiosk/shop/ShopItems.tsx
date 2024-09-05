@@ -1,4 +1,5 @@
 import {
+  ArrowRightSharpSolid,
   CartShoppingFastSharpRegular,
   MugMarshmallowsLight,
   XmarkSharpSolid,
@@ -102,7 +103,7 @@ export const WarenkorbButton = () => {
     >
       Deine Bestellung
       {/* <Icon pl='5' boxSize={'3.5rem'} as={FaWrench} /> */}
-      <Icon boxSize='2rem' as={FaArrowRight} />
+      <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
     </Button>
   );
 };
