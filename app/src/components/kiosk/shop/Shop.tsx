@@ -111,10 +111,10 @@ function Categories({ title, isSelected, onClick }) {
               width={500}
               height={500}
               alt={title}
-              objectFit='cover' // Ensures the image covers the entire box
               style={{
                 transform: 'scale(2.2)', // Zoom in by 2.5x
                 transformOrigin: '50% 110%', // Adjust the focus
+                objectFit: 'cover',
               }}
             />
           </Box>
@@ -201,7 +201,6 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           <Image
             alt={`${product.name}`}
             fill={true}
-            objectFit='contain'
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             style={{ objectFit: 'cover' }}
             src={`/kiosk/products/images/${handleUmlauts(product.name)}.jpg`}

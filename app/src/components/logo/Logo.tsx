@@ -1,12 +1,16 @@
 import { Box } from '@chakra-ui/react';
 
-const Logo = ({ height, colorBG, colorFont, top }) => {
+const Logo = ({
+  height = '24',
+  colorBG = 'currentColor',
+  colorFont = 'currentColor',
+  top,
+}) => {
   return (
     <Box position='relative' top={top}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 402.64 145.45'
-        //width='auto'
         height={height}
         style={{
           filter: 'drop-shadow(0.3rem 0.3rem 0.6rem rgba(0, 0, 0, 0.2))',
@@ -16,7 +20,6 @@ const Logo = ({ height, colorBG, colorFont, top }) => {
           fill={colorBG}
           d='m388.47,0H14.17C6.35,0,0,6.35,0,14.17v79.94c0,7.83,6.35,14.17,14.17,14.17h220.09l38.59,37.16,4.63-37.16h110.98c7.83,0,14.17-6.35,14.17-14.17V14.17c0-7.83-6.35-14.17-14.17-14.17Z'
         />
-
         <path
           fill={colorFont}
           d='m85.64,21.5l-6.54,53.22h-19.31l2.39-19.39h-11.41l-2.31,19.39h-19.31l6.54-53.22h19.31l-2.23,18.19h11.33l2.23-18.19h19.31Z'
@@ -48,13 +51,6 @@ const Logo = ({ height, colorBG, colorFont, top }) => {
       </svg>
     </Box>
   );
-};
-
-Logo.defaultProps = {
-  width: '24',
-  height: '24',
-  colorBG: 'currentColor',
-  colorFont: 'currentColor',
 };
 
 export default Logo;
