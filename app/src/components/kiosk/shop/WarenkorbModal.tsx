@@ -95,7 +95,7 @@ export function WarenkorbModal({ isOpen, onClose }) {
     <Modal
       variant='kiosk'
       isOpen={isOpen}
-      onClose={payment != 'waiting' ? null : onClose}
+      onClose={payment != 'idle' ? null : onClose}
     >
       <ModalOverlay />
 
@@ -122,7 +122,7 @@ export function WarenkorbModal({ isOpen, onClose }) {
             _active={{ bgColor: 'transparent' }}
             _focus={{ bgColor: 'transparent' }}
             _hover={{ bgColor: 'transparent' }}
-            isDisabled={payment != 'waiting'}
+            isDisabled={payment != 'idle'}
           />
         </ModalHeader>
 

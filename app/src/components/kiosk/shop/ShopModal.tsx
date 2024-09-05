@@ -135,7 +135,7 @@ export function ModalProductCard({
     <Modal
       variant='kiosk'
       isOpen={isOpen}
-      onClose={payment != 'waiting' ? null : onClose}
+      onClose={payment != 'idle' ? null : onClose}
     >
       <ModalOverlay />
 

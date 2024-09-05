@@ -1,5 +1,8 @@
+// waiting / idle
+// processing
+// success // error payment // error robot
+
 import {
-  CheckDuotone,
   CircleCheckSharpSolid,
   ShieldCheckSharpSolid,
 } from '@/components/icons/icons';
@@ -100,7 +103,6 @@ function ShopModalStep3({ herkunft, onClose }) {
     } else {
       console.log('WebSocket not connected. Bestellung not aufgegeben.');
     }
-    //handlePaymentWaiting();
   };
 
   const handlePaymentWaiting = () => {
@@ -258,6 +260,9 @@ function ShopModalStep3({ herkunft, onClose }) {
                     </HStack>
 
                     <Text pt='15' variant='kiosk' pb='12' maxW='100%'>
+                      {payment === 'idle' && 'nothing here.'}
+                      {payment === 'processing' &&
+                        'Bitte folge den Anweisungen am Kartenterminal.'}
                       {payment === 'waiting' &&
                         'Bitte folge den Anweisungen am Kartenterminal.'}
                       {payment === 'success' &&

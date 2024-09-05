@@ -116,7 +116,7 @@ export const AbbruchButton = () => {
     clearCart();
     i18n.changeLanguage(standardSprache);
     router.pushWithDisplay('/');
-    setPayment('waiting');
+    setPayment('idle');
   };
 
   const bgColorButton = useColorModeValue('red.400', 'red.300');

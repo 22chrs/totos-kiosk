@@ -7,8 +7,12 @@ from payment.payment_lib import PaymentTerminal
 from websocket.websocket import start_websocket_server, check_clients_connected
 
 # Global variables
-paymentTerminalIP_Front = "192.168.1.201"
-paymentTerminalIP_Back = "192.168.1.202"
+
+paymentTerminalIP_Front = "192.168.68.201"
+paymentTerminalIP_Back = "192.168.68.202"
+
+#paymentTerminalIP_Front = "192.168.1.201"
+#paymentTerminalIP_Back = "192.168.1.202"
 order_details = None
 
 # Payment Terminal Initialization

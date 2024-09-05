@@ -5,6 +5,7 @@ export const PlusSharpSolid = createIcon({
   viewBox: '0 0 448 512',
   d: 'M256 80V48h-64v176H16v64h176v176h64V288h176v-64H256V80z',
 });
+
 export const ArrowUpSharpSolid = createIcon({
   displayName: 'ArrowUpSharpSolid',
   viewBox: '0 0 384 512',

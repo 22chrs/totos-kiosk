@@ -93,7 +93,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       : [],
   );
 
-  const [payment, setPayment] = useState('waiting');
+  const [payment, setPayment] = useState('idle');
 
   // Whenever the cart changes, update local storage
   useEffect(() => {
