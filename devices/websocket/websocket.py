@@ -1,3 +1,5 @@
+# @chatgpt: in this file everything about the websocket communication but nothing which is about the payment.
+
 import websockets
 import os
 import json
@@ -14,11 +16,8 @@ class WebSocketClient:
 
 clients = {}
 
-async def echo(websocket, path, callback):
+async def echo(websocket, path, callback, clients, host_name):
     client_alias = await websocket.recv()
-    # if client_alias in clients:
-    #     print(f"Client already connected, refreshing connection: {client_alias}")
-    #     clients[client_alias].websocket.close()  # Close existing websocket
     clients[client_alias] = WebSocketClient(websocket)
     print(f"New client connected: {client_alias}")
 
@@ -27,27 +26,18 @@ async def echo(websocket, path, callback):
             print(f"Message received from {client_alias}: {message}")
             try:
                 data = json.loads(message)
-                target_alias = data["target"]
-                if target_alias in clients:
-                    target = clients[target_alias]
-                    await target.send(json.dumps({"from": client_alias, "message": data["message"]}))
-                    print(f"Message from {client_alias} to {target_alias}: {data['message']}")
+                await callback(websocket, message, client_alias, clients, host_name)  # Pass clients and host_name
             except json.JSONDecodeError:
                 print(f"Invalid JSON received from {client_alias}")
-
-            await callback(websocket, message)
-
     except websockets.ConnectionClosed:
-        print("Connection closed gracefully")
-    except Exception as e:
-        print(f"Exception in message handling: {e}")
+        print(f"Connection closed gracefully for {client_alias}")
     finally:
         if client_alias in clients:
             del clients[client_alias]
             print(f"Client disconnected: {client_alias}")
             
 
-async def start_websocket_server(callback):
+async def start_websocket_server(callback, clients, host_name):
     host = '0.0.0.0'
     port = int(os.environ.get('PORT', 8765))
 
@@ -67,7 +57,7 @@ async def start_websocket_server(callback):
         print(f"WebSocket server starting on ws://{host}:{port}")
 
     # Start the server with or without SSL context based on environment
-    start_server = websockets.serve(lambda ws, path: echo(ws, path, callback), host, port, ssl=ssl_context)
+    start_server = websockets.serve(lambda ws, path: echo(ws, path, callback, clients, host_name), host, port)
 
     try:
         await start_server

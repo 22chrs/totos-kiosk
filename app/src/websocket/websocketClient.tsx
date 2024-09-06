@@ -13,32 +13,41 @@ class WebSocketClient {
   displayNumber: string;
   reconnectInterval: number;
   clientAlias: string; // Combined alias to include displayNumber
+  static instanceCounter = 0; // Track the number of instances
 
   constructor(
     public alias: string,
     displayNumber: string,
   ) {
+    WebSocketClient.instanceCounter++; // Increment instance counter
+    console.log(
+      `WebSocketClient instance created. Total instances: ${WebSocketClient.instanceCounter}`,
+    );
+
     this.displayNumber = displayNumber;
     this.clientAlias = `${alias}_${displayNumber}`; // Combine alias and displayNumber
     this.reconnectInterval = 2000; // Reconnect every 2 seconds
 
     // Only connect when serverEnv is not 'local'
     if (this.alias !== 'app_default' && displayNumber !== 'default') {
-      console.log('WebSocket connecting ...');
+      console.log('WebSocket connecting ...', `Alias: ${this.clientAlias}`);
       this.connect();
     } else {
-      console.log('WebSocket connection will not be initiated for app_default');
+      console.log(
+        'WebSocket connection will not be initiated for app_default or default displayNumber',
+      );
     }
   }
 
   connect() {
-    console.log(`Connecting to WebSocket server at ${serverAddress}`);
+    console.log(
+      `Connecting to WebSocket server at ${serverAddress} with clientAlias: ${this.clientAlias}`,
+    );
     this.ws = new WebSocket(serverAddress);
 
     this.ws.addEventListener('open', () => {
       console.log('WebSocket Client Connected.');
-      // Send the combined alias (e.g., "app_1") as the initial message
-      this.ws.send(this.clientAlias);
+      this.ws?.send(this.clientAlias);
     });
 
     this.ws.addEventListener('message', (message) => {
@@ -50,7 +59,10 @@ class WebSocketClient {
     });
 
     this.ws.addEventListener('close', (event) => {
-      console.log('WebSocket closed:', event);
+      console.log(
+        `WebSocket closed for clientAlias ${this.clientAlias}:`,
+        event,
+      );
       setTimeout(() => this.connect(), this.reconnectInterval);
     });
   }
@@ -62,20 +74,26 @@ class WebSocketClient {
       );
       this.ws.send(JSON.stringify({ target, message, from: this.clientAlias }));
     } else {
-      console.log('WebSocket not ready for sending messages.');
+      console.log(
+        `WebSocket not ready for sending messages. ClientAlias: ${this.clientAlias}`,
+      );
     }
   }
 
   cleanup() {
     if (this.ws) {
+      console.log(`Cleaning up WebSocket for clientAlias: ${this.clientAlias}`);
       this.ws.close();
       this.ws = null; // Reset on cleanup
     }
+    WebSocketClient.instanceCounter--; // Decrement instance counter
+    console.log(
+      `WebSocketClient instance destroyed. Remaining instances: ${WebSocketClient.instanceCounter}`,
+    );
   }
 
-  handleMessage(callback) {
+  handleMessage(callback: (data: any) => void) {
     this.addEventListener('message', (event) => {
-      // Assuming the message is a JSON string
       try {
         const data = JSON.parse(event.data);
         callback(data); // Forward the entire message object
@@ -91,7 +109,6 @@ class WebSocketClient {
     }
   }
 
-  // You might also want to add a corresponding removeEventListener
   removeEventListener(eventType: string, listener: (event: any) => void) {
     if (this.ws) {
       this.ws.removeEventListener(eventType, listener);
