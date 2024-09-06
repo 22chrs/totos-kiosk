@@ -1202,3 +1202,134 @@
 <-PT|      Autorisierung nicht möglich       |
 <-PT|          ####################          |
 ----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 19:23:03 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000417|
+<-PT|Beleg-Nr.:                          0037|
+<-PT|Vorgangs-Nr.:                       0436|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 2,51          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|        51 Vorgang nicht möglich        |
+<-PT|         Vorgang nicht möglich          |
+<-PT|               ( AC 51 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 19:23:03 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000417|
+<-PT|Beleg-Nr.:                          0037|
+<-PT|Vorgangs-Nr.:                       0436|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 2,51          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|         Vorgang nicht möglich          |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT||
+<-PT|LAVEGO                                  |
+<-PT||
+<-PT|          ** Kassenschnitt **           |
+<-PT||
+<-PT|07.09.2024                 00:11:30 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000418|
+<-PT|Vorgangs-Nr.:                       0437|
+<-PT||
+<-PT|Ab Belegnr.:                          23|
+<-PT|Bis Belegnr.:                         36|
+<-PT||
+<-PT|nach Kartenart:                         |
+<-PT|Kartenname            Anzahl       [EUR]|
+<-PT|girocard                  14       59,14|
+<-PT|MasterCard                 0        0,00|
+<-PT|VISA                       0        0,00|
+<-PT|Maestro                    0        0,00|
+<-PT|VPAY                       0        0,00|
+<-PT||
+<-PT|Gesamtanzahl:                         14|
+<-PT|Gesamt:                        59,14 EUR|
+<-PT||
+<-PT||
+<-PT|              Erfolgreich               |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|07.09.2024                 00:57:03 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000420|
+<-PT|Beleg-Nr.:                          0037|
+<-PT|Vorgangs-Nr.:                       0442|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:              EUR 11,78          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|07.09.2024                 00:57:03 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000420|
+<-PT|Beleg-Nr.:                          0037|
+<-PT|Vorgangs-Nr.:                       0442|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:              EUR 11,78          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+----------------

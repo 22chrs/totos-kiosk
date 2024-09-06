@@ -5,10 +5,14 @@ import ShopModalStep3 from '@/components/kiosk/shop/ShopModalStep3';
 
 import {
   Box,
+  Button,
+  Heading,
   Icon,
   Modal,
+  ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Step,
@@ -23,11 +27,15 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { FaceSmileSharpRegular } from '@/components/icons/icons';
+import {
+  CreditCardRegular,
+  FaceSmileSharpRegular,
+  XmarkSharpSolid,
+} from '@/components/icons/icons';
 import ShopModalStepWarenkorb from '@/components/kiosk/shop/ShopModalStep2Warenkorb';
 import { useCart } from '@/providers/CardContext';
 import { useStepper } from '@/providers/StepperContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { KISOK_BORDERRADIUS } from 'src/constants';
 
 function StepperChoose({ steps }) {
@@ -85,6 +93,7 @@ export function ModalProductCard({
   selectedCategory,
   formatPrice,
 }) {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false); // State to control the confirm modal
   const steps =
     selectedProduct == null
       ? [{ title: 'Warenkorb' }, { title: 'Bezahlvorgang' }]
@@ -104,6 +113,26 @@ export function ModalProductCard({
     setSelectedSugarOption,
   } = useStepper();
 
+  const { payment } = useCart();
+
+  // Function to handle the close button click
+  const handleCloseClick = () => {
+    if (payment === 'processing') {
+      setIsConfirmOpen(true); // Open the confirmation modal if processing
+    } else {
+      onClose(); // Close the main modal immediately if not processing
+    }
+  };
+
+  const { setPayment } = useCart();
+
+  // Function to confirm closing during processing
+  const handleConfirmClose = () => {
+    setPayment('idle');
+    setIsConfirmOpen(false); // Close the confirmation modal
+    onClose(); // Close the main modal
+  };
+
   useEffect(() => {
     if (!isOpen) {
       setActiveStep(0);
@@ -118,47 +147,90 @@ export function ModalProductCard({
     }
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (!isOpen) {
-      setActiveStep(0);
-    }
-  }, [isOpen, setActiveStep]);
-
   const bgColorModal = useColorModeValue(
     'footerBGColor.lightMode',
     'footerBGColor.darkMode',
   );
 
-  const { payment } = useCart();
-
   return (
-    <Modal
-      variant='kiosk'
-      isOpen={isOpen}
-      onClose={payment != 'idle' ? null : onClose}
-    >
-      <ModalOverlay />
-
-      <ModalContent
-        maxW='100%'
-        height='100%'
-        minH='100%'
-        maxH='100%'
-        //height='90%'
-        m='0'
-        pt='0'
-        pb='0'
-        px='0'
-        //bgColor={bgColorModal}
-        borderRadius={KISOK_BORDERRADIUS}
+    <>
+      {/* Main Modal */}
+      <Modal
+        variant='kiosk'
+        isOpen={isOpen}
+        onClose={handleCloseClick} // Handle close based on payment state
       >
-        <ModalHeader pb='0' width='95%'>
-          {/* <StepperChoose steps={steps} /> */}
+        <ModalOverlay />
+        <ModalContent
+          maxW='100%'
+          height='100%'
+          minH='100%'
+          maxH='100%'
+          m='0'
+          pt='0'
+          pb='0'
+          px='0'
+          borderRadius={KISOK_BORDERRADIUS}
+        >
+          <ModalHeader pb='0' width='95%'>
+            <ModalCloseButton
+              pr='5'
+              pt='7'
+              fontSize='2xl'
+              onClick={handleCloseClick} // Handle the click here
+              _active={{ bgColor: 'transparent', borderColor: 'transparent' }}
+              _focus={{
+                outline: 'none',
+                bgColor: 'transparent',
+                borderColor: 'transparent',
+              }}
+              _hover={{ bgColor: 'transparent', borderColor: 'transparent' }}
+            />
+          </ModalHeader>
 
+          {/* Your step rendering logic */}
+          {activeStep === 0 && (
+            <ShopModalStep0
+              selectedProduct={selectedProduct}
+              selectedCategory={selectedCategory}
+              formatPrice={formatPrice}
+            />
+          )}
+          {selectedCategory && selectedCategory.mugs && activeStep === 1 && (
+            <ShopModalStep1
+              selectedProduct={selectedProduct}
+              selectedCategory={selectedCategory}
+              formatPrice={formatPrice}
+            />
+          )}
+          {activeStep === 2 && <ShopModalStepWarenkorb onClose={onClose} />}
+          {activeStep === 3 && (
+            <ShopModalStep3 herkunft='shop' onClose={onClose} />
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* Confirmation Modal */}
+      <ConfirmCloseModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)} // Close the confirmation modal without closing the main modal
+        onConfirm={handleConfirmClose} // Confirm and close the main modal
+      />
+    </>
+  );
+}
+
+function ConfirmCloseModal({ isOpen, onClose, onConfirm }) {
+  return (
+    <Modal variant='kiosk' isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay />
+      <ModalContent minW='70%' minH='40%' maxH='50%' py='10' px='5'>
+        <ModalHeader>
           <ModalCloseButton
             pr='5'
             pt='7'
             fontSize='2xl'
+            onClick={onClose} // Handle the click here
             _active={{ bgColor: 'transparent', borderColor: 'transparent' }}
             _focus={{
               outline: 'none',
@@ -166,37 +238,38 @@ export function ModalProductCard({
               borderColor: 'transparent',
             }}
             _hover={{ bgColor: 'transparent', borderColor: 'transparent' }}
-            isDisabled={payment == 'processing'} //!###
           />
+          <Heading variant='h1_Kiosk'>Zahlvorgang abbrechen?</Heading>
         </ModalHeader>
+        <ModalBody></ModalBody>
 
-        {activeStep === 0 && (
-          <ShopModalStep0 // Product
-            selectedProduct={selectedProduct}
-            selectedCategory={selectedCategory}
-            formatPrice={formatPrice}
-          />
-        )}
-        {selectedCategory &&
-          selectedCategory.mugs &&
-          activeStep === 1 && ( // Becherwahl
-            <ShopModalStep1
-              selectedProduct={selectedProduct}
-              selectedCategory={selectedCategory}
-              formatPrice={formatPrice}
-            />
-          )}
-        {activeStep === 2 && (
-          <ShopModalStepWarenkorb // Warenkorb
-            onClose={onClose}
-          />
-        )}
-        {activeStep === 3 && (
-          <ShopModalStep3 // Bezahlvorgang
-            herkunft='shop'
-            onClose={onClose}
-          />
-        )}
+        <ModalFooter gap='10'>
+          <Button
+            gap='3'
+            px='5'
+            py='7'
+            fontSize='3xl'
+            variant='outline'
+            colorScheme='red'
+            onClick={onConfirm}
+          >
+            <Icon boxSize={10} as={XmarkSharpSolid} />
+            Ja, Abbruch!
+          </Button>
+
+          <Button
+            gap='5'
+            px='5'
+            py='7'
+            fontSize='3xl'
+            variant='solid'
+            colorScheme='red'
+            onClick={onClose}
+          >
+            <Icon boxSize={10} as={CreditCardRegular} />
+            Nein, fortsetzen.
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
