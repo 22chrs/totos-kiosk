@@ -148,7 +148,6 @@ class PaymentTerminal:
         return self.parse_terminal_output(output)
     
        
-       
     async def auth_payment(self, amount, order_details):
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
@@ -173,21 +172,31 @@ class PaymentTerminal:
             stdout, stderr = await process.communicate()
 
             # Log outputs for debugging
-            print(f"Subprocess stdout: {stdout.decode('utf-8')}")
-            print(f"Subprocess stderr: {stderr.decode('utf-8')}")
+            stdout_str = stdout.decode('utf-8')
+            stderr_str = stderr.decode('utf-8')
+            print(f"Subprocess stdout: {stdout_str}")
+            print(f"Subprocess stderr: {stderr_str}")
+
+            # Check for empty output or errors
+            if not stdout_str and not stderr_str:
+                error_message = "No output from subprocess."
+                print(error_message)
+                self.write_error_file(error_message, self.ip_address_terminal)
+                return "Subprocess produced no output"
 
             # Decode output for processing
-            output = stdout.decode('utf-8') + stderr.decode('utf-8')
-
-            # Check for timeout error
-            if "Zeit zum Kartenlesen überschritten" in output:
-                error_message = "Timeout: No card presented"
-                self.write_error_file(error_message, self.ip_address_terminal)
-                return "Timeout Error"
+            output = stdout_str + stderr_str
+            print(f"Full combined output: {output}")
 
             # Parse the output and return the result
-            parsed_output = self.save_receipts(output, order_details)
-            print(f"Parsed output: {parsed_output}")
+            parsed_output = self.parse_terminal_output(output, order_details)
+            
+            # Add debug logging to check if parsed_output is correct
+            if parsed_output:
+                print(f"Parsed output indicates payment success: {parsed_output}")
+            else:
+                print(f"Parsed output returned null or error: {parsed_output}")
+
             return parsed_output
 
         except Exception as e:
@@ -277,10 +286,11 @@ class PaymentTerminal:
                 # Find the newline character after the pattern
                 newline_index = haendlerbeleg_section.find('\n', pattern_start)
                 if newline_index != -1:
-                    # Get the line after the pattern
                     error_line_start = newline_index + 1
                     error_line_end = haendlerbeleg_section.find('\n', error_line_start)
-                    error_line = haendlerbeleg_section[error_line_start:error_line_end].strip()
+                    if error_line_end != -1:
+                        error_line = haendlerbeleg_section[error_line_start:error_line_end].strip()
+                        # Process error_line safely here
 
                     # Use regular expression to extract the error code and message
                     match = re.search(r'(\d+\s[\w\s]+)\s{2,}', error_line)
@@ -323,7 +333,11 @@ class PaymentTerminal:
 
             # Extract Beleg-Nr. when it is encountered
             if "Beleg-Nr.:" in clean_line:
-                beleg_nr = clean_line.split(":")[1].strip()
+                parts = clean_line.split(":")
+                if len(parts) > 1:
+                    beleg_nr = parts[1].strip()  # Safely extract
+                else:
+                    print(f"Warning: 'Beleg-Nr.' not found in line: {clean_line}")
 
             # Detect sections for Kundenbeleg and Haendlerbeleg
             if "** Kundenbeleg **" in clean_line:
@@ -337,35 +351,54 @@ class PaymentTerminal:
                 in_kundenbeleg = False
                 continue
 
-            # Extract trace, expiry_date, and status
+            # Extract other data safely, checking the length of split results
             if "trace" in line:
-                trace = line.split()[-1]
+                trace = line.split()[-1] if len(line.split()) > 0 else ""
             if "expiry_date" in line:
-                expiry_date = line.split()[-1]
+                expiry_date = line.split()[-1] if len(line.split()) > 0 else ""
             if "status" in line:
-                status = line.split()[-1]
-            if "date" in line:  # Look for a line containing the date
-                date_str = line.split()[-1]  
-                year = datetime.now().year  # Get the current year
-                date = f"{date_str[2:]}.{date_str[:2]}.{year}" # Reformat the date string (assuming it's in MMDD format)
-            if "time" in line:  
-                time_str = line.split()[-1] 
-                time = f"{time_str[:2]}:{time_str[2:4]}:{time_str[4:]} CET"  # Reformat the time string (assuming it's in HHMMSS format)
+                status = line.split()[-1] if len(line.split()) > 0 else ""
+            if "date" in line:
+                date_str = line.split()[-1] if len(line.split()) > 0 else ""
+                if date_str:
+                    year = datetime.datetime.now().year  # Get the current year
+                    date = f"{date_str[2:]}.{date_str[:2]}.{year}"  # Reformat the date string
+            if "time" in line:
+                time_str = line.split()[-1] if len(line.split()) > 0 else ""
+                if time_str:
+                    time = f"{time_str[:2]}:{time_str[2:4]}:{time_str[4:]} CET"
             if "tid" in line:
-                terminal_id = line.split(":")[1].strip()
+                parts = line.split(":")
+                if len(parts) > 1:
+                    terminal_id = parts[1].strip()  # Safely extract
             if "currency" in line:
-                currency = line.split(":")[1].strip()
+                parts = line.split(":")
+                if len(parts) > 1:
+                    currency = parts[1].strip()  # Safely extract
             if "card_name" in line:
-                card_name = line.split(":")[1].strip()
-            if "amount in cent" in line: 
-                amount = line.split(":")[1].strip()
-                amount_in_cents = int(float(amount.replace('EUR', '').strip()) * 100)  # Convert EUR to cents
-            if "pan" in line:  
-                card_id = line.split(":")[1].strip()
-            if "payment_type" in line: 
-                payment_type = line.split(":")[1].strip()
-            if "aid" in line: 
-                author_id = line.split(":")[1].strip()
+                parts = line.split(":")
+                if len(parts) > 1:
+                    card_name = parts[1].strip()  # Safely extract
+            if "amount in cent" in line:
+                parts = line.split(":")
+                if len(parts) > 1:
+                    amount = parts[1].strip()
+                    try:
+                        amount_in_cents = int(float(amount.replace('EUR', '').strip()) * 100)  # Convert EUR to cents
+                    except ValueError:
+                        print(f"Warning: Invalid amount format in line: {line}")
+            if "pan" in line:
+                parts = line.split(":")
+                if len(parts) > 1:
+                    card_id = parts[1].strip()  # Safely extract
+            if "payment_type" in line:
+                parts = line.split(":")
+                if len(parts) > 1:
+                    payment_type = parts[1].strip()  # Safely extract
+            if "aid" in line:
+                parts = line.split(":")
+                if len(parts) > 1:
+                    author_id = parts[1].strip()  # Safely extract
 
             if in_kundenbeleg or in_haendlerbeleg:
                 if in_kundenbeleg:
@@ -381,19 +414,19 @@ class PaymentTerminal:
 
         # Create a dictionary for payment details
         payment_details = {
-            'date': date, # Datum
-            'time': time, # Zeit
-            'amount_in_cents': amount_in_cents, # gebuchter Betrag
+            'date': date,  # Datum
+            'time': time,  # Zeit
+            'amount_in_cents': amount_in_cents,  # gebuchter Betrag
             'currency': currency,
-            'receipt_number': beleg_nr, # Belegnummer FEIG Terminal
-            'status': status, # Payment Success/ Error Status
-            'card_name': card_name, # z.B. Mastercard
-            'payment_type': payment_type, # z.B. Kontaktlos
-            'card_id': card_id, # Kreditkartennummer
-            'expiry_date': expiry_date, # Ablaufdatum Kreditkarte
-            'author_id': author_id, # Authorennummer
-            'terminal_id': terminal_id, # tid/ Terminal ID
-            'trace': trace # (TA-Nr.)
+            'receipt_number': beleg_nr,  # Belegnummer FEIG Terminal
+            'status': status,  # Payment Success/ Error Status
+            'card_name': card_name,  # z.B. Mastercard
+            'payment_type': payment_type,  # z.B. Kontaktlos
+            'card_id': card_id,  # Kreditkartennummer
+            'expiry_date': expiry_date,  # Ablaufdatum Kreditkarte
+            'author_id': author_id,  # Authorennummer
+            'terminal_id': terminal_id,  # tid/ Terminal ID
+            'trace': trace  # (TA-Nr.)
         }
 
         # Append payment details to order_details for formatting

@@ -798,3 +798,407 @@
 <-PT|            Zahlung erfolgt             |
 <-PT||
 ----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|       Bezahlung DEBIT MASTERCARD       |
+<-PT||
+<-PT|06.09.2024                 18:30:49 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000404|
+<-PT|Beleg-Nr.:                          0032|
+<-PT|Vorgangs-Nr.:                       0428|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5084|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0400008001//3F0002///                   |
+<-PT||
+<-PT|Betrag:               EUR 4,19          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|      Autorisierung nicht möglich       |
+<-PT|        Autorisierung abgelehnt         |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|       Bezahlung DEBIT MASTERCARD       |
+<-PT||
+<-PT|06.09.2024                 18:30:49 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000404|
+<-PT|Beleg-Nr.:                          0032|
+<-PT|Vorgangs-Nr.:                       0428|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5084|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0400008001//3F0002///                   |
+<-PT||
+<-PT|Betrag:               EUR 4,19          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|      Autorisierung nicht möglich       |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:33:03 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000405|
+<-PT|Beleg-Nr.:                          0032|
+<-PT|Vorgangs-Nr.:                       0429|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 4,19          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:33:03 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000405|
+<-PT|Beleg-Nr.:                          0032|
+<-PT|Vorgangs-Nr.:                       0429|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 4,19          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:37:45 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000407|
+<-PT|Beleg-Nr.:                          0033|
+<-PT|Vorgangs-Nr.:                       0430|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 2,51          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|        PIN-Eingabe abgebrochen         |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:37:45 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000407|
+<-PT|Beleg-Nr.:                          0033|
+<-PT|Vorgangs-Nr.:                       0430|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000040001//A000000359/020300/         |
+<-PT||
+<-PT|Betrag:               EUR 2,51          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:39:21 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000408|
+<-PT|Beleg-Nr.:                          0033|
+<-PT|Vorgangs-Nr.:                       0431|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 5,05          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:39:21 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000408|
+<-PT|Beleg-Nr.:                          0033|
+<-PT|Vorgangs-Nr.:                       0431|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 5,05          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:42:04 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000410|
+<-PT|Beleg-Nr.:                          0034|
+<-PT|Vorgangs-Nr.:                       0432|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 5,05          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:42:04 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000410|
+<-PT|Beleg-Nr.:                          0034|
+<-PT|Vorgangs-Nr.:                       0432|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 5,05          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:43:04 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000412|
+<-PT|Beleg-Nr.:                          0035|
+<-PT|Vorgangs-Nr.:                       0433|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:43:04 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000412|
+<-PT|Beleg-Nr.:                          0035|
+<-PT|Vorgangs-Nr.:                       0433|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:46:21 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000414|
+<-PT|Beleg-Nr.:                          0036|
+<-PT|Vorgangs-Nr.:                       0434|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|06.09.2024                 18:46:21 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000414|
+<-PT|Beleg-Nr.:                          0036|
+<-PT|Vorgangs-Nr.:                       0434|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|       Bezahlung DEBIT MASTERCARD       |
+<-PT||
+<-PT|06.09.2024                 18:49:12 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000416|
+<-PT|Beleg-Nr.:                          0037|
+<-PT|Vorgangs-Nr.:                       0435|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5084|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0400008001//3F0002///                   |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|      Autorisierung nicht möglich       |
+<-PT|        Autorisierung abgelehnt         |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|       Bezahlung DEBIT MASTERCARD       |
+<-PT||
+<-PT|06.09.2024                 18:49:12 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000416|
+<-PT|Beleg-Nr.:                          0037|
+<-PT|Vorgangs-Nr.:                       0435|
+<-PT|VU-Nummer:                          9999|
+<-PT|App-ID:                   A0000000041010|
+<-PT|Karten-Nr.:             xxxxxxxxxxxx5084|
+<-PT|Kartenfolge-Nr.:                      00|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|0400008001//3F0002///                   |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|      Autorisierung nicht möglich       |
+<-PT|          ####################          |
+----------------
