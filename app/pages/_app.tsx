@@ -54,7 +54,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     return (
       <ChakraProvider theme={theme}>
         <Fonts />
-        <DisplayProvider displayNumber={displayQueryParam}>
+        <DisplayProvider>
           <LayoutProvider>
             <WebSocketProvider>
               <KioskLayout>
