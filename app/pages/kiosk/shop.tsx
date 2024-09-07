@@ -8,7 +8,6 @@ import { DisplayContext } from '@/providers/DisplayContext';
 import { LanguagesTabsKiosk } from '@/components/kiosk/LanguagesKiosk';
 import { InfoBar } from '@/components/kiosk/shop/InfoBar';
 import { Shop } from '@/components/kiosk/shop/Shop';
-import { WarenkorbModal } from '@/components/kiosk/shop/WarenkorbModal';
 import { HeaderMainPage } from '@/components/layout/menuKiosk/header';
 import { useRouter } from '@/providers/DisplayContext';
 

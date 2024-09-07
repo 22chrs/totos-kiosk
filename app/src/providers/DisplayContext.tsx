@@ -1,11 +1,5 @@
 import { useRouter as originalUseRouter } from 'next/router';
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 type DisplayContextType = {
   displayNumber: string;
@@ -15,24 +9,21 @@ export const DisplayContext = createContext<DisplayContextType>({
   displayNumber: 'default',
 });
 
-export const DisplayProvider = ({ children }: PropsWithChildren<{}>) => {
-  const router = originalUseRouter();
-  const [displayNumber, setDisplayNumber] = useState<string>('default');
-
-  useEffect(() => {
-    const displayQueryParam = router.query.display as string;
-    if (displayQueryParam) {
-      setDisplayNumber(displayQueryParam);
-      console.log(`Display number set from URL: ${displayQueryParam}`);
-    }
-  }, [router.query.display]);
-
+export const DisplayProvider = ({
+  children,
+  displayNumber,
+}: PropsWithChildren<{ displayNumber: string }>) => {
   return (
-    <DisplayContext.Provider value={{ displayNumber }}>
+    <DisplayContext.Provider
+      value={{
+        displayNumber,
+      }}
+    >
       {children}
     </DisplayContext.Provider>
   );
 };
+
 export const useRouter = () => {
   const [isNavigating, setIsNavigating] = useState(false);
   const router = originalUseRouter();
