@@ -14,42 +14,22 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [ws, setWs] = useState<WebSocketClient | null>(null);
-  const { displayNumber } = useContext(DisplayContext);
+  const { displayNumber } = useContext(DisplayContext); // Get displayNumber from DisplayContext
 
   useEffect(() => {
-    if (displayNumber === 'default') {
-      console.log('Waiting for displayNumber to be set...');
-      return; // Wait until displayNumber is set
-    }
+    if (displayNumber !== 'default') {
+      const client = new WebSocketClient('app', displayNumber);
+      setWs(client);
 
-    console.log(
-      `WebSocketProvider triggered for displayNumber: ${displayNumber}`,
-    );
-
-    // Cleanup previous WebSocket connection if exists
-    if (ws) {
-      console.log(
-        `Cleaning up previous WebSocketClient for displayNumber: ${ws.clientAlias}`,
-      );
-      ws.cleanup();
-    }
-
-    // Create a new WebSocketClient
-    const client = new WebSocketClient('app', displayNumber);
-    console.log(
-      `Creating new WebSocketClient for displayNumber: ${displayNumber}`,
-    );
-    setWs(client);
-
-    return () => {
-      if (client) {
-        console.log(
-          `Cleaning up WebSocketClient for displayNumber: ${displayNumber}`,
-        );
+      // Use the cleanup method for cleanup
+      return () => {
         client.cleanup();
-      }
-    };
-  }, [displayNumber]);
+      };
+    }
+
+    // Cleanup if the component unmounts before the WebSocket is instantiated
+    return () => {};
+  }, [displayNumber]); // Add displayNumber to useEffect dependencies
 
   return (
     <WebSocketContext.Provider value={ws}>{children}</WebSocketContext.Provider>
