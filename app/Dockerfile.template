@@ -1,6 +1,9 @@
+# base images: https://hub.docker.com/r/balenalib/amd64-debian-node/tags 
+
 # Specify Node.js version and Debian version as arguments
-ARG NODEJS_VERSION="19.6.1"
+ARG NODEJS_VERSION="20.12"
 ARG DEBIAN_VERSION="bookworm"
+
 # Use balenalib base image optimized for the target hardware
 FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-node:${NODEJS_VERSION}-${DEBIAN_VERSION}-build as builder
 
