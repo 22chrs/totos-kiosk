@@ -1,5 +1,16 @@
 # @chatgpt: in this file everything which connectes both websocket communication AND zvt/ payment
 
+#! ToDo: 
+
+#! - Zahlung reservieren statt sofort buchen -> Welcher Befehl?
+#! - HIER: Fall A erfolgreich. Welcher Befehl um Zahlung jetzt auszuführen?
+#! - HIER: Fall A erfolgreich. Welcher Befehl um Zahlung zu stornieren?
+
+#! - Warten auf Karte Präsentieren stoppen, Zahlung abbrechen. Gibt es hier einen Befehl innerhalb der ZVT++?
+
+#! - End of Day Buchungen durchführen. Implementieren.
+#! - Testprotokoll alles buchen.
+
 import asyncio
 import schedule
 import json
