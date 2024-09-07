@@ -67,9 +67,9 @@ const Kiosk = () => {
           zIndex='-1'
         />
         <Text position='absolute' zIndex='1'>
-          {displayNumber === '1'
+          {displayNumber === 'front'
             ? 'Display front attached.'
-            : displayNumber === '2'
+            : displayNumber === 'back'
               ? 'Display back attached.'
               : 'Error Display'}
         </Text>

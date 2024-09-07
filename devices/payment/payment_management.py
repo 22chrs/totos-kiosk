@@ -94,7 +94,7 @@ async def notify_client_payment_status(client_alias, result, clients, host_name)
 # WebSocket-related functions
 async def check_connections_periodically():
     while True:
-        message = await check_clients_connected(["app_1", "app_2"])
+        message = await check_clients_connected(["app_front", "app_back"])
         if message:
             print(message)
         await asyncio.sleep(3)

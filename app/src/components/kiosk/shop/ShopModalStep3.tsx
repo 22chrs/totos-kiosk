@@ -72,9 +72,9 @@ function ShopModalStep3({ herkunft, onClose }) {
     const bestellung = {
       automatenID: null, // set by devices container
       whichTerminal:
-        displayNumber === '1'
+        displayNumber === 'front'
           ? 'front'
-          : displayNumber === '2'
+          : displayNumber === 'back'
             ? 'back'
             : 'unknown',
       orderID: null, // set after payment successful

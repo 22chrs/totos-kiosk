@@ -45,7 +45,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   const renderContent = () => {
     //console.log('using websocket ..');
-    const displayQueryParam = (router.query.display as string) || '1';
+    const displayQueryParam = (router.query.display as string) || 'default';
     //console.log('Display query param:', displayQueryParam);
 
     // Disable Framer Motion animations for this part
