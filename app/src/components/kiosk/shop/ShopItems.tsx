@@ -112,7 +112,8 @@ export const AbbruchButton = () => {
   const { clearCart, setPayment } = useCart();
   const router = useRouter();
 
-  const handleClick = () => {
+  const handleClick = (event) => {
+    event.stopPropagation(); // Prevent click event from propagating to parent elements
     clearCart();
     i18n.changeLanguage(standardSprache);
     router.pushWithDisplay('/');
@@ -127,7 +128,6 @@ export const AbbruchButton = () => {
         aria-label='Cancel'
         as={XmarkSharpSolid}
         color={bgColorButton}
-        // variant='solid'
         h='5rem'
         w='5rem'
         fontSize='10rem'
@@ -135,7 +135,6 @@ export const AbbruchButton = () => {
     </Box>
   );
 };
-
 export const LanguageButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleOpen = () => {

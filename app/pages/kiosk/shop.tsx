@@ -27,6 +27,8 @@ import {
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KIOSK_CONTENT_HEIGHT } from 'src/constants';
+import { ModalProductCard } from '@/components/kiosk/shop/ShopModal';
+import { useStepper } from '@/providers/StepperContext';
 
 const Kiosk = () => {
   const timerRef = useRef(null); // Declare timerRef only once
@@ -84,49 +86,19 @@ const Kiosk = () => {
 
   const { getCartTotalQuantity } = useCart();
 
+  const { setActiveStep } = useStepper(); // Access setActiveStep from the Stepper context
+
   const handleOpen = () => {
-    console.log('handleOpen called'); // Add this line for debugging
-    if (getCartTotalQuantity() > 0) {
-      onOpen();
+    const cartQuantity = getCartTotalQuantity(); // Get the total quantity of items in the cart
+    if (cartQuantity > 0) {
+      console.log('Cart is not empty, opening modal.');
+      setActiveStep(2); // Set the active step to 3
+      onOpen(); // Open the modal
+    } else {
+      console.log('Cart is empty, modal will not open.');
+      // You can add additional logic here, like showing a message or alert
     }
   };
-
-  // const timerRef = useRef(null);
-
-  // const handlePaymentFinished = useCallback(() => {
-  //   clearTimeout(timerRef.current); // Clear any existing timer
-  //   clearCart();
-  //   setPayment('init');
-  //   i18n.changeLanguage(standardSprache);
-  //   router.pushWithDisplay('/');
-  // }, [clearCart, setPayment, router]);
-
-  // useEffect(() => {
-  //   const events = [
-  //     'click',
-  //     'mousemove',
-  //     'mousedown',
-  //     'keypress',
-  //     'scroll',
-  //     'touchstart',
-  //     'touchmove',
-  //     'touchend',
-  //   ];
-  //   const resetTimer = () => {
-  //     clearTimeout(timerRef.current);
-  //     timerRef.current = setTimeout(handlePaymentFinished, 180000);
-  //   };
-
-  //   for (let i in events) {
-  //     window.addEventListener(events[i], resetTimer);
-  //   }
-
-  //   return () => {
-  //     for (let i in events) {
-  //       window.removeEventListener(events[i], resetTimer);
-  //     }
-  //   };
-  // }, [handlePaymentFinished]);
 
   const {
     isOpen: isLangOpen,
@@ -142,12 +114,20 @@ const Kiosk = () => {
           country={shopData.country}
           currency={shopData.currency}
         />
-        <WarenkorbModal isOpen={isOpen} onClose={onClose} />
+        {/* <WarenkorbModal isOpen={isOpen} onClose={onClose} /> */}
       </PageLayout>
 
       <Box>
-        <InfoBar onClick={handleOpen} onLangChangeClick={onLangOpen} />
+        <InfoBar onClick={handleOpen} />
       </Box>
+
+      <ModalProductCard
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedProduct={null} // Set selectedProduct accordingly
+        selectedCategory={null} // Set selectedCategory accordingly
+        formatPrice={(price) => `${price} €`} // Ensure this formats the price as needed
+      />
 
       <Modal
         variant='kioskLanguage'

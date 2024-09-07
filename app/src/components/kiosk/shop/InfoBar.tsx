@@ -1,8 +1,5 @@
 import {
   AbbruchButton,
-  Gesamtsumme,
-  GesamtsummePfand,
-  LanguageButton,
   ShopIcon,
   WarenkorbButton,
 } from '@/components/kiosk/shop/ShopItems';
