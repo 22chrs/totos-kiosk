@@ -43,7 +43,9 @@ async def start_websocket_server(callback, clients, host_name):
 
     # Check if running inside Docker
     def is_running_in_docker():
+        print("Running in Docker env")
         return os.getenv('RUNNING_IN_DOCKER') == 'true'
+     
 
     # Initialize ssl_context only if running in Docker
     ssl_context = None
@@ -57,7 +59,12 @@ async def start_websocket_server(callback, clients, host_name):
         print(f"WebSocket server starting on ws://{host}:{port}")
 
     # Start the server with or without SSL context based on environment
-    start_server = websockets.serve(lambda ws, path: echo(ws, path, callback, clients, host_name), host, port)
+    start_server = websockets.serve(
+        lambda ws, path: echo(ws, path, callback, clients, host_name), 
+        host, 
+        port, 
+        ssl=ssl_context  # Pass the ssl_context here
+    )
 
     try:
         await start_server

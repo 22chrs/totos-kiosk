@@ -1,10 +1,8 @@
 import {
   Box,
-  Collapse,
   HStack,
   Heading,
   Icon,
-  Slide,
   Tab,
   TabList,
   Tabs,
@@ -13,12 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import {
-  FaAccusoft,
-  FaChevronDown,
-  FaChevronLeft,
-  FaChevronUp,
-} from 'react-icons/fa';
+import { FaChevronDown, FaChevronLeft } from 'react-icons/fa';
 import { KIOSK_LANG_HEIGHT } from 'src/constants';
 import { ArrowIcon, LanguageRegular, RobotRegular } from '../icons/icons';
 import { useState } from 'react';
