@@ -96,13 +96,13 @@ xset s off -dpms
 
 
 # #! working hej toto kiosk
-# xrandr --fb 2559x800
-# xinput set-prop 10 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
-# # For Screen 2 (HDMI-2)
-# xinput set-prop 11 "Coordinate Transformation Matrix" 1 0 -1 0 1 0 0 0 1
-# # Map touch input devices to their corresponding screens
-# xinput map-to-output 10 HDMI-2
-# xinput map-to-output 11 HDMI-1
+xrandr --fb 2560x800
+xinput set-prop 10 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
+# For Screen 2 (HDMI-2)
+xinput set-prop 11 "Coordinate Transformation Matrix" 1 0 -1 0 1 0 0 0 1
+# Map touch input devices to their corresponding screens
+xinput map-to-output 10 HDMI-2
+xinput map-to-output 11 HDMI-1
 
 #! Pi 5
 # xrandr --fb 2559x800
