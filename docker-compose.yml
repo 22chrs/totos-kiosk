@@ -21,10 +21,10 @@ services:
       - "shared-certs:/certs" # Mount the shared volume
     environment:
       - DISPLAY_NUM=0 # hat gerade keinen Einfluss, da 2x überschieben
-      - SHOW_CURSOR=1
+      - SHOW_CURSOR=0
       - ENABLE_GPU=1
       #- LOCAL_HTTP_DELAY=60 #Number of seconds to wait for a local HTTP service to start before trying to detect it
-      - KIOSK=0
+      - KIOSK=1
       #- LAUNCH_URL=https://app:8082?display=front #! raus, weil split screen html
       - WINDOW_SIZE=2560,800 #! KIOSK = 2560,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
       - EXTRA_FLAGS= --disable-pinch --top-chrome-touch-ui --touch-events --touch-adjustment --pointer-events --smooth-scrolling --overscroll-history-navigation

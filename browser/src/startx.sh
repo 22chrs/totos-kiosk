@@ -95,13 +95,45 @@ xset s off -dpms
 # xinput map-to-output 11 HDMI-1
 
 
+
+
 # #! working hej toto kiosk
-#xrandr --fb 2560x800
-#xinput set-prop 10 "Coordinate Transformation Matrix" 0.5 0 0.5 0 1 0 0 0 1
-#xinput set-prop 11 "Coordinate Transformation Matrix" 0.5 0 0 0 1 0 0 0 1  #! NOT WORKING: 0.5 0 0 0 1 0 0 0 1    1 0 0.5 0 1 0 0 0 1    1 0 -1 0 1 0 0 0 1
-# Map touch input devices to their corresponding screens
-#xinput map-to-output 10 HDMI-2
-#xinput map-to-output 11 HDMI-1
+
+# Detect touch devices (filter by 'Atmel', adjust if necessary)
+TOUCH_DEVICES=$(xinput list | grep -i 'Atmel' | grep -o 'id=[0-9]*' | grep -o '[0-9]*')
+
+# Detect HDMI outputs (adjust if you need to match other types of displays)
+HDMI_OUTPUTS=$(xrandr | grep -w connected | grep HDMI | cut -d ' ' -f 1)
+
+# Initialize index for HDMI outputs
+OUTPUT_INDEX=0
+
+# Loop through each detected touch device and map it to the HDMI output
+for TOUCH_ID in $TOUCH_DEVICES; do
+    # Get the current HDMI output for this touch device
+    HDMI_OUTPUT=$(echo $HDMI_OUTPUTS | cut -d ' ' -f $((OUTPUT_INDEX + 1)))
+
+    if [ -z "$HDMI_OUTPUT" ]; then
+        echo "No more HDMI outputs available to map. Exiting."
+        break
+    fi
+
+    # Apply the Coordinate Transformation Matrix
+    if [[ $OUTPUT_INDEX -eq 0 ]]; then
+        # First screen, no translation
+        xinput set-prop $TOUCH_ID "Coordinate Transformation Matrix" 0.5 0 0 0 1 0 0 0 1
+    else
+        # Second screen, apply translation on the X axis
+        xinput set-prop $TOUCH_ID "Coordinate Transformation Matrix" 0.5 0 0.5 0 1 0 0 0 1
+    fi
+
+    # Map the touch device to the corresponding HDMI output
+    echo "Mapping touch device $TOUCH_ID to $HDMI_OUTPUT"
+    xinput map-to-output $TOUCH_ID $HDMI_OUTPUT
+
+    # Increment the output index for the next device
+    OUTPUT_INDEX=$((OUTPUT_INDEX + 1))
+done
 
 # a b c d e f 0 0 1
 	# •	a: Horizontal scaling (X axis) — Shrinks/expands the touch input horizontally. 1 = no scaling, 0.5 = half-width.
