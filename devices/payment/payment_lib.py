@@ -52,9 +52,7 @@ class PaymentTerminal:
         # Construct the path to the executable
         executable_path = os.path.join(builds_dir, build_folder, executable_name)
 
-        return executable_path
-    
-    
+        return executable_path 
     
     async def printSysConfig(self):
         os.chmod(self.executable_path, 0o755)
@@ -99,23 +97,7 @@ class PaymentTerminal:
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
     
-    def reservation_payment_debug(self, amount):
-        # Input validation
-        if not isinstance(amount, int) or amount < 0:
-            raise ValueError("Amount must be a non-negative integer representing cents.")
-
-        # Ensure the zvt++ executable is executable
-        os.chmod(self.executable_path, 0o755)
-
-        # Running the external zvt++ program with the necessary arguments
-        # Here, instead of capturing the output, we let it be displayed directly on the terminal
-        process = subprocess.Popen([self.executable_path, "reservation", self.ip_address_terminal, str(amount)])
-
-        # Wait for the process to complete and get the exit code
-        exit_code = process.wait()
-
-        # Return the exit code (0 for success, non-zero for errors)
-        return exit_code
+    
     
     def book_total(self, receipt_no, amount=None):
         # Input validation for receipt number and amount
@@ -141,14 +123,12 @@ class PaymentTerminal:
         # Decode output for processing
         output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
-        # Split and save the receipts
-        self.save_receipts(output)
-
         # Parse the output and return the result (you can modify this based on your needs)
         return self.parse_terminal_output(output)
     
        
-    async def auth_payment(self, amount, order_details):
+    async def pay(self, type, amount, order_details):
+        #! type = reservation or auth for direct payment
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
 
@@ -161,7 +141,7 @@ class PaymentTerminal:
 
             # Running the external zvt++ program asynchronously
             process = await asyncio.create_subprocess_exec(
-                self.executable_path, "auth", self.ip_address_terminal, str(amount),
+                self.executable_path, type, self.ip_address_terminal, str(amount),
                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )
 
@@ -273,42 +253,17 @@ class PaymentTerminal:
         if "Zeit zum Kartenlesen überschritten" in output:
             return "-1 Zeit zum Kartenlesen überschritten"  # Specific error message
 
-        # Search for the Händlerbeleg section
-        haendlerbeleg_start = output.find("** Händlerbeleg **")
-        if haendlerbeleg_start != -1:
-            # Extract the section after Händlerbeleg
-            haendlerbeleg_section = output[haendlerbeleg_start:]
-
-            # Locate the line after the specified pattern
-            pattern = "<-PT|          ####################          |"
-            pattern_start = haendlerbeleg_section.find(pattern)
-            if pattern_start != -1:
-                # Find the newline character after the pattern
-                newline_index = haendlerbeleg_section.find('\n', pattern_start)
-                if newline_index != -1:
-                    error_line_start = newline_index + 1
-                    error_line_end = haendlerbeleg_section.find('\n', error_line_start)
-                    if error_line_end != -1:
-                        error_line = haendlerbeleg_section[error_line_start:error_line_end].strip()
-                        # Process error_line safely here
-
-                    # Use regular expression to extract the error code and message
-                    match = re.search(r'(\d+\s[\w\s]+)\s{2,}', error_line)
-                    if match:
-                        return match.group(1)  # Return the matched group containing the error code and message
-
         # Default return if no specific pattern is matched
         return "Unknown Error"
-    
+
+
     def save_receipts(self, output, order_details):
         # Split output into lines
         lines = output.split('\n')
 
         # Initialize variables to hold the receipts, beleg number, and payment status
-        kundenbeleg = ""
-        haendlerbeleg = ""
         beleg_nr = ""
-        payment_successful = False
+
         trace = ""
         expiry_date = ""
         status = ""
@@ -320,11 +275,6 @@ class PaymentTerminal:
         amount_in_cents = ""
         card_id = ""
         payment_type = ""
-        author_id = ""
-
-        # Flags to identify which section we're currently reading
-        in_kundenbeleg = False
-        in_haendlerbeleg = False
 
         # Process each line
         for line in lines:
@@ -339,18 +289,6 @@ class PaymentTerminal:
                 else:
                     print(f"Warning: 'Beleg-Nr.' not found in line: {clean_line}")
 
-            # Detect sections for Kundenbeleg and Haendlerbeleg
-            if "** Kundenbeleg **" in clean_line:
-                kundenbeleg += clean_line + '\n'
-                in_kundenbeleg = True
-                in_haendlerbeleg = False
-                continue
-            elif "** Händlerbeleg **" in clean_line:
-                haendlerbeleg += clean_line + '\n'
-                in_haendlerbeleg = True
-                in_kundenbeleg = False
-                continue
-
             # Extract other data safely, checking the length of split results
             if "trace" in line:
                 trace = line.split()[-1] if len(line.split()) > 0 else ""
@@ -363,54 +301,44 @@ class PaymentTerminal:
                 if date_str:
                     year = datetime.datetime.now().year  # Get the current year
                     date = f"{date_str[2:]}.{date_str[:2]}.{year}"  # Reformat the date string
+            if "receipt_number" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    receipt_number = parts[-1].strip()  # Safely extract the last element
             if "time" in line:
                 time_str = line.split()[-1] if len(line.split()) > 0 else ""
                 if time_str:
                     time = f"{time_str[:2]}:{time_str[2:4]}:{time_str[4:]} CET"
             if "tid" in line:
-                parts = line.split(":")
+                parts = line.split()
                 if len(parts) > 1:
-                    terminal_id = parts[1].strip()  # Safely extract
+                    terminal_id = parts[-1].strip()  # Safely extract the last element
             if "currency" in line:
-                parts = line.split(":")
+                parts = line.split()
                 if len(parts) > 1:
-                    currency = parts[1].strip()  # Safely extract
+                    currency_code = parts[-1].strip()  # Get the currency code
+                    # Optionally convert currency code (978 -> EUR)
+                    currency = "EUR" if currency_code == "978" else currency_code
             if "card_name" in line:
-                parts = line.split(":")
+                parts = line.split()
                 if len(parts) > 1:
-                    card_name = parts[1].strip()  # Safely extract
+                    card_name = parts[-1].strip()  # Safely extract the last element
             if "amount in cent" in line:
-                parts = line.split(":")
+                parts = line.split()
                 if len(parts) > 1:
-                    amount = parts[1].strip()
+                    amount = parts[-1].strip()
                     try:
-                        amount_in_cents = int(float(amount.replace('EUR', '').strip()) * 100)  # Convert EUR to cents
+                        amount_in_cents = int(amount)  # Since the amount is already in cents
                     except ValueError:
                         print(f"Warning: Invalid amount format in line: {line}")
             if "pan" in line:
-                parts = line.split(":")
+                parts = line.split()
                 if len(parts) > 1:
-                    card_id = parts[1].strip()  # Safely extract
+                    card_id = parts[-1].strip()  # Safely extract the last element
             if "payment_type" in line:
-                parts = line.split(":")
+                parts = line.split()
                 if len(parts) > 1:
-                    payment_type = parts[1].strip()  # Safely extract
-            if "aid" in line:
-                parts = line.split(":")
-                if len(parts) > 1:
-                    author_id = parts[1].strip()  # Safely extract
-
-            if in_kundenbeleg or in_haendlerbeleg:
-                if in_kundenbeleg:
-                    kundenbeleg += clean_line + '\n'
-                    if "Zahlung erfolgt" in clean_line:
-                        payment_successful = True
-                        in_kundenbeleg = False
-                elif in_haendlerbeleg:
-                    haendlerbeleg += clean_line + '\n'
-                    if "Zahlung erfolgt" in clean_line:
-                        payment_successful = True
-                        in_haendlerbeleg = False
+                    payment_type = parts[-1].strip()  # Safely extract the last element
 
         # Create a dictionary for payment details
         payment_details = {
@@ -418,13 +346,12 @@ class PaymentTerminal:
             'time': time,  # Zeit
             'amount_in_cents': amount_in_cents,  # gebuchter Betrag
             'currency': currency,
-            'receipt_number': beleg_nr,  # Belegnummer FEIG Terminal
+            'receipt_number': receipt_number,  # Belegnummer FEIG Terminal
             'status': status,  # Payment Success/ Error Status
             'card_name': card_name,  # z.B. Mastercard
             'payment_type': payment_type,  # z.B. Kontaktlos
             'card_id': card_id,  # Kreditkartennummer
             'expiry_date': expiry_date,  # Ablaufdatum Kreditkarte
-            'author_id': author_id,  # Authorennummer
             'terminal_id': terminal_id,  # tid/ Terminal ID
             'trace': trace  # (TA-Nr.)
         }
@@ -432,11 +359,8 @@ class PaymentTerminal:
         # Append payment details to order_details for formatting
         order_details['payment'] = payment_details
 
-        # Save the receipts if they exist
-        if kundenbeleg:
-            self.save_receipt_to_file(kundenbeleg, "Kundenbeleg", beleg_nr, payment_successful, order_details)
-        if haendlerbeleg:
-            self.save_receipt_to_file(haendlerbeleg, "Händlerbeleg", beleg_nr, payment_successful, order_details)
+        # Now call the save_receipt_to_file function
+        self.save_receipt_to_file("StatusBlock", beleg_nr, order_details)
 
 
     def format_order_details(self, order_details):
@@ -486,7 +410,7 @@ class PaymentTerminal:
 
 
 
-    def save_receipt_to_file(self, receipt, receipt_type, beleg_nr, payment_successful, order_details):
+    def save_receipt_to_file(self, receipt_type, beleg_nr, order_details):
         # Retrieve the Balena device name
         device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
 
@@ -496,29 +420,21 @@ class PaymentTerminal:
         # Define the base directory, device-specific directory, and error sub-directory
         base_dir = "payment/receipts"
         device_dir = os.path.join(base_dir, device_name)
-        error_dir = os.path.join(device_dir, "ERROR")  # Subdirectory for error files
 
         # Check if the device-specific directory exists, if not, create it
         if not os.path.exists(device_dir):
             os.makedirs(device_dir)
 
-        # Check if the error sub-directory exists, if not, create it
-        if not os.path.exists(error_dir):
-            os.makedirs(error_dir)
-
-        # Define the file path based on whether the transaction was successful
-        err_suffix = "" if payment_successful else "_ERR"
-        folder_to_use = device_dir if payment_successful else error_dir  # Choose the correct directory
-        receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}{err_suffix}.txt"
-        receipt_path = os.path.join(folder_to_use, receipt_filename)
+        # Define the file path for the receipt
+        receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}.json"
+        receipt_path = os.path.join(device_dir, receipt_filename)
 
         # Append the order details to the receipt
-        if order_details:
-            receipt += self.format_order_details(order_details)
+        receipt_content = self.format_order_details(order_details)
 
-        # Write the receipt to a file in the chosen directory
+        # Write the receipt content to a file in the chosen directory
         with open(receipt_path, "w", encoding="utf-8") as file:
-            file.write(receipt)
+            file.write(receipt_content)
 
 
 

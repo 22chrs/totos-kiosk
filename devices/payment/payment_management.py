@@ -65,7 +65,7 @@ async def handle_order(websocket, message, client_alias, clients, host_name):
                 # Convert totalPrice to cents
                 total_price_cents = int(round(inner_message['totalPrice'] * 100))
                 terminal = paymentTerminalFront if inner_message['whichTerminal'] == 'front' else paymentTerminalBack
-                result = await terminal.auth_payment(total_price_cents, order_details)
+                result = await terminal.pay("reservation", total_price_cents, order_details)
                 
                 # Send the result to the client that sent the order
                 await notify_client_payment_status(client_alias, result, clients, host_name)
