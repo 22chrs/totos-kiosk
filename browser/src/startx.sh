@@ -96,13 +96,23 @@ xset s off -dpms
 
 
 # #! working hej toto kiosk
-xrandr --fb 2560x800
-xinput set-prop 10 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
-# For Screen 2 (HDMI-2)
-xinput set-prop 11 "Coordinate Transformation Matrix" 1 0 -1 0 1 0 0 0 1
+#xrandr --fb 2560x800
+#xinput set-prop 10 "Coordinate Transformation Matrix" 0.5 0 0.5 0 1 0 0 0 1
+#xinput set-prop 11 "Coordinate Transformation Matrix" 0.5 0 0 0 1 0 0 0 1  #! NOT WORKING: 0.5 0 0 0 1 0 0 0 1    1 0 0.5 0 1 0 0 0 1    1 0 -1 0 1 0 0 0 1
 # Map touch input devices to their corresponding screens
-xinput map-to-output 10 HDMI-2
-xinput map-to-output 11 HDMI-1
+#xinput map-to-output 10 HDMI-2
+#xinput map-to-output 11 HDMI-1
+
+# a b c d e f 0 0 1
+	# •	a: Horizontal scaling (X axis) — Shrinks/expands the touch input horizontally. 1 = no scaling, 0.5 = half-width.
+	# •	b: X-axis skew/rotation — Typically 0 unless rotating or skewing.
+	# •	c: Horizontal translation — Moves touch input left/right. 0.5 moves halfway to the right.
+	# •	d: Y-axis skew/rotation — Typically 0 unless rotating or skewing.
+	# •	e: Vertical scaling (Y axis) — Shrinks/expands the touch input vertically. 1 = no scaling, 0.5 = half-height.
+	# •	f: Vertical translation — Moves touch input up/down. 0.5 moves halfway down the screen.
+	# •	g h 1: Always 0 0 1.
+
+
 
 #! Pi 5
 # xrandr --fb 2559x800

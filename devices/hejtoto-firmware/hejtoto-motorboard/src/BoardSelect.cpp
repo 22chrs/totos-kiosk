@@ -10,7 +10,7 @@ byte board = 0;
 BoardConfig ServiceCubeConfig = {
     "ServiceCube",
     {
-        // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
+        // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/rotation], maxTravel [mm], homeShift [mm], inverseDirection
         //! ratio = (PULLY_MOTOR / PULLY_SCREW) * LEAD_SCREW / (RESOLUTION * MICROSTEPS)
 
         // Lift A (Zähnezahl 20 -> Zähnezahl 38, Pitch 2) => 20/38*2 mm/U = 20/19 mm/U
@@ -33,7 +33,7 @@ BoardConfig ServiceCubeConfig = {
 BoardConfig RoboCubeFrontConfig = {
     "RoboCubeFront",
     {
-        // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
+        // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/rotation], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
         {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5},
@@ -58,7 +58,7 @@ BoardConfig RoboCubeFrontConfig = {
 BoardConfig RoboCubeBackConfig = {
     "RoboCubeBack",
     {
-        // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/step], maxTravel [mm], homeShift [mm], inverseDirection
+        // holdCurrent [mA], driveCurrent [mA], maxSpeed [steps/s], acceleration [steps/s^2], ratio [mm/rotation], maxTravel [mm], homeShift [mm], inverseDirection
 
         // Shield A (Pitch 8)  => 8 mm/U
         {"Shield", 1700, 1700, 7000, 8000, 8.0, 192, -0.3, false, false, 0.5},
