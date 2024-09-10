@@ -531,12 +531,12 @@ void checkAndSendAllSteppersHomed() {
     }
 
     // Serial print the homed state string
-    Serial.print("Steppers homed state: ");
+    Serial.print("Steppers homed state: ");  //! ### Absturz wenn kein ?!
     Serial.println(homedState);
 
     if (allSteppersHomed) {  // Only send the message if all steppers are homed
-        String timestamp = serialController.sendMessage("allhomed");
-        // Optionally, you could implement logic to wait and retry for ACK if needed
+        // String timestamp = serialController.sendMessage("allhomed");
+        //  Optionally, you could implement logic to wait and retry for ACK if needed
         //! wait and retry for ACK
     }
 }

@@ -34,7 +34,9 @@ void setup() {
 
     // Check which board this code runs on
     serialController.setAlias(currentBoardConfig->boardName);  // Alias für Serial Communication zuordnen
-    init_Stepper();                                            // Initialize stepper motor drivers
+    serialController.begin(BaudRateSerial);
+
+    init_Stepper();  // Initialize stepper motor drivers
     init_LimitSwitch();
     init_doorSensor();
 
@@ -72,16 +74,14 @@ void setup() {
     //   moveDevice("Lift_B", 100, 100, 100);
     //   moveDevice("Lift_C", 100, 100, 100);
 
-    // homeDevice("Lift_A");
-    // homeDevice("Lift_B");
-    // homeDevice("Lift_C");
-    // //      // homeDevice("Lift_A");
+    homeDevice("Lift_A", "timestamp");
+    homeDevice("Lift_B", "timestamp");
+    homeDevice("Lift_C", "timestamp");
+    //      // homeDevice("Lift_A");
 
-    // homeDevice("Rodell_A");
-    // homeDevice("Rodell_B");
-    // homeDevice("Rodell_C");
-
-    serialController.begin(BaudRateSerial);
+    homeDevice("Rodell_A", "timestamp");
+    homeDevice("Rodell_B", "timestamp");
+    homeDevice("Rodell_C", "timestamp");
 
     buildInLEDBlik();
     // openDoor(5);
@@ -111,8 +111,8 @@ void chrono() {
 void loop() {
     loop_checkAndCloseDoors();                   //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
     loop_StepperReachedDesiredRingPercentage();  //! For Stepper ring if the reach some destinations! 🛸
-    serialController.update(BaudRateSerial);
-    chrono();
+    //   serialController.update(BaudRateSerial);
+    //    chrono();
 
     // if (helperChrono.hasPassed(1000)) {
     //     Serial.println("123");

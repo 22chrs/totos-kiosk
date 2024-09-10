@@ -82,7 +82,7 @@ async def notify_client_payment_status(client_alias, result, clients, host_name)
         client = clients[client_alias]
         try:
             # Prepare the result message (success or failure)
-            result_message = json.dumps({"from": host_name, "payment_status": result})
+            result_message = json.dumps({"Payment status": result})
             
             # Send the result message to the client
             await client.send(result_message)

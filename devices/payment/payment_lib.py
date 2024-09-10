@@ -124,7 +124,7 @@ class PaymentTerminal:
         output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
         # Parse the output and return the result (you can modify this based on your needs)
-        return self.parse_terminal_output(output)
+        return self.save_receipts(output)
     
        
     async def pay(self, payment_style, amount, order_details):
@@ -169,13 +169,8 @@ class PaymentTerminal:
             print(f"Full combined output: {output}")
 
             # Parse the output and return the result
-            parsed_output = self.parse_terminal_output(output, payment_style, order_details)
-            
-            # Add debug logging to check if parsed_output is correct
-            if parsed_output:
-                print(f"Parsed output indicates payment success: {parsed_output}")
-            else:
-                print(f"Parsed output returned null or error: {parsed_output}")
+            parsed_output = self.save_receipts(output, payment_style, order_details)
+
 
             return parsed_output
 
@@ -238,23 +233,6 @@ class PaymentTerminal:
             file.write(full_error_message)
 
 
-
-    
-
-    def parse_terminal_output(self, output, payment_style, order_details):
-        # Split and save the receipts
-        self.save_receipts(output, payment_style, order_details)
-
-        # Check for success message
-        if "Zahlung erfolgt" in output:
-            return "00 Zahlung erfolgreich"  # Success code
-
-        # Check for "Zeit zum Kartenlesen überschritten" error
-        if "Zeit zum Kartenlesen überschritten" in output:
-            return "-1 Zeit zum Kartenlesen überschritten"  # Specific error message
-
-        # Default return if no specific pattern is matched
-        return "Unknown Error"
 
 
     def save_receipts(self, output, payment_style, order_details):
@@ -350,6 +328,8 @@ class PaymentTerminal:
 
         # Now call the save_receipt_to_file function
         self.save_receipt_to_file("StatusBlock", receipt_number, order_details)
+        
+        return status
 
 
     def format_order_details(self, order_details):
