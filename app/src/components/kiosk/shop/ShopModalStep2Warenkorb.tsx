@@ -103,8 +103,9 @@ function ShopModalStepWarenkorb({ onClose }) {
           h='100%'
           minH='100%'
           spacing='0'
-          py='0'
           height={KIOSK_HEIGHTCONTENT_MODAL}
+          px='5'
+          pt='3'
         >
           {/* <ScrollFade> */}
           <Stack overflowY='auto'>
@@ -144,7 +145,6 @@ function ShopModalStepWarenkorb({ onClose }) {
           </Stack>
           {/* </ScrollFade> */}
           <Spacer />
-
           <HStack
             alignItems='flex-end'
             w={getCartTotalQuantity() === 0 ? '98.7%' : '100%'}
@@ -194,7 +194,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                 </Box>
 
                 {getCartTotalQuantity() > 0 && (
-                  <Box transform='translateY(-0.4rem) translateX(-1.0rem)'>
+                  <Box transform='translateY(-0.4rem) translateX(0.2rem)'>
                     <Button
                       gap='5'
                       variant='kiosk_rainbow_big'

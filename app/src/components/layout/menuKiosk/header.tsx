@@ -68,7 +68,7 @@ export const HeaderStartPage = () => {
           <GridItem colSpan={3}></GridItem>
         </Grid>
       </Box>
-      <PaymentImagesFooterIcon />
+      <PaymentImagesFooterIcon isRounded={0} isWhite={false} />
     </Box>
   );
 };

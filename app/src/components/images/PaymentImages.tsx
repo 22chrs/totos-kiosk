@@ -2,125 +2,35 @@ import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
 
 import NextImage from 'next/image';
 
-export const PaymentImagesFooter = () => {
-  const width = '153';
-  const height = '153';
-  const borderRadius = 'xl';
-
-  return (
-    <Flex
-      justify='center'
-      align='center'
-      w='full'
-      pos='fixed'
-      bottom='0'
-      bg='white'
-      py='0'
-      overflowX='auto'
-      boxShadow='md'
-    >
-      {/* <Box borderRadius={borderRadius} overflow='hidden' mx='2'>
-        <NextImage
-          src='/assets/images/payment/contactless.png'
-          alt='Contactless payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box> */}
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/vpay.png'
-          alt='VPay payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/girocard.png'
-          alt='Girocard payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/maestro.png'
-          alt='Maestro payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/applepay.png'
-          alt='Apple Pay payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/googlepay.png'
-          alt='Google Pay payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/visa.png'
-          alt='Visa payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/americanexpress.png'
-          alt='American Express payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-
-      <Box borderRadius={borderRadius} overflow='hidden'>
-        <NextImage
-          src='/assets/images/payment/mastercard.png'
-          alt='Mastercard payment'
-          width={width}
-          height={height}
-          quality={80}
-          placeholder='empty'
-        />
-      </Box>
-    </Flex>
+export const PaymentImagesFooterIcon = ({ isRounded, isWhite }) => {
+  // Call the hook outside of any condition
+  const defaultBg = useColorModeValue(
+    'rgba(255, 255, 255, 0.5)',
+    'rgba(0, 0, 0, 0.4)',
   );
-};
 
-// import Maestro from '/assets/payment/Maestro.svg';
-import Image from 'next/image';
+  // Determine the background color conditionally
+  const bg = !isWhite ? defaultBg : 'white';
 
-export const PaymentImagesFooterIcon = () => {
-  const size = '7rem';
+  const lightSrcApple = useColorModeValue(
+    '/assets/payment/ApplePay_dark.svg',
+    '/assets/payment/ApplePay.svg',
+  );
+  const darkSrcApple = useColorModeValue(
+    '/assets/payment/ApplePay.svg',
+    '/assets/payment/ApplePay_dark.svg',
+  );
+  const srcApple = isWhite ? lightSrcApple : darkSrcApple;
+
+  const lightSrcCashless = useColorModeValue(
+    '/assets/payment/contactless_dark.svg',
+    '/assets/payment/contactless.svg',
+  );
+  const darkSrcCashless = useColorModeValue(
+    '/assets/payment/contactless.svg',
+    '/assets/payment/contactless_dark.svg',
+  );
+  const srcCashless = isWhite ? lightSrcCashless : darkSrcCashless;
 
   return (
     <HStack
@@ -129,18 +39,16 @@ export const PaymentImagesFooterIcon = () => {
       w='full'
       pos='fixed'
       bottom='0'
-      bg={useColorModeValue('rgba(255, 255, 255, 0.5)', 'rgba(0, 0, 0, 0.4)')}
+      bg={bg}
       pt='5'
       pb='5'
       overflowX='auto'
       gap='15'
+      roundedBottom={isRounded ? 10 : undefined}
     >
       <NextImage
-        src={useColorModeValue(
-          '/assets/payment/contactless.svg',
-          '/assets/payment/contactless_dark.svg',
-        )}
-        alt='ApplePay'
+        src={srcCashless}
+        alt='Cashless'
         priority={true}
         width={100} // Set a numeric value for width
         height={100} // Set a matching numeric value or the appropriate aspect ratio
@@ -172,16 +80,15 @@ export const PaymentImagesFooterIcon = () => {
         height='110'
         quality='100'
       />
+
       <NextImage
-        src={useColorModeValue(
-          '/assets/payment/ApplePay.svg',
-          '/assets/payment/ApplePay_dark.svg',
-        )}
+        src={srcApple}
         alt='ApplePay'
         width='100'
         height='100'
         quality='100'
       />
+
       <NextImage
         src='/assets/payment/Visa.svg'
         alt='VPay'
