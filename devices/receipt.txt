@@ -2137,3 +2137,106 @@
 <-PT|            Zahlung erfolgt             |
 <-PT||
 ----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|10.09.2024                 07:46:08 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000519|
+<-PT|Beleg-Nr.:                          0084|
+<-PT|Vorgangs-Nr.:                       0503|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|10.09.2024                 07:46:08 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000519|
+<-PT|Beleg-Nr.:                          0084|
+<-PT|Vorgangs-Nr.:                       0503|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|Autor-Nr.:                        424242|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 1,00          |
+<-PT||
+<-PT||
+<-PT|            Zahlung erfolgt             |
+<-PT||
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|10.09.2024                 07:47:36 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000521|
+<-PT|Beleg-Nr.:                          0085|
+<-PT|Vorgangs-Nr.:                       0504|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000000001//A000000359/1F0302/         |
+<-PT||
+<-PT|Betrag:               EUR 2,51          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|        51 Vorgang nicht möglich        |
+<-PT|         Vorgang nicht möglich          |
+<-PT|               ( AC 51 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|           Bezahlung girocard           |
+<-PT||
+<-PT|10.09.2024                 07:47:36 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000521|
+<-PT|Beleg-Nr.:                          0085|
+<-PT|Vorgangs-Nr.:                       0504|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000000001                       |
+<-PT||
+<-PT|Betrag:               EUR 2,51          |
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|         Vorgang nicht möglich          |
+<-PT|          ####################          |
+----------------

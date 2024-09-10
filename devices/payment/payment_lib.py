@@ -331,12 +331,12 @@ class PaymentTerminal:
         # Create a dictionary for payment details
         payment_details = {
             'status': status,  # Payment Success/ Error Status
+            'receipt_number': receipt_number,  # Belegnummer FEIG Terminal
             'payment_style': payment_style,
             'date': date,  # Datum
             'time': time,  # Zeit
             'amount_in_cents': amount_in_cents,  # gebuchter Betrag
             'currency': currency,
-            'receipt_number': receipt_number,  # Belegnummer FEIG Terminal
             'card_name': card_name,  # z.B. Mastercard
             'payment_type': payment_type,  # z.B. Kontaktlos
             'card_id': card_id,  # Kreditkartennummer
