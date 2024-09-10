@@ -306,12 +306,11 @@ class PaymentTerminal:
                 parts = line.split()
                 if len(parts) > 1:
                     currency_code = parts[-1].strip()  # Get the currency code
-                    # Optionally convert currency code (978 -> EUR)
                     currency = "EUR" if currency_code == "978" else currency_code
             if "card_name" in line:
                 parts = line.split()
                 if len(parts) > 1:
-                    card_name = parts[-1].strip()  # Safely extract the last element
+                    card_name = parts[-1].strip().replace('\u0000', '')  
             if "amount in cent" in line:
                 parts = line.split()
                 if len(parts) > 1:
@@ -392,10 +391,10 @@ class PaymentTerminal:
         if payment_info is not None:
             new_order_details['payment'] = payment_info
 
-        # Pretty print the JSON with custom formatting
-        formatted_details = json.dumps(new_order_details, indent=4, separators=(',', ': '))
+        # Pretty print the JSON with custom formatting (indentation and separators)
+        formatted_details = json.dumps(new_order_details, indent=2, separators=(',', ': '))
 
-        return f"\n{formatted_details}\n"
+        return formatted_details
 
 
 
