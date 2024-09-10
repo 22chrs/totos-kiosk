@@ -127,7 +127,7 @@ class PaymentTerminal:
         return self.parse_terminal_output(output)
     
        
-    async def pay(self, type, amount, order_details):
+    async def pay(self, payment_style, amount, order_details):
         #! type = reservation or auth for direct payment
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
@@ -141,7 +141,7 @@ class PaymentTerminal:
 
             # Running the external zvt++ program asynchronously
             process = await asyncio.create_subprocess_exec(
-                self.executable_path, type, self.ip_address_terminal, str(amount),
+                self.executable_path, payment_style, self.ip_address_terminal, str(amount),
                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )
 
@@ -169,7 +169,7 @@ class PaymentTerminal:
             print(f"Full combined output: {output}")
 
             # Parse the output and return the result
-            parsed_output = self.parse_terminal_output(output, order_details)
+            parsed_output = self.parse_terminal_output(output, payment_style, order_details)
             
             # Add debug logging to check if parsed_output is correct
             if parsed_output:
@@ -241,9 +241,9 @@ class PaymentTerminal:
 
     
 
-    def parse_terminal_output(self, output, order_details):
+    def parse_terminal_output(self, output, payment_style, order_details):
         # Split and save the receipts
-        self.save_receipts(output, order_details)
+        self.save_receipts(output, payment_style, order_details)
 
         # Check for success message
         if "Zahlung erfolgt" in output:
@@ -257,13 +257,12 @@ class PaymentTerminal:
         return "Unknown Error"
 
 
-    def save_receipts(self, output, order_details):
+    def save_receipts(self, output, payment_style, order_details):
         # Split output into lines
         lines = output.split('\n')
 
         # Initialize variables to hold the receipts, beleg number, and payment status
-        beleg_nr = ""
-
+        receipt_number =""
         trace = ""
         expiry_date = ""
         status = ""
@@ -276,31 +275,21 @@ class PaymentTerminal:
         card_id = ""
         payment_type = ""
 
+
         # Process each line
         for line in lines:
             # Remove the "<-PT|" from the start and "|" from the end of the line
             clean_line = line.replace('<-PT|', '').rstrip('|').strip()
 
-            # Extract Beleg-Nr. when it is encountered
-            if "Beleg-Nr.:" in clean_line:
-                parts = clean_line.split(":")
-                if len(parts) > 1:
-                    beleg_nr = parts[1].strip()  # Safely extract
-                else:
-                    print(f"Warning: 'Beleg-Nr.' not found in line: {clean_line}")
-
             # Extract other data safely, checking the length of split results
             if "trace" in line:
                 trace = line.split()[-1] if len(line.split()) > 0 else ""
-            if "expiry_date" in line:
-                expiry_date = line.split()[-1] if len(line.split()) > 0 else ""
             if "status" in line:
                 status = line.split()[-1] if len(line.split()) > 0 else ""
-            if "date" in line:
-                date_str = line.split()[-1] if len(line.split()) > 0 else ""
-                if date_str:
-                    year = datetime.datetime.now().year  # Get the current year
-                    date = f"{date_str[2:]}.{date_str[:2]}.{year}"  # Reformat the date string
+            if "expiry_date" in clean_line:
+                expiry_date = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
+            elif "date" in clean_line:  # This ensures we don't confuse expiry_date with date
+                date = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
             if "receipt_number" in line:
                 parts = line.split()
                 if len(parts) > 1:
@@ -342,12 +331,13 @@ class PaymentTerminal:
 
         # Create a dictionary for payment details
         payment_details = {
+            'status': status,  # Payment Success/ Error Status
+            'payment_style': payment_style,
             'date': date,  # Datum
             'time': time,  # Zeit
             'amount_in_cents': amount_in_cents,  # gebuchter Betrag
             'currency': currency,
             'receipt_number': receipt_number,  # Belegnummer FEIG Terminal
-            'status': status,  # Payment Success/ Error Status
             'card_name': card_name,  # z.B. Mastercard
             'payment_type': payment_type,  # z.B. Kontaktlos
             'card_id': card_id,  # Kreditkartennummer
@@ -360,7 +350,7 @@ class PaymentTerminal:
         order_details['payment'] = payment_details
 
         # Now call the save_receipt_to_file function
-        self.save_receipt_to_file("StatusBlock", beleg_nr, order_details)
+        self.save_receipt_to_file("StatusBlock", receipt_number, order_details)
 
 
     def format_order_details(self, order_details):

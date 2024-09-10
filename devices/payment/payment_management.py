@@ -48,6 +48,7 @@ async def run_scheduled_payment_jobs():
 
 # WebSocket message handler
 async def handle_order(websocket, message, client_alias, clients, host_name):
+    payment_style = "reservation" #! "reservation" for reservation or "auth" for direct pay
     global order_details
     try:
         outer_data = json.loads(message)
@@ -65,7 +66,7 @@ async def handle_order(websocket, message, client_alias, clients, host_name):
                 # Convert totalPrice to cents
                 total_price_cents = int(round(inner_message['totalPrice'] * 100))
                 terminal = paymentTerminalFront if inner_message['whichTerminal'] == 'front' else paymentTerminalBack
-                result = await terminal.pay("reservation", total_price_cents, order_details)
+                result = await terminal.pay(payment_style, total_price_cents, order_details)
                 
                 # Send the result to the client that sent the order
                 await notify_client_payment_status(client_alias, result, clients, host_name)
