@@ -174,8 +174,8 @@ export function ModalProductCard({
         >
           <ModalHeader pb='0' width='95%'>
             <ModalCloseButton
-              pr='5'
-              pt='7'
+              pr='9'
+              pt='11'
               fontSize='2xl'
               onClick={handleCloseClick} // Handle the click here
               _active={{ bgColor: 'transparent', borderColor: 'transparent' }}
@@ -204,9 +204,7 @@ export function ModalProductCard({
             />
           )}
           {activeStep === 2 && <ShopModalStepWarenkorb onClose={onClose} />}
-          {activeStep === 3 && (
-            <ShopModalStep3 herkunft='shop' onClose={onClose} />
-          )}
+          {activeStep === 3 && <ShopModalStep3 onClose={onClose} />}
         </ModalContent>
       </Modal>
 
