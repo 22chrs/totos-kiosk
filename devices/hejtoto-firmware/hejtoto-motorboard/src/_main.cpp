@@ -24,8 +24,8 @@ void setup() {
     Wire.begin();           // Initialize I2C
     Wire.setClock(400000);  // Set I2C speed to 400kHz (Standard 100kHz)
 
-    // Serial.begin(115200);  // Start serial communication at 9600 baud
-    // Serial.println("Serial started.");
+    Serial.begin(115200);  // Start serial communication at 9600 baud
+    Serial.println("Serial started.");
 
     init_TCA9548A();
     init_MCP23017();  // Initialize pins of MCP23017 I/O Expander
@@ -77,7 +77,7 @@ void setup() {
     homeDevice("Lift_A", "timestamp");
     homeDevice("Lift_B", "timestamp");
     homeDevice("Lift_C", "timestamp");
-    //      // homeDevice("Lift_A");
+    //  // //      // homeDevice("Lift_A");
 
     homeDevice("Rodell_A", "timestamp");
     homeDevice("Rodell_B", "timestamp");
@@ -88,6 +88,8 @@ void setup() {
     // openDoor(4);
 
     // delay(10000);
+    // moveDevice("Lift_B", 629, 100, 100, 100, "timestamp");
+    // moveDevice("Lift_C", 300, 100, 100, 100, "timestamp");
 }
 
 unsigned long previousMillis2 = 0;  // Store the last time a task was executed
@@ -111,7 +113,7 @@ void chrono() {
 void loop() {
     loop_checkAndCloseDoors();                   //! DO NOT DELETE! SOILENOIDS WILL BURN! 🔥
     loop_StepperReachedDesiredRingPercentage();  //! For Stepper ring if the reach some destinations! 🛸
-    //   serialController.update(BaudRateSerial);
+    serialController.update(BaudRateSerial);
     //    chrono();
 
     // if (helperChrono.hasPassed(1000)) {
