@@ -3,7 +3,10 @@
 // success // error payment // error robot
 
 import {
+  ArrowDownSharpSolid,
+  ChevronsRightSharpSolid,
   CircleCheckSharpSolid,
+  CreditCardRegular,
   ShieldCheckSharpSolid,
 } from '@/components/icons/icons';
 
@@ -28,6 +31,7 @@ import {
   Text,
   VStack,
   chakra,
+  keyframes,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -36,6 +40,12 @@ import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 import shopData from '@/public/kiosk/products/leipzig.json';
 import { useWebSocket } from '@/websocket/WebSocketContext';
 const automatenID = shopData.automatenID;
+
+const blink = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+`;
 
 const Video = chakra('video');
 
@@ -279,12 +289,12 @@ function ShopModalStep3({ onClose }) {
 
                   {/* Video */}
                   {payment !== 'init' && (
-                    <Box right='12' bottom='17rem' position='absolute'>
+                    <Box right='12' top='16%' position='absolute'>
                       <Video
                         rounded={KISOK_BORDERRADIUS}
                         autoPlay
                         w='20rem'
-                        h='20rem'
+                        h='30rem'
                         loop
                         muted
                         style={{ objectFit: 'cover' }}
@@ -294,10 +304,6 @@ function ShopModalStep3({ onClose }) {
                   )}
                 </HStack>
               </Stack>
-              {/* <Spacer /> */}
-              {/* <Box maxW='20%' pt={herkunft === 'shop' ? '5' : '14'} pr='0'>
-                    <PaymentImagesFooter />
-                  </Box> */}
             </VStack>
           </Stack>
           {/* </ScrollFade> */}
@@ -506,6 +512,18 @@ function ShopModalStep3({ onClose }) {
       </Box>
       <Box>
         <PaymentImagesFooterIcon isRounded={true} isWhite={true} />
+      </Box>
+      <Box
+        position='absolute'
+        bottom='22%'
+        left='50%'
+        transform='translateX(-50%)'
+      >
+        <Icon
+          boxSize='20rem'
+          as={ArrowDownSharpSolid}
+          animation={`${blink} 1s infinite`} // Apply the blink animation
+        />
       </Box>
     </ModalBody>
   );

@@ -1,6 +1,18 @@
 import { createIcon } from '@chakra-ui/react';
 // https://codesandbox.io/s/9lg5c
 
+export const CreditCardLight = createIcon({
+  displayName: 'CreditCardLight',
+  viewBox: '0 0 576 512',
+  d: 'M64 64c-17.7 0-32 14.3-32 32v32h512V96c0-17.7-14.3-32-32-32H64zm-32 96v64h512v-64H32zm0 96v160c0 17.7 14.3 32 32 32h448c17.7 0 32-14.3 32-32V256H32zM0 96c0-35.3 28.7-64 64-64h448c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zm96 272c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s-7.2 16-16 16h-64c-8.8 0-16-7.2-16-16zm128 0c0-8.8 7.2-16 16-16h128c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z',
+});
+
+export const ArrowDownSharpSolid = createIcon({
+  displayName: 'ArrowDownSharpSolid',
+  viewBox: '0 0 384 512',
+  d: 'M214.6 454.6L192 477.3l-22.6-22.6-144-144L2.7 288 48 242.8l22.6 22.6 89.4 89.4V32h64v322.7l89.4-89.4 22.6-22.5 45.3 45.2-22.6 22.6-144 144z',
+});
+
 export const CreditCardRegular = createIcon({
   displayName: 'CreditCardRegular',
   viewBox: '0 0 576 512',
