@@ -1,6 +1,12 @@
 import { createIcon } from '@chakra-ui/react';
 // https://codesandbox.io/s/9lg5c
 
+export const CircleCheckSharpRegular = createIcon({
+  displayName: 'CircleCheckSharpRegular',
+  viewBox: '0 0 512 512',
+  d: 'M256 48a208 208 0 110 416 208 208 0 110-416zm0 464a256 256 0 100-512 256 256 0 100 512zm113-303l17-17-34-33.9-17 17-111 111-47-47-17-17-33.9 33.9 17 17 64 64 17 17 17-17L369 209z',
+});
+
 export const CreditCardLight = createIcon({
   displayName: 'CreditCardLight',
   viewBox: '0 0 576 512',

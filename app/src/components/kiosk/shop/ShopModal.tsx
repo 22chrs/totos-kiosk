@@ -37,13 +37,16 @@ import { useCart } from '@/providers/CardContext';
 import { useStepper } from '@/providers/StepperContext';
 import { useEffect, useState } from 'react';
 import { KISOK_BORDERRADIUS } from 'src/constants';
+import i18n, { standardSprache } from '@/internationalization/i18n';
+
+import { useRouter } from '@/providers/DisplayContext';
 
 function StepperChoose({ steps }) {
   const { activeStep, setActiveStep } = useStepper();
   const { removeLastFromCart, payment } = useCart();
 
   const handleStepClick = (index) => {
-    if (payment != 'init') return;
+    if (payment != 'idle') return;
 
     if (index <= activeStep) {
       if (steps[activeStep].title === 'Warenkorb') {
@@ -113,18 +116,23 @@ export function ModalProductCard({
     setSelectedSugarOption,
   } = useStepper();
 
-  const { payment } = useCart();
+  const router = useRouter();
 
-  // Function to handle the close button click
+  const { setPayment, payment, clearCart } = useCart();
+
   const handleCloseClick = () => {
     if (payment === 'processing') {
       setIsConfirmOpen(true); // Open the confirmation modal if processing
+    } else if (payment === 'success') {
+      clearCart();
+      onClose();
+      i18n.changeLanguage(standardSprache);
+      router.pushWithDisplay('/');
+      setPayment('idle');
     } else {
       onClose(); // Close the main modal immediately if not processing
     }
   };
-
-  const { setPayment } = useCart();
 
   // Function to confirm closing during processing
   const handleConfirmClose = () => {

@@ -4,9 +4,8 @@
 
 import {
   ArrowDownSharpSolid,
-  ChevronsRightSharpSolid,
+  CircleCheckSharpRegular,
   CircleCheckSharpSolid,
-  CreditCardRegular,
   ShieldCheckSharpSolid,
 } from '@/components/icons/icons';
 
@@ -132,7 +131,7 @@ function ShopModalStep3({ onClose }) {
     setShowTrinkgeldYes(false);
     setShowTrinkgeldDanke(false);
     setPayment('success');
-    setCountdown(7);
+    setCountdown(10);
 
     const timer = setInterval(() => {
       setCountdown((countdown) => countdown - 1);
@@ -141,22 +140,46 @@ function ShopModalStep3({ onClose }) {
     setTimeout(() => {
       clearInterval(timer);
       handlePaymentFinished();
-    }, 7000);
+    }, 9800);
 
     return () => {
       clearInterval(timer);
     };
   };
 
+  const [errorCode, setErrorCode] = useState(null);
+
   useEffect(() => {
     if (ws) {
       const handleMessage = (data) => {
-        if (data.code && data.code === 'paymentSuccess') {
+        if (data.Payment && data.Payment === '00') {
           setPayment('success');
-          handlePaymentSuccess(); // Correctly handling the success
-        } else if (data.code && data.code === 'paymentError') {
-          setPayment('error'); // Explicitly handle errors
+          handlePaymentSuccess(); // Handle success
+        } else if (data.Payment) {
+          const errorCode = data.Payment;
+          handlePaymentError(errorCode); // Handle different error codes
         }
+      };
+      const handlePaymentError = (errorCode) => {
+        let errorMessage;
+
+        switch (errorCode) {
+          case '6c':
+            errorMessage = 'Invalid card details';
+            break;
+          case '51':
+            errorMessage = 'Insufficient funds';
+            break;
+          case '91':
+            errorMessage = 'Issuer unavailable';
+            break;
+          default:
+            errorMessage = `Unknown error occurred. Code: ${errorCode}`;
+        }
+
+        setErrorCode(errorMessage);
+        setPayment('error');
+        console.error(`Payment Error (${errorCode}): ${errorMessage}`);
       };
 
       ws.handleMessage(handleMessage);
@@ -169,14 +192,13 @@ function ShopModalStep3({ onClose }) {
   }, [ws, setPayment]);
 
   const handlePaymentFinished = async () => {
-    const orderData = bestellung('success');
-    await addNewOrder(automatenID, orderData);
-
+    //const orderData = bestellung('success');
+    //await addNewOrder(automatenID, orderData); //! FIREBIRD BASE
     clearCart();
-    setPayment('init'); // <-- Make sure this is called at the end of the process.
     onClose();
     i18n.changeLanguage(standardSprache);
     router.pushWithDisplay('/');
+    setPayment('idle');
   };
 
   const handlePaymentError = () => {
@@ -187,7 +209,7 @@ function ShopModalStep3({ onClose }) {
   };
 
   const handlePaymentAgain = () => {
-    setPayment('init');
+    setPayment('processing');
     setShowTrinkgeldAgain(false);
   };
 
@@ -274,7 +296,7 @@ function ShopModalStep3({ onClose }) {
               <Stack w='calc(100vw - 6rem)'>
                 <HStack align='top' justify='space-between' maxW='55%'>
                   <Text pt='0' variant='kiosk' pb='12'>
-                    {payment === 'idle' && 'nothing2 here.'}
+                    {payment === 'idle' && 'Nothing here. Pls go.'}
                     {payment === 'processing' &&
                       'Bitte präsentiere dein Zahlungsmittel am Lesegerät, um kontaktlos zu zahlen.'}
                     {payment === 'waiting' &&
@@ -282,13 +304,13 @@ function ShopModalStep3({ onClose }) {
                     {payment === 'success' &&
                       'Zahlung erfolgreich! Vielen Dank für Deine Bestellung, Toto bereitet diese nun für Dich zu.'}
                     {payment === 'error' &&
-                      'Deine Zahlung ist fehlgeschlagen! Bitte versuche es erneut oder nutze ein alternatives Zahlungsmittel.'}
+                      `Deine Zahlung ist fehlgeschlagen: ${errorCode}`}
                   </Text>
 
                   <Spacer />
 
                   {/* Video */}
-                  {payment !== 'init' && (
+                  {payment !== 'idle' && (
                     <Box right='12' top='16%' position='absolute'>
                       <Video
                         rounded={KISOK_BORDERRADIUS}
@@ -306,6 +328,24 @@ function ShopModalStep3({ onClose }) {
               </Stack>
             </VStack>
           </Stack>
+          {payment === 'success' && (
+            <Box
+              gap='5'
+              px='6'
+              py='4'
+              rounded='xl'
+              bgColor={bgColorTrinkgeld}
+              //transform='translateY(-0.4rem) translateX(-0.3rem)'
+            >
+              <HStack gap='6'>
+                <Icon boxSize='2rem' as={CircleCheckSharpRegular} />
+                <Text variant='kiosk' p='0'>
+                  {countdown !== null &&
+                    `Dieses Fenster schließt sich automatisch in ${countdown} Sekunden.`}
+                </Text>
+              </HStack>
+            </Box>
+          )}
           {/* </ScrollFade> */}
           <Spacer />
           {payment === 'processing' && (
@@ -488,24 +528,6 @@ function ShopModalStep3({ onClose }) {
                 </HStack>
               </Box>
               <Spacer />
-
-              {payment === 'success' && (
-                <Box
-                  gap='5'
-                  px='7'
-                  py='6'
-                  rounded='xl'
-                  bgColor={bgColorTrinkgeld}
-                  //transform='translateY(-0.4rem) translateX(-0.3rem)'
-                >
-                  <HStack gap='2'>
-                    <Text variant='kiosk' p='0'>
-                      {countdown !== null &&
-                        `Dieses Fenster schließt sich automatisch in ${countdown} Sekunden.`}
-                    </Text>
-                  </HStack>
-                </Box>
-              )}
             </HStack>
           </HStack>
         </Stack>
@@ -513,18 +535,20 @@ function ShopModalStep3({ onClose }) {
       <Box>
         <PaymentImagesFooterIcon isRounded={true} isWhite={true} />
       </Box>
-      <Box
-        position='absolute'
-        bottom='22%'
-        left='50%'
-        transform='translateX(-50%)'
-      >
-        <Icon
-          boxSize='20rem'
-          as={ArrowDownSharpSolid}
-          animation={`${blink} 1s infinite`} // Apply the blink animation
-        />
-      </Box>
+      {payment === 'processing' && (
+        <Box
+          position='absolute'
+          bottom='22%'
+          left='50%'
+          transform='translateX(-50%)'
+        >
+          <Icon
+            boxSize='20rem'
+            as={ArrowDownSharpSolid}
+            animation={`${blink} 1s infinite`} // Apply the blink animation
+          />
+        </Box>
+      )}
     </ModalBody>
   );
 }

@@ -11,6 +11,20 @@ const retryInterval = 5000; // Retry every 5 seconds
 function startServer() {
   const server = express();
 
+  server.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8082'); // If accessing locally
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Handle preflight OPTIONS request
+    if (req.method === 'OPTIONS') {
+      return res.status(204).end();
+    }
+
+    next();
+  });
+
   // Serve static files from the 'public' directory with cache-control headers
   server.use(
     '/public',

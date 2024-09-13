@@ -55,11 +55,11 @@ export const PaymentImagesFooterIcon = ({ isRounded, isWhite }) => {
         quality={100}
       />
       <NextImage
-        src='/assets/payment/Girocard.svg'
+        src='/assets/payment/girocard.svg'
         alt='Girocard'
         priority
-        width='50'
-        height='50'
+        width='65'
+        height='65'
         quality='100'
       />
 

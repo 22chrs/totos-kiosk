@@ -48,7 +48,7 @@ async def run_scheduled_payment_jobs():
 
 # WebSocket message handler
 async def handle_order(websocket, message, client_alias, clients, host_name):
-    payment_style = "auth" #! "reservation" for reservation or "auth" for direct pay
+    payment_style = "reservation" #! "reservation" for reservation or "auth" for direct pay
     global order_details
     try:
         outer_data = json.loads(message)
@@ -82,7 +82,7 @@ async def notify_client_payment_status(client_alias, result, clients, host_name)
         client = clients[client_alias]
         try:
             # Prepare the result message (success or failure)
-            result_message = json.dumps({"Payment status": result})
+            result_message = json.dumps({"Payment": result})
             
             # Send the result message to the client
             await client.send(result_message)
