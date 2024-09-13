@@ -22,7 +22,6 @@ import { WebSocketProvider } from '@/websocket/WebSocketContext';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
-
   // Disable right-click function
   const disableRightClick = () => {
     document.addEventListener('contextmenu', (event) => {
@@ -30,6 +29,18 @@ const App = ({ Component, pageProps }: AppProps) => {
     });
   };
 
+  // Disable horizontal overscroll behavior
+  const disableHorizontalOverscroll = () => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+    html, body {
+      overscroll-behavior-x: none;
+    }
+  `;
+    document.head.appendChild(style);
+  };
+
+  // UseEffect to run the functions based on environment variables
   useEffect(() => {
     // Log the environment variables
     console.log(
@@ -38,8 +49,10 @@ const App = ({ Component, pageProps }: AppProps) => {
     );
     console.log('Environment Mode:', process.env.NEXT_PUBLIC_ENVIRONMENT_MODE);
 
+    // Check the environment variable before running the functions
     if (process.env.NEXT_PUBLIC_DISABLE_RIGHT_CLICK === 'true') {
       disableRightClick();
+      disableHorizontalOverscroll();
     }
   }, []);
 

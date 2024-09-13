@@ -14,16 +14,24 @@
 import asyncio
 import schedule
 import json
+import socket
 from payment.payment_lib import PaymentTerminal
 from websocket.websocket import check_clients_connected, clients, HOST_NAME
 
-# TID 52500038 Plus 
-# TID 52500038 PIN 41 /_
+# TID 52500038 Plus #! WICHTIG
+# TID 52500041 PIN #! WICHTIG
 
+
+def check_ip(ip):
+    try:
+        socket.gethostbyname(ip)
+        return True
+    except socket.error:
+        return False
 
 # Global variables
-paymentTerminalIP_Front = "192.168.68.201"
-paymentTerminalIP_Back = "192.168.68.202"
+paymentTerminalIP_Front = "192.168.68.201" if check_ip("192.168.68.201") else "192.168.1.201"
+paymentTerminalIP_Back = "192.168.68.202" if check_ip("192.168.68.202") else "192.168.1.202"
 #paymentTerminalIP_Front = "192.168.1.201"
 #paymentTerminalIP_Back = "192.168.1.202"
 

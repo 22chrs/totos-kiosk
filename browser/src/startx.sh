@@ -115,21 +115,28 @@ for TOUCH_ID in $TOUCH_DEVICES; do
 
     if [ -z "$HDMI_OUTPUT" ]; then
         echo "No more HDMI outputs available to map. Exiting."
-        break
+        #continue
     fi
 
-    # Apply the Coordinate Transformation Matrix
+# Apply the Coordinate Transformation Matrix
     if [[ $OUTPUT_INDEX -eq 0 ]]; then
         # First screen, no translation
+        echo "Applying Coordinate Transformation Matrix for $TOUCH_ID on the first screen:"
+        echo "xinput set-prop $TOUCH_ID 'Coordinate Transformation Matrix' 2 0 0 0 1 0 0 0 1"
+        
         xinput set-prop $TOUCH_ID "Coordinate Transformation Matrix" 0.5 0 0 0 1 0 0 0 1
+        # xinput set-prop $TOUCH_ID "Coordinate Transformation Matrix" 0.5 0 0 0 1 0 0 0 1 #! working intel
     else
         # Second screen, apply translation on the X axis
+        echo "Applying Coordinate Transformation Matrix for $TOUCH_ID on the second screen:"
+        echo "xinput set-prop $TOUCH_ID 'Coordinate Transformation Matrix' 2 0 0.5 0 1 0 0 0 1"
+        
         xinput set-prop $TOUCH_ID "Coordinate Transformation Matrix" 0.5 0 0.5 0 1 0 0 0 1
+        # xinput set-prop $TOUCH_ID "Coordinate Transformation Matrix" 0.5 0 0.5 0 1 0 0 0 1 #! working intel
     fi
-
-    # Map the touch device to the corresponding HDMI output
-    echo "Mapping touch device $TOUCH_ID to $HDMI_OUTPUT"
-    xinput map-to-output $TOUCH_ID $HDMI_OUTPUT
+        # Map the touch device to the corresponding HDMI output
+        echo "Mapping touch device $TOUCH_ID to $HDMI_OUTPUT"
+        xinput map-to-output $TOUCH_ID $HDMI_OUTPUT
 
     # Increment the output index for the next device
     OUTPUT_INDEX=$((OUTPUT_INDEX + 1))
