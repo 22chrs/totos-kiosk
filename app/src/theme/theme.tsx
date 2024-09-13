@@ -90,7 +90,7 @@ const components = {
       }),
 
       kiosk_pricetag_mini: (props) => {
-        const borderWidth = '0.3rem';
+        const borderWidth = '0.1rem';
 
         return {
           color: mode(
@@ -300,7 +300,7 @@ const components = {
       },
 
       kiosk_pricetag_big: (props) => {
-        const borderWidth = '0.4rem';
+        const borderWidth = '0.1rem';
 
         return {
           color: mode(
@@ -324,13 +324,13 @@ const components = {
           fontSize: '4xl',
           fontWeight: '700',
 
-          px: '6',
+          px: '8',
 
           bgColor: mode(
             colors.footerBGColor.lightMode,
             colors.footerBGColor.darkMode,
           )(props),
-          py: '9',
+          py: '10',
           h: '0',
           variant: 'outline',
 

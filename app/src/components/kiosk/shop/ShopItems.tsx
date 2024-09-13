@@ -58,17 +58,17 @@ export const ShopIcon: React.FC<FooterShopElementProps> = ({ itemCount }) => {
       <Icon
         as={MugMarshmallowsLight}
         boxSize='4.5rem'
-        color={itemCount == 0 ? colorIconEmpty : colorIconFilled} // Use strings, not objects
+        color={itemCount == 0 ? colorIconEmpty : colorIconFilled}
       />
 
       {itemCount >= 0 && (
         <Center
           fontSize='3xl'
           position='absolute'
-          top='-3'
-          right='-6'
-          width='45.5%'
-          height='45%'
+          top='-3.5'
+          right={itemCount >= 10 ? '-12' : '-7'}
+          width={itemCount >= 10 ? '68%' : '50%'}
+          height={itemCount >= 10 ? '68%' : '50%'}
           borderRadius='50%'
           bgColor={itemCount == 0 ? bgColorZifferEmpty : bgColorZifferFilled}
           color={itemCount == 0 ? colorZifferEmpty : colorZifferFilled}

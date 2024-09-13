@@ -9,7 +9,10 @@ import {
   ShieldCheckSharpSolid,
 } from '@/components/icons/icons';
 
-import { PaymentImagesFooterIcon } from '@/components/images/PaymentImages';
+import {
+  PaymentImagesFooterIcon,
+  PaymentImagesFooterIconWhiteBG,
+} from '@/components/images/PaymentImages';
 import { formatPrice } from '@/components/kiosk/shop/utils';
 import { addNewOrder } from '@/firebase/dbFunctionsBestellungen';
 import i18n, { standardSprache } from '@/internationalization/i18n';
@@ -533,7 +536,7 @@ function ShopModalStep3({ onClose }) {
         </Stack>
       </Box>
       <Box>
-        <PaymentImagesFooterIcon isRounded={true} isWhite={true} />
+        <PaymentImagesFooterIconWhiteBG />
       </Box>
       {payment === 'processing' && (
         <Box

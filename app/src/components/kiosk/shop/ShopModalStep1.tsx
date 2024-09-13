@@ -160,11 +160,11 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                 {selectedCategory.mugs.length > 1 && (
                   <Box>
                     <Box>
-                      <Heading variant='h2_Kiosk' pb='3' pt='8'>
+                      <Heading variant='h2_Kiosk' pb='6' pt='8'>
                         Ein- oder Mehrweg:
                       </Heading>
 
-                      <Flex gap='5'>
+                      <Flex gap='6'>
                         {['einwegVariable', 'mehrwegVariable'].map(
                           (option, index) => (
                             <Button
@@ -179,6 +179,9 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                                   : 'outline'
                               }
                               colorScheme='pink'
+                              fontSize='xl'
+                              h='3rem'
+                              px='4'
                             >
                               {option === selectedReusableOption && (
                                 <>
@@ -202,10 +205,10 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                     </Box>
 
                     <Box pt='6'>
-                      <Heading variant='h2_Kiosk' py='3'>
+                      <Heading variant='h2_Kiosk' py='6'>
                         Deckel:
                       </Heading>
-                      <Flex gap='5'>
+                      <Flex gap='6'>
                         {lidOptions.map((option, index) => (
                           <Button
                             gap='2'
@@ -215,6 +218,9 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                               option === selectedLidOption ? 'solid' : 'outline'
                             }
                             colorScheme='pink'
+                            fontSize='xl'
+                            h='3rem'
+                            px='4'
                           >
                             {option === selectedLidOption && (
                               <>
@@ -250,8 +256,6 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                 gap='10'
                 w='100%'
                 pr='4'
-
-                //transform='translateY(0.4rem) translateX(-0.2rem)'
               >
                 {selectedReusableOption === 'mehrwegVariable' && (
                   <HStack pt='0'>
@@ -268,7 +272,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                   style={{
                     transform:
                       selectedReusableOption !== 'mehrwegVariable'
-                        ? 'translateY(-0.4rem)'
+                        ? 'translateY(-0.35rem)'
                         : '',
                   }}
                 >

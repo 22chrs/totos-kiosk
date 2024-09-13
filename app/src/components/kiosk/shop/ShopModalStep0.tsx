@@ -140,10 +140,10 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                     {selectedProduct.sizes &&
                       selectedProduct.sizes.length > 1 && (
                         <>
-                          <Heading variant='h2_Kiosk' pb='3' pt='8'>
+                          <Heading variant='h2_Kiosk' pb='5' pt='8'>
                             Größe:
                           </Heading>
-                          <Flex gap='5'>
+                          <Flex gap='6'>
                             {selectedProduct.sizes.map((size, index) => (
                               <Button
                                 key={index}
@@ -154,6 +154,9 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                                     : 'outline'
                                 }
                                 colorScheme='pink'
+                                fontSize='xl'
+                                h='3rem'
+                                px='4'
                               >
                                 {size.size}
                               </Button>
@@ -165,10 +168,10 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
 
                   {selectedCategory.additives?.includes('sugar') && (
                     <Box py='6'>
-                      <Heading variant='h2_Kiosk' py='3'>
+                      <Heading variant='h2_Kiosk' py='5'>
                         Zucker:
                       </Heading>
-                      <Flex gap='5'>
+                      <Flex gap='6'>
                         {sugarLevels.map((level, index) => (
                           <Button
                             key={index}
@@ -179,6 +182,9 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                                 : 'outline'
                             }
                             colorScheme='pink'
+                            fontSize='xl'
+                            h='3rem'
+                            px='4'
                           >
                             {level === selectedSugarOption && (
                               <>
@@ -228,6 +234,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                 justifyContent='space-between'
                 gap='10'
                 pr='4'
+                //transform='translateY(-0.1rem)'
 
                 //transform='translateY(0.4rem) translateX(-0.2rem)'
               >
@@ -241,6 +248,15 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                             : 0),
                       )}
                     </Button>
+
+                    {/* <Heading variant='kiosk_pricetag_big'>
+                      {formatPrice(
+                        selectedProduct.price +
+                          (selectedSizeOption
+                            ? selectedSizeOption.additionalCost
+                            : 0),
+                      )}
+                    </Heading> */}
                   </Box>
                 </HStack>
 

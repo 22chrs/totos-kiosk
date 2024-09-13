@@ -150,7 +150,7 @@ function ShopModalStepWarenkorb({ onClose }) {
             w={getCartTotalQuantity() === 0 ? '98.7%' : '100%'}
             pt='6'
             pb='8'
-            transform='translateY(0.8rem) translateX(0)'
+            transform='translateY(0.9rem) translateX(0)'
           >
             <HStack
               w='100%'
