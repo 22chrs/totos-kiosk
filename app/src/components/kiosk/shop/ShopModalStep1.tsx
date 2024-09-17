@@ -1,14 +1,6 @@
 // ShopModalStep1.tsx
-import {
-  ArrowRightSharpSolid,
-  BanRegular,
-  CirclePlusRegular,
-  CupTogoRegular,
-  MugHotRegular,
-} from '@/components/icons/icons';
-import { useCart } from '@/providers/CardContext';
-import Image from 'next/image';
 
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -21,24 +13,38 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-
-import { FaArrowRight } from 'react-icons/fa';
+import {
+  ArrowRightSharpSolid,
+  BanRegular,
+  CirclePlusRegular,
+  CupTogoRegular,
+  MugHotRegular,
+} from '@/components/icons/icons';
 import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
-
-import { Product } from '@/components/kiosk/shop/Interface';
+import Image from 'next/image';
+import { useCart } from '@/providers/CardContext';
 import { useStepper } from '@/providers/StepperContext';
-import { useEffect, useState } from 'react';
 import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
+import { Product, Category } from '@/components/kiosk/shop/Interface';
 
-// Your ModalProductCardProps interface
-interface ModalProductCardProps {
-  isOpen: boolean;
-  onClose: () => void;
-  product: Product | null;
+type LidOption = 'ohneDeckel' | 'inklusiveDeckel';
+type ReusableOption = 'einwegVariable' | 'mehrwegVariable';
+
+interface ShopModalStep1Props {
+  selectedProduct: Product;
+  selectedCategory: Category;
   formatPrice: (price: number) => string;
 }
-function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
-  const lidOptions = ['ohneDeckel', 'inklusiveDeckel'];
+
+function ShopModalStep1({
+  selectedProduct,
+  selectedCategory,
+}: ShopModalStep1Props) {
+  const lidOptions: LidOption[] = ['ohneDeckel', 'inklusiveDeckel'];
+  const reusableOptions: ReusableOption[] = [
+    'einwegVariable',
+    'mehrwegVariable',
+  ];
 
   const {
     setActiveStep,
@@ -50,51 +56,37 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
     selectedSugarOption,
   } = useStepper();
 
-  const handleReusableOptionSelection = (option) => {
-    setSelectedReusableOption(option);
-  };
-
-  const handleLidOptionSelection = (option) => {
-    setSelectedLidOption(option);
-  };
-
   const [imageSrc, setImageSrc] = useState<string>();
+
   useEffect(() => {
-    if (
-      selectedReusableOption === 'mehrwegVariable' &&
-      selectedLidOption === 'inklusiveDeckel'
-    ) {
-      setImageSrc('/kiosk/becheralternativen/Mehrwegbecherdeckel.jpg');
-    } else if (
-      selectedReusableOption === 'mehrwegVariable' &&
-      selectedLidOption === 'ohneDeckel'
-    ) {
-      setImageSrc('/kiosk/becheralternativen/Mehrwegbecher.jpg');
-    } else if (
-      selectedReusableOption === 'einwegVariable' &&
-      selectedLidOption === 'inklusiveDeckel'
-    ) {
-      setImageSrc('/kiosk/becheralternativen/Einwegbecherdeckel.jpg');
-    } else if (
-      selectedReusableOption === 'einwegVariable' &&
-      selectedLidOption === 'ohneDeckel'
-    ) {
-      setImageSrc('/kiosk/becheralternativen/Einwegbecher.jpg');
-    }
+    const imageMap: Record<string, string> = {
+      'mehrwegVariable-inklusiveDeckel':
+        '/kiosk/becheralternativen/Mehrwegbecherdeckel.jpg',
+      'mehrwegVariable-ohneDeckel':
+        '/kiosk/becheralternativen/Mehrwegbecher.jpg',
+      'einwegVariable-inklusiveDeckel':
+        '/kiosk/becheralternativen/Einwegbecherdeckel.jpg',
+      'einwegVariable-ohneDeckel': '/kiosk/becheralternativen/Einwegbecher.jpg',
+    };
+    const key = `${selectedReusableOption}-${selectedLidOption}`;
+    setImageSrc(imageMap[key] || '/default/path/to/image.jpg');
   }, [selectedReusableOption, selectedLidOption]);
 
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
+    if (!selectedProduct) return;
+
+    const calculatedPrice =
+      selectedProduct.price +
+      (selectedSizeOption ? selectedSizeOption.additionalCost : 0);
+
     const productCart = {
       product: selectedProduct,
       productCategory: selectedCategory.name,
-      // we dont want to add the idCart, because the handleAddToCart should generate it for us
-      calculatedPrice:
-        selectedProduct.price +
-        (selectedSizeOption ? selectedSizeOption.additionalCost : 0),
+      calculatedPrice,
       vat: selectedProduct.vat,
-      choosenSize: selectedSizeOption ? selectedSizeOption.size : undefined,
+      choosenSize: selectedSizeOption?.size,
       choosenSugar: selectedSugarOption,
       choosenMug: selectedReusableOption,
       choosenLid: selectedLidOption,
@@ -118,9 +110,8 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                 overflow='hidden'
               >
                 <Image
-                  alt={`${selectedProduct.name}`}
-                  fill={true}
-                  object-fit='contain'
+                  alt={selectedProduct.name}
+                  fill
                   sizes='(max-width: 768px) 70vw, (max-width: 1200px) 50vw, 33vw'
                   style={{ objectFit: 'cover' }}
                   src={imageSrc || '/default/path/to/image.jpg'}
@@ -165,42 +156,34 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                       </Heading>
 
                       <Flex gap='6'>
-                        {['einwegVariable', 'mehrwegVariable'].map(
-                          (option, index) => (
-                            <Button
-                              gap='2'
-                              key={index}
-                              onClick={() =>
-                                handleReusableOptionSelection(option)
-                              }
-                              variant={
-                                option === selectedReusableOption
-                                  ? 'solid'
-                                  : 'outline'
-                              }
-                              colorScheme='pink'
-                              fontSize='xl'
-                              h='3rem'
-                              px='4'
-                            >
-                              {option === selectedReusableOption && (
-                                <>
-                                  {option === 'einwegVariable' && (
-                                    <Icon boxSize={6} as={CupTogoRegular} />
-                                  )}
-                                  {option === 'mehrwegVariable' && (
-                                    <Icon boxSize={6} as={MugHotRegular} />
-                                  )}
-                                </>
-                              )}
-                              {option === 'einwegVariable'
-                                ? 'Einweg'
-                                : option === 'mehrwegVariable'
-                                  ? 'Mehrweg'
-                                  : ''}
-                            </Button>
-                          ),
-                        )}
+                        {reusableOptions.map((option) => (
+                          <Button
+                            gap='2'
+                            key={option}
+                            onClick={() => setSelectedReusableOption(option)}
+                            variant={
+                              option === selectedReusableOption
+                                ? 'solid'
+                                : 'outline'
+                            }
+                            colorScheme='pink'
+                            fontSize='xl'
+                            h='3rem'
+                            px='4'
+                          >
+                            {option === selectedReusableOption && (
+                              <>
+                                {option === 'einwegVariable' && (
+                                  <Icon boxSize={6} as={CupTogoRegular} />
+                                )}
+                                {option === 'mehrwegVariable' && (
+                                  <Icon boxSize={6} as={MugHotRegular} />
+                                )}
+                              </>
+                            )}
+                            {option === 'einwegVariable' ? 'Einweg' : 'Mehrweg'}
+                          </Button>
+                        ))}
                       </Flex>
                     </Box>
 
@@ -209,11 +192,11 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                         Deckel:
                       </Heading>
                       <Flex gap='6'>
-                        {lidOptions.map((option, index) => (
+                        {lidOptions.map((option) => (
                           <Button
                             gap='2'
-                            key={index}
-                            onClick={() => handleLidOptionSelection(option)}
+                            key={option}
+                            onClick={() => setSelectedLidOption(option)}
                             variant={
                               option === selectedLidOption ? 'solid' : 'outline'
                             }
@@ -234,9 +217,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                             )}
                             {option === 'ohneDeckel'
                               ? 'Ohne Deckel'
-                              : option === 'inklusiveDeckel'
-                                ? 'Inklusive Deckel'
-                                : ''}
+                              : 'Inklusive Deckel'}
                           </Button>
                         ))}
                       </Flex>
@@ -247,12 +228,11 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
               <Spacer />
 
               <HStack
-                style={{
-                  justifyContent:
-                    selectedReusableOption !== 'mehrwegVariable'
-                      ? 'flex-end'
-                      : 'space-between',
-                }}
+                justifyContent={
+                  selectedReusableOption !== 'mehrwegVariable'
+                    ? 'flex-end'
+                    : 'space-between'
+                }
                 gap='10'
                 w='100%'
                 pr='4'
@@ -269,12 +249,11 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                   </HStack>
                 )}
                 <HStack
-                  style={{
-                    transform:
-                      selectedReusableOption !== 'mehrwegVariable'
-                        ? 'translateY(-0.35rem)'
-                        : '',
-                  }}
+                  transform={
+                    selectedReusableOption !== 'mehrwegVariable'
+                      ? 'translateY(-0.35rem)'
+                      : ''
+                  }
                 >
                   <Button
                     gap='5'

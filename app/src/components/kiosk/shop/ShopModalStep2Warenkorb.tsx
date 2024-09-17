@@ -1,4 +1,4 @@
-// ShopModalStep2Warenkorb.tsx
+// ShopModalStepWarenkorb.tsx
 
 import { formatPrice } from '@/components/kiosk/shop/utils';
 import {
@@ -15,23 +15,18 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
-import { useContext } from 'react';
-import { DisplayContext } from '@/providers/DisplayContext';
 import { ItemBestellung } from '@/components/kiosk/shop/Warenkorb/ItemBestellung';
 import { useCart } from '@/providers/CardContext';
 import { useStepper } from '@/providers/StepperContext';
-import { FaArrowRight, FaPlus } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { KIOSK_HEIGHTCONTENT_MODAL } from 'src/constants';
-import { useState } from 'react';
-import { useWebSocket } from '@/websocket/WebSocketContext';
 import { ArrowRightSharpSolid } from '@/components/icons/icons';
+import { useContext } from 'react';
+import { DisplayContext } from '@/providers/DisplayContext';
+import { useWebSocket } from '@/websocket/WebSocketContext';
 
 function ShopModalStepWarenkorb({ onClose }) {
-  const ws = useWebSocket();
-
-  const { activeStep, setActiveStep } = useStepper();
-
+  const { setActiveStep } = useStepper();
   const {
     cart,
     getCartTotalPrice,
@@ -39,35 +34,31 @@ function ShopModalStepWarenkorb({ onClose }) {
     getCartTotalQuantity,
     setPayment,
   } = useCart();
-
-  const [Trinkgeld, setTrinkgeld] = useState(0);
+  const { displayNumber } = useContext(DisplayContext);
+  const ws = useWebSocket();
 
   const handlePaymentClick = () => {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
-    const day = now.getDate().toString().padStart(2, '0');
-    const hour = now.getHours().toString().padStart(2, '0');
-    const minute = now.getMinutes().toString().padStart(2, '0');
-    const second = now.getSeconds().toString().padStart(2, '0');
-
-    const formattedTimestamp = `${year}${month}${day}_${hour}${minute}${second}`;
+    const formattedTimestamp = now
+      .toISOString()
+      .replace(/[-:]/g, '')
+      .split('.')[0]
+      .replace('T', '_');
 
     const bestellung = {
-      automatenID: null, // set by devices container
+      automatenID: null, // Set by devices container
       whichTerminal:
         displayNumber === 'front'
           ? 'front'
           : displayNumber === 'back'
             ? 'back'
             : 'unknown',
-      orderID: null, // set after payment successful
+      orderID: null, // Set after payment successful
       orderStatus: 'unpaid',
       timeStampOrder: formattedTimestamp,
-      totalPrice: getCartTotalPrice() + (Trinkgeld || 0),
-      tip: Trinkgeld || 0,
+      totalPrice: getCartTotalPrice(),
+      tip: 0,
       products: cart.map((item) => ({
-        // Directly from ProductCart
         productName: item.product.name,
         productCategory: item.productCategory,
         calculatedPrice: item.calculatedPrice,
@@ -81,17 +72,14 @@ function ShopModalStepWarenkorb({ onClose }) {
       })),
     };
 
-    console.log(bestellung); // Log the bestellung object
+    console.log(bestellung); // Log the order object
     if (ws) {
-      setPayment('processing');
-      ws.send('devices', JSON.stringify(bestellung)); // Replace 'devices' with actual target //! WICHTIG
+      setPayment('processing'); // Set payment state to processing
+      ws.send('devices', JSON.stringify(bestellung)); // Send order via WebSocket
     } else {
-      console.log('WebSocket not connected. Bestellung not aufgegeben.');
+      console.log('WebSocket not connected. Order not sent.');
     }
-    //handlePaymentWaiting();
   };
-
-  const { displayNumber } = useContext(DisplayContext);
 
   return (
     <ModalBody pt='0'>
@@ -107,44 +95,30 @@ function ShopModalStepWarenkorb({ onClose }) {
           px='5'
           pt='3'
         >
-          {/* <ScrollFade> */}
+          {/* Scrollable content */}
           <Stack overflowY='auto'>
             <VStack alignItems='flex-start'>
               <Box maxW='80%' minW='80%' width='80vw' pb='0'>
                 <Heading pb='5' variant='h1_Kiosk'>
                   Deine Bestellung
                 </Heading>
-                {/* <HStack>
-                  <Icon
-                    pr='0.1rem'
-                    boxSize='1.2rem'
-                    as={HiOutlineMagnifyingGlass}
-                  />
-                  <Text as='u' pt='0'>
-                    Allgemeine Geschäftsbedingungen
-                  </Text>
-                </HStack> */}
               </Box>
-
               <Box>
-                {getCartTotalQuantity() === 0 && (
-                  <Box>
-                    <Text pt='4' variant='kiosk'>
-                      Dein Warenkorb ist leer. Füge Artikel hinzu, um deine
-                      Bestellung aufzugeben.
-                    </Text>
-                  </Box>
-                )}
-                <Box>
-                  {cart.map((item) => (
+                {getCartTotalQuantity() === 0 ? (
+                  <Text pt='4' variant='kiosk'>
+                    Dein Warenkorb ist leer. Füge Artikel hinzu, um deine
+                    Bestellung aufzugeben.
+                  </Text>
+                ) : (
+                  cart.map((item) => (
                     <ItemBestellung key={item.idCart} productCart={item} />
-                  ))}
-                </Box>
+                  ))
+                )}
               </Box>
             </VStack>
           </Stack>
-          {/* </ScrollFade> */}
           <Spacer />
+          {/* Action buttons */}
           <HStack
             alignItems='flex-end'
             w={getCartTotalQuantity() === 0 ? '98.7%' : '100%'}
@@ -160,15 +134,8 @@ function ShopModalStepWarenkorb({ onClose }) {
             >
               <Box>
                 <HStack gap='3'>
-                  <Button
-                    gap='5'
-                    variant='kiosk_pricetag_big'
-                    onClick={() => {
-                      if (getCartTotalQuantity() > 0) {
-                        setActiveStep((prevStep) => prevStep + 1);
-                      }
-                    }}
-                  >
+                  {/* Total price button */}
+                  <Button gap='5' variant='kiosk_pricetag_big'>
                     <Box>Gesamt:</Box>
                     <Box>
                       {formatPrice({
@@ -180,29 +147,22 @@ function ShopModalStepWarenkorb({ onClose }) {
               </Box>
               <Spacer />
               <HStack gap='14'>
+                {/* Add items button */}
                 <Box transform='translateY(-0.4rem) translateX(0.4rem)'>
-                  <Button
-                    gap='4'
-                    variant='kiosk_rainbow_big'
-                    onClick={() => {
-                      onClose(); // Close the modal
-                    }}
-                  >
+                  <Button gap='4' variant='kiosk_rainbow_big' onClick={onClose}>
                     Artikel hinzufügen
                     <Icon boxSize='2.5rem' as={FaPlus} />
                   </Button>
                 </Box>
-
+                {/* Proceed to checkout button */}
                 {getCartTotalQuantity() > 0 && (
                   <Box transform='translateY(-0.4rem) translateX(0.2rem)'>
                     <Button
                       gap='5'
                       variant='kiosk_rainbow_big'
                       onClick={() => {
-                        if (getCartTotalQuantity() > 0) {
-                          setActiveStep((prevStep) => prevStep + 1);
-                          handlePaymentClick(); // Call the function on button click
-                        }
+                        handlePaymentClick(); // Send order via WebSocket
+                        setActiveStep((prevStep) => prevStep + 1); // Proceed to next step
                       }}
                     >
                       Zur Kasse

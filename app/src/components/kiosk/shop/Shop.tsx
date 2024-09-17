@@ -1,4 +1,4 @@
-// Shop. tsx
+// Shop.tsx
 
 import { ModalProductCard } from '@/components/kiosk/shop/ShopModal';
 import {
@@ -10,7 +10,6 @@ import {
   Flex,
   Grid,
   HStack,
-  Heading,
   Icon,
   Spacer,
   Stack,
@@ -19,8 +18,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   KIOSK_CATEGORY_WIDTH,
   KIOSK_CONTENT_HEIGHT,
@@ -34,18 +32,19 @@ import {
   VerticalTabsProps,
 } from '@/components/kiosk/shop/Interface';
 import { handleUmlauts } from '@/components/kiosk/shop/utils';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import {
-  AnglesRightSolid,
-  ArrowIcon,
-  ChevronsRightSharpSolid,
   ArrowRightSharpSolid,
-  XmarkSolid,
   ArrowUpSharpSolid,
+  ChevronsRightSharpSolid,
 } from '@/components/icons/icons';
+import { useStepper } from '@/providers/StepperContext';
 
-// Kategorien
-function Categories({ title, isSelected, onClick }) {
+// Memoized Categories Component
+const Categories: React.FC<{
+  title: string;
+  isSelected: boolean;
+  onClick: () => void;
+}> = React.memo(function Categories({ title, isSelected, onClick }) {
   const bgColor = useColorModeValue(
     'footerBGColor.lightMode',
     'footerBGColor.darkMode',
@@ -69,39 +68,31 @@ function Categories({ title, isSelected, onClick }) {
     'primaryHeadingColor.lightMode',
   );
 
-  const borderColorSelected = useColorModeValue('transparent', 'transparent');
+  const borderColorSelected = 'transparent';
 
   return (
     <Box
       zIndex={10}
-      //shadow={useColorModeValue('md', 'xl')}
       borderWidth='0'
-      borderRadius={isSelected ? KISOK_BORDERRADIUS : KISOK_BORDERRADIUS}
+      borderRadius={KISOK_BORDERRADIUS}
       cursor='pointer'
       bg={isSelected ? bgColorSelected : bgColor}
       borderColor={isSelected ? borderColorSelected : borderColor}
       color={isSelected ? colorSelected : color}
       onClick={onClick}
-      textAlign='left' // Align the text to the left
+      textAlign='left'
       overflow='hidden'
-      width={isSelected ? '100%' : '100%'} // ausufern
+      width='100%'
     >
       <HStack>
         <Box height='100vh' overflow='hidden' position='relative' zIndex='5'>
-          {/* Wrap the image and heading in a container to overlap */}
           <Box
             width='500px'
             height='500px'
             position='relative'
             overflow='hidden'
           >
-            <Box
-              position='absolute' // Make the heading absolutely positioned
-              top='0' // Align it to the top of the image (adjust as needed)
-              left='0' // Align to the left of the image
-              p='3'
-              zIndex='10'
-            >
+            <Box position='absolute' top='0' left='0' p='3' zIndex='10'>
               <Button
                 variant={
                   isSelected
@@ -118,7 +109,6 @@ function Categories({ title, isSelected, onClick }) {
                     as={ArrowRightSharpSolid}
                     color='primaryHeadingColor.darkMode'
                   />
-                  {/* This is for when isSelected is true */}
                 </Box>
               ) : (
                 <Box position='absolute' top='100%' left='10%' zIndex='10'>
@@ -127,19 +117,16 @@ function Categories({ title, isSelected, onClick }) {
                     as={ArrowUpSharpSolid}
                     color='primaryHeadingColor.darkMode'
                   />
-                  {/* This is for when isSelected is false */}
                 </Box>
               )}
             </Box>
-            {/* Image behind the heading */}
             <Image
               src={`/kiosk/products/images/${handleUmlauts(title)}.jpg`}
               width={500}
               height={500}
               alt={title}
               style={{
-                //transform: 'scale(2.2)', // Zoom in by 2.5x
-                transformOrigin: '50% 110%', // Adjust the focus
+                transformOrigin: '50% 110%',
                 objectFit: 'cover',
               }}
             />
@@ -148,7 +135,7 @@ function Categories({ title, isSelected, onClick }) {
       </HStack>
     </Box>
   );
-}
+});
 
 type MainProps = {
   products: Product[];
@@ -156,55 +143,46 @@ type MainProps = {
   category: Category;
 };
 
-const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
+const MainComponent: React.FC<MainProps> = ({
+  category,
+  products,
+  formatPrice,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );
-  const [productIndex, setProductIndex] = useState(0); // State to track the index of the current product slice
+  const [productIndex, setProductIndex] = useState(0);
 
-  const handleOpen = (product: Product, category: Category) => {
-    setSelectedProduct(product);
-    setSelectedCategory(category);
-    onOpen();
-  };
-  const handleNext = () => {
-    const nextIndex = productIndex + 5;
-    // If the next index exceeds the length of the products, reset to the beginning
-    if (nextIndex >= products.length) {
-      setProductIndex(0); // Start from the beginning
-    } else {
-      setProductIndex(nextIndex); // Otherwise, move to the next set
-    }
-  };
+  const { setActiveStep } = useStepper();
 
-  const handlePrev = () => {
-    const prevIndex = productIndex - 5;
-    if (prevIndex < 0) {
-      setProductIndex(Math.max(0, products.length - 5));
-    } else {
-      setProductIndex(prevIndex);
-    }
-  };
-
-  const handleReset = () => {
-    setProductIndex(0); // Resets to the beginning of the list
-  };
-
-  const cardBGColor = useColorModeValue(
-    'footerBGColor.lightMode',
-    'footerBGColor.darkMode',
+  const handleOpen = useCallback(
+    (product: Product) => {
+      setSelectedProduct(product);
+      setSelectedCategory(category);
+      setActiveStep(0); // Reset the activeStep to 0 when opening the modal
+      onOpen();
+    },
+    [category, onOpen, setActiveStep],
   );
+
+  const handleNext = useCallback(() => {
+    setProductIndex((prevIndex) => {
+      const nextIndex = prevIndex + 5;
+      return nextIndex >= products.length ? 0 : nextIndex;
+    });
+  }, [products.length]);
+
   const cardFontColor = useColorModeValue(
     'primaryFontColor.lightMode',
     'primaryFontColor.darkMode',
   );
 
-  const displayedProducts = products.slice(productIndex, productIndex + 5);
-  const showMoreIndicator = products.length > productIndex + 5;
-  const showPrevIndicator = productIndex > 0;
-  const atEndOfList = productIndex + 5 >= products.length;
+  const displayedProducts = useMemo(
+    () => products.slice(productIndex, productIndex + 5),
+    [products, productIndex],
+  );
 
   return (
     <Grid
@@ -215,7 +193,7 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
     >
       {displayedProducts.map((product) => (
         <Card
-          onClick={() => handleOpen(product, category)}
+          onClick={() => handleOpen(product)}
           key={product.name}
           borderRadius={KISOK_BORDERRADIUS}
           color={cardFontColor}
@@ -225,8 +203,8 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
           cursor='pointer'
         >
           <Image
-            alt={`${product.name}`}
-            fill={true}
+            alt={product.name}
+            fill
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             style={{ objectFit: 'cover' }}
             src={`/kiosk/products/images/${handleUmlauts(product.name)}.jpg`}
@@ -242,12 +220,10 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
             zIndex='10'
             pb='3'
             pr='3'
-            style={{
-              position: 'absolute',
-              bottom: '0',
-              right: '0',
-              width: '100%',
-            }}
+            position='absolute'
+            bottom='0'
+            right='0'
+            width='100%'
           >
             <Flex width='100%' justifyContent='flex-end'>
               <Button variant='kiosk_pricetag_small' color={cardFontColor}>
@@ -258,25 +234,34 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
         </Card>
       ))}
 
-      <Flex justifyContent='center' alignItems='center'>
-        {products.length > 5 && (
+      {products.length > 5 && (
+        <Flex justifyContent='center' alignItems='center'>
           <Button gap='5' variant='kiosk_rainbow_big' onClick={handleNext}>
             Weitere
             <Icon boxSize='2.5rem' as={ChevronsRightSharpSolid} />
           </Button>
-        )}
-      </Flex>
+        </Flex>
+      )}
 
-      <ModalProductCard
-        isOpen={isOpen}
-        onClose={onClose}
-        selectedProduct={selectedProduct}
-        selectedCategory={selectedCategory}
-        formatPrice={formatPrice}
-      />
+      {selectedProduct && selectedCategory && (
+        <ModalProductCard
+          isOpen={isOpen}
+          onClose={() => {
+            onClose();
+            setSelectedProduct(null);
+            setSelectedCategory(null);
+          }}
+          selectedProduct={selectedProduct}
+          selectedCategory={selectedCategory}
+          formatPrice={formatPrice}
+        />
+      )}
     </Grid>
   );
 };
+
+// Wrap MainComponent with React.memo
+const Main = React.memo(MainComponent);
 
 // SHOP
 export const Shop: React.FC<VerticalTabsProps> = ({
@@ -284,15 +269,22 @@ export const Shop: React.FC<VerticalTabsProps> = ({
   country,
   currency,
 }) => {
-  const [selectedTab, setSelectedTab] = React.useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  // Format the price
-  const formatPrice = (price: number) =>
-    new Intl.NumberFormat(country, { style: 'currency', currency }).format(
-      price,
-    );
+  // Memoize the price formatter
+  const priceFormatter = useMemo(
+    () => new Intl.NumberFormat(country, { style: 'currency', currency }),
+    [country, currency],
+  );
 
-  const { i18n } = useTranslation();
+  const formatPrice = useCallback(
+    (price: number) => priceFormatter.format(price),
+    [priceFormatter],
+  );
+
+  const handleCategoryClick = useCallback((index: number) => {
+    setSelectedTab(index);
+  }, []);
 
   return (
     <Flex>
@@ -321,7 +313,7 @@ export const Shop: React.FC<VerticalTabsProps> = ({
             key={category.name}
             title={category.name}
             isSelected={selectedTab === index}
-            onClick={() => setSelectedTab(index)} // Simply update the selected category
+            onClick={() => handleCategoryClick(index)}
           />
         ))}
         <Spacer />
@@ -333,9 +325,7 @@ export const Shop: React.FC<VerticalTabsProps> = ({
         pr='3'
         pb='3'
         overflowY='auto'
-        css={{
-          width: `calc(100vw - ${KIOSK_CATEGORY_WIDTH})`,
-        }}
+        width={`calc(100vw - ${KIOSK_CATEGORY_WIDTH})`}
         height={KIOSK_CONTENT_HEIGHT}
         bgColor={useColorModeValue(
           'footerBGColor.lightMode',
@@ -346,9 +336,8 @@ export const Shop: React.FC<VerticalTabsProps> = ({
           'primaryFontColor.darkMode',
         )}
       >
-        {/* The key prop ensures a re-render, resetting the state */}
         <Main
-          key={selectedTab} // This will reset the component when a new category is selected
+          key={selectedTab}
           products={data[selectedTab].products}
           formatPrice={formatPrice}
           category={data[selectedTab]}
@@ -357,3 +346,5 @@ export const Shop: React.FC<VerticalTabsProps> = ({
     </Flex>
   );
 };
+
+export default Shop;

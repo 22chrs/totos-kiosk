@@ -6,7 +6,7 @@ import {
   useColorModeValue,
   useNumberInput,
 } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
 import { useCart } from '@/providers/CardContext';
@@ -22,8 +22,6 @@ export const PlusMinus: React.FC<PlusMinusProps> = ({ productCart }) => {
 
   const min = 1;
   const max = 16;
-  const [isAtMin, setIsAtMin] = useState(false);
-  const [isAtMax, setIsAtMax] = useState(false);
 
   const {
     getInputProps,
@@ -38,11 +36,10 @@ export const PlusMinus: React.FC<PlusMinusProps> = ({ productCart }) => {
     precision: 0,
   });
 
-  useEffect(() => {
-    const numValue = Number(value);
-    setIsAtMin(numValue <= min);
-    setIsAtMax(numValue >= max);
-  }, [value, min, max]);
+  // Compute isAtMin and isAtMax directly based on the current value
+  const numValue = Number(value);
+  const isAtMin = numValue <= min;
+  const isAtMax = numValue >= max;
 
   const updateItemInCartRef = useRef(updateItemInCart);
   const idCartRef = useRef(productCart.idCart);
@@ -55,8 +52,8 @@ export const PlusMinus: React.FC<PlusMinusProps> = ({ productCart }) => {
 
   useEffect(() => {
     // Use the current value from the refs
-    updateItemInCartRef.current(idCartRef.current, { quantity: Number(value) });
-  }, [value]);
+    updateItemInCartRef.current(idCartRef.current, { quantity: numValue });
+  }, [numValue]);
 
   const inc = getIncrementButtonProps();
   const dec = getDecrementButtonProps();

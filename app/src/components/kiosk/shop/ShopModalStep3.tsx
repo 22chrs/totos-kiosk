@@ -1,29 +1,13 @@
-// waiting / idle
-// processing
-// success // error payment // error robot
-
-import {
-  ArrowDownSharpSolid,
-  CircleCheckSharpRegular,
-  CircleCheckSharpSolid,
-  ShieldCheckSharpSolid,
-} from '@/components/icons/icons';
-
-import {
-  PaymentImagesFooterIcon,
-  PaymentImagesFooterIconWhiteBG,
-} from '@/components/images/PaymentImages';
-import { formatPrice } from '@/components/kiosk/shop/utils';
-import { addNewOrder } from '@/firebase/dbFunctionsBestellungen';
-import i18n, { standardSprache } from '@/internationalization/i18n';
-import { useCart } from '@/providers/CardContext';
-import { useContext } from 'react';
-import { DisplayContext } from '@/providers/DisplayContext';
-import { useRouter } from '@/providers/DisplayContext';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from 'react';
 import {
   Box,
   Button,
-  Flex,
   HStack,
   Heading,
   Icon,
@@ -36,11 +20,22 @@ import {
   keyframes,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
-
+import {
+  ArrowDownSharpSolid,
+  CircleCheckSharpRegular,
+  CircleCheckSharpSolid,
+  ShieldCheckSharpSolid,
+} from '@/components/icons/icons';
+import { PaymentImagesFooterIconWhiteBG } from '@/components/images/PaymentImages';
+import { formatPrice } from '@/components/kiosk/shop/utils';
+import i18n, { standardSprache } from '@/internationalization/i18n';
+import { useCart } from '@/providers/CardContext';
+import { DisplayContext } from '@/providers/DisplayContext';
+import { useRouter } from '@/providers/DisplayContext';
 import shopData from '@/public/kiosk/products/leipzig.json';
 import { useWebSocket } from '@/websocket/WebSocketContext';
+import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
+
 const automatenID = shopData.automatenID;
 
 const blink = keyframes`
@@ -51,7 +46,155 @@ const blink = keyframes`
 
 const Video = chakra('video');
 
-let paymentErrorTimeout;
+function TipSection({ onTipSelected, payment }) {
+  const [showTrinkgeld, setShowTrinkgeld] = useState(false);
+  const [showTrinkgeldYes, setShowTrinkgeldYes] = useState(false);
+  const [showTrinkgeldDanke, setShowTrinkgeldDanke] = useState(false);
+  const [showTrinkgeldAgain, setShowTrinkgeldAgain] = useState(true);
+
+  const bgColorTrinkgeld = useColorModeValue(
+    'pageBGColor.lightMode',
+    'pageBGColor.darkMode',
+  );
+
+  useEffect(() => {
+    if (showTrinkgeldAgain && payment === 'processing') {
+      const timer = setTimeout(() => {
+        setShowTrinkgeld(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [payment, showTrinkgeldAgain]);
+
+  return (
+    <>
+      {payment === 'processing' && (
+        <Box zIndex='10'>
+          {showTrinkgeld && (
+            <Box
+              width='fit-content'
+              gap='5'
+              px='5'
+              py='4'
+              rounded='xl'
+              bgColor={bgColorTrinkgeld}
+            >
+              <HStack gap='2'>
+                <Text variant='kiosk' p='0' pr='5'>
+                  Möchtest du Toto Trinkgeld geben?
+                </Text>
+                <HStack gap='5'>
+                  <Button
+                    variant='solid'
+                    colorScheme='blue'
+                    px='4'
+                    onClick={() => {
+                      setShowTrinkgeld(false);
+                      setShowTrinkgeldYes(true);
+                    }}
+                  >
+                    Ja!
+                  </Button>
+                  <Button
+                    variant='outline'
+                    colorScheme='blue'
+                    px='4'
+                    onClick={() => {
+                      setShowTrinkgeld(false);
+                      setShowTrinkgeldAgain(false);
+                    }}
+                  >
+                    Nein.
+                  </Button>
+                </HStack>
+              </HStack>
+            </Box>
+          )}
+          {showTrinkgeldYes && (
+            <Box
+              gap='5'
+              px='5'
+              py='4'
+              rounded='xl'
+              bgColor={bgColorTrinkgeld}
+              width='fit-content'
+            >
+              <HStack gap='2'>
+                <Text variant='kiosk' p='0' pr='3'>
+                  Trinkgeld für Toto:
+                </Text>
+                <Button
+                  variant='outline'
+                  colorScheme='purple'
+                  px='5'
+                  onClick={() => {
+                    onTipSelected(0.5);
+                    setShowTrinkgeldYes(false);
+                    setShowTrinkgeldDanke(true);
+                  }}
+                >
+                  0,50 €
+                </Button>
+                <Button
+                  variant='outline'
+                  colorScheme='purple'
+                  px='5'
+                  onClick={() => {
+                    onTipSelected(1);
+                    setShowTrinkgeldYes(false);
+                    setShowTrinkgeldDanke(true);
+                  }}
+                >
+                  1 €
+                </Button>
+                <Button
+                  variant='outline'
+                  colorScheme='purple'
+                  px='5'
+                  onClick={() => {
+                    onTipSelected(2);
+                    setShowTrinkgeldYes(false);
+                    setShowTrinkgeldDanke(true);
+                  }}
+                >
+                  2 €
+                </Button>
+                <Button
+                  variant='outline'
+                  colorScheme='purple'
+                  px='5'
+                  onClick={() => {
+                    onTipSelected(0);
+                    setShowTrinkgeldYes(false);
+                    setShowTrinkgeldAgain(false);
+                  }}
+                >
+                  Kein Trinkgeld
+                </Button>
+              </HStack>
+            </Box>
+          )}
+          {showTrinkgeldDanke && (
+            <Box
+              gap='5'
+              px='5'
+              py='4'
+              rounded='xl'
+              bgColor={bgColorTrinkgeld}
+              width='fit-content'
+            >
+              <HStack gap='2'>
+                <Text variant='kiosk' p='0'>
+                  Danke für Dein Trinkgeld!
+                </Text>
+              </HStack>
+            </Box>
+          )}
+        </Box>
+      )}
+    </>
+  );
+}
 
 function ShopModalStep3({ onClose }) {
   const {
@@ -60,42 +203,142 @@ function ShopModalStep3({ onClose }) {
     getCartTotalPfand,
     clearCart,
     payment,
-    bestellung,
     setPayment,
   } = useCart();
-
+  const { displayNumber } = useContext(DisplayContext);
   const ws = useWebSocket();
-
   const router = useRouter();
 
   const [countdown, setCountdown] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
+  const [Trinkgeld, setTrinkgeld] = useState(0);
+
+  const paymentErrorTimeout = useRef(null);
+  const paymentSuccessTimer = useRef(null);
+  const paymentSuccessTimeout = useRef(null);
+
+  const bgColorTrinkgeld = useColorModeValue(
+    'pageBGColor.lightMode',
+    'pageBGColor.darkMode',
+  );
+
+  const handleTipSelected = (amount) => {
+    setTrinkgeld(amount);
+  };
+
+  const handlePaymentError = useCallback(
+    (errorCode) => {
+      let errorMessage;
+
+      switch (errorCode) {
+        case '6c':
+          errorMessage = 'Invalid card details';
+          break;
+        case '51':
+          errorMessage = 'Insufficient funds';
+          break;
+        case '91':
+          errorMessage = 'Issuer unavailable';
+          break;
+        case 'timeout':
+          errorMessage = 'Payment timed out. Please try again.';
+          break;
+        default:
+          errorMessage = `Unknown error occurred. Code: ${errorCode}`;
+      }
+
+      setErrorCode(errorMessage);
+      setPayment('error');
+      console.error(`Payment Error (${errorCode}): ${errorMessage}`);
+    },
+    [setErrorCode, setPayment],
+  );
+
+  const handlePaymentFinished = useCallback(async () => {
+    clearCart();
+    onClose();
+    i18n.changeLanguage(standardSprache);
+    router.pushWithDisplay('/');
+    setPayment('idle');
+  }, [clearCart, onClose, router, setPayment]);
+
+  const handlePaymentSuccess = useCallback(() => {
+    if (paymentErrorTimeout.current) {
+      clearTimeout(paymentErrorTimeout.current);
+    }
+    setPayment('success');
+    setCountdown(10);
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    const timeout = setTimeout(() => {
+      clearInterval(timer);
+      handlePaymentFinished();
+    }, 10000);
+
+    paymentSuccessTimer.current = timer;
+    paymentSuccessTimeout.current = timeout;
+  }, [handlePaymentFinished, setPayment]);
+
+  const handleMessage = useCallback(
+    (data) => {
+      if (data.Payment && data.Payment === '00') {
+        handlePaymentSuccess();
+      } else if (data.Payment) {
+        const errorCode = data.Payment;
+        handlePaymentError(errorCode);
+      }
+    },
+    [handlePaymentError, handlePaymentSuccess],
+  );
+
+  useEffect(() => {
+    if (ws) {
+      ws.handleMessage(handleMessage);
+      return () => {
+        ws.removeEventListener('message', handleMessage);
+      };
+    }
+  }, [ws, handleMessage]);
+
+  useEffect(() => {
+    return () => {
+      if (paymentErrorTimeout.current) {
+        clearTimeout(paymentErrorTimeout.current);
+      }
+      if (paymentSuccessTimer.current) {
+        clearInterval(paymentSuccessTimer.current);
+      }
+      if (paymentSuccessTimeout.current) {
+        clearTimeout(paymentSuccessTimeout.current);
+      }
+    };
+  }, []);
 
   const handlePaymentClick = () => {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
-    const day = now.getDate().toString().padStart(2, '0');
-    const hour = now.getHours().toString().padStart(2, '0');
-    const minute = now.getMinutes().toString().padStart(2, '0');
-    const second = now.getSeconds().toString().padStart(2, '0');
-
-    const formattedTimestamp = `${year}${month}${day}_${hour}${minute}${second}`;
+    const formattedTimestamp = now
+      .toISOString()
+      .replace(/[-:]/g, '')
+      .split('.')[0]
+      .replace('T', '_');
 
     const bestellung = {
-      automatenID: null, // set by devices container
+      automatenID: automatenID || null,
       whichTerminal:
         displayNumber === 'front'
           ? 'front'
           : displayNumber === 'back'
             ? 'back'
             : 'unknown',
-      orderID: null, // set after payment successful
+      orderID: null,
       orderStatus: 'unpaid',
       timeStampOrder: formattedTimestamp,
       totalPrice: getCartTotalPrice() + (Trinkgeld || 0),
       tip: Trinkgeld || 0,
       products: cart.map((item) => ({
-        // Directly from ProductCart
         productName: item.product.name,
         productCategory: item.productCategory,
         calculatedPrice: item.calculatedPrice,
@@ -109,159 +352,24 @@ function ShopModalStep3({ onClose }) {
       })),
     };
 
-    console.log(bestellung); // Log the bestellung object
+    console.log(bestellung);
     if (ws) {
-      ws.send('devices', JSON.stringify(bestellung)); // Replace 'devices' with actual target
+      ws.send('devices', JSON.stringify(bestellung));
     } else {
       console.log('WebSocket not connected. Bestellung not aufgegeben.');
     }
   };
 
-  const handlePaymentWaiting = () => {
-    //setShowTrinkgeld(false);
-    //setShowTrinkgeldYes(false);
-    console.log('CLICK');
-    setPayment('idle');
-
-    paymentErrorTimeout = setTimeout(() => {
-      handlePaymentError();
-    }, 3000);
-  };
-
-  const handlePaymentSuccess = () => {
-    clearTimeout(paymentErrorTimeout); // Add this line to clear the timeout
-    setShowTrinkgeld(false);
-    setShowTrinkgeldYes(false);
-    setShowTrinkgeldDanke(false);
-    setPayment('success');
-    setCountdown(10);
-
-    const timer = setInterval(() => {
-      setCountdown((countdown) => countdown - 1);
-    }, 1000);
-
-    setTimeout(() => {
-      clearInterval(timer);
-      handlePaymentFinished();
-    }, 9800);
-
-    return () => {
-      clearInterval(timer);
-    };
-  };
-
-  const [errorCode, setErrorCode] = useState(null);
-
-  useEffect(() => {
-    if (ws) {
-      const handleMessage = (data) => {
-        if (data.Payment && data.Payment === '00') {
-          setPayment('success');
-          handlePaymentSuccess(); // Handle success
-        } else if (data.Payment) {
-          const errorCode = data.Payment;
-          handlePaymentError(errorCode); // Handle different error codes
-        }
-      };
-      const handlePaymentError = (errorCode) => {
-        let errorMessage;
-
-        switch (errorCode) {
-          case '6c':
-            errorMessage = 'Invalid card details';
-            break;
-          case '51':
-            errorMessage = 'Insufficient funds';
-            break;
-          case '91':
-            errorMessage = 'Issuer unavailable';
-            break;
-          default:
-            errorMessage = `Unknown error occurred. Code: ${errorCode}`;
-        }
-
-        setErrorCode(errorMessage);
-        setPayment('error');
-        console.error(`Payment Error (${errorCode}): ${errorMessage}`);
-      };
-
-      ws.handleMessage(handleMessage);
-
-      // Cleanup WebSocket listener
-      return () => {
-        ws.removeEventListener('message', handleMessage);
-      };
-    }
-  }, [ws, setPayment]);
-
-  const handlePaymentFinished = async () => {
-    //const orderData = bestellung('success');
-    //await addNewOrder(automatenID, orderData); //! FIREBIRD BASE
-    clearCart();
-    onClose();
-    i18n.changeLanguage(standardSprache);
-    router.pushWithDisplay('/');
-    setPayment('idle');
-  };
-
-  const handlePaymentError = () => {
-    setPayment('error');
-    setTimeout(() => {
-      handlePaymentAgain();
-    }, 8000);
-  };
-
-  const handlePaymentAgain = () => {
+  const startPaymentProcess = () => {
+    console.log('Starting payment process');
     setPayment('processing');
-    setShowTrinkgeldAgain(false);
+
+    handlePaymentClick();
+
+    paymentErrorTimeout.current = setTimeout(() => {
+      handlePaymentError('timeout');
+    }, 30000);
   };
-
-  const [Trinkgeld, setTrinkgeld] = useState(0);
-
-  const [showTrinkgeld, setShowTrinkgeld] = useState(false); //! ### geändert
-  const [showTrinkgeldYes, setShowTrinkgeldYes] = useState(false);
-  const [showTrinkgeldDanke, setShowTrinkgeldDanke] = useState(false);
-
-  const [showTrinkgeldAgain, setShowTrinkgeldAgain] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (showTrinkgeldAgain === true) {
-        if (payment === 'waiting') {
-          setShowTrinkgeld(true);
-        }
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [payment, showTrinkgeldAgain]);
-
-  const bgColorTrinkgeld = useColorModeValue(
-    'pageBGColor.lightMode',
-    'pageBGColor.darkMode',
-  );
-
-  const primaryHeadingColor = useColorModeValue(
-    'primaryHeadingColor.lightMode',
-    'primaryHeadingColor.darkMode',
-  );
-
-  const calculateItemPfand = (item) => {
-    let pfand = 0;
-    if (item.choosenMug === 'mehrwegVariable') {
-      pfand += 1; // 1 Euro Pfand per item
-      if (item.choosenLid === 'inklusiveDeckel') {
-        pfand += 1; // 1 Euro Pfand per item
-      }
-    }
-    // Add additional Pfand calculations here if necessary
-    return pfand;
-  };
-
-  const requiresPfand = cart.some(
-    (item) => item.choosenMug === 'mehrwegVariable',
-  );
-
-  const { displayNumber } = useContext(DisplayContext);
 
   return (
     <ModalBody p='0'>
@@ -275,7 +383,6 @@ function ShopModalStep3({ onClose }) {
           py='0'
           height={KIOSK_HEIGHTCONTENT_MODAL}
         >
-          {/* <ScrollFade> */}
           <Stack overflowY='hidden'>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
@@ -285,12 +392,8 @@ function ShopModalStep3({ onClose }) {
                   </Heading>
 
                   <Box>
-                    <Icon
-                      pr='0.1rem'
-                      boxSize='1.2rem'
-                      as={ShieldCheckSharpSolid}
-                    />
-                    <Text as='u' pt='0'>
+                    <Icon boxSize='1.2rem' as={ShieldCheckSharpSolid} />
+                    <Text as='u' pt='0' pl='3'>
                       Kontaktlos und sicher.
                     </Text>
                   </Box>
@@ -312,7 +415,6 @@ function ShopModalStep3({ onClose }) {
 
                   <Spacer />
 
-                  {/* Video */}
                   {payment !== 'idle' && (
                     <Box right='12' top='16%' position='absolute'>
                       <Video
@@ -332,14 +434,7 @@ function ShopModalStep3({ onClose }) {
             </VStack>
           </Stack>
           {payment === 'success' && (
-            <Box
-              gap='5'
-              px='6'
-              py='4'
-              rounded='xl'
-              bgColor={bgColorTrinkgeld}
-              //transform='translateY(-0.4rem) translateX(-0.3rem)'
-            >
+            <Box gap='5' px='6' py='4' rounded='xl' bgColor={bgColorTrinkgeld}>
               <HStack gap='6'>
                 <Icon boxSize='2rem' as={CircleCheckSharpRegular} />
                 <Text variant='kiosk' p='0'>
@@ -349,136 +444,10 @@ function ShopModalStep3({ onClose }) {
               </HStack>
             </Box>
           )}
-          {/* </ScrollFade> */}
           <Spacer />
-          {payment === 'processing' && (
-            <Box>
-              <Box>
-                {showTrinkgeld && (
-                  <Box
-                    //maxW='80%'
-                    width='fit-content'
-                    gap='5'
-                    px='5'
-                    py='4'
-                    rounded='xl'
-                    bgColor={bgColorTrinkgeld}
 
-                    //transform='translateY(-0.4rem) translateX(-0.3rem)'
-                  >
-                    <HStack gap='2'>
-                      <Text variant='kiosk' p='0' pr='5'>
-                        Möchtest du Toto Trinkgeld geben?
-                      </Text>
-                      <HStack gap='5'>
-                        <Button
-                          variant='solid'
-                          colorScheme='blue'
-                          px='4'
-                          onClick={() => {
-                            setShowTrinkgeld(false);
-                            setShowTrinkgeldYes(true);
-                          }}
-                        >
-                          Ja!
-                        </Button>
-                        <Button
-                          variant='outline'
-                          colorScheme='blue'
-                          px='4'
-                          onClick={() => setShowTrinkgeld(false)}
-                        >
-                          Nein.
-                        </Button>
-                      </HStack>
-                    </HStack>
-                  </Box>
-                )}
-                {showTrinkgeldYes && (
-                  <Box
-                    gap='5'
-                    px='5'
-                    py='4'
-                    rounded='xl'
-                    bgColor={bgColorTrinkgeld}
-                    width='fit-content'
-                    //transform='translateY(-0.4rem) translateX(-0.3rem)'
-                  >
-                    <HStack gap='2'>
-                      <Text variant='kiosk' p='0' pr='3'>
-                        Trinkgeld für Toto:
-                      </Text>
-                      <Button
-                        variant='outline'
-                        colorScheme='purple'
-                        px='5'
-                        onClick={() => {
-                          setTrinkgeld(0.5);
-                          setShowTrinkgeldYes(false);
-                          setShowTrinkgeldDanke(true);
-                        }}
-                      >
-                        0,50 €
-                      </Button>
-                      <Button
-                        variant='outline'
-                        colorScheme='purple'
-                        px='5'
-                        onClick={() => {
-                          setTrinkgeld(1);
-                          setShowTrinkgeldYes(false);
-                          setShowTrinkgeldDanke(true);
-                        }}
-                      >
-                        1 €
-                      </Button>
-                      <Button
-                        variant='outline'
-                        colorScheme='purple'
-                        px='5'
-                        onClick={() => {
-                          setTrinkgeld(2);
-                          setShowTrinkgeldYes(false);
-                          setShowTrinkgeldDanke(true);
-                        }}
-                      >
-                        2 €
-                      </Button>
-                      <Button
-                        variant='outline'
-                        colorScheme='purple'
-                        px='5'
-                        onClick={() => {
-                          setTrinkgeld(0);
-                          setShowTrinkgeldYes(false);
-                        }}
-                      >
-                        Kein Trinkgeld
-                      </Button>
-                    </HStack>
-                  </Box>
-                )}
-
-                {showTrinkgeldDanke && (
-                  <Box
-                    gap='5'
-                    px='5'
-                    py='4'
-                    rounded='xl'
-                    bgColor={bgColorTrinkgeld}
-                    width='fit-content'
-                    //transform='translateY(-0.4rem) translateX(-0.3rem)'
-                  >
-                    <HStack gap='2'>
-                      <Text variant='kiosk' p='0'>
-                        Danke für Dein Trinkgeld!
-                      </Text>
-                    </HStack>
-                  </Box>
-                )}
-              </Box>
-            </Box>
-          )}
+          {/* Tip Section */}
+          <TipSection onTipSelected={handleTipSelected} payment={payment} />
 
           <HStack alignItems='flex-end' w='100%' pb='8'>
             <HStack
@@ -493,41 +462,42 @@ function ShopModalStep3({ onClose }) {
                   gap='5'
                   transform='translateY(0.8rem) translateX(0)'
                 >
-                  <>
-                    {payment !== 'success' ? (
-                      <>
-                        <Button
-                          onClick={handlePaymentWaiting}
-                          gap='5'
-                          variant='kiosk_pricetag_big'
-                        >
-                          <Box>Gesamt:</Box>
-                          <Box>
-                            {formatPrice({
-                              amount: getCartTotalPrice() + getCartTotalPfand(),
-                            })}
-                          </Box>
-                        </Button>
-
-                        {Trinkgeld > 0 && (
-                          <>
-                            <Heading variant='h1_Kiosk'>+</Heading>
-                            <Button gap='5' variant='kiosk_pricetag_big'>
-                              {formatPrice({
-                                amount: Trinkgeld,
-                              })}{' '}
-                              Trinkgeld
-                            </Button>
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <Button gap='5' variant='kiosk_pricetag_big'>
-                        <Icon boxSize='2.5rem' as={CircleCheckSharpSolid} />
-                        Zahlung erfolgreich
+                  {payment !== 'success' ? (
+                    <>
+                      <Button
+                        onClick={startPaymentProcess}
+                        gap='5'
+                        variant='kiosk_pricetag_big'
+                      >
+                        <Box>Gesamt:</Box>
+                        <Box>
+                          {formatPrice({
+                            amount:
+                              getCartTotalPrice() +
+                              getCartTotalPfand() +
+                              Trinkgeld,
+                          })}
+                        </Box>
                       </Button>
-                    )}
-                  </>
+
+                      {Trinkgeld > 0 && (
+                        <>
+                          <Heading variant='h1_Kiosk'>+</Heading>
+                          <Button gap='5' variant='kiosk_pricetag_big'>
+                            {formatPrice({
+                              amount: Trinkgeld,
+                            })}{' '}
+                            Trinkgeld
+                          </Button>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <Button gap='5' variant='kiosk_pricetag_big'>
+                      <Icon boxSize='2.5rem' as={CircleCheckSharpSolid} />
+                      Zahlung erfolgreich
+                    </Button>
+                  )}
                 </HStack>
               </Box>
               <Spacer />
@@ -548,7 +518,7 @@ function ShopModalStep3({ onClose }) {
           <Icon
             boxSize='20rem'
             as={ArrowDownSharpSolid}
-            animation={`${blink} 1s infinite`} // Apply the blink animation
+            animation={`${blink} 1s infinite`}
           />
         </Box>
       )}
