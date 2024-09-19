@@ -30,8 +30,11 @@ def check_ip(ip):
         return False
 
 # Global variables
-paymentTerminalIP_Front = "192.168.68.201" if check_ip("192.168.68.201") else "192.168.1.201"
-paymentTerminalIP_Back = "192.168.68.202" if check_ip("192.168.68.202") else "192.168.1.202"
+#paymentTerminalIP_Front = "192.168.68.201" if check_ip("192.168.68.201") else "192.168.1.201"
+#paymentTerminalIP_Back = "192.168.68.202" if check_ip("192.168.68.202") else "192.168.1.202"
+
+paymentTerminalIP_Front = "192.168.68.201"
+paymentTerminalIP_Back = "192.168.68.202"
 #paymentTerminalIP_Front = "192.168.1.201"
 #paymentTerminalIP_Back = "192.168.1.202"
 
@@ -56,7 +59,7 @@ async def run_scheduled_payment_jobs():
 
 # WebSocket message handler
 async def handle_order(websocket, message, client_alias, clients, host_name):
-    payment_style = "reservation" #! "reservation" for reservation or "auth" for direct pay
+    payment_style = "auth" #! "reservation" for reservation or "auth" for direct pay
     global order_details
     try:
         outer_data = json.loads(message)
