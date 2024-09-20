@@ -105,7 +105,7 @@ function Categories({ title, isSelected, onClick }) {
               <Button
                 variant={
                   isSelected
-                    ? 'kiosk_categoryTagSelected'
+                    ? 'kiosk_categoryTagAselected' //! ### kiosk_categoryTagSelected
                     : 'kiosk_categoryTagAselected'
                 }
               >
@@ -116,7 +116,7 @@ function Categories({ title, isSelected, onClick }) {
                   <Icon
                     fontSize='8rem'
                     as={ArrowRightSharpSolid}
-                    color='primaryHeadingColor.darkMode'
+                    color='primaryHeadingColor.lightMode'
                   />
                   {/* This is for when isSelected is true */}
                 </Box>
@@ -141,6 +141,7 @@ function Categories({ title, isSelected, onClick }) {
                 //transform: 'scale(2.2)', // Zoom in by 2.5x
                 transformOrigin: '50% 110%', // Adjust the focus
                 objectFit: 'cover',
+                opacity: 0.3, //! ###
               }}
             />
           </Box>

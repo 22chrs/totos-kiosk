@@ -2820,3 +2820,105 @@
 <-PT|         Vorgang nicht möglich          |
 <-PT|          ####################          |
 ----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|         Kartenzahlung girocard         |
+<-PT||
+<-PT|20.09.2024                 00:56:26 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000585|
+<-PT|Beleg-Nr.:                          0106|
+<-PT|Vorgangs-Nr.:                       0554|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000008001//A000000359/1F0302/         |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 1,00|
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|  TCP/IP: Verbindung wurde unerwartet   |
+<-PT|              geschlossen               |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|         Kartenzahlung girocard         |
+<-PT||
+<-PT|20.09.2024                 00:56:26 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000585|
+<-PT|Beleg-Nr.:                          0106|
+<-PT|Vorgangs-Nr.:                       0554|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000008001//A000000359/1F0302/         |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 1,00|
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|         Kartenzahlung girocard         |
+<-PT||
+<-PT|20.09.2024                 02:29:50 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000586|
+<-PT|Beleg-Nr.:                          0106|
+<-PT|Vorgangs-Nr.:                       0555|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000008001//A000000359/1F0302/         |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 4,00|
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|  TCP/IP: Verbindung wurde unerwartet   |
+<-PT|              geschlossen               |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|         Kartenzahlung girocard         |
+<-PT||
+<-PT|20.09.2024                 02:29:50 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000586|
+<-PT|Beleg-Nr.:                          0106|
+<-PT|Vorgangs-Nr.:                       0555|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000008001//A000000359/1F0302/         |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 4,00|
+<-PT||
+<-PT|          ####################          |
+<-PT|          Vorgang abgebrochen           |
+<-PT|          ####################          |
+----------------

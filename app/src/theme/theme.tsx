@@ -110,7 +110,7 @@ const components = {
 
           borderWidth: borderWidth,
 
-          fontSize: '3xl',
+          fontSize: '2xl',
           fontWeight: '700',
 
           px: '5',
@@ -250,7 +250,7 @@ const components = {
 
           //borderWidth: borderWidth,
 
-          fontSize: '3.09rem',
+          fontSize: '3.0rem',
           fontWeight: '700',
 
           px: '2',
@@ -265,7 +265,7 @@ const components = {
       },
 
       kiosk_pricetag_medium: (props) => {
-        const borderWidth = '0.3rem';
+        const borderWidth = '0.2rem';
 
         return {
           color: mode(
@@ -300,7 +300,7 @@ const components = {
       },
 
       kiosk_pricetag_big: (props) => {
-        const borderWidth = '0.1rem';
+        const borderWidth = '0.15rem';
 
         return {
           color: mode(
@@ -505,6 +505,26 @@ const components = {
           colors.primaryHeadingColor.darkMode,
         )(props),
       }),
+
+      kiosk_pricetag_heading: (props) => {
+        const borderWidth = '0.1rem';
+
+        return {
+          color: mode(
+            colors.primaryHeadingColor.lightMode,
+            colors.primaryHeadingColor.darkMode,
+          )(props),
+
+          bgColor: mode(
+            colors.footerBGColor.lightMode,
+            colors.footerBGColor.darkMode,
+          )(props),
+
+          fontSize: '2xl',
+          fontWeight: '700',
+        };
+      },
+
       footerH1: (props) => ({
         color: mode(
           colors.footerFontColor.lightMode,
@@ -527,7 +547,7 @@ const components = {
       }),
       h2_Kiosk: (props) => ({
         as: 'h2',
-        fontSize: '4xl',
+        fontSize: '3xl',
         fontWeight: '700',
         //mb: '2',
         color: mode(

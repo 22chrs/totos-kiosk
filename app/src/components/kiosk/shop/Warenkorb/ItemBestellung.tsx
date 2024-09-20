@@ -67,19 +67,29 @@ export const ItemBestellung = ({ productCart }) => {
             </HStack>
 
             <HStack pt='1'>
-              <HStack gap='5'>
-                <HStack gap='5' transform='translateY(-0.1rem) translateX(0)'>
+              <HStack gap='2' transform='translateY(-0.1rem) translateX(0)'>
+                <HStack>
                   <Button px='3' variant='kiosk_pricetag_mini'>
                     {formatPrice({ amount: productCart.calculatedPrice })}
                   </Button>
-                  {productCart.choosenMug === 'mehrwegVariable' && (
+                </HStack>
+                {productCart.choosenMug === 'mehrwegVariable' && (
+                  <HStack>
+                    <Heading variant='h3_Kiosk' px='1'>
+                      +
+                    </Heading>
                     <Button px='3' variant='kiosk_pricetag_mini'>
                       {productCart.choosenLid === 'ohneDeckel'
-                        ? '+ 1 € Pfand'
-                        : '+ 2 € Pfand'}
+                        ? '1 € Pfand'
+                        : '2 € Pfand'}
                     </Button>
-                  )}
-                </HStack>
+                  </HStack>
+                )}
+                {productCart.quantity > 1 && (
+                  <Heading pl='2' variant='kiosk_pricetag_heading' pr='1'>
+                    p.A.
+                  </Heading>
+                )}
               </HStack>
             </HStack>
           </VStack>
@@ -88,7 +98,7 @@ export const ItemBestellung = ({ productCart }) => {
             <PlusMinus productCart={productCart} />
             <HStack gap='5'>
               <Text
-                fontSize='xl'
+                fontSize='lg'
                 as='u'
                 onClick={() => removeFromCart(productCart.idCart)}
               >
