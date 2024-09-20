@@ -10,7 +10,6 @@ import {
   Flex,
   Grid,
   HStack,
-  Heading,
   Icon,
   Spacer,
   Stack,
@@ -34,13 +33,10 @@ import {
   VerticalTabsProps,
 } from '@/components/kiosk/shop/Interface';
 import { handleUmlauts } from '@/components/kiosk/shop/utils';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+
 import {
-  AnglesRightSolid,
-  ArrowIcon,
   ChevronsRightSharpSolid,
   ArrowRightSharpSolid,
-  XmarkSolid,
   ArrowUpSharpSolid,
 } from '@/components/icons/icons';
 
@@ -116,7 +112,7 @@ function Categories({ title, isSelected, onClick }) {
                   <Icon
                     fontSize='8rem'
                     as={ArrowRightSharpSolid}
-                    color='primaryHeadingColor.lightMode'
+                    color='primaryHeadingColor.darkMode'
                   />
                   {/* This is for when isSelected is true */}
                 </Box>

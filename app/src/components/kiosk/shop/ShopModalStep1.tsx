@@ -123,7 +123,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                   object-fit='contain'
                   sizes='(max-width: 768px) 70vw, (max-width: 1200px) 50vw, 33vw'
                   style={{ objectFit: 'cover' }}
-                  src={imageSrc || '/default/path/to/image.jpg'}
+                  src={imageSrc}
                 />
               </Box>
             </Box>
