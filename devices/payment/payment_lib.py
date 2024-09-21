@@ -205,21 +205,19 @@ class PaymentTerminal:
         # Create a timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        # Retrieve the Balena device name
-        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
+        # Define the base directory and error sub-directory
+        base_dir = "Orders"
+        error_dir = os.path.join(base_dir, "ERROR")
 
-        # Define the base directory, device-specific directory, and error sub-directory
-        base_dir = "payment/receipts"
-        device_dir = os.path.join(base_dir, device_name)
-        error_dir = os.path.join(device_dir, "ERROR")
-
-        # Check if the device-specific directory exists, if not, create it
-        if not os.path.exists(device_dir):
-            os.makedirs(device_dir)
+        # Check if the base directory exists, if not, create it
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
+            print(f"Created directory: {base_dir}")
 
         # Check if the error sub-directory exists, if not, create it
         if not os.path.exists(error_dir):
             os.makedirs(error_dir)
+            print(f"Created error directory: {error_dir}")
 
         # Define the file path for the error file in the error sub-directory
         error_filename = f"{timestamp}_ERR.txt"
@@ -231,6 +229,7 @@ class PaymentTerminal:
         # Write the error message to a file in the error sub-directory
         with open(error_path, "w", encoding="utf-8") as file:
             file.write(full_error_message)
+        print(f"Error file saved to {error_path}")
 
 
 
@@ -340,9 +339,6 @@ class PaymentTerminal:
             except json.JSONDecodeError:
                 raise ValueError("Invalid JSON string in order details.")
 
-        # Set automatenID based on Balena device name or default to 'Testumgebung'
-        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
-
         # Extract products and payment information from message if present
         products = None
         payment_info = None
@@ -356,7 +352,7 @@ class PaymentTerminal:
             if 'products' in order_details['message']:
                 products = order_details['message'].pop('products')
 
-            order_details['message']['automatenID'] = device_name
+        
             order_details['message']['orderStatus'] = 'paymentReserved'
 
         if 'payment' in order_details:
@@ -380,23 +376,20 @@ class PaymentTerminal:
 
 
     def save_receipt_to_file(self, receipt_type, beleg_nr, order_details):
-        # Retrieve the Balena device name
-        device_name = os.getenv('BALENA_DEVICE_NAME_AT_INIT', 'Testumgebung')
+        # Define the base directory
+        base_dir = "Orders"
 
         # Create a timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        # Define the base directory, device-specific directory, and error sub-directory
-        base_dir = "payment/receipts"
-        device_dir = os.path.join(base_dir, device_name)
-
-        # Check if the device-specific directory exists, if not, create it
-        if not os.path.exists(device_dir):
-            os.makedirs(device_dir)
-
         # Define the file path for the receipt
         receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}.json"
-        receipt_path = os.path.join(device_dir, receipt_filename)
+        receipt_path = os.path.join(base_dir, receipt_filename)
+
+        # Check if the base directory exists, if not, create it
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
+            print(f"Created directory: {base_dir}")
 
         # Append the order details to the receipt
         receipt_content = self.format_order_details(order_details)
@@ -404,47 +397,56 @@ class PaymentTerminal:
         # Write the receipt content to a file in the chosen directory
         with open(receipt_path, "w", encoding="utf-8") as file:
             file.write(receipt_content)
+        print(f"Receipt saved to {receipt_path}")
 
 
 
-### Sperre Zahlungsfreigabe bzw sage der automat macht gerade einen Kassenschluss und kann Ihre Bestellung in 1 Minute abwickeln.
+### ! ordner updaten!!!
     def endOfDay_uploadReceipts(self):
         # First, call the end of day process
         if self.end_of_day() != 0:
             print("End of day process failed.")
             return
-        
+
         # Store the current working directory
         original_dir = os.getcwd()
 
         try:
             # Define the base directory of your receipts
-            base_dir = "payment/receipts"
+            base_dir = "Orders"
 
             # Navigate to the base directory
             os.chdir(base_dir)
+            print(f"Changed directory to {base_dir}")
 
             # Add all new files to the staging area
             subprocess.run(["git", "add", "."], check=True)
+            print("Added all files to git staging area.")
 
             # Commit the changes
             commit_message = "Upload receipts"
             subprocess.run(["git", "commit", "-m", commit_message], check=True)
+            print("Committed changes to git.")
 
             # Push to the remote repository
             push_result = subprocess.run(["git", "push"], check=True)
+            print("Pushed changes to remote repository.")
 
             # Check if push was successful
             if push_result.returncode == 0:
                 # If push was successful, delete the files
                 for file in os.listdir('.'):
-                    if file.endswith('.txt'):
+                    if file.endswith('.json') or file.endswith('.txt'):
                         os.remove(file)
+                        print(f"Deleted file: {file}")
                 print("Receipts uploaded and local files deleted.")
             else:
                 print("Failed to push to GitHub.")
+        except subprocess.CalledProcessError as e:
+            print(f"Git command failed: {e}")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"An unexpected error occurred: {e}")
         finally:
             # Revert back to the original directory
             os.chdir(original_dir)
+            print(f"Reverted back to directory: {original_dir}")
