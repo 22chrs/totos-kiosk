@@ -1,5 +1,5 @@
 websockets==13.0
 pyserial==3.5
-#pynput==1.7.6
 schedule==1.2.2
 watchdog==5.0.2
+portalocker==2.10.1

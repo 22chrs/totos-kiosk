@@ -1,9 +1,8 @@
-# orchestra.py
-
 import os
 import json
 import time
 import shutil
+import portalocker
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -25,10 +24,10 @@ class OrderHandler(FileSystemEventHandler):
         print(f"Processing new order file: {file_path}")
         with open(file_path, 'r', encoding='utf-8') as f:
             order_data = json.load(f)
-        
+
         order_details = order_data.get("Order Details", {})
         products = order_data.get("products", [])
-        
+
         # Generate function calls based on products
         function_calls = []
         for product in products:
@@ -52,7 +51,7 @@ class OrderHandler(FileSystemEventHandler):
             else:
                 print(f"Unknown product category: {product_category}")
 
-        # Append function calls to activeOrders file
+        # Append function calls to activeOrders file with file locking
         self.update_active_orders(order_details, function_calls)
 
         # Move the processed order file to handled directory
@@ -94,11 +93,17 @@ class OrderHandler(FileSystemEventHandler):
     def update_active_orders(self, order_details, function_calls):
         order_id = order_details.get("orderID")
         time_stamp_order = order_details.get("timeStampOrder")
+
+        # Use file locking when writing to the active_orders_file
         with open(self.active_orders_file, 'a', encoding='utf-8') as f:
-            f.write(f"# Order ID: {order_id}, Timestamp: {time_stamp_order}\n")
-            for call in function_calls:
-                f.write(call + '\n')
-            f.write('\n')
+            try:
+                portalocker.lock(f, portalocker.LOCK_EX)
+                f.write(f"# Order ID: {order_id}, Timestamp: {time_stamp_order}\n")
+                for call in function_calls:
+                    f.write(call + '\n')
+                f.write('\n')
+            finally:
+                portalocker.unlock(f)
 
 def start_orchestra(orders_dir='Orders', active_orders_file='activeOrders.txt', handled_dir='Orders/HandledOrders'):
     orders_dir = os.path.abspath(orders_dir)

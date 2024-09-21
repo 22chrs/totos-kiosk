@@ -1,4 +1,4 @@
-# Order ID: None, Timestamp: 20240922_000107
+# Order ID: None, Timestamp: 20240922_002525
 AskForCup('einwegVariable', '200 ml')
 ProvideMug('einwegVariable', '200 ml')
 MoveBecherschubse('LiftPosition')
@@ -13,7 +13,50 @@ else:
 OpenAusgabe()
 # All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)
 
-# Order ID: None, Timestamp: 20240922_000946
+# Order ID: None, Timestamp: 20240922_002554
+AskForCup('einwegVariable', '35 ml')
+ProvideMug('einwegVariable', '35 ml')
+MoveBecherschubse('LiftPosition')
+TotoMoveCupFromBecherkarusellToCoffeemachine('einwegVariable', '35 ml')
+prepareDrink('Expresso', '35 ml')
+TotoMoveCupFromCoffeemachineToBecherschubse('einwegVariable', '35 ml', 'front')
+MoveBecherschubseAndCloseSchleuse('Ausgabepostion', 'front')
+if SensorCheckAusgabefach('front') == True:
+    pass  # Open Ausgabe
+else:
+    ShowErrorAndSayEntschuldigung('front')
+OpenAusgabe()
+# All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)
+
+# Order ID: None, Timestamp: 20240922_002632
+AskForCup('einwegVariable', '200 ml')
+ProvideMug('einwegVariable', '200 ml')
+MoveBecherschubse('LiftPosition')
+TotoMoveCupFromBecherkarusellToCoffeemachine('einwegVariable', '200 ml')
+prepareDrink('Schwarzer Kaffee', '200 ml')
+TotoMoveCupFromCoffeemachineToBecherschubse('einwegVariable', '200 ml', 'front')
+MoveBecherschubseAndCloseSchleuse('Ausgabepostion', 'front')
+if SensorCheckAusgabefach('front') == True:
+    pass  # Open Ausgabe
+else:
+    ShowErrorAndSayEntschuldigung('front')
+OpenAusgabe()
+# All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)
+
+# Order ID: None, Timestamp: 20240922_003201
+AskForCup('einwegVariable', '200 ml')
+ProvideMug('einwegVariable', '200 ml')
+MoveBecherschubse('LiftPosition')
+TotoMoveCupFromBecherkarusellToCoffeemachine('einwegVariable', '200 ml')
+prepareDrink('Schwarzer Kaffee', '200 ml')
+TotoMoveCupFromCoffeemachineToBecherschubse('einwegVariable', '200 ml', 'front')
+MoveBecherschubseAndCloseSchleuse('Ausgabepostion', 'front')
+if SensorCheckAusgabefach('front') == True:
+    pass  # Open Ausgabe
+else:
+    ShowErrorAndSayEntschuldigung('front')
+OpenAusgabe()
+# All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)
 AskForCup('einwegVariable', '200 ml')
 ProvideMug('einwegVariable', '200 ml')
 MoveBecherschubse('LiftPosition')
