@@ -14,7 +14,8 @@ file_structure.txt
 **/*.pem
 
 ### DEVICES
-devices/payment/receipts
+devices/Orders
+devices/receipts.txt
 
 
 ### TOTO
