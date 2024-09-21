@@ -4,7 +4,7 @@
     "whichTerminal": "front",
     "orderID": null,
     "orderStatus": "paymentReserved",
-    "timeStampOrder": "20240921_232044",
+    "timeStampOrder": "20240921_233516",
     "totalPrice": 1,
     "tip": 0
   },
@@ -24,10 +24,10 @@
   ],
   "payment": {
     "status": "00",
-    "receipt_number": "116",
+    "receipt_number": "117",
     "payment_style": "reservation",
     "date": "0921",
-    "time": "23:21:31 CET",
+    "time": "23:35:59 CET",
     "amount_in_cents": 100,
     "currency": "EUR",
     "card_name": "girocard",
@@ -35,6 +35,6 @@
     "card_id": "6725904411002022103f",
     "expiry_date": "2612",
     "terminal_id": "52500038",
-    "trace": "609"
+    "trace": "611"
   }
 }
