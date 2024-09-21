@@ -326,7 +326,7 @@ class PaymentTerminal:
         order_details['payment'] = payment_details
 
         # Now call the save_receipt_to_file function
-        self.save_receipt_to_file("StatusBlock", receipt_number, order_details)
+        self.save_receipt_to_file("Order", receipt_number, order_details)
         
         return status
 

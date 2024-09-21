@@ -4,17 +4,17 @@
     "whichTerminal": "front",
     "orderID": null,
     "orderStatus": "paymentReserved",
-    "timeStampOrder": "20240922_002632",
-    "totalPrice": 1,
+    "timeStampOrder": "20240922_010137",
+    "totalPrice": 2.51,
     "tip": 0
   },
   "products": [
     {
-      "productName": "Schwarzer Kaffee",
+      "productName": "Expresso",
       "productCategory": "Kaffee",
-      "calculatedPrice": 1,
+      "calculatedPrice": 2.51,
       "vat": 0.19,
-      "choosenSize": "200 ml",
+      "choosenSize": "35 ml",
       "choosenSugar": "zero",
       "choosenMug": "einwegVariable",
       "choosenLid": "ohneDeckel",
@@ -23,18 +23,18 @@
     }
   ],
   "payment": {
-    "status": "00010000",
-    "receipt_number": "",
+    "status": "33",
+    "receipt_number": "132",
     "payment_style": "reservation",
-    "date": "",
-    "time": "",
-    "amount_in_cents": "",
+    "date": "0922",
+    "time": "01:02:18 CET",
+    "amount_in_cents": 251,
     "currency": "EUR",
-    "card_name": "",
-    "payment_type": "",
-    "card_id": "",
-    "expiry_date": "",
+    "card_name": "girocard",
+    "payment_type": "60",
+    "card_id": "6725904411002022103f",
+    "expiry_date": "2612",
     "terminal_id": "52500038",
-    "trace": ""
+    "trace": "645"
   }
 }

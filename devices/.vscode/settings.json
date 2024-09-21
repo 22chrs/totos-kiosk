@@ -1,3 +1,7 @@
 {
-    "cmake.sourceDirectory": "/Users/chris/Documents/Git/totos-kiosk/devices/zvt++"
+  "cmake.sourceDirectory": "/Users/chris/Documents/Git/totos-kiosk/devices/zvt++",
+  "files.associations": {
+    "*.orders": "plaintext",
+    "ostream": "cpp"
+  }
 }
