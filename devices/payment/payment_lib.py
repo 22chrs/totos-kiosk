@@ -1,15 +1,9 @@
 import asyncio
 import os
 import subprocess
-import re
 import json
 import datetime
 import platform
-
-###
-# Fragen
-# - Check ob Terminal alles okay ist. Welcher Befehl?
-# - Checken ob ich alle richtigen Werte gespeichert habe
 
 
 class PaymentTerminal:
@@ -52,18 +46,8 @@ class PaymentTerminal:
         # Construct the path to the executable
         executable_path = os.path.join(builds_dir, build_folder, executable_name)
 
-        return executable_path 
-    
-    async def printSysConfig(self):
-        os.chmod(self.executable_path, 0o755)
-        process = await asyncio.create_subprocess_exec(
-            self.executable_path, "printSysConfig", self.ip_address_terminal,
-            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-        )
-        await process.wait()
-        # Include additional logic as needed
-    
-    
+        return executable_path
+
     def end_of_day(self):
         # Ensure the zvt++ executable is executable
         os.chmod(self.executable_path, 0o755)
@@ -76,7 +60,6 @@ class PaymentTerminal:
 
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
-    
 
     def display_text(self, duration, ascii_string):
         # Input validation for duration and ascii_string
@@ -96,9 +79,7 @@ class PaymentTerminal:
 
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
-    
-    
-    
+
     def book_total(self, receipt_no, amount=None):
         # Input validation for receipt number and amount
         if not isinstance(receipt_no, str) or not receipt_no:
@@ -123,10 +104,9 @@ class PaymentTerminal:
         # Decode output for processing
         output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
-        # Parse the output and return the result (you can modify this based on your needs)
-        return self.save_receipts(output)
-    
-       
+        # Parse the output and return the result
+        return self.save_receipts(output, payment_style="book_total", order_details={})
+
     async def pay(self, payment_style, amount, order_details):
         #! type = reservation or auth for direct payment
         if not isinstance(amount, int) or amount < 0:
@@ -137,7 +117,7 @@ class PaymentTerminal:
 
         try:
             # Log start of payment process
-            print(f"Starting auth_payment with amount: {amount}")
+            print(f"Starting {payment_style} payment with amount: {amount}")
 
             # Running the external zvt++ program asynchronously
             process = await asyncio.create_subprocess_exec(
@@ -171,16 +151,13 @@ class PaymentTerminal:
             # Parse the output and return the result
             parsed_output = self.save_receipts(output, payment_style, order_details)
 
-
             return parsed_output
 
         except Exception as e:
-            error_message = f"Error during auth_payment: {e}"
+            error_message = f"Error during {payment_style} payment: {e}"
             print(error_message)
             self.write_error_file(error_message, self.ip_address_terminal)
             return error_message
-
-
 
     def reversal_payment_debug(self, receipt_no):
         # Input validation for receipt number
@@ -199,7 +176,6 @@ class PaymentTerminal:
 
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
-    
 
     def write_error_file(self, error_message, ip_address):
         # Create a timestamp
@@ -231,15 +207,15 @@ class PaymentTerminal:
             file.write(full_error_message)
         print(f"Error file saved to {error_path}")
 
+    def save_receipts(self, output, payment_style, order_details=None):
+        if order_details is None:
+            order_details = {}
 
-
-
-    def save_receipts(self, output, payment_style, order_details):
         # Split output into lines
         lines = output.split('\n')
 
         # Initialize variables to hold the receipts, beleg number, and payment status
-        receipt_number =""
+        receipt_number = ""
         trace = ""
         expiry_date = ""
         status = ""
@@ -251,7 +227,6 @@ class PaymentTerminal:
         amount_in_cents = ""
         card_id = ""
         payment_type = ""
-
 
         # Process each line
         for line in lines:
@@ -265,12 +240,12 @@ class PaymentTerminal:
                 status = line.split()[-1] if len(line.split()) > 0 else ""
             if "expiry_date" in clean_line:
                 expiry_date = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
-            elif "date" in clean_line:  # This ensures we don't confuse expiry_date with date
+            elif "date" in clean_line and "expiry_date" not in clean_line:
                 date = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
             if "receipt_number" in line:
                 parts = line.split()
                 if len(parts) > 1:
-                    receipt_number = parts[-1].strip()  # Safely extract the last element
+                    receipt_number = parts[-1].strip()
             if "time" in line:
                 time_str = line.split()[-1] if len(line.split()) > 0 else ""
                 if time_str:
@@ -278,32 +253,32 @@ class PaymentTerminal:
             if "tid" in line:
                 parts = line.split()
                 if len(parts) > 1:
-                    terminal_id = parts[-1].strip()  # Safely extract the last element
+                    terminal_id = parts[-1].strip()
             if "currency" in line:
                 parts = line.split()
                 if len(parts) > 1:
-                    currency_code = parts[-1].strip()  # Get the currency code
+                    currency_code = parts[-1].strip()
                     currency = "EUR" if currency_code == "978" else currency_code
             if "card_name" in line:
                 parts = line.split()
                 if len(parts) > 1:
-                    card_name = parts[-1].strip().replace('\u0000', '')  
+                    card_name = parts[-1].strip().replace('\u0000', '')
             if "amount in cent" in line:
                 parts = line.split()
                 if len(parts) > 1:
                     amount = parts[-1].strip()
                     try:
-                        amount_in_cents = int(amount)  # Since the amount is already in cents
+                        amount_in_cents = int(amount)
                     except ValueError:
                         print(f"Warning: Invalid amount format in line: {line}")
             if "pan" in line:
                 parts = line.split()
                 if len(parts) > 1:
-                    card_id = parts[-1].strip()  # Safely extract the last element
+                    card_id = parts[-1].strip()
             if "payment_type" in line:
                 parts = line.split()
                 if len(parts) > 1:
-                    payment_type = parts[-1].strip()  # Safely extract the last element
+                    payment_type = parts[-1].strip()
 
         # Create a dictionary for payment details
         payment_details = {
@@ -327,9 +302,8 @@ class PaymentTerminal:
 
         # Now call the save_receipt_to_file function
         self.save_receipt_to_file("Order", receipt_number, order_details)
-        
-        return status
 
+        return status
 
     def format_order_details(self, order_details):
         # Check if order_details is a string and convert it to a dictionary
@@ -352,7 +326,6 @@ class PaymentTerminal:
             if 'products' in order_details['message']:
                 products = order_details['message'].pop('products')
 
-        
             order_details['message']['orderStatus'] = 'paymentReserved'
 
         if 'payment' in order_details:
@@ -371,9 +344,6 @@ class PaymentTerminal:
         formatted_details = json.dumps(new_order_details, indent=2, separators=(',', ': '))
 
         return formatted_details
-
-
-
 
     def save_receipt_to_file(self, receipt_type, beleg_nr, order_details):
         # Define the base directory
@@ -399,9 +369,6 @@ class PaymentTerminal:
             file.write(receipt_content)
         print(f"Receipt saved to {receipt_path}")
 
-
-
-### ! ordner updaten!!!
     def endOfDay_uploadReceipts(self):
         # First, call the end of day process
         if self.end_of_day() != 0:
@@ -441,7 +408,7 @@ class PaymentTerminal:
                         print(f"Deleted file: {file}")
                 print("Receipts uploaded and local files deleted.")
             else:
-                print("Failed to push to GitHub.")
+                print("Failed to push to remote repository.")
         except subprocess.CalledProcessError as e:
             print(f"Git command failed: {e}")
         except Exception as e:

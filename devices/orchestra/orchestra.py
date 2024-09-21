@@ -67,7 +67,7 @@ class OrderHandler(FileSystemEventHandler):
                 print(f"Unknown product category: {product_category}")
 
         # Append function calls to activeOrders file with file locking
-        self.update_active_orders(order_details, function_calls)
+        self.update_active_orders(order_data, function_calls)
 
         # Move the processed order file to handled directory
         self.move_file(file_path, self.handled_dir)
@@ -99,15 +99,15 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append("# All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)")
         return recipe
 
-    def update_active_orders(self, order_details, function_calls):
-        order_id = order_details.get("orderID")
-        time_stamp_order = order_details.get("timeStampOrder")
+    def update_active_orders(self, order_data, function_calls):
+        receipt_number = order_data.get('payment', {}).get('receipt_number')
+        time_stamp_order = order_data.get('Order Details', {}).get('timeStampOrder')
 
         # Use file locking when writing to the active_orders_file
         with open(self.active_orders_file, 'a', encoding='utf-8') as f:
             try:
                 portalocker.lock(f, portalocker.LOCK_EX)
-                f.write(f"# Order ID: {order_id}, Timestamp: {time_stamp_order}\n")
+                f.write(f"# receiptNumber: {receipt_number}, Timestamp: {time_stamp_order}\n")
                 for call in function_calls:
                     f.write(call + '\n')
                 f.write('\n')
