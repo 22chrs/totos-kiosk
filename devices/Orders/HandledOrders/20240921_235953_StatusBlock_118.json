@@ -1,0 +1,40 @@
+{
+  "Order Details": {
+    "automatenID": null,
+    "whichTerminal": "front",
+    "orderID": null,
+    "orderStatus": "paymentReserved",
+    "timeStampOrder": "20240921_235947",
+    "totalPrice": 1,
+    "tip": 0
+  },
+  "products": [
+    {
+      "productName": "Schwarzer Kaffee",
+      "productCategory": "Kaffee",
+      "calculatedPrice": 1,
+      "vat": 0.19,
+      "choosenSize": "200 ml",
+      "choosenSugar": "zero",
+      "choosenMug": "einwegVariable",
+      "choosenLid": "ohneDeckel",
+      "preparationStation": "ordered",
+      "quantity": 1
+    }
+  ],
+  "payment": {
+    "status": "00",
+    "receipt_number": "118",
+    "payment_style": "reservation",
+    "date": "0922",
+    "time": "00:00:29 CET",
+    "amount_in_cents": 100,
+    "currency": "EUR",
+    "card_name": "girocard",
+    "payment_type": "60",
+    "card_id": "6725904411002022103f",
+    "expiry_date": "2612",
+    "terminal_id": "52500038",
+    "trace": "614"
+  }
+}

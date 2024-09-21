@@ -436,7 +436,7 @@ class PaymentTerminal:
             if push_result.returncode == 0:
                 # If push was successful, delete the files
                 for file in os.listdir('.'):
-                    if file.endswith('.json') or file.endswith('.txt'):
+                    if file.endswith('.json') or file.endswith('.log'):
                         os.remove(file)
                         print(f"Deleted file: {file}")
                 print("Receipts uploaded and local files deleted.")

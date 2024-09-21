@@ -3024,3 +3024,70 @@
 <-PT|         Vorgang nicht möglich          |
 <-PT|          ####################          |
 ----------------
+<-PT||
+<-PT||
+<-PT|LAVEGO                                  |
+<-PT||
+<-PT|          ** Kassenschnitt **           |
+<-PT||
+<-PT|21.09.2024                 23:59:41 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|Vorgangs-Nr.:                       0570|
+<-PT||
+<-PT||
+<-PT|          ####################          |
+<-PT|             Fehlgeschlagen             |
+<-PT|  Offene Vorautorisierungen vorhanden   |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Händlerbeleg **           |
+<-PT||
+<-PT|         Kartenzahlung girocard         |
+<-PT||
+<-PT|22.09.2024                 00:09:06 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000618|
+<-PT|Beleg-Nr.:                          0120|
+<-PT|Vorgangs-Nr.:                       0573|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           6725904411002022103|
+<-PT|Karte gültig bis:                  12/26|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|/0000008001//A000000359/1F0302/         |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 2,51|
+<-PT||
+<-PT|          ####################          |
+<-PT|        51 Vorgang nicht möglich        |
+<-PT|         Vorgang nicht möglich          |
+<-PT|               ( AC 51 )                |
+<-PT|          ####################          |
+----------------
+<-PT||
+<-PT|           ** Kundenbeleg **            |
+<-PT||
+<-PT|         Kartenzahlung girocard         |
+<-PT||
+<-PT|22.09.2024                 00:09:06 CEST|
+<-PT|Terminal-ID:                    52500038|
+<-PT|TA-Nr.:                           000618|
+<-PT|Beleg-Nr.:                          0120|
+<-PT|Vorgangs-Nr.:                       0573|
+<-PT|VU-Nummer:                      14698003|
+<-PT|App-ID:             A0000003591010028001|
+<-PT|Kartenfolge-Nr.:                      01|
+<-PT|Konto-Nr.:           xxxxxxxxxxxxxxx2103|
+<-PT|Erfassungsart:                Kontaktlos|
+<-PT|EMV-DATA:                               |
+<-PT|1F0302/0000008001                       |
+<-PT||
+<-PT|Maximalbetrag:                  EUR 2,51|
+<-PT||
+<-PT|          ####################          |
+<-PT|         Vorgang nicht möglich          |
+<-PT|          ####################          |
+----------------

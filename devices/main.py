@@ -16,7 +16,7 @@ from orchestra.orchestra import start_orchestra
 def run_orchestra():
     start_orchestra(
         orders_dir='Orders',
-        active_orders_file='Orders/activeOrders.txt',
+        active_orders_file='Orders/activeOrders.log',
         handled_dir='Orders/HandledOrders'
     )
 

@@ -1,4 +1,4 @@
-# Order ID: None, Timestamp: 20240921_232044
+# Order ID: None, Timestamp: 20240922_000107
 AskForCup('einwegVariable', '200 ml')
 ProvideMug('einwegVariable', '200 ml')
 MoveBecherschubse('LiftPosition')
@@ -13,7 +13,7 @@ else:
 OpenAusgabe()
 # All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)
 
-# Order ID: None, Timestamp: 20240921_233516
+# Order ID: None, Timestamp: 20240922_000946
 AskForCup('einwegVariable', '200 ml')
 ProvideMug('einwegVariable', '200 ml')
 MoveBecherschubse('LiftPosition')
