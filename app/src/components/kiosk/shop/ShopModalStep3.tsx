@@ -1,7 +1,3 @@
-// waiting / idle
-// processing
-// success // error payment // error robot
-
 import {
   ArrowDownSharpSolid,
   CircleCheckSharpRegular,
@@ -17,7 +13,7 @@ import { formatPrice } from '@/components/kiosk/shop/utils';
 import { addNewOrder } from '@/firebase/dbFunctionsBestellungen';
 import i18n, { standardSprache } from '@/internationalization/i18n';
 import { useCart } from '@/providers/CardContext';
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import { DisplayContext } from '@/providers/DisplayContext';
 import { useRouter } from '@/providers/DisplayContext';
 import {
@@ -41,6 +37,7 @@ import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 
 import shopData from '@/public/kiosk/products/leipzig.json';
 import { useWebSocket } from '@/websocket/WebSocketContext';
+
 const automatenID = shopData.automatenID;
 
 const blink = keyframes`
@@ -51,7 +48,7 @@ const blink = keyframes`
 
 const Video = chakra('video');
 
-let paymentErrorTimeout;
+let paymentErrorTimeout: NodeJS.Timeout;
 
 function ShopModalStep3({ onClose }) {
   const {
@@ -68,7 +65,92 @@ function ShopModalStep3({ onClose }) {
 
   const router = useRouter();
 
-  const [countdown, setCountdown] = useState(null);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
+  const [Trinkgeld, setTrinkgeld] = useState<number>(0);
+
+  const [showTrinkgeld, setShowTrinkgeld] = useState(false);
+  const [showTrinkgeldYes, setShowTrinkgeldYes] = useState(false);
+  const [showTrinkgeldDanke, setShowTrinkgeldDanke] = useState(false);
+  const [showTrinkgeldAgain, setShowTrinkgeldAgain] = useState(true);
+
+  const { displayNumber } = useContext(DisplayContext);
+
+  const bgColorTrinkgeld = useColorModeValue(
+    'pageBGColor.lightMode',
+    'pageBGColor.darkMode',
+  );
+
+  const primaryHeadingColor = useColorModeValue(
+    'primaryHeadingColor.lightMode',
+    'primaryHeadingColor.darkMode',
+  );
+
+  const calculateItemPfand = (item) => {
+    let pfand = 0;
+    if (item.choosenMug === 'mehrwegVariable') {
+      pfand += 1; // 1 Euro Pfand per item
+      if (item.choosenLid === 'inklusiveDeckel') {
+        pfand += 1; // 1 Euro Pfand per item
+      }
+    }
+    // Add additional Pfand calculations here if necessary
+    return pfand;
+  };
+
+  const requiresPfand = cart.some(
+    (item) => item.choosenMug === 'mehrwegVariable',
+  );
+
+  // Renamed to avoid conflict
+  const processPaymentError = useCallback(
+    (errorCode: string) => {
+      let errorMessage: string;
+
+      switch (errorCode) {
+        case '6c':
+          errorMessage = 'Invalid card details';
+          break;
+        case '51':
+          errorMessage = 'Insufficient funds';
+          break;
+        case '91':
+          errorMessage = 'Issuer unavailable';
+          break;
+        default:
+          errorMessage = `Unknown error occurred. Code: ${errorCode}`;
+      }
+
+      setErrorCode(errorMessage);
+      setPayment('error');
+      console.error(`Payment Error (${errorCode}): ${errorMessage}`);
+    },
+    [setPayment],
+  );
+
+  // Ensure useEffect runs only once by providing stable dependencies
+  useEffect(() => {
+    if (!ws) return;
+
+    const handleMessage = (data) => {
+      if (data.Payment === '00') {
+        setPayment('success');
+        handlePaymentSuccess();
+      } else if (data.Payment) {
+        console.log(payment);
+        console.log('123');
+        const errorCode = data.Payment;
+        processPaymentError(errorCode);
+      }
+    };
+
+    ws.handleMessage(handleMessage);
+
+    // Cleanup WebSocket listener on unmount
+    return () => {
+      ws.removeEventListener('message', handleMessage);
+    };
+  }, [ws, processPaymentError, setPayment]);
 
   const handlePaymentClick = () => {
     const now = new Date();
@@ -124,12 +206,12 @@ function ShopModalStep3({ onClose }) {
     setPayment('idle');
 
     paymentErrorTimeout = setTimeout(() => {
-      handlePaymentError();
+      handlePaymentErrorExternal();
     }, 3000);
   };
 
   const handlePaymentSuccess = () => {
-    clearTimeout(paymentErrorTimeout); // Add this line to clear the timeout
+    clearTimeout(paymentErrorTimeout); // Clear the timeout
     setShowTrinkgeld(false);
     setShowTrinkgeldYes(false);
     setShowTrinkgeldDanke(false);
@@ -137,7 +219,7 @@ function ShopModalStep3({ onClose }) {
     setCountdown(10);
 
     const timer = setInterval(() => {
-      setCountdown((countdown) => countdown - 1);
+      setCountdown((prev) => (prev !== null ? prev - 1 : null));
     }, 1000);
 
     setTimeout(() => {
@@ -145,54 +227,35 @@ function ShopModalStep3({ onClose }) {
       handlePaymentFinished();
     }, 9800);
 
+    // Cleanup interval on unmount
     return () => {
       clearInterval(timer);
     };
   };
 
-  const [errorCode, setErrorCode] = useState(null);
+  // Renamed to avoid conflict
+  const handlePaymentErrorExternal = useCallback(() => {
+    setPayment('error');
+    setTimeout(() => {
+      handlePaymentAgain();
+    }, 8000);
+  }, [setPayment]);
+
+  const handlePaymentAgain = () => {
+    setPayment('processing');
+    setShowTrinkgeldAgain(false);
+  };
 
   useEffect(() => {
-    if (ws) {
-      const handleMessage = (data) => {
-        if (data.Payment && data.Payment === '00') {
-          setPayment('success');
-          handlePaymentSuccess(); // Handle success
-        } else if (data.Payment) {
-          const errorCode = data.Payment;
-          handlePaymentError(errorCode); // Handle different error codes
+    const timer = setTimeout(() => {
+      if (showTrinkgeldAgain === true) {
+        if (payment === 'processing') {
+          setShowTrinkgeld(true);
         }
-      };
-      const handlePaymentError = (errorCode) => {
-        let errorMessage;
-
-        switch (errorCode) {
-          case '6c':
-            errorMessage = 'Invalid card details';
-            break;
-          case '51':
-            errorMessage = 'Insufficient funds';
-            break;
-          case '91':
-            errorMessage = 'Issuer unavailable';
-            break;
-          default:
-            errorMessage = `Unknown error occurred. Code: ${errorCode}`;
-        }
-
-        setErrorCode(errorMessage);
-        setPayment('error');
-        console.error(`Payment Error (${errorCode}): ${errorMessage}`);
-      };
-
-      ws.handleMessage(handleMessage);
-
-      // Cleanup WebSocket listener
-      return () => {
-        ws.removeEventListener('message', handleMessage);
-      };
-    }
-  }, [ws, setPayment]);
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [payment, showTrinkgeldAgain]);
 
   const handlePaymentFinished = async () => {
     //const orderData = bestellung('success');
@@ -203,65 +266,6 @@ function ShopModalStep3({ onClose }) {
     router.pushWithDisplay('/');
     setPayment('idle');
   };
-
-  const handlePaymentError = () => {
-    setPayment('error');
-    setTimeout(() => {
-      handlePaymentAgain();
-    }, 8000);
-  };
-
-  const handlePaymentAgain = () => {
-    setPayment('processing');
-    setShowTrinkgeldAgain(false);
-  };
-
-  const [Trinkgeld, setTrinkgeld] = useState(0);
-
-  const [showTrinkgeld, setShowTrinkgeld] = useState(false); //! ### geändert
-  const [showTrinkgeldYes, setShowTrinkgeldYes] = useState(false);
-  const [showTrinkgeldDanke, setShowTrinkgeldDanke] = useState(false);
-
-  const [showTrinkgeldAgain, setShowTrinkgeldAgain] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (showTrinkgeldAgain === true) {
-        if (payment === 'waiting') {
-          setShowTrinkgeld(true);
-        }
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [payment, showTrinkgeldAgain]);
-
-  const bgColorTrinkgeld = useColorModeValue(
-    'pageBGColor.lightMode',
-    'pageBGColor.darkMode',
-  );
-
-  const primaryHeadingColor = useColorModeValue(
-    'primaryHeadingColor.lightMode',
-    'primaryHeadingColor.darkMode',
-  );
-
-  const calculateItemPfand = (item) => {
-    let pfand = 0;
-    if (item.choosenMug === 'mehrwegVariable') {
-      pfand += 1; // 1 Euro Pfand per item
-      if (item.choosenLid === 'inklusiveDeckel') {
-        pfand += 1; // 1 Euro Pfand per item
-      }
-    }
-    // Add additional Pfand calculations here if necessary
-    return pfand;
-  };
-
-  const requiresPfand = cart.some(
-    (item) => item.choosenMug === 'mehrwegVariable',
-  );
-
-  const { displayNumber } = useContext(DisplayContext);
 
   return (
     <ModalBody p='0'>
@@ -350,14 +354,17 @@ function ShopModalStep3({ onClose }) {
             </Box>
           )}
           {/* </ScrollFade> */}
-          <Spacer />
+
           {payment === 'processing' && (
             <Box>
               <Box>
                 {showTrinkgeld && (
                   <Box
                     //maxW='80%'
+
                     width='fit-content'
+                    maxWidth='60vw'
+                    zIndex='100'
                     gap='5'
                     px='5'
                     py='4'
@@ -368,25 +375,31 @@ function ShopModalStep3({ onClose }) {
                   >
                     <HStack gap='2'>
                       <Text variant='kiosk' p='0' pr='5'>
-                        Möchtest du Toto Trinkgeld geben?
+                        Trinkgeld für Toto?
                       </Text>
                       <HStack gap='5'>
                         <Button
-                          variant='solid'
-                          colorScheme='blue'
+                          variant='outline'
+                          colorScheme='purple'
                           px='4'
                           onClick={() => {
                             setShowTrinkgeld(false);
                             setShowTrinkgeldYes(true);
+                            setPayment('waitingForTrinkgeld'); // Add this line
+                            ws.send('devices', 'abort_payment');
                           }}
                         >
                           Ja!
                         </Button>
                         <Button
                           variant='outline'
-                          colorScheme='blue'
+                          colorScheme='purple'
                           px='4'
-                          onClick={() => setShowTrinkgeld(false)}
+                          onClick={() => {
+                            setShowTrinkgeld(false);
+                            ws.send('devices', 'abort_payment');
+                            setPayment('waitingForTrinkgeld'); // Add this line
+                          }}
                         >
                           Nein.
                         </Button>
@@ -404,10 +417,7 @@ function ShopModalStep3({ onClose }) {
                     width='fit-content'
                     //transform='translateY(-0.4rem) translateX(-0.3rem)'
                   >
-                    <HStack gap='2'>
-                      <Text variant='kiosk' p='0' pr='3'>
-                        Trinkgeld für Toto:
-                      </Text>
+                    <HStack gap='5'>
                       <Button
                         variant='outline'
                         colorScheme='purple'
@@ -479,6 +489,7 @@ function ShopModalStep3({ onClose }) {
               </Box>
             </Box>
           )}
+          <Spacer />
 
           <HStack alignItems='flex-end' w='100%' pb='8'>
             <HStack
