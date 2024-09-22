@@ -71,26 +71,33 @@ class OrderHandler(FileSystemEventHandler):
 
         # Move the processed order file to handled directory
         self.move_file(file_path, self.handled_dir)
-
+        
+#! START REZEPT COFFEE !#
     def generate_coffee_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal):
         recipe = []
-        recipe.append(f"AskForCup('{choosen_mug}', '{choosen_size}')")
-        recipe.append(f"ProvideMug('{choosen_mug}', '{choosen_size}')")
-        recipe.append("MoveBecherschubse('LiftPosition')")
+        recipe.append(f"initialCupPosition = AskForCup('{choosen_mug}', '{choosen_size}')") # Fragen ob und wo ein Becher ist
+        recipe.append(f"ProvideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition')") # Becher hochfahren und freigeben
+        recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', '?->initialCupPosition')") # Toto zur entsprechenden Becherposition fahren
+        recipe.append(f"Gripper('{choosen_mug}', '{choosen_size}', 'Close')") # Becher greifen
+        
         if choosen_sugar != 'zero':
             recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'CupFromBecherkarusellToBecherschubse')")
             recipe.append(f"MoveBecherschubse('SugarPosition', '{which_terminal}')")
             recipe.append(f"InsertSugar('{choosen_sugar}', '{which_terminal}')")
-            recipe.append(f"MoveBecherschubse('LiftPosition', '{which_terminal}')")
+            recipe.append(f"MoveBecherschubse('{which_terminal}', 'LiftPosition')") # Becherschubse zur Becheraufnahme bereitstellen #! nicht warten bis diese dort ist
             recipe.append(f"TotoMoveCupFromBecherschubseToCoffeemachine('{choosen_mug}', '{choosen_size}', '{which_terminal}')")
+            recipe.append(f"MoveBecherschubse('{which_terminal}', 'WaitForPosition = LiftPosition')") # check ob Becherschubse beretisteht und ggf. warten bis
         else:
-            recipe.append(f"TotoMoveCupFromBecherkarusellToCoffeemachine('{choosen_mug}', '{choosen_size}')")
-        recipe.append(f"prepareDrink('{product_name}', '{choosen_size}')")
+            recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', 'initialCupPosition->Coffeemachine')")
+        
+        recipe.append(f"MakeDrink('{product_name}', '{choosen_size}')")
         recipe.append(f"TotoMoveCupFromCoffeemachineToBecherschubse('{choosen_mug}', '{choosen_size}', '{which_terminal}')")
+        
         if choosen_lid == 'mitDeckel':
-            recipe.append("# Additional logic for lid")  # Insert actual logic here
+            recipe.append("# Additional logic for lid")
         elif choosen_lid == 'ohneDeckel':
             recipe.append(f"MoveBecherschubseAndCloseSchleuse('Ausgabepostion', '{which_terminal}')")
+        
         recipe.append(f"if SensorCheckAusgabefach('{which_terminal}') == True:")
         recipe.append("    pass  # Open Ausgabe")
         recipe.append("else:")
@@ -98,6 +105,7 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append("OpenAusgabe()")
         recipe.append("# All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)")
         return recipe
+#! ENDE REZEPT COFFEE !#
 
     def update_active_orders(self, order_data, function_calls):
         receipt_number = order_data.get('payment', {}).get('receipt_number')
