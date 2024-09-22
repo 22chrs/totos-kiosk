@@ -56,34 +56,39 @@ async def run_scheduled_payment_jobs():
 
 # WebSocket message handler
 async def handle_order(websocket, message, client_alias, clients, host_name):
-    payment_style = "reservation" #! "reservation" for reservation or "auth" for direct pay
+    payment_style = "reservation"  # "reservation" for reservation or "auth" for direct pay
     global order_details
     try:
         outer_data = json.loads(message)
         order_details = outer_data
-        
+
         if "message" in outer_data:
             inner_message = json.loads(outer_data["message"])  # Parse the inner JSON
             if 'whichTerminal' in inner_message and 'totalPrice' in inner_message:
                 print("Valid order data found")
                 print("Payment started")
-                
+
                 # Add the client alias to order details to notify the right client later
                 order_details['client_alias'] = client_alias
-                
+
                 # Convert totalPrice to cents
                 total_price_cents = int(round(inner_message['totalPrice'] * 100))
                 terminal = paymentTerminalFront if inner_message['whichTerminal'] == 'front' else paymentTerminalBack
-                result = await terminal.pay(payment_style, total_price_cents, order_details)
-                
-                # Send the result to the client that sent the order
-                await notify_client_payment_status(client_alias, result, clients, host_name)
+
+                # Start the payment process as a background task
+                asyncio.create_task(process_payment(terminal, payment_style, total_price_cents, order_details, client_alias, clients, host_name))
             else:
                 print("Order data is missing 'whichTerminal' or 'totalPrice'")
         else:
             print("Outer data is missing 'message' key")
     except json.JSONDecodeError:
         print("Error: Received message is not valid JSON.")
+
+async def process_payment(terminal, payment_style, total_price_cents, order_details, client_alias, clients, host_name):
+    result = await terminal.pay(payment_style, total_price_cents, order_details)
+    # Send the result to the client that sent the order
+    await notify_client_payment_status(client_alias, result, clients, host_name)
+
 
 async def notify_client_payment_status(client_alias, result, clients, host_name):
     if client_alias in clients:

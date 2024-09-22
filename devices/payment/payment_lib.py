@@ -11,6 +11,7 @@ class PaymentTerminal:
         # Determine the appropriate executable based on the system architecture
         self.executable_path = self.get_executable_path(executable_name)
         self.ip_address_terminal = ip_address_terminal
+        self.current_process = None
 
     def get_executable_path(self, executable_name):
         # Get the absolute directory path of the current file
@@ -124,12 +125,13 @@ class PaymentTerminal:
                 self.executable_path, payment_style, self.ip_address_terminal, str(amount),
                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )
-
+            self.current_process = process 
             # Log subprocess execution
             print("Subprocess executed, awaiting response...")
 
             # Read the output
             stdout, stderr = await process.communicate()
+            self.current_process = None
 
             # Log outputs for debugging
             stdout_str = stdout.decode('utf-8')
@@ -158,6 +160,29 @@ class PaymentTerminal:
             print(error_message)
             self.write_error_file(error_message, self.ip_address_terminal)
             return error_message
+        
+    def abort_payment(self):
+        if self.current_process and self.current_process.returncode is None:
+            print("Aborting payment process by killing the zvt++ binary.")
+            self.current_process.kill()  # Forcefully terminate the subprocess
+            self.current_process = None  # Reset the process reference
+
+            # Restart the zvt++ binary (if necessary)
+            try:
+                # Ensure the zvt++ executable is executable
+                os.chmod(self.executable_path, 0o755)
+
+                # Optionally, start a new instance or perform any required initialization
+                # For example, if zvt++ needs to be running continuously, start it here
+                print("Restarting the zvt++ binary.")
+                # Since zvt++ is called per operation, you might not need to start it here
+                # If needed, implement the restart logic specific to your application
+            except Exception as e:
+                print(f"Failed to restart zvt++ binary: {e}")
+        else:
+            print("No active payment process to abort.")
+
+
 
     def reversal_payment_debug(self, receipt_no):
         # Input validation for receipt number

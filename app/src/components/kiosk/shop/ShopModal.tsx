@@ -40,6 +40,7 @@ import { KISOK_BORDERRADIUS } from 'src/constants';
 import i18n, { standardSprache } from '@/internationalization/i18n';
 
 import { useRouter } from '@/providers/DisplayContext';
+import { useWebSocket } from '@/websocket/WebSocketContext';
 
 function StepperChoose({ steps }) {
   const { activeStep, setActiveStep } = useStepper();
@@ -116,6 +117,8 @@ export function ModalProductCard({
     setSelectedSugarOption,
   } = useStepper();
 
+  const ws = useWebSocket();
+
   const router = useRouter();
 
   const { setPayment, payment, clearCart } = useCart();
@@ -137,6 +140,7 @@ export function ModalProductCard({
   // Function to confirm closing during processing
   const handleConfirmClose = () => {
     setPayment('idle');
+    ws.send('devices', 'abort_payment'); // Replace 'devices' with actual target //! WICHTIG
     setIsConfirmOpen(false); // Close the confirmation modal
     onClose(); // Close the main modal
   };
