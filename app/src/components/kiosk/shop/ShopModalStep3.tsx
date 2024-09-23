@@ -129,6 +129,9 @@ function ShopModalStep3({ onClose }) {
       }
       setShowTrinkgeld(false);
       setShowTrinkgeldAgain(true);
+
+      //setShowTrinkgeldYes(false);
+      //setShowTrinkgeldDanke(false);
       setErrorCode(errorMessage);
 
       if (isAborting.current) {
@@ -172,7 +175,7 @@ function ShopModalStep3({ onClose }) {
     };
   }, [ws, processPaymentError, setPayment]);
 
-  const handlePaymentClick = () => {
+  const handlePaymentClick = (tipAmount: number) => {
     const now = new Date();
     const year = now.getFullYear();
     const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
@@ -194,8 +197,8 @@ function ShopModalStep3({ onClose }) {
       orderID: null, // set after payment successful
       orderStatus: 'unpaid',
       timeStampOrder: formattedTimestamp,
-      totalPrice: getCartTotalPrice() + getCartTotalPfand() + (Trinkgeld || 0),
-      tip: Trinkgeld || 0,
+      totalPrice: getCartTotalPrice() + getCartTotalPfand() + tipAmount,
+      tip: tipAmount || 0,
       products: cart.map((item) => ({
         // Directly from ProductCart
         productName: item.product.name,
@@ -246,6 +249,8 @@ function ShopModalStep3({ onClose }) {
     const timer = setTimeout(() => {
       if (showTrinkgeldAgain === true) {
         if (payment === 'processing') {
+          setShowTrinkgeldYes(false);
+          setShowTrinkgeldDanke(false);
           setShowTrinkgeld(true);
         }
       }
@@ -363,10 +368,15 @@ function ShopModalStep3({ onClose }) {
                 colorScheme='blue'
                 onClick={() => {
                   setPayment('processing'); //###
-                  handlePaymentClick();
+                  setTrinkgeld(0);
+                  setShowTrinkgeld(false);
+                  setShowTrinkgeldYes(false);
+                  setShowTrinkgeldDanke(false);
+                  setShowTrinkgeldAgain(true);
+                  handlePaymentClick(0);
                 }}
               >
-                Zahlung starten
+                Zahlung erneut starten
                 <Icon boxSize='3.0rem' as={ArrowRightSharpSolid} />
                 <Icon boxSize='2.5rem' as={CreditCardRegular} />
               </Button>
@@ -404,6 +414,7 @@ function ShopModalStep3({ onClose }) {
                           px='4'
                           onClick={() => {
                             setShowTrinkgeld(false);
+                            setTrinkgeld(0);
                             setShowTrinkgeldYes(true);
                             setPayment('waitingForTrinkgeld'); // Set payment to 'waitingForTrinkgeld'
 
@@ -448,10 +459,11 @@ function ShopModalStep3({ onClose }) {
                         px='5'
                         onClick={() => {
                           setTrinkgeld(0.5);
+                          console.log(Trinkgeld);
                           setShowTrinkgeldYes(false);
                           setPayment('danke');
                           setShowTrinkgeldDanke(true);
-                          handlePaymentClick();
+                          handlePaymentClick(0.5);
                         }}
                       >
                         0,50 €
@@ -465,7 +477,7 @@ function ShopModalStep3({ onClose }) {
                           setShowTrinkgeldYes(false);
                           setPayment('danke');
                           setShowTrinkgeldDanke(true);
-                          handlePaymentClick();
+                          handlePaymentClick(1);
                         }}
                       >
                         1 €
@@ -479,7 +491,7 @@ function ShopModalStep3({ onClose }) {
                           setShowTrinkgeldYes(false);
                           setPayment('danke');
                           setShowTrinkgeldDanke(true);
-                          handlePaymentClick();
+                          handlePaymentClick(2);
                         }}
                       >
                         2 €
@@ -491,8 +503,9 @@ function ShopModalStep3({ onClose }) {
                         onClick={() => {
                           setTrinkgeld(0);
                           setShowTrinkgeldYes(false);
+                          setShowTrinkgeldAgain(false);
                           setPayment('processing');
-                          handlePaymentClick();
+                          handlePaymentClick(0);
                         }}
                       >
                         Kein Trinkgeld

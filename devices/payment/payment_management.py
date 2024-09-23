@@ -30,10 +30,10 @@ def check_ip(ip):
         return False
 
 # Global variables
-paymentTerminalIP_Front = "192.168.68.201" if check_ip("192.168.68.201") else "192.168.1.201"
-paymentTerminalIP_Back = "192.168.68.202" if check_ip("192.168.68.202") else "192.168.1.202"
-# paymentTerminalIP_Front = "192.168.1.201"
-# paymentTerminalIP_Back = "192.168.1.202"
+#paymentTerminalIP_Front = "192.168.68.201" if check_ip("192.168.68.201") else "192.168.1.201"
+#paymentTerminalIP_Back = "192.168.68.202" if check_ip("192.168.68.202") else "192.168.1.202"
+paymentTerminalIP_Front = "192.168.1.201"
+paymentTerminalIP_Back = "192.168.1.202"
 
 paymentTerminalFront = PaymentTerminal(paymentTerminalIP_Front)
 paymentTerminalBack = PaymentTerminal(paymentTerminalIP_Back)
