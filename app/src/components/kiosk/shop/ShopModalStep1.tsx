@@ -255,7 +255,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                 }}
                 gap='10'
                 w='100%'
-                pr='4'
+                pr='2.5'
               >
                 {selectedReusableOption === 'mehrwegVariable' && (
                   <HStack pt='0'>

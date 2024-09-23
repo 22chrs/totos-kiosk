@@ -229,6 +229,10 @@ const components = {
         };
       },
 
+      outline: (props) => ({
+        border: '0.15rem solid', // Set the border style and thickness
+      }),
+
       kiosk_categoryTagAselected: (props) => {
         const borderWidth = '0.2rem';
 
@@ -265,7 +269,7 @@ const components = {
       },
 
       kiosk_pricetag_medium: (props) => {
-        const borderWidth = '0.2rem';
+        const borderWidth = '0.15rem';
 
         return {
           color: mode(
@@ -507,7 +511,7 @@ const components = {
       }),
 
       kiosk_pricetag_heading: (props) => {
-        const borderWidth = '0.1rem';
+        const borderWidth = '0.15rem';
 
         return {
           color: mode(

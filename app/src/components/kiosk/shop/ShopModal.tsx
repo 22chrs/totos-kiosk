@@ -124,7 +124,7 @@ export function ModalProductCard({
   const { setPayment, payment, clearCart } = useCart();
 
   const handleCloseClick = () => {
-    if (payment === 'processing') {
+    if (payment === 'processing' || payment === 'danke') {
       setIsConfirmOpen(true); // Open the confirmation modal if processing
     } else if (payment === 'success') {
       clearCart();

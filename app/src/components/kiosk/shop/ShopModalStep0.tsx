@@ -233,7 +233,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                 w='100%'
                 justifyContent='space-between'
                 gap='10'
-                pr='4'
+                pr='2.5'
                 //transform='translateY(-0.1rem)'
 
                 //transform='translateY(0.4rem) translateX(-0.2rem)'

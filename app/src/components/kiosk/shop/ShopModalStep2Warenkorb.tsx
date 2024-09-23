@@ -104,7 +104,10 @@ function ShopModalStepWarenkorb({ onClose }) {
           minH='100%'
           spacing='0'
           height={KIOSK_HEIGHTCONTENT_MODAL}
-          px='5'
+          //px='5'
+          pr='3'
+          pl='2'
+          //bgColor='red'
           pt='3'
         >
           {/* <ScrollFade> */}
@@ -179,7 +182,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                 </HStack>
               </Box>
               <Spacer />
-              <HStack gap='14'>
+              <HStack gap='12' transform='translateY(0) translateX(-0.05rem)'>
                 <Box transform='translateY(-0.4rem) translateX(0.4rem)'>
                   <Button
                     gap='4'

@@ -13,7 +13,7 @@ import { formatPrice } from '@/components/kiosk/shop/utils';
 import { addNewOrder } from '@/firebase/dbFunctionsBestellungen';
 import i18n, { standardSprache } from '@/internationalization/i18n';
 import { useCart } from '@/providers/CardContext';
-import { useContext, useCallback } from 'react';
+import { useContext, useCallback, useRef } from 'react';
 import { DisplayContext } from '@/providers/DisplayContext';
 import { useRouter } from '@/providers/DisplayContext';
 import {
@@ -37,6 +37,7 @@ import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 
 import shopData from '@/public/kiosk/products/leipzig.json';
 import { useWebSocket } from '@/websocket/WebSocketContext';
+import { FaHeart } from 'react-icons/fa';
 
 const automatenID = shopData.automatenID;
 
@@ -102,6 +103,10 @@ function ShopModalStep3({ onClose }) {
     (item) => item.choosenMug === 'mehrwegVariable',
   );
 
+  // Initialize the ref to track intentional aborts
+  const isAborting = useRef(false);
+
+  // Renamed to avoid conflict
   // Renamed to avoid conflict
   const processPaymentError = useCallback(
     (errorCode: string) => {
@@ -114,15 +119,28 @@ function ShopModalStep3({ onClose }) {
         case '51':
           errorMessage = 'Insufficient funds';
           break;
-        case '91':
-          errorMessage = 'Issuer unavailable';
+        case '00010000':
+          errorMessage = 'Du warst zu langsam!';
           break;
         default:
           errorMessage = `Unknown error occurred. Code: ${errorCode}`;
       }
 
       setErrorCode(errorMessage);
-      setPayment('error');
+
+      if (isAborting.current) {
+        setPayment('waitingForTrinkgeld'); // Set to 'waitingForTrinkgeld'
+        isAborting.current = false; // Reset the abort flag
+        console.log(
+          'Intentional abort detected. Setting payment to waitingForTrinkgeld.',
+        );
+      } else {
+        setPayment('error'); // Set to 'error'
+        console.log(
+          'Genuine payment error detected. Setting payment to error.',
+        );
+      }
+
       console.error(`Payment Error (${errorCode}): ${errorMessage}`);
     },
     [setPayment],
@@ -137,8 +155,7 @@ function ShopModalStep3({ onClose }) {
         setPayment('success');
         handlePaymentSuccess();
       } else if (data.Payment) {
-        console.log(payment);
-        console.log('123');
+        console.log('Received Payment Data:', data.Payment);
         const errorCode = data.Payment;
         processPaymentError(errorCode);
       }
@@ -191,23 +208,12 @@ function ShopModalStep3({ onClose }) {
       })),
     };
 
-    console.log(bestellung); // Log the bestellung object
+    console.log('Sending Bestellung:', bestellung);
     if (ws) {
       ws.send('devices', JSON.stringify(bestellung)); // Replace 'devices' with actual target
     } else {
       console.log('WebSocket not connected. Bestellung not aufgegeben.');
     }
-  };
-
-  const handlePaymentWaiting = () => {
-    //setShowTrinkgeld(false);
-    //setShowTrinkgeldYes(false);
-    console.log('CLICK');
-    setPayment('idle');
-
-    paymentErrorTimeout = setTimeout(() => {
-      handlePaymentErrorExternal();
-    }, 3000);
   };
 
   const handlePaymentSuccess = () => {
@@ -233,19 +239,6 @@ function ShopModalStep3({ onClose }) {
     };
   };
 
-  // Renamed to avoid conflict
-  const handlePaymentErrorExternal = useCallback(() => {
-    setPayment('error');
-    setTimeout(() => {
-      handlePaymentAgain();
-    }, 8000);
-  }, [setPayment]);
-
-  const handlePaymentAgain = () => {
-    setPayment('processing');
-    setShowTrinkgeldAgain(false);
-  };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       if (showTrinkgeldAgain === true) {
@@ -269,7 +262,7 @@ function ShopModalStep3({ onClose }) {
 
   return (
     <ModalBody p='0'>
-      <Box px='11' pt='4' pb='4'>
+      <Box pl='8' pr='8' pt='3' pb='4'>
         <Stack
           overflowX='hidden'
           alignItems='flex-start'
@@ -288,7 +281,7 @@ function ShopModalStep3({ onClose }) {
                     Kasse
                   </Heading>
 
-                  <Box>
+                  <HStack gap='2'>
                     <Icon
                       pr='0.1rem'
                       boxSize='1.2rem'
@@ -297,7 +290,7 @@ function ShopModalStep3({ onClose }) {
                     <Text as='u' pt='0'>
                       Kontaktlos und sicher.
                     </Text>
-                  </Box>
+                  </HStack>
                 </Box>
               </HStack>
               <Stack w='calc(100vw - 6rem)'>
@@ -306,6 +299,10 @@ function ShopModalStep3({ onClose }) {
                     {payment === 'idle' && 'Nothing here. Pls go.'}
                     {payment === 'processing' &&
                       'Bitte präsentiere dein Zahlungsmittel am Lesegerät, um kontaktlos zu zahlen.'}
+                    {payment === 'waitingForTrinkgeld' &&
+                      'Du möchtest Trinkgeld geben? Toto freut sich! Wie viel möchtest du geben?'}
+                    {payment === 'danke' &&
+                      'Super sweet! Bitte präsentiere dein Zahlungsmittel am Lesegerät, um kontaktlos zu zahlen.'}
                     {payment === 'waiting' &&
                       'Bitte folge den Anweisungen am Kartenterminal.'}
                     {payment === 'success' &&
@@ -318,7 +315,7 @@ function ShopModalStep3({ onClose }) {
 
                   {/* Video */}
                   {payment !== 'idle' && (
-                    <Box right='12' top='16%' position='absolute'>
+                    <Box right='10' top='16%' position='absolute'>
                       <Video
                         rounded={KISOK_BORDERRADIUS}
                         autoPlay
@@ -355,7 +352,9 @@ function ShopModalStep3({ onClose }) {
           )}
           {/* </ScrollFade> */}
 
-          {payment === 'processing' && (
+          {(payment === 'processing' ||
+            payment === 'waitingForTrinkgeld' ||
+            payment === 'danke') && (
             <Box>
               <Box>
                 {showTrinkgeld && (
@@ -385,8 +384,14 @@ function ShopModalStep3({ onClose }) {
                           onClick={() => {
                             setShowTrinkgeld(false);
                             setShowTrinkgeldYes(true);
-                            setPayment('waitingForTrinkgeld'); // Add this line
-                            ws.send('devices', 'abort_payment');
+                            setPayment('waitingForTrinkgeld'); // Set payment to 'waitingForTrinkgeld'
+
+                            console.log(
+                              'Ja button clicked: Setting payment to waitingForTrinkgeld',
+                            );
+
+                            isAborting.current = true; // Indicate an intentional abort
+                            ws.send('devices', 'abort_payment'); // Send abort_payment
                           }}
                         >
                           Ja!
@@ -397,8 +402,6 @@ function ShopModalStep3({ onClose }) {
                           px='4'
                           onClick={() => {
                             setShowTrinkgeld(false);
-                            ws.send('devices', 'abort_payment');
-                            setPayment('waitingForTrinkgeld'); // Add this line
                           }}
                         >
                           Nein.
@@ -425,7 +428,9 @@ function ShopModalStep3({ onClose }) {
                         onClick={() => {
                           setTrinkgeld(0.5);
                           setShowTrinkgeldYes(false);
+                          setPayment('danke');
                           setShowTrinkgeldDanke(true);
+                          handlePaymentClick();
                         }}
                       >
                         0,50 €
@@ -437,7 +442,9 @@ function ShopModalStep3({ onClose }) {
                         onClick={() => {
                           setTrinkgeld(1);
                           setShowTrinkgeldYes(false);
+                          setPayment('danke');
                           setShowTrinkgeldDanke(true);
+                          handlePaymentClick();
                         }}
                       >
                         1 €
@@ -449,7 +456,9 @@ function ShopModalStep3({ onClose }) {
                         onClick={() => {
                           setTrinkgeld(2);
                           setShowTrinkgeldYes(false);
+                          setPayment('danke');
                           setShowTrinkgeldDanke(true);
+                          handlePaymentClick();
                         }}
                       >
                         2 €
@@ -461,6 +470,8 @@ function ShopModalStep3({ onClose }) {
                         onClick={() => {
                           setTrinkgeld(0);
                           setShowTrinkgeldYes(false);
+                          setPayment('processing');
+                          handlePaymentClick();
                         }}
                       >
                         Kein Trinkgeld
@@ -479,10 +490,13 @@ function ShopModalStep3({ onClose }) {
                     width='fit-content'
                     //transform='translateY(-0.4rem) translateX(-0.3rem)'
                   >
-                    <HStack gap='2'>
-                      <Text variant='kiosk' p='0'>
-                        Danke für Dein Trinkgeld!
+                    <HStack spacing={3}>
+                      <Text variant='kiosk' p={0}>
+                        Danke!
                       </Text>
+                      <Icon as={FaHeart} />
+                      <Icon as={FaHeart} />
+                      <Icon as={FaHeart} />
                     </HStack>
                   </Box>
                 )}
@@ -507,20 +521,19 @@ function ShopModalStep3({ onClose }) {
                   <>
                     {payment !== 'success' ? (
                       <>
-                        <Button
-                          onClick={handlePaymentWaiting}
-                          gap='5'
-                          variant='kiosk_pricetag_big'
-                        >
+                        <Button gap='5' variant='kiosk_pricetag_big'>
                           <Box>Gesamt:</Box>
                           <Box>
                             {formatPrice({
-                              amount: getCartTotalPrice() + getCartTotalPfand(),
+                              amount:
+                                getCartTotalPrice() +
+                                getCartTotalPfand() +
+                                Trinkgeld,
                             })}
                           </Box>
                         </Button>
 
-                        {Trinkgeld > 0 && (
+                        {/* {Trinkgeld > 0 && (
                           <>
                             <Heading variant='h1_Kiosk'>+</Heading>
                             <Button gap='5' variant='kiosk_pricetag_big'>
@@ -530,7 +543,7 @@ function ShopModalStep3({ onClose }) {
                               Trinkgeld
                             </Button>
                           </>
-                        )}
+                        )} */}
                       </>
                     ) : (
                       <Button gap='5' variant='kiosk_pricetag_big'>
@@ -549,7 +562,7 @@ function ShopModalStep3({ onClose }) {
       <Box>
         <PaymentImagesFooterIconWhiteBG />
       </Box>
-      {payment === 'processing' && (
+      {(payment === 'processing' || payment === 'danke') && (
         <Box
           position='absolute'
           bottom='22%'
