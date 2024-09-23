@@ -95,7 +95,7 @@ function ShopModalStepWarenkorb({ onClose }) {
 
   return (
     <ModalBody>
-      <Flex direction='column' height='100%' pt='1' pb='5' pr='3' pl='2'>
+      <Flex direction='column' height='100%' pt='1' pr='3' pl='2'>
         <Stack
           overflowX='hidden'
           overflowY='hidden'
@@ -148,6 +148,8 @@ function ShopModalStepWarenkorb({ onClose }) {
           <Spacer />
 
           <HStack
+            pb='1.15rem'
+            pt='2rem'
             //alignItems='flex-end'
             w='99.2%'
           >

@@ -17,19 +17,19 @@ import { StepperProvider } from '@/providers/StepperContext';
 import Fonts from '@/theme/fonts';
 import theme from '@/theme/theme';
 import { AppProps } from 'next/app';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { WebSocketProvider } from '@/websocket/WebSocketContext';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
-  // Disable right-click function
+  const [isTouchEnabled, setTouchEnabled] = useState(true); // State to manage touch input
+
   const disableRightClick = () => {
     document.addEventListener('contextmenu', (event) => {
       event.preventDefault();
     });
   };
 
-  // Disable horizontal overscroll behavior
   const disableHorizontalOverscroll = () => {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -40,29 +40,34 @@ const App = ({ Component, pageProps }: AppProps) => {
     document.head.appendChild(style);
   };
 
-  // UseEffect to run the functions based on environment variables
   useEffect(() => {
-    // Log the environment variables
     console.log(
       'Disable Right Click:',
       process.env.NEXT_PUBLIC_DISABLE_RIGHT_CLICK,
     );
     console.log('Environment Mode:', process.env.NEXT_PUBLIC_ENVIRONMENT_MODE);
 
-    // Check the environment variable before running the functions
     if (process.env.NEXT_PUBLIC_DISABLE_RIGHT_CLICK === 'true') {
       disableRightClick();
       disableHorizontalOverscroll();
     }
   }, []);
 
-  const renderContent = () => {
-    //console.log('using websocket ..');
-    const displayQueryParam = (router.query.display as string) || 'default';
-    //console.log('Display query param:', displayQueryParam);
+  // Function to handle touch input
+  const handleTouchInput = (callback) => {
+    if (isTouchEnabled) {
+      callback(); // Call the passed callback
+      setTouchEnabled(false); // Disable further touches
 
-    // Disable Framer Motion animations for this part
-    //MotionGlobalConfig.skipAnimations = true;
+      // Re-enable touch after 0.5 seconds
+      setTimeout(() => {
+        setTouchEnabled(true);
+      }, 500);
+    }
+  };
+
+  const renderContent = () => {
+    const displayQueryParam = (router.query.display as string) || 'default';
 
     return (
       <ChakraProvider theme={theme}>
@@ -73,9 +78,11 @@ const App = ({ Component, pageProps }: AppProps) => {
               <KioskLayout>
                 <StepperProvider>
                   <CartProvider>
-                    {/* <AnimatePresence mode='wait' initial={true}> */}
-                    <Component {...pageProps} key={router.route} />
-                    {/* </AnimatePresence> */}
+                    <Component
+                      {...pageProps}
+                      key={router.route}
+                      handleTouchInput={handleTouchInput} // Pass the handler to the component
+                    />
                   </CartProvider>
                 </StepperProvider>
               </KioskLayout>
@@ -90,63 +97,3 @@ const App = ({ Component, pageProps }: AppProps) => {
 };
 
 export default App;
-
-// //! display input ist weg in _app.tsx. wieder reinmachen mit vor 06.09.24 -> und diese datei wiederherstellen mit vor 06.09.24. Dann aber app_1 und app_2 online falls nur app_2 geöffnet.
-
-// import { useRouter as originalUseRouter } from 'next/router';
-// import {
-//   createContext,
-//   PropsWithChildren,
-//   useContext,
-//   useEffect,
-//   useState,
-// } from 'react';
-// type DisplayContextType = {
-//   displayNumber: string;
-// };
-
-// export const DisplayContext = createContext<DisplayContextType>({
-//   displayNumber: 'default',
-// });
-
-// export const DisplayProvider = ({ children }: PropsWithChildren<{}>) => {
-//   const router = originalUseRouter();
-//   const [displayNumber, setDisplayNumber] = useState<string>('default');
-
-//   useEffect(() => {
-//     const displayQueryParam = router.query.display as string;
-//     if (displayQueryParam) {
-//       setDisplayNumber(displayQueryParam);
-//       console.log(`Display number set from URL: ${displayQueryParam}`);
-//     }
-//   }, [router.query.display]);
-
-//   return (
-//     <DisplayContext.Provider value={{ displayNumber }}>
-//       {children}
-//     </DisplayContext.Provider>
-//   );
-// };
-// export const useRouter = () => {
-//   const [isNavigating, setIsNavigating] = useState(false);
-//   const router = originalUseRouter();
-//   const { displayNumber } = useContext(DisplayContext);
-
-//   const pushWithDisplay = async (path) => {
-//     if (!isNavigating) {
-//       setIsNavigating(true);
-
-//       // Give some delay (300 ms) before processing the next navigation event.
-//       setTimeout(async () => {
-//         const hrefWithDisplay = `${path}?display=${displayNumber}`;
-//         await router.push(hrefWithDisplay);
-//         setIsNavigating(false);
-//       }, 100);
-//     }
-//   };
-
-//   return {
-//     ...router,
-//     pushWithDisplay,
-//   };
-// };
