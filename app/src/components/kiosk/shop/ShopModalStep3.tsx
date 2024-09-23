@@ -255,7 +255,7 @@ function ShopModalStep3({ onClose }) {
 
   return (
     <ModalBody p='0'>
-      <Box pl='8' pr='8' pt='3' pb='4'>
+      <Box pl='9' pr='8' pt='3' pb='4'>
         <Stack
           overflowX='hidden'
           alignItems='flex-start'

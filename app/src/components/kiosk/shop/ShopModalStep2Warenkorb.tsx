@@ -95,7 +95,7 @@ function ShopModalStepWarenkorb({ onClose }) {
 
   return (
     <ModalBody>
-      <Flex direction='column' height='100%' pt='1' pr='3' pl='2'>
+      <Flex direction='column' height='100%' pt='1' pr='3' pl='3'>
         <Stack
           overflowX='hidden'
           overflowY='hidden'
@@ -108,13 +108,31 @@ function ShopModalStepWarenkorb({ onClose }) {
 
           //bgColor='red'
         >
+          <Box>
+            <Heading pb='5' variant='h1_Kiosk'>
+              Deine Bestellung
+            </Heading>
+          </Box>
           {/* <ScrollFade> */}
-          <Stack overflowY='auto'>
+          <Stack
+            pr='20'
+            overflowY='auto'
+            sx={{
+              /* For WebKit-based browsers (Chrome, Safari, Opera) */
+              '&::-webkit-scrollbar': {
+                width: '2rem',
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                borderRadius: 'xl',
+              },
+
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                borderRadius: 'xl',
+              },
+            }}
+          >
             <VStack alignItems='flex-start'>
               <Box maxW='80%' minW='80%' width='80vw' pb='0'>
-                <Heading pb='5' variant='h1_Kiosk'>
-                  Deine Bestellung
-                </Heading>
                 {/* <HStack>
                   <Icon
                     pr='0.1rem'
