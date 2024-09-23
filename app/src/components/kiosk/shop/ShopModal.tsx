@@ -233,7 +233,10 @@ export function ModalProductCard({
 function ConfirmCloseModal({ isOpen, onClose, onConfirm }) {
   return (
     <Modal variant='kiosk' isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay />
+      <ModalOverlay
+        bg='rgba(0, 0, 0, 0.35)' // Darker semi-transparent background
+        backdropFilter='blur(15px)' // Add a blur effect
+      />
       <ModalContent minW='70%' minH='40%' maxH='50%' py='10' px='5'>
         <ModalHeader>
           <ModalCloseButton
@@ -255,29 +258,33 @@ function ConfirmCloseModal({ isOpen, onClose, onConfirm }) {
 
         <ModalFooter gap='10'>
           <Button
-            gap='3'
-            px='5'
-            py='7'
-            fontSize='3xl'
+            gap='4'
+            colorScheme='pink'
+            fontSize='4xl'
+            borderRadius='xl'
+            h='0'
+            px='6'
+            py='10'
             variant='outline'
-            colorScheme='red'
             onClick={onConfirm}
           >
-            <Icon boxSize={10} as={XmarkSharpSolid} />
-            Ja, Abbruch!
+            <Icon boxSize='14' as={XmarkSharpSolid} />
+            Abbruch
           </Button>
 
           <Button
-            gap='5'
-            px='5'
-            py='7'
-            fontSize='3xl'
+            gap='7'
+            colorScheme='pink'
+            fontSize='4xl'
+            borderRadius='xl'
+            h='0'
+            px='6'
+            py='10'
             variant='solid'
-            colorScheme='red'
             onClick={onClose}
           >
-            <Icon boxSize={10} as={CreditCardRegular} />
-            Nein, fortsetzen.
+            <Icon boxSize={12} as={CreditCardRegular} />
+            Zahlung fortsetzen
           </Button>
         </ModalFooter>
       </ModalContent>

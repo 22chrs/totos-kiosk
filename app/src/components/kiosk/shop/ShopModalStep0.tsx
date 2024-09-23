@@ -61,7 +61,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
   return (
     <ModalBody>
       {selectedProduct && (
-        <Flex direction='column' height='100%'>
+        <Flex direction='column' height='100%' pr='3'>
           <HStack spacing='10' alignItems='flex-start'>
             <Box pt='0'>
               <Box
@@ -260,7 +260,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                   </Box>
                 </HStack>
 
-                <HStack>
+                <HStack zIndex='1'>
                   <Button
                     gap='5'
                     variant='kiosk_rainbow_big'

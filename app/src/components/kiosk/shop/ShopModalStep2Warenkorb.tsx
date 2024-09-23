@@ -94,8 +94,8 @@ function ShopModalStepWarenkorb({ onClose }) {
   const { displayNumber } = useContext(DisplayContext);
 
   return (
-    <ModalBody pt='0'>
-      <Flex direction='column' height='100%'>
+    <ModalBody>
+      <Flex direction='column' height='100%' pt='1' pb='5' pr='3' pl='2'>
         <Stack
           overflowX='hidden'
           overflowY='hidden'
@@ -105,10 +105,8 @@ function ShopModalStepWarenkorb({ onClose }) {
           spacing='0'
           height={KIOSK_HEIGHTCONTENT_MODAL}
           //px='5'
-          pr='3'
-          pl='2'
+
           //bgColor='red'
-          pt='3'
         >
           {/* <ScrollFade> */}
           <Stack overflowY='auto'>
@@ -148,19 +146,12 @@ function ShopModalStepWarenkorb({ onClose }) {
           </Stack>
           {/* </ScrollFade> */}
           <Spacer />
+
           <HStack
-            alignItems='flex-end'
-            w={getCartTotalQuantity() === 0 ? '98.7%' : '100%'}
-            pt='6'
-            pb='8'
-            transform='translateY(0.9rem) translateX(0)'
+            //alignItems='flex-end'
+            w='99.2%'
           >
-            <HStack
-              w='100%'
-              justifyContent='flex-start'
-              alignItems='flex-end'
-              gap='10'
-            >
+            <HStack w='100%' gap='10'>
               <Box>
                 <HStack gap='3'>
                   <Button
@@ -182,8 +173,8 @@ function ShopModalStepWarenkorb({ onClose }) {
                 </HStack>
               </Box>
               <Spacer />
-              <HStack gap='12' transform='translateY(0) translateX(-0.05rem)'>
-                <Box transform='translateY(-0.4rem) translateX(0.4rem)'>
+              <HStack gap='12'>
+                <Box>
                   <Button
                     gap='4'
                     variant='kiosk_rainbow_big'
@@ -197,7 +188,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                 </Box>
 
                 {getCartTotalQuantity() > 0 && (
-                  <Box transform='translateY(-0.4rem) translateX(0.2rem)'>
+                  <Box zIndex='10'>
                     <Button
                       gap='5'
                       variant='kiosk_rainbow_big'

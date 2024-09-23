@@ -51,8 +51,6 @@ const blink = keyframes`
 
 const Video = chakra('video');
 
-let paymentErrorTimeout: NodeJS.Timeout;
-
 function ShopModalStep3({ onClose }) {
   const {
     cart,
@@ -89,27 +87,19 @@ function ShopModalStep3({ onClose }) {
     'primaryHeadingColor.darkMode',
   );
 
-  const calculateItemPfand = (item) => {
-    let pfand = 0;
-    if (item.choosenMug === 'mehrwegVariable') {
-      pfand += 1; // 1 Euro Pfand per item
-      if (item.choosenLid === 'inklusiveDeckel') {
-        pfand += 1; // 1 Euro Pfand per item
-      }
-    }
-    // Add additional Pfand calculations here if necessary
-    return pfand;
-  };
-
   const requiresPfand = cart.some(
     (item) => item.choosenMug === 'mehrwegVariable',
   );
 
-  // Initialize the ref to track intentional aborts
-  const isAborting = useRef(false);
+  // Replace isAborting with a state variable
+  const [abortReason, setAbortReason] = useState<string | null>(null);
 
-  // Renamed to avoid conflict
-  // Renamed to avoid conflict
+  // Use a ref to always have the latest abortReason in callbacks
+  const abortReasonRef = useRef(abortReason);
+  useEffect(() => {
+    abortReasonRef.current = abortReason;
+  }, [abortReason]);
+
   const processPaymentError = useCallback(
     (errorCode: string) => {
       let errorMessage: string;
@@ -129,14 +119,11 @@ function ShopModalStep3({ onClose }) {
       }
       setShowTrinkgeld(false);
       setShowTrinkgeldAgain(true);
-
-      //setShowTrinkgeldYes(false);
-      //setShowTrinkgeldDanke(false);
       setErrorCode(errorMessage);
 
-      if (isAborting.current) {
+      if (abortReasonRef.current === 'tipSelection') {
         setPayment('waitingForTrinkgeld'); // Set to 'waitingForTrinkgeld'
-        isAborting.current = false; // Reset the abort flag
+        setAbortReason(null); // Reset the abort reason
         console.log(
           'Intentional abort detected. Setting payment to waitingForTrinkgeld.',
         );
@@ -152,7 +139,6 @@ function ShopModalStep3({ onClose }) {
     [setPayment],
   );
 
-  // Ensure useEffect runs only once by providing stable dependencies
   useEffect(() => {
     if (!ws) return;
 
@@ -173,7 +159,7 @@ function ShopModalStep3({ onClose }) {
     return () => {
       ws.removeEventListener('message', handleMessage);
     };
-  }, [ws, processPaymentError, setPayment]);
+  }, [ws, processPaymentError]);
 
   const handlePaymentClick = (tipAmount: number) => {
     const now = new Date();
@@ -223,7 +209,6 @@ function ShopModalStep3({ onClose }) {
   };
 
   const handlePaymentSuccess = () => {
-    clearTimeout(paymentErrorTimeout); // Clear the timeout
     setShowTrinkgeld(false);
     setShowTrinkgeldYes(false);
     setShowTrinkgeldDanke(false);
@@ -280,7 +265,6 @@ function ShopModalStep3({ onClose }) {
           py='0'
           height={KIOSK_HEIGHTCONTENT_MODAL}
         >
-          {/* <ScrollFade> */}
           <Stack overflowY='hidden'>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
@@ -341,14 +325,7 @@ function ShopModalStep3({ onClose }) {
             </VStack>
           </Stack>
           {payment === 'success' && (
-            <Box
-              gap='5'
-              px='6'
-              py='4'
-              rounded='xl'
-              bgColor={bgColorTrinkgeld}
-              //transform='translateY(-0.4rem) translateX(-0.3rem)'
-            >
+            <Box gap='5' px='6' py='4' rounded='xl' bgColor={bgColorTrinkgeld}>
               <HStack gap='6'>
                 <Icon boxSize='2rem' as={CircleCheckSharpRegular} />
                 <Text variant='kiosk' p='0'>
@@ -358,7 +335,6 @@ function ShopModalStep3({ onClose }) {
               </HStack>
             </Box>
           )}
-          {/* </ScrollFade> */}
 
           {payment === 'error' && errorCode === 'Du warst zu langsam!' && (
             <Box pl='0.5rem'>
@@ -367,7 +343,7 @@ function ShopModalStep3({ onClose }) {
                 variant='kiosk_rainbow_big'
                 colorScheme='blue'
                 onClick={() => {
-                  setPayment('processing'); //###
+                  setPayment('processing');
                   setTrinkgeld(0);
                   setShowTrinkgeld(false);
                   setShowTrinkgeldYes(false);
@@ -390,8 +366,6 @@ function ShopModalStep3({ onClose }) {
               <Box>
                 {showTrinkgeld && (
                   <Box
-                    //maxW='80%'
-
                     width='fit-content'
                     maxWidth='60vw'
                     zIndex='100'
@@ -400,8 +374,6 @@ function ShopModalStep3({ onClose }) {
                     py='4'
                     rounded='xl'
                     bgColor={bgColorTrinkgeld}
-
-                    //transform='translateY(-0.4rem) translateX(-0.3rem)'
                   >
                     <HStack gap='5'>
                       <Text variant='kiosk' p='0' pr='5'>
@@ -419,14 +391,9 @@ function ShopModalStep3({ onClose }) {
                             setShowTrinkgeld(false);
                             setTrinkgeld(0);
                             setShowTrinkgeldYes(true);
-                            setPayment('waitingForTrinkgeld'); // Set payment to 'waitingForTrinkgeld'
-
-                            console.log(
-                              'Ja button clicked: Setting payment to waitingForTrinkgeld',
-                            );
-
-                            isAborting.current = true; // Indicate an intentional abort
-                            ws.send('devices', 'abort_payment'); // Send abort_payment
+                            setPayment('waitingForTrinkgeld');
+                            setAbortReason('tipSelection');
+                            ws.send('devices', 'abort_payment');
                           }}
                         >
                           Ja!
@@ -455,7 +422,6 @@ function ShopModalStep3({ onClose }) {
                     rounded='xl'
                     bgColor={bgColorTrinkgeld}
                     width='fit-content'
-                    //transform='translateY(-0.4rem) translateX(-0.3rem)'
                   >
                     <HStack gap='6'>
                       <Button
@@ -466,7 +432,6 @@ function ShopModalStep3({ onClose }) {
                         colorScheme='purple'
                         onClick={() => {
                           setTrinkgeld(0.5);
-                          console.log(Trinkgeld);
                           setShowTrinkgeldYes(false);
                           setPayment('danke');
                           setShowTrinkgeldDanke(true);
@@ -535,7 +500,6 @@ function ShopModalStep3({ onClose }) {
                     rounded='xl'
                     bgColor={bgColorTrinkgeld}
                     width='fit-content'
-                    //transform='translateY(-0.4rem) translateX(-0.3rem)'
                   >
                     <HStack spacing={3}>
                       <Text variant='kiosk' p={0}>
@@ -579,18 +543,6 @@ function ShopModalStep3({ onClose }) {
                             })}
                           </Box>
                         </Button>
-
-                        {/* {Trinkgeld > 0 && (
-                          <>
-                            <Heading variant='h1_Kiosk'>+</Heading>
-                            <Button gap='5' variant='kiosk_pricetag_big'>
-                              {formatPrice({
-                                amount: Trinkgeld,
-                              })}{' '}
-                              Trinkgeld
-                            </Button>
-                          </>
-                        )} */}
                       </>
                     ) : (
                       <Button gap='5' variant='kiosk_pricetag_big'>
