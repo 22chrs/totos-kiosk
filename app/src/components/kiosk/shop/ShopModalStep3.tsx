@@ -403,15 +403,18 @@ function ShopModalStep3({ onClose }) {
 
                     //transform='translateY(-0.4rem) translateX(-0.3rem)'
                   >
-                    <HStack gap='2'>
+                    <HStack gap='5'>
                       <Text variant='kiosk' p='0' pr='5'>
                         Trinkgeld für Toto?
                       </Text>
-                      <HStack gap='5'>
+                      <HStack gap='7'>
                         <Button
+                          gap='2'
+                          fontSize='xl'
+                          h='3rem'
+                          px='4'
                           variant='outline'
                           colorScheme='purple'
-                          px='4'
                           onClick={() => {
                             setShowTrinkgeld(false);
                             setTrinkgeld(0);
@@ -427,11 +430,14 @@ function ShopModalStep3({ onClose }) {
                           }}
                         >
                           Ja!
+                          <Icon as={FaHeart} />
                         </Button>
                         <Button
+                          fontSize='xl'
+                          h='3rem'
+                          px='4'
                           variant='outline'
                           colorScheme='purple'
-                          px='4'
                           onClick={() => {
                             setShowTrinkgeld(false);
                           }}
@@ -444,7 +450,6 @@ function ShopModalStep3({ onClose }) {
                 )}
                 {showTrinkgeldYes && (
                   <Box
-                    gap='5'
                     px='5'
                     py='4'
                     rounded='xl'
@@ -452,11 +457,13 @@ function ShopModalStep3({ onClose }) {
                     width='fit-content'
                     //transform='translateY(-0.4rem) translateX(-0.3rem)'
                   >
-                    <HStack gap='5'>
+                    <HStack gap='6'>
                       <Button
+                        fontSize='xl'
+                        h='3rem'
+                        px='4'
                         variant='outline'
                         colorScheme='purple'
-                        px='5'
                         onClick={() => {
                           setTrinkgeld(0.5);
                           console.log(Trinkgeld);
@@ -469,9 +476,11 @@ function ShopModalStep3({ onClose }) {
                         0,50 €
                       </Button>
                       <Button
+                        fontSize='xl'
+                        h='3rem'
+                        px='4'
                         variant='outline'
                         colorScheme='purple'
-                        px='5'
                         onClick={() => {
                           setTrinkgeld(1);
                           setShowTrinkgeldYes(false);
@@ -480,12 +489,14 @@ function ShopModalStep3({ onClose }) {
                           handlePaymentClick(1);
                         }}
                       >
-                        1 €
+                        1,00 €
                       </Button>
                       <Button
+                        fontSize='xl'
+                        h='3rem'
+                        px='4'
                         variant='outline'
                         colorScheme='purple'
-                        px='5'
                         onClick={() => {
                           setTrinkgeld(2);
                           setShowTrinkgeldYes(false);
@@ -494,12 +505,14 @@ function ShopModalStep3({ onClose }) {
                           handlePaymentClick(2);
                         }}
                       >
-                        2 €
+                        2,00 €
                       </Button>
                       <Button
+                        fontSize='xl'
+                        h='3rem'
+                        px='4'
                         variant='outline'
                         colorScheme='purple'
-                        px='5'
                         onClick={() => {
                           setTrinkgeld(0);
                           setShowTrinkgeldYes(false);
