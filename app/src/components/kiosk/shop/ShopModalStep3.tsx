@@ -1,7 +1,9 @@
 import {
   ArrowDownSharpSolid,
+  ArrowRightSharpSolid,
   CircleCheckSharpRegular,
   CircleCheckSharpSolid,
+  CreditCardRegular,
   ShieldCheckSharpSolid,
 } from '@/components/icons/icons';
 
@@ -125,7 +127,8 @@ function ShopModalStep3({ onClose }) {
         default:
           errorMessage = `Unknown error occurred. Code: ${errorCode}`;
       }
-
+      setShowTrinkgeld(false);
+      setShowTrinkgeldAgain(true);
       setErrorCode(errorMessage);
 
       if (isAborting.current) {
@@ -191,7 +194,7 @@ function ShopModalStep3({ onClose }) {
       orderID: null, // set after payment successful
       orderStatus: 'unpaid',
       timeStampOrder: formattedTimestamp,
-      totalPrice: getCartTotalPrice() + (Trinkgeld || 0),
+      totalPrice: getCartTotalPrice() + getCartTotalPfand() + (Trinkgeld || 0),
       tip: Trinkgeld || 0,
       products: cart.map((item) => ({
         // Directly from ProductCart
@@ -308,7 +311,7 @@ function ShopModalStep3({ onClose }) {
                     {payment === 'success' &&
                       'Zahlung erfolgreich! Vielen Dank für Deine Bestellung, Toto bereitet diese nun für Dich zu.'}
                     {payment === 'error' &&
-                      `Deine Zahlung ist fehlgeschlagen: ${errorCode}`}
+                      `Deine Zahlung ist fehlgeschlagen. ${errorCode}`}
                   </Text>
 
                   <Spacer />
@@ -351,6 +354,24 @@ function ShopModalStep3({ onClose }) {
             </Box>
           )}
           {/* </ScrollFade> */}
+
+          {payment === 'error' && errorCode === 'Du warst zu langsam!' && (
+            <Box pl='0.5rem'>
+              <Button
+                gap='5'
+                variant='kiosk_rainbow_big'
+                colorScheme='blue'
+                onClick={() => {
+                  setPayment('processing'); //###
+                  handlePaymentClick();
+                }}
+              >
+                Zahlung starten
+                <Icon boxSize='3.0rem' as={ArrowRightSharpSolid} />
+                <Icon boxSize='2.5rem' as={CreditCardRegular} />
+              </Button>
+            </Box>
+          )}
 
           {(payment === 'processing' ||
             payment === 'waitingForTrinkgeld' ||

@@ -196,14 +196,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return totalQuantity;
   };
 
-  const getCartTotalPrice = () => {
-    let totalPrice = 0;
-    for (const item of cart) {
-      totalPrice += item.calculatedPrice * item.quantity;
-    }
-    return parseFloat(totalPrice.toFixed(2));
-  };
-
   const getCartTotalPfand = () => {
     let totalPfand = 0;
     for (const item of cart) {
@@ -215,6 +207,15 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       }
     }
     return parseFloat(totalPfand.toFixed(2));
+  };
+
+  const getCartTotalPrice = () => {
+    let totalPrice = 0;
+    for (const item of cart) {
+      totalPrice += item.calculatedPrice * item.quantity;
+    }
+
+    return parseFloat(totalPrice.toFixed(2));
   };
 
   const bestellung = (orderStatusInput: string) => {
