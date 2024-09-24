@@ -115,6 +115,7 @@ function ShopModalStepWarenkorb({ onClose }) {
           </Box>
           {/* <ScrollFade> */}
           <Stack
+            width='100%'
             pr='20'
             overflowY='auto'
             sx={{

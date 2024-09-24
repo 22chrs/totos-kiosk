@@ -1,4 +1,4 @@
-// Shop. tsx
+// Shop.tsx
 
 import { ModalProductCard } from '@/components/kiosk/shop/ShopModal';
 import {
@@ -16,10 +16,12 @@ import {
   VStack,
   useColorModeValue,
   useDisclosure,
+  Fade,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
   KIOSK_CATEGORY_WIDTH,
   KIOSK_CONTENT_HEIGHT,
@@ -40,8 +42,19 @@ import {
   ArrowUpSharpSolid,
 } from '@/components/icons/icons';
 
-// Kategorien
-function Categories({ title, isSelected, onClick }) {
+// Type definitions for Categories component
+interface CategoriesProps {
+  title: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
+// Memoized Categories Component with display name and type annotations
+const Categories: React.FC<CategoriesProps> = React.memo(function Categories({
+  title,
+  isSelected,
+  onClick,
+}) {
   const bgColor = useColorModeValue(
     'footerBGColor.lightMode',
     'footerBGColor.darkMode',
@@ -70,17 +83,16 @@ function Categories({ title, isSelected, onClick }) {
   return (
     <Box
       zIndex={10}
-      //shadow={useColorModeValue('md', 'xl')}
       borderWidth='0'
-      borderRadius={isSelected ? KISOK_BORDERRADIUS : KISOK_BORDERRADIUS}
+      borderRadius={KISOK_BORDERRADIUS}
       cursor='pointer'
       bg={isSelected ? bgColorSelected : bgColor}
       borderColor={isSelected ? borderColorSelected : borderColor}
       color={isSelected ? colorSelected : color}
       onClick={onClick}
-      textAlign='left' // Align the text to the left
+      textAlign='left'
       overflow='hidden'
-      width={isSelected ? '100%' : '100%'} // ausufern
+      width='100%'
     >
       <HStack>
         <Box height='100vh' overflow='hidden' position='relative' zIndex='5'>
@@ -91,17 +103,11 @@ function Categories({ title, isSelected, onClick }) {
             position='relative'
             overflow='hidden'
           >
-            <Box
-              position='absolute' // Make the heading absolutely positioned
-              top='0' // Align it to the top of the image (adjust as needed)
-              left='0' // Align to the left of the image
-              p='3'
-              zIndex='10'
-            >
+            <Box position='absolute' top='0' left='0' p='3' zIndex='10'>
               <Button
                 variant={
                   isSelected
-                    ? 'kiosk_categoryTagAselected' //! ### kiosk_categoryTagSelected
+                    ? 'kiosk_categoryTagAselected'
                     : 'kiosk_categoryTagAselected'
                 }
               >
@@ -112,9 +118,8 @@ function Categories({ title, isSelected, onClick }) {
                   <Icon
                     fontSize='8rem'
                     as={ArrowRightSharpSolid}
-                    color='primaryHeadingColor.darkMode'
+                    color='primaryHeadingColor.lightMode'
                   />
-                  {/* This is for when isSelected is true */}
                 </Box>
               ) : (
                 <Box position='absolute' top='100%' left='10%' zIndex='10'>
@@ -123,7 +128,6 @@ function Categories({ title, isSelected, onClick }) {
                     as={ArrowUpSharpSolid}
                     color='primaryHeadingColor.darkMode'
                   />
-                  {/* This is for when isSelected is false */}
                 </Box>
               )}
             </Box>
@@ -134,10 +138,9 @@ function Categories({ title, isSelected, onClick }) {
               height={500}
               alt={title}
               style={{
-                //transform: 'scale(2.2)', // Zoom in by 2.5x
-                transformOrigin: '50% 110%', // Adjust the focus
+                transformOrigin: '50% 110%',
                 objectFit: 'cover',
-                opacity: 0.3, //! ###
+                opacity: 0.3,
               }}
             />
           </Box>
@@ -145,7 +148,72 @@ function Categories({ title, isSelected, onClick }) {
       </HStack>
     </Box>
   );
+});
+
+// Type definitions for ProductCard component
+interface ProductCardProps {
+  product: Product;
+  category: Category;
+  formatPrice: (price: number) => string;
+  handleOpen: (product: Product, category: Category) => void;
 }
+
+// Memoized ProductCard Component with display name and type annotations
+const ProductCard: React.FC<ProductCardProps> = React.memo(
+  function ProductCard({ product, category, formatPrice, handleOpen }) {
+    const [hasLoaded, setHasLoaded] = useState(false);
+    const cardFontColor = useColorModeValue(
+      'primaryFontColor.lightMode',
+      'primaryFontColor.darkMode',
+    );
+
+    return (
+      <Card
+        onClick={() => handleOpen(product, category)}
+        key={product.name}
+        borderRadius={KISOK_BORDERRADIUS}
+        color={cardFontColor}
+        height={KIOSK_PRODUCT_HEIGHT}
+        position='relative'
+        overflow='hidden'
+        cursor='pointer'
+      >
+        <Image
+          alt={`${product.name}`}
+          fill={true}
+          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+          style={{ objectFit: 'cover' }}
+          src={`/kiosk/products/images/${handleUmlauts(product.name)}.jpg`}
+          onLoad={() => setHasLoaded(true)}
+        />
+
+        <CardBody zIndex='5' p='0'>
+          <Flex width='100%' pl='4' pt='4' justifyContent='flex-start'>
+            <Button variant='kiosk_nametag'>{product.name}</Button>
+          </Flex>
+        </CardBody>
+
+        <CardFooter
+          zIndex='10'
+          pb='3'
+          pr='3'
+          style={{
+            position: 'absolute',
+            bottom: '0',
+            right: '0',
+            width: '100%',
+          }}
+        >
+          <Flex width='100%' justifyContent='flex-end'>
+            <Button variant='kiosk_pricetag_small' color={cardFontColor}>
+              {formatPrice(product.price)}
+            </Button>
+          </Flex>
+        </CardFooter>
+      </Card>
+    );
+  },
+);
 
 type MainProps = {
   products: Product[];
@@ -159,49 +227,32 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );
-  const [productIndex, setProductIndex] = useState(0); // State to track the index of the current product slice
+  const [productIndex, setProductIndex] = useState(0);
 
-  const handleOpen = (product: Product, category: Category) => {
-    setSelectedProduct(product);
-    setSelectedCategory(category);
-    onOpen();
-  };
+  // Reset productIndex when the category changes
+  useEffect(() => {
+    setProductIndex(0);
+  }, [category]);
+
+  const handleOpen = useCallback(
+    (product: Product, category: Category) => {
+      setSelectedProduct(product);
+      setSelectedCategory(category);
+      onOpen();
+    },
+    [onOpen],
+  );
+
   const handleNext = () => {
     const nextIndex = productIndex + 5;
-    // If the next index exceeds the length of the products, reset to the beginning
     if (nextIndex >= products.length) {
-      setProductIndex(0); // Start from the beginning
+      setProductIndex(0);
     } else {
-      setProductIndex(nextIndex); // Otherwise, move to the next set
+      setProductIndex(nextIndex);
     }
   };
-
-  const handlePrev = () => {
-    const prevIndex = productIndex - 5;
-    if (prevIndex < 0) {
-      setProductIndex(Math.max(0, products.length - 5));
-    } else {
-      setProductIndex(prevIndex);
-    }
-  };
-
-  const handleReset = () => {
-    setProductIndex(0); // Resets to the beginning of the list
-  };
-
-  const cardBGColor = useColorModeValue(
-    'footerBGColor.lightMode',
-    'footerBGColor.darkMode',
-  );
-  const cardFontColor = useColorModeValue(
-    'primaryFontColor.lightMode',
-    'primaryFontColor.darkMode',
-  );
 
   const displayedProducts = products.slice(productIndex, productIndex + 5);
-  const showMoreIndicator = products.length > productIndex + 5;
-  const showPrevIndicator = productIndex > 0;
-  const atEndOfList = productIndex + 5 >= products.length;
 
   return (
     <Grid
@@ -211,58 +262,23 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
       height='100%'
     >
       {displayedProducts.map((product) => (
-        <Card
-          onClick={() => handleOpen(product, category)}
+        <ProductCard
           key={product.name}
-          borderRadius={KISOK_BORDERRADIUS}
-          color={cardFontColor}
-          height={KIOSK_PRODUCT_HEIGHT}
-          position='relative'
-          overflow='hidden'
-          cursor='pointer'
-        >
-          <Image
-            alt={`${product.name}`}
-            fill={true}
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-            style={{ objectFit: 'cover' }}
-            src={`/kiosk/products/images/${handleUmlauts(product.name)}.jpg`}
-          />
-
-          <CardBody zIndex='5' p='0'>
-            <Flex width='100%' pl='4' pt='4' justifyContent='flex-start'>
-              <Button variant='kiosk_nametag'>{product.name}</Button>
-            </Flex>
-          </CardBody>
-
-          <CardFooter
-            zIndex='10'
-            pb='3'
-            pr='3'
-            style={{
-              position: 'absolute',
-              bottom: '0',
-              right: '0',
-              width: '100%',
-            }}
-          >
-            <Flex width='100%' justifyContent='flex-end'>
-              <Button variant='kiosk_pricetag_small' color={cardFontColor}>
-                {formatPrice(product.price)}
-              </Button>
-            </Flex>
-          </CardFooter>
-        </Card>
+          product={product}
+          category={category}
+          formatPrice={formatPrice}
+          handleOpen={handleOpen}
+        />
       ))}
 
-      <Flex justifyContent='center' alignItems='center'>
-        {products.length > 5 && (
+      {products.length > 5 && (
+        <Flex justifyContent='center' alignItems='center'>
           <Button gap='5' variant='kiosk_rainbow_big' onClick={handleNext}>
             Weitere
             <Icon boxSize='2.5rem' as={ChevronsRightSharpSolid} />
           </Button>
-        )}
-      </Flex>
+        </Flex>
+      )}
 
       <ModalProductCard
         isOpen={isOpen}
@@ -275,13 +291,13 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
   );
 };
 
-// SHOP
+// SHOP Component
 export const Shop: React.FC<VerticalTabsProps> = ({
   data,
   country,
   currency,
 }) => {
-  const [selectedTab, setSelectedTab] = React.useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
 
   // Format the price
   const formatPrice = (price: number) =>
@@ -292,65 +308,68 @@ export const Shop: React.FC<VerticalTabsProps> = ({
   const { i18n } = useTranslation();
 
   return (
-    <Flex>
-      <VStack
-        mr={selectedTab !== -1 ? '-1px' : '0'}
-        spacing={3}
-        align='start'
-        pt='3'
-        pb='0'
-        pl='3'
-        pr='3'
-        height={KIOSK_CONTENT_HEIGHT}
-        overflowY='auto'
-        width={KIOSK_CATEGORY_WIDTH}
-        bgColor={useColorModeValue(
-          'footerBGColor.lightMode',
-          'footerBGColor.darkMode',
-        )}
-        color={useColorModeValue(
-          'kioskBGColor.lightMode',
-          'kioskBGColor.darkMode',
-        )}
-      >
-        {data.map((category, index) => (
-          <Categories
-            key={category.name}
-            title={category.name}
-            isSelected={selectedTab === index}
-            onClick={() => setSelectedTab(index)} // Simply update the selected category
-          />
-        ))}
-        <Spacer />
-      </VStack>
+    <Fade
+      in={true}
+      transition={{ enter: { duration: 0.5, ease: 'easeInOut' } }}
+    >
+      <Flex>
+        <VStack
+          mr={selectedTab !== -1 ? '-1px' : '0'}
+          spacing={3}
+          align='start'
+          pt='3'
+          pb='0'
+          pl='3'
+          pr='3'
+          height={KIOSK_CONTENT_HEIGHT}
+          overflowY='auto'
+          width={KIOSK_CATEGORY_WIDTH}
+          bgColor={useColorModeValue(
+            'footerBGColor.lightMode',
+            'footerBGColor.darkMode',
+          )}
+          color={useColorModeValue(
+            'kioskBGColor.lightMode',
+            'kioskBGColor.darkMode',
+          )}
+        >
+          {data.map((category, index) => (
+            <Categories
+              key={category.name}
+              title={category.name}
+              isSelected={selectedTab === index}
+              onClick={() => setSelectedTab(index)}
+            />
+          ))}
+          <Spacer />
+        </VStack>
 
-      <Stack
-        pt='3'
-        pl='0'
-        pr='3'
-        pb='3'
-        overflowY='auto'
-        css={{
-          width: `calc(100vw - ${KIOSK_CATEGORY_WIDTH})`,
-        }}
-        height={KIOSK_CONTENT_HEIGHT}
-        bgColor={useColorModeValue(
-          'footerBGColor.lightMode',
-          'footerBGColor.darkMode',
-        )}
-        color={useColorModeValue(
-          'primaryFontColor.lightMode',
-          'primaryFontColor.darkMode',
-        )}
-      >
-        {/* The key prop ensures a re-render, resetting the state */}
-        <Main
-          key={selectedTab} // This will reset the component when a new category is selected
-          products={data[selectedTab].products}
-          formatPrice={formatPrice}
-          category={data[selectedTab]}
-        />
-      </Stack>
-    </Flex>
+        <Stack
+          pt='3'
+          pl='0'
+          pr='3'
+          pb='3'
+          overflowY='auto'
+          css={{
+            width: `calc(100vw - ${KIOSK_CATEGORY_WIDTH})`,
+          }}
+          height={KIOSK_CONTENT_HEIGHT}
+          bgColor={useColorModeValue(
+            'footerBGColor.lightMode',
+            'footerBGColor.darkMode',
+          )}
+          color={useColorModeValue(
+            'primaryFontColor.lightMode',
+            'primaryFontColor.darkMode',
+          )}
+        >
+          <Main
+            products={data[selectedTab].products}
+            formatPrice={formatPrice}
+            category={data[selectedTab]}
+          />
+        </Stack>
+      </Flex>
+    </Fade>
   );
 };
