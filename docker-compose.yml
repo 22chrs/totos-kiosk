@@ -27,7 +27,7 @@ services:
       - KIOSK=1
       #- LAUNCH_URL=https://app:8082?display=front #! raus, weil split screen html
       - WINDOW_SIZE=2560,800 #! KIOSK = 2560,800 #Touchscreen Fannal 10.1" #4k: 43840, 2160
-      - EXTRA_FLAGS= --disable-pinch --top-chrome-touch-ui --touch-events --touch-adjustment --pointer-events --smooth-scrolling --disable-features=TouchpadOverscrollHistoryNavigation --disable-features=OverscrollHistoryNavigation
+      - EXTRA_FLAGS=  --disable-pinch --pointer-events=auto --smooth-scrolling --disable-features=OverscrollHistoryNavigation --disable-gesture-requirement-for-media-playback
       # - WINDOW_POSITION_1=0,0 #second screen 0 = 2xResX  because of bug!!! (bsp. 2560)
     depends_on:
       - app

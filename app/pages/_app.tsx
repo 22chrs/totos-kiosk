@@ -23,6 +23,7 @@ import { WebSocketProvider } from '@/websocket/WebSocketContext';
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const [isTouchEnabled, setTouchEnabled] = useState(true); // State to manage touch input
+  const [isTouchActive, setTouchActive] = useState(false); // State to track if touch is currently active
 
   const disableRightClick = () => {
     document.addEventListener('contextmenu', (event) => {
@@ -36,7 +37,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     html, body {
       overscroll-behavior-x: none;
     }
-  `;
+    `;
     document.head.appendChild(style);
   };
 
@@ -55,13 +56,13 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   // Function to handle touch input
   const handleTouchInput = (callback) => {
-    if (isTouchEnabled) {
+    if (isTouchEnabled && !isTouchActive) {
       callback(); // Call the passed callback
-      setTouchEnabled(false); // Disable further touches
+      setTouchActive(true); // Mark touch as active
 
       // Re-enable touch after 0.5 seconds
       setTimeout(() => {
-        setTouchEnabled(true);
+        setTouchActive(false);
       }, 500);
     }
   };
