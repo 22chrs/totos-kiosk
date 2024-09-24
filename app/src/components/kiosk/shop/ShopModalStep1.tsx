@@ -146,7 +146,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                       as={HiOutlineMagnifyingGlass}
                     />
                     <Text as='u' pt='0' fontSize='xl'>
-                      Allergene und Produktinformationen
+                      Nachhaltigkeit
                     </Text>
                   </HStack>
 

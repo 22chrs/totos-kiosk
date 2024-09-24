@@ -49,7 +49,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     console.log('Environment Mode:', process.env.NEXT_PUBLIC_ENVIRONMENT_MODE);
 
     if (process.env.NEXT_PUBLIC_DISABLE_RIGHT_CLICK === 'true') {
-      disableRightClick();
+      //disableRightClick();
       disableHorizontalOverscroll();
     }
   }, []);

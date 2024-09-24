@@ -140,7 +140,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                     {selectedProduct.sizes &&
                       selectedProduct.sizes.length > 1 && (
                         <>
-                          <Heading variant='h2_Kiosk' pb='5' pt='8'>
+                          <Heading variant='h2_Kiosk' pb='6' pt='8'>
                             Größe:
                           </Heading>
                           <Flex gap='6'>
@@ -168,7 +168,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
 
                   {selectedCategory.additives?.includes('sugar') && (
                     <Box py='6'>
-                      <Heading variant='h2_Kiosk' py='5'>
+                      <Heading variant='h2_Kiosk' py='6'>
                         Zucker:
                       </Heading>
                       <Flex gap='6'>
