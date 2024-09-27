@@ -3,8 +3,10 @@ import json
 import time
 import shutil
 import portalocker
+import queue
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from usbserial.usbserial import TeensyController  # Import necessary classes
 
 class OrderHandler(FileSystemEventHandler):
     def __init__(self, orders_dir, active_orders_file, handled_dir, failed_dir):
@@ -71,6 +73,7 @@ class OrderHandler(FileSystemEventHandler):
 
         # Move the processed order file to handled directory
         self.move_file(file_path, self.handled_dir)
+
         
 #! START REZEPT COFFEE !#
     def generate_coffee_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal):
@@ -79,7 +82,6 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"ProvideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition')") # Becher hochfahren und freigeben
         recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', '?->initialCupPosition')") # Toto zur entsprechenden Becherposition fahren
         recipe.append(f"Gripper('{choosen_mug}', '{choosen_size}', 'Close')") # Becher greifen
-        
         if choosen_sugar != 'zero':
             recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'CupFromBecherkarusellToBecherschubse')")
             recipe.append(f"MoveBecherschubse('SugarPosition', '{which_terminal}')")
