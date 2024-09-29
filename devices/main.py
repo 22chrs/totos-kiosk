@@ -1,5 +1,4 @@
 import asyncio
-import threading
 
 # USB Serial Imports
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController
@@ -17,16 +16,6 @@ from payment.payment_management import (
 
 # Orchestra Import
 from orchestra.orchestra import start_orchestra
-
-def run_orchestra():
-    """
-    Starts the Orchestra component in a separate thread.
-    """
-    start_orchestra(
-        orders_dir='Orders',
-        active_orders_file='Orders/activeOrders.log',
-        handled_dir='Orders/HandledOrders'
-    )
 
 async def manage_usb_serial():
     """
@@ -61,7 +50,7 @@ async def main():
     The main coroutine that orchestrates all asynchronous tasks.
     """
     # Start USB serial management as a separate task
-    usb_task = asyncio.create_task(manage_usb_serial())
+    #!usb_task = asyncio.create_task(manage_usb_serial())
 
     # Schedule payment jobs
     schedule_payment_jobs()
@@ -69,7 +58,7 @@ async def main():
     print("Scheduled payment jobs.")
 
     # Schedule periodic connection checks
-    connection_check_task = asyncio.create_task(check_connections_periodically())
+    #!connection_check_task = asyncio.create_task(check_connections_periodically())
     print("Scheduled periodic connection checks.")
 
     # Start the WebSocket server
@@ -78,21 +67,25 @@ async def main():
     )
     print("WebSocket server started.")
 
+    # Start the Orchestra component as an asyncio task
+    orchestra_task = asyncio.create_task(start_orchestra(
+        orders_dir='Orders',
+        active_orders_file='Orders/activeOrders.log',
+        current_dir='Orders/ActiveOrders'
+    ))
+    print("Orchestra component started.")
+
     # Await all tasks concurrently
     await asyncio.gather(
-        usb_task,
+        #usb_task,
         payment_job_task,
-        connection_check_task,
-        websocket_task
+        #connection_check_task,
+        websocket_task,
+        orchestra_task
     )
 
 if __name__ == '__main__':
-    print("Starting the integrated application...")
-
-    # Start the Orchestra component in a separate daemon thread
-    orchestra_thread = threading.Thread(target=run_orchestra, daemon=True)
-    orchestra_thread.start()
-    print("Orchestra component started in a separate thread.")
+    print("Starting the integrated application.")
 
     try:
         # Run the main asyncio event loop

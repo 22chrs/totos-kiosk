@@ -3,16 +3,16 @@ import json
 import time
 import shutil
 import portalocker
-import queue
+import asyncio
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from usbserial.usbserial import TeensyController  # Import necessary classes
+from websocket.websocket import send_message_from_host  # Import send_message_from_host function
 
 class OrderHandler(FileSystemEventHandler):
-    def __init__(self, orders_dir, active_orders_file, handled_dir, failed_dir):
+    def __init__(self, orders_dir, active_orders_file, current_dir, failed_dir):
         self.orders_dir = orders_dir
         self.active_orders_file = active_orders_file
-        self.handled_dir = handled_dir
+        self.current_dir = current_dir
         self.failed_dir = failed_dir
 
     def on_created(self, event):
@@ -45,9 +45,14 @@ class OrderHandler(FileSystemEventHandler):
         order_details = order_data.get("Order Details", {})
         products = order_data.get("products", [])
 
+        # Extract the receipt_number from the payment section
+        receipt_number = order_data.get("payment", {}).get("receipt_number")
+        amount_in_cents = order_data.get("payment", {}).get("amount_in_cents")
+
         # Generate function calls based on products
         function_calls = []
-        for product in products:
+
+        for index, product in enumerate(products):
             product_name = product.get("productName")
             product_category = product.get("productCategory")
             quantity = product.get("quantity", 1)
@@ -55,59 +60,91 @@ class OrderHandler(FileSystemEventHandler):
             choosen_sugar = product.get("choosenSugar")
             choosen_mug = product.get("choosenMug")
             choosen_lid = product.get("choosenLid")
-            which_terminal = order_details.get("whichTerminal", "front")
+
+            which_terminal = order_details.get("whichTerminal")
+            if which_terminal == "front":
+                RoboCube = "RoboCubeFront"
+            elif which_terminal == "back":
+                RoboCube = "RoboCubeBack"
+            else:
+                RoboCube = "Error"
+
+            # Determine if this is the last product in the list
+            is_last_product = (index == len(products) - 1)
 
             if product_category in ["Kaffee", "Trinkschoki"]:
-                for _ in range(quantity):
+                for q in range(quantity):
+                    # Determine if this is the last quantity of the last product
+                    is_last = is_last_product and (q == quantity - 1)
                     function_calls.extend(self.generate_coffee_recipe(
-                        product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal
+                        product_name,
+                        choosen_size,
+                        choosen_sugar,
+                        choosen_mug,
+                        choosen_lid,
+                        which_terminal,
+                        RoboCube,
+                        receipt_number,
+                        amount_in_cents,
+                        is_last_product=is_last  # Pass the flag here
                     ))
             elif product_category == "Snacks":
                 # Implement snack recipe logic here
                 pass
             else:
                 print(f"Unknown product category: {product_category}")
+                
+        # You can now use the receipt_number in your function calls or logging
+        print(f"Receipt Number: {receipt_number}")  # Example of how to use it
 
         # Append function calls to activeOrders file with file locking
         self.update_active_orders(order_data, function_calls)
 
         # Move the processed order file to handled directory
-        self.move_file(file_path, self.handled_dir)
+        self.move_file(file_path, self.current_dir)
 
-        
-#! START REZEPT COFFEE !#
-    def generate_coffee_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal):
+    #! START REZEPT COFFEE !
+    def generate_coffee_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
         recipe = []
-        recipe.append(f"initialCupPosition = AskForCup('{choosen_mug}', '{choosen_size}')") # Fragen ob und wo ein Becher ist
-        recipe.append(f"ProvideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition')") # Becher hochfahren und freigeben
-        recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', '?->initialCupPosition')") # Toto zur entsprechenden Becherposition fahren
-        recipe.append(f"Gripper('{choosen_mug}', '{choosen_size}', 'Close')") # Becher greifen
+        recipe.append(f"ServiceCube: askForCup('{choosen_mug}', '{choosen_size}') => 'initialCupPosition'") # Fragen ob und wo ein Becher ist
+        recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'") # Becher hochfahren und freigeben
+        recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '?->Becherkarusell('initialCupPosition')')") # Toto zur entsprechenden Becherposition fahren
+        recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Close')") # Becher greifen
         if choosen_sugar != 'zero':
-            recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'CupFromBecherkarusellToBecherschubse')")
-            recipe.append(f"MoveBecherschubse('SugarPosition', '{which_terminal}')")
-            recipe.append(f"InsertSugar('{choosen_sugar}', '{which_terminal}')")
-            recipe.append(f"MoveBecherschubse('{which_terminal}', 'LiftPosition')") # Becherschubse zur Becheraufnahme bereitstellen #! nicht warten bis diese dort ist
-            recipe.append(f"TotoMoveCupFromBecherschubseToCoffeemachine('{choosen_mug}', '{choosen_size}', '{which_terminal}')")
-            recipe.append(f"MoveBecherschubse('{which_terminal}', 'WaitForPosition = LiftPosition')") # check ob Becherschubse beretisteht und ggf. warten bis
+            recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'Becherkarusell->BecherschubseLiftPosition')")
+            recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Open')") # Becher loslassen
+            recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'Becherschubse->BecherschubseLiftPositionNotDisturbing')")
+            recipe.append(f"{RoboCube}: moveBecherschubse('SugarPosition')')")
+            recipe.append(f"{RoboCube}: insertSugar('{choosen_sugar}')")
+            recipe.append(f"{RoboCube}: moveBecherschubse('LiftPosition')") # Becherschubse zur Becheraufnahme bereitstellen #! nicht warten bis diese dort ist
+            recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '{which_terminal}', '?->BecherschubseLiftPosition')")
+            recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Close')") # Becher greifen
+            recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'BecherschubseLiftPosition->Coffeemachine')")
+            recipe.append(f"{RoboCube}: waitForBecherschubse('LiftPosition')") # check ob Becherschubse beretisteht und ggf. warten bis
         else:
-            recipe.append(f"TotoMove('{choosen_mug}', '{choosen_size}', 'initialCupPosition->Coffeemachine')")
-        
-        recipe.append(f"MakeDrink('{product_name}', '{choosen_size}')")
-        recipe.append(f"TotoMoveCupFromCoffeemachineToBecherschubse('{choosen_mug}', '{choosen_size}', '{which_terminal}')")
-        
+            recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', 'ServiceCube('initialCupPosition')->Coffeemachine')")
+        recipe.append(f"Coffeemachine: prepareDrink('{product_name}', '{choosen_size}')")
+        #recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Open')") # Becher greifen
+        #recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'Coffeemachine->CoffeemachineNotDisturbing')")
+        #recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Open')") # Becher öffnen
+        #recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '{which_terminal}', '?->Coffeemachine')")
+        #recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Close')") # Becher greifen
+        recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '{which_terminal}', 'Coffeemachine->BecherschubseLiftPosition')")
         if choosen_lid == 'mitDeckel':
-            recipe.append("# Additional logic for lid")
-        elif choosen_lid == 'ohneDeckel':
-            recipe.append(f"MoveBecherschubseAndCloseSchleuse('Ausgabepostion', '{which_terminal}')")
-        
-        recipe.append(f"if SensorCheckAusgabefach('{which_terminal}') == True:")
-        recipe.append("    pass  # Open Ausgabe")
-        recipe.append("else:")
-        recipe.append(f"    ShowErrorAndSayEntschuldigung('{which_terminal}')")
-        recipe.append("OpenAusgabe()")
-        recipe.append("# All Ausgaben Done: ConfirmPaymentBooking(Receipt ID and Timestamp)")
+            recipe.append(f"ServiceCube: askForLid('{choosen_lid}', '{choosen_size}') => 'initialLidPosition'") # Fragen ob und wo ein Deckel ist
+            recipe.append(f"ServiceCube: provideLid('{choosen_lid}', '{choosen_size}', 'initialLidPosition') => minimumLagerbestandLid") # Deckel hochfahren und freigeben
+            recipe.append(f"Toto: moveToto('{choosen_lid}', '{choosen_size}', '?->Becherkarusell('initialLidPosition')')") # Toto zur entsprechenden Becherposition fahren
+            recipe.append(f"Gripper: moveGripper('{choosen_lid}', '{choosen_size}', 'Close')") # Becher greifen
+            recipe.append(f"Toto: moveToto('{choosen_lid}', '{choosen_size}', 'Becherkarusell('initialLidPosition')->BecherschubseLiftPosition')')") # Toto zur entsprechenden Becherposition fahren
+            recipe.append(f"{RoboCube}: moveBecherschubseAndPressLid('Zuckerposition')")
+        recipe.append(f"{RoboCube}: moveBecherschubseAndCloseSchleuse('Ausgabepostion') => 'isSensorSuccess'")
+        recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
+        if is_last_product:
+            recipe.append(f"Payment: BookTotal('{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
+        recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
+        recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'") #! Not Waiting but checking periodically
         return recipe
-#! ENDE REZEPT COFFEE !#
+    #! ENDE REZEPT COFFEE !#
 
     def update_active_orders(self, order_data, function_calls):
         receipt_number = order_data.get('payment', {}).get('receipt_number')
@@ -133,30 +170,89 @@ class OrderHandler(FileSystemEventHandler):
         except Exception as e:
             print(f"Failed to move file {file_path} to {target_dir}: {e}")
 
-def start_orchestra(orders_dir='Orders', active_orders_file='activeOrders.txt', handled_dir='Orders/HandledOrders', failed_dir='Orders/FailedOrders'):
+async def process_active_orders(active_orders_file):
+    """
+    Periodically scans the active_orders_file, finds the first unprocessed line,
+    marks it as processed, and sends the line via websocket.
+    """
+    while True:
+        try:
+            # Acquire exclusive lock for reading and writing
+            with open(active_orders_file, 'r+', encoding='utf-8') as f:
+                portalocker.lock(f, portalocker.LOCK_EX)
+                lines = f.readlines()
+                processed = False
+                for i, line in enumerate(lines):
+                    stripped_line = line.strip()
+                    if stripped_line == '':
+                        continue
+                    if not stripped_line.startswith('#'):
+                        # Mark line as processed
+                        lines[i] = '# ' + line
+                        processed_line = stripped_line
+                        processed = True
+                        break
+                if processed:
+                    # Move file pointer to the beginning
+                    f.seek(0)
+                    f.truncate()
+                    f.writelines(lines)
+                portalocker.unlock(f)
+
+            if processed:
+                print(f"Processed line: {processed_line}")
+                # Determine the client alias from the line
+                client_alias, rest_of_line = processed_line.split(":", 1)
+                client_alias = client_alias.strip()
+                rest_of_line = rest_of_line.lstrip()
+                # Extract the message to send
+                if " =>" in rest_of_line:
+                    message, _ = rest_of_line.split(" =>", 1)
+                else:
+                    message = rest_of_line
+                # Send the message asynchronously
+            if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
+                await send_message_from_host(client_alias, message)
+            elif client_alias == "Coffeemachine":
+                print("Kommunikation Kaffeemaschine noch nicht ready")
+            elif client_alias == "Toto":
+                print("Kommunikation Toto noch nicht ready")
+            elif client_alias == "Gripper":
+                print("Kommunikation Greifer noch nicht ready")
+            elif client_alias == "Payment":
+                print("Kommunikation Payment noch nicht ready")
+            else:
+                print(f"Unbekannter Client Alias: {client_alias}")
+
+        except Exception as e:
+            print(f"Error processing active orders: {e}")
+
+        # Wait before next check
+        await asyncio.sleep(1)
+
+async def start_orchestra(orders_dir='Orders', active_orders_file='Orders/activeOrders.log', current_dir='Orders/ActiveOrders', failed_dir='Orders/FailedOrders'):
     orders_dir = os.path.abspath(orders_dir)
-    handled_dir = os.path.abspath(handled_dir)
+    current_dir = os.path.abspath(current_dir)
     failed_dir = os.path.abspath(failed_dir)
-    # Place active_orders_file outside the orders_dir
-    active_orders_file = os.path.abspath(os.path.join(os.path.dirname(orders_dir), active_orders_file))
+    active_orders_file = os.path.abspath(active_orders_file)
 
     print(f"Starting Orchestra with:")
     print(f"  Orders Directory: {orders_dir}")
     print(f"  Active Orders File: {active_orders_file}")
-    print(f"  Handled Directory: {handled_dir}")
+    print(f"  Handled Directory: {current_dir}")
     print(f"  Failed Directory: {failed_dir}")
 
     if not os.path.exists(orders_dir):
         os.makedirs(orders_dir)
         print(f"Created orders directory: {orders_dir}")
-    if not os.path.exists(handled_dir):
-        os.makedirs(handled_dir)
-        print(f"Created handled directory: {handled_dir}")
+    if not os.path.exists(current_dir):
+        os.makedirs(current_dir)
+        print(f"Created handled directory: {current_dir}")
     if not os.path.exists(failed_dir):
         os.makedirs(failed_dir)
         print(f"Created failed directory: {failed_dir}")
 
-    event_handler = OrderHandler(orders_dir, active_orders_file, handled_dir, failed_dir)
+    event_handler = OrderHandler(orders_dir, active_orders_file, current_dir, failed_dir)
     observer = Observer()
     observer.schedule(event_handler, path=orders_dir, recursive=False)
     observer.start()
@@ -164,8 +260,8 @@ def start_orchestra(orders_dir='Orders', active_orders_file='activeOrders.txt', 
     print("Orchestra started. Monitoring for new orders...")
 
     try:
-        while True:
-            time.sleep(1)
+        # Start the process_active_orders coroutine
+        await process_active_orders(active_orders_file)
     except KeyboardInterrupt:
         print("Stopping Orchestra...")
         observer.stop()
@@ -173,4 +269,4 @@ def start_orchestra(orders_dir='Orders', active_orders_file='activeOrders.txt', 
     print("Orchestra stopped.")
 
 if __name__ == "__main__":
-    start_orchestra()
+    asyncio.run(start_orchestra())
