@@ -106,7 +106,7 @@ class PaymentTerminal:
         output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
         # Parse the output and return the result
-        return self.save_receipts(output, payment_style="book_total", order_details={})
+        return self.save_receipts(output, payment_style="book_total", order_details={}) #! modify receipt
 
     async def pay(self, payment_style, amount, order_details):
         #! type = reservation or auth for direct payment
@@ -148,9 +148,10 @@ class PaymentTerminal:
 
             # Decode output for processing
             output = stdout_str + stderr_str
-            print(f"Full combined output: {output}")
+            #print(f"Full combined output: {output}")
 
             # Parse the output and return the result
+            print(f"Order Details1: {order_details}")
             parsed_output = self.save_receipts(output, payment_style, order_details)
 
             return parsed_output
@@ -239,7 +240,7 @@ class PaymentTerminal:
         # Split output into lines
         lines = output.split('\n')
 
-        # Initialize variables to hold the receipts, beleg number, and payment status
+        # Initialize variables to hold the receipts, receipt number, and payment status
         receipt_number = ""
         trace = ""
         expiry_date = ""
@@ -258,7 +259,7 @@ class PaymentTerminal:
             # Remove the "<-PT|" from the start and "|" from the end of the line
             clean_line = line.replace('<-PT|', '').rstrip('|').strip()
 
-            # Extract other data safely, checking the length of split results
+            # Extract data safely, checking the length of split results
             if "trace" in line:
                 trace = line.split()[-1] if len(line.split()) > 0 else ""
             if "status" in line:
@@ -307,26 +308,43 @@ class PaymentTerminal:
 
         # Create a dictionary for payment details
         payment_details = {
-            'status': status,  # Payment Success/ Error Status
-            'receipt_number': receipt_number,  # Belegnummer FEIG Terminal
+            'status': status,                # Payment Success/Error Status
+            'receipt_number': receipt_number, # Receipt number from terminal
             'payment_style': payment_style,
-            'date': date,  # Datum
-            'time': time,  # Zeit
-            'amount_in_cents': amount_in_cents,  # gebuchter Betrag
+            'date': date,                    # Date
+            'time': time,                    # Time
+            'amount_in_cents': amount_in_cents, # Charged amount
             'currency': currency,
-            'card_name': card_name,  # z.B. Mastercard
-            'payment_type': payment_type,  # z.B. Kontaktlos
-            'card_id': card_id,  # Kreditkartennummer
-            'expiry_date': expiry_date,  # Ablaufdatum Kreditkarte
-            'terminal_id': terminal_id,  # tid/ Terminal ID
-            'trace': trace  # (TA-Nr.)
+            'card_name': card_name,          # e.g., Mastercard
+            'payment_type': payment_type,    # e.g., Contactless
+            'card_id': card_id,              # Card number
+            'expiry_date': expiry_date,      # Card expiry date
+            'terminal_id': terminal_id,      # Terminal ID
+            'trace': trace                   # Transaction number
         }
 
         # Append payment details to order_details for formatting
         order_details['payment'] = payment_details
 
-        # Now call the save_receipt_to_file function
-        self.save_receipt_to_file("Order", receipt_number, order_details)
+        # Parse 'message' if it's a JSON string
+        if 'message' in order_details:
+            if isinstance(order_details['message'], str):
+                try:
+                    order_details['message'] = json.loads(order_details['message'])
+                except json.JSONDecodeError:
+                    print("Error decoding JSON from 'message'")
+                    order_details['message'] = {}
+            elif not isinstance(order_details['message'], dict):
+                order_details['message'] = {}
+        else:
+            order_details['message'] = {}
+
+        # Extract 'whichTerminal' from order_details or its 'message'
+        which_terminal = order_details.get('whichTerminal', 
+                            order_details['message'].get('whichTerminal', "UnknownTerminal"))
+
+        # Now call the save_receipt_to_file function with 'which_terminal'
+        self.save_receipt_to_file(which_terminal, receipt_number, order_details)
 
         return status
 

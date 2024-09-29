@@ -1,4 +1,5 @@
 # @chatgpt: in this file everything which connectes both websocket communication AND zvt/ payment
+# payment_management.py
 
 #! ToDo: 
 
@@ -112,6 +113,22 @@ async def process_payment(terminal, payment_style, total_price_cents, order_deta
     # Send the result to the client that sent the order
     await notify_client_payment_status(client_alias, result, clients, host_name)
 
+def book_total(which_terminal, receipt_no, amount):
+    try:
+        if which_terminal.lower() == 'front':
+            terminal = paymentTerminalFront
+        elif which_terminal.lower() == 'back':
+            terminal = paymentTerminalBack
+        else:
+            raise ValueError(f"Unknown terminal identifier: {which_terminal}")
+
+        exit_code = terminal.book_total(receipt_no, amount)
+        if exit_code == "00":
+            return "BookTotal succeeded"
+        else:
+            return f"BookTotal failed with exit code {exit_code}"
+    except Exception as e:
+        return f"BookTotal encountered an exception: {e}"
 
 async def notify_client_payment_status(client_alias, result, clients, host_name):
     if client_alias in clients:
@@ -135,3 +152,4 @@ async def check_connections_periodically():
         if message:
             print(message)
         await asyncio.sleep(3)
+

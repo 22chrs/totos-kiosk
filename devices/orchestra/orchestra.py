@@ -1,12 +1,16 @@
+# orchestra.py
+
 import os
 import json
 import time
 import shutil
 import portalocker
+import re  
 import asyncio
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from websocket.websocket import send_message_from_host  # Import send_message_from_host function
+from payment.payment_management import book_total
 
 # TOTO / GREIFER
 # KAFFEEMASCHINE
@@ -157,7 +161,7 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
         recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
         if is_last_product:
-            recipe.append(f"Payment: BookTotal('{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
+            recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
         recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'") #! Not Waiting but checking periodically
         return recipe
     
@@ -176,7 +180,7 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
         recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
         if is_last_product:
-            recipe.append(f"Payment: BookTotal('{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
+             recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
         return recipe
     #! ENDE REZEPT COFFEE !#
 
@@ -260,22 +264,23 @@ async def process_active_orders(active_orders_file):
                         elif client_alias == "Gripper":
                             print("Kommunikation Greifer noch nicht ready")
                         elif client_alias == "Payment":
-                            import re
-                            # Expected line format: Payment: BookTotal('30', '501', 'isSensorSuccess')
-                            pattern = r"BookTotal\('(\d+)',\s*'(\d+)',\s*'isSensorSuccess'\)"
-                            match = re.match(pattern, rest_of_line)
+                            # Expected message format: BookTotal('front', '30', '501', 'isSensorSuccess')
+                            match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
                             if match:
-                                receipt_no = match.group(1)
-                                amount_in_cents = int(match.group(2))
-                                try:
-                                    # Initialize PaymentTerminal with the appropriate IP address
-                                    payment_terminal = PaymentTerminal(ip_address_terminal='YOUR_TERMINAL_IP')  # Replace with actual IP
-                                    status = payment_terminal.book_total(receipt_no, amount_in_cents)
-                                    print(f"Payment BookTotal status: {status}")
-                                except Exception as e:
-                                    print(f"Error calling book_total: {e}")
+                                which_terminal, receipt_no, amount_str, status = match.groups()
+                                amount = int(amount_str)
+
+                                # Call the book_total function from payment_management
+                                result = book_total(which_terminal, receipt_no, amount)
+
+                                # Notify the client about the BookTotal result
+                                #await notify_client_payment_status(client_alias, result, clients, host_name)
+                                print(f"Called book_total for terminal: {which_terminal}, receipt_no: {receipt_no}, amount: {amount}")
+                                print(f"{result}")
                             else:
-                                print(f"Invalid BookTotal format: {rest_of_line}")
+                                print(f"Invalid Payment BookTotal message format: {message}")
+                                print(f"{result}")
+                                #await notify_client_payment_status(client_alias, "Invalid BookTotal message format", clients, host_name)
                         else:
                             print(f"Unknown Client Alias: {client_alias}")
                     else:
