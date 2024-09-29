@@ -135,4 +135,3 @@ async def check_connections_periodically():
         if message:
             print(message)
         await asyncio.sleep(3)
-

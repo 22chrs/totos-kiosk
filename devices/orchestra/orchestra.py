@@ -8,6 +8,13 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from websocket.websocket import send_message_from_host  # Import send_message_from_host function
 
+# TOTO / GREIFER
+# KAFFEEMASCHINE
+# BECHERKARUSELL
+# ROBO CUBE FRONT
+# ROBO CUBE FRONT
+# SCNACKBAR
+
 class OrderHandler(FileSystemEventHandler):
     def __init__(self, orders_dir, active_orders_file, current_dir, failed_dir):
         self.orders_dir = orders_dir
@@ -76,7 +83,7 @@ class OrderHandler(FileSystemEventHandler):
                 for q in range(quantity):
                     # Determine if this is the last quantity of the last product
                     is_last = is_last_product and (q == quantity - 1)
-                    function_calls.extend(self.generate_coffee_recipe(
+                    function_calls.extend(self.generate_drink_recipe(
                         product_name,
                         choosen_size,
                         choosen_sugar,
@@ -89,8 +96,17 @@ class OrderHandler(FileSystemEventHandler):
                         is_last_product=is_last  # Pass the flag here
                     ))
             elif product_category == "Snacks":
-                # Implement snack recipe logic here
-                pass
+                for q in range(quantity):
+                    # Determine if this is the last quantity of the last product
+                    is_last = is_last_product and (q == quantity - 1)
+                    function_calls.extend(self.generate_snack_recipe(
+                        product_name,
+                        which_terminal,
+                        RoboCube,
+                        receipt_number,
+                        amount_in_cents,
+                        is_last_product=is_last  # Pass the flag here
+                    ))
             else:
                 print(f"Unknown product category: {product_category}")
                 
@@ -103,8 +119,8 @@ class OrderHandler(FileSystemEventHandler):
         # Move the processed order file to handled directory
         self.move_file(file_path, self.current_dir)
 
-    #! START REZEPT COFFEE !
-    def generate_coffee_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
+    #! REZEPT GETRÄNK
+    def generate_drink_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
         recipe = []
         recipe.append(f"ServiceCube: askForCup('{choosen_mug}', '{choosen_size}') => 'initialCupPosition'") # Fragen ob und wo ein Becher ist
         recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'") # Becher hochfahren und freigeben
@@ -139,10 +155,28 @@ class OrderHandler(FileSystemEventHandler):
             recipe.append(f"{RoboCube}: moveBecherschubseAndPressLid('Zuckerposition')")
         recipe.append(f"{RoboCube}: moveBecherschubseAndCloseSchleuse('Ausgabepostion') => 'isSensorSuccess'")
         recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
+        recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
         if is_last_product:
             recipe.append(f"Payment: BookTotal('{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
-        recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
         recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'") #! Not Waiting but checking periodically
+        return recipe
+    
+
+    #! REZEPT SNACK
+    def generate_snack_recipe(self, product_name, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
+        recipe = []
+        recipe.append(f"RoboCubeFront: moveSnackbar('{product_name}')')")
+        recipe.append(f"Toto: moveToto('?->PopelSnackOut')") # Toto zur entsprechenden Becherposition fahren
+        recipe.append(f"Gripper: moveGripper('{product_name}', 'Close')") # Becher greifen
+        recipe.append(f"{RoboCube}: moveBecherschubse('LiftPositionSnack')") # Becherschubse zur Becheraufnahme bereitstellen #! nicht warten bis diese dort ist
+        recipe.append(f"Toto: moveToto('{which_terminal}', 'PopeledSnackOut->LiftPositionSnack')")
+        recipe.append(f"Gripper: moveGripper('{product_name}', 'Open')") # Becher greifen
+        recipe.append(f"Toto: moveToto('{which_terminal}', 'LiftPositionSnack->LiftPositionSnackNotDisturbing')")
+        recipe.append(f"{RoboCube}: moveBecherschubseAndCloseSchleuse('AusgabepostionSnacks') => 'isSensorSuccess'")
+        recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
+        recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
+        if is_last_product:
+            recipe.append(f"Payment: BookTotal('{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
         return recipe
     #! ENDE REZEPT COFFEE !#
 
@@ -226,7 +260,22 @@ async def process_active_orders(active_orders_file):
                         elif client_alias == "Gripper":
                             print("Kommunikation Greifer noch nicht ready")
                         elif client_alias == "Payment":
-                            print("Kommunikation Payment noch nicht ready")
+                            import re
+                            # Expected line format: Payment: BookTotal('30', '501', 'isSensorSuccess')
+                            pattern = r"BookTotal\('(\d+)',\s*'(\d+)',\s*'isSensorSuccess'\)"
+                            match = re.match(pattern, rest_of_line)
+                            if match:
+                                receipt_no = match.group(1)
+                                amount_in_cents = int(match.group(2))
+                                try:
+                                    # Initialize PaymentTerminal with the appropriate IP address
+                                    payment_terminal = PaymentTerminal(ip_address_terminal='YOUR_TERMINAL_IP')  # Replace with actual IP
+                                    status = payment_terminal.book_total(receipt_no, amount_in_cents)
+                                    print(f"Payment BookTotal status: {status}")
+                                except Exception as e:
+                                    print(f"Error calling book_total: {e}")
+                            else:
+                                print(f"Invalid BookTotal format: {rest_of_line}")
                         else:
                             print(f"Unknown Client Alias: {client_alias}")
                     else:
