@@ -4,6 +4,7 @@ import subprocess
 import json
 import datetime
 import platform
+import glob 
 
 
 class PaymentTerminal:
@@ -80,8 +81,30 @@ class PaymentTerminal:
 
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
+    
+    def load_order_details(self, whichTerminal, receipt_no):
+        # Define the base directory
+        base_dir = "Orders"
 
-    def book_total(self, receipt_no, amount=None):
+        # Search for files matching pattern '*_{whichTerminal}_{receipt_no}.json' in base_dir
+        pattern = f"*_{whichTerminal}_{receipt_no}.json"
+        full_pattern = os.path.join(base_dir, pattern)
+
+        # Use glob to find matching files
+        matching_files = glob.glob(full_pattern)
+
+        if not matching_files:
+            print(f"No existing order file found for whichTerminal: {whichTerminal}, receipt_no: {receipt_no}")
+            return {}, None
+        else:
+            # Assuming the latest file is the one we need
+            matching_files.sort()
+            order_file = matching_files[-1]
+            with open(order_file, 'r', encoding='utf-8') as f:
+                order_details = json.load(f)
+            return order_details, order_file
+
+    def book_total(self, whichTerminal, receipt_no, amount=None):
         # Input validation for receipt number and amount
         if not isinstance(receipt_no, str) or not receipt_no:
             raise ValueError("Receipt number must be a non-empty string.")
@@ -105,8 +128,11 @@ class PaymentTerminal:
         # Decode output for processing
         output = stdout.decode('utf-8') + stderr.decode('utf-8')
 
+        # Find existing order_details from the receipt file
+        order_details, receipt_path = self.load_order_details(whichTerminal, receipt_no)
+
         # Parse the output and return the result
-        return self.save_receipts(output, payment_style="book_total", order_details={}) #! modify receipt
+        return self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
 
     async def pay(self, payment_style, amount, order_details):
         #! type = reservation or auth for direct payment
@@ -233,7 +259,7 @@ class PaymentTerminal:
             file.write(full_error_message)
         print(f"Error file saved to {error_path}")
 
-    def save_receipts(self, output, payment_style, order_details=None):
+    def save_receipts(self, output, payment_style, order_details=None, receipt_path=None):
         if order_details is None:
             order_details = {}
 
@@ -344,7 +370,7 @@ class PaymentTerminal:
                             order_details['message'].get('whichTerminal', "UnknownTerminal"))
 
         # Now call the save_receipt_to_file function with 'which_terminal'
-        self.save_receipt_to_file(which_terminal, receipt_number, order_details)
+        self.save_receipt_to_file(which_terminal, receipt_number, order_details, receipt_path=receipt_path)
 
         return status
 
@@ -388,16 +414,19 @@ class PaymentTerminal:
 
         return formatted_details
 
-    def save_receipt_to_file(self, receipt_type, beleg_nr, order_details):
+    def save_receipt_to_file(self, receipt_type, beleg_nr, order_details, receipt_path=None):
         # Define the base directory
         base_dir = "Orders"
 
-        # Create a timestamp
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-
-        # Define the file path for the receipt
-        receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}.json"
-        receipt_path = os.path.join(base_dir, receipt_filename)
+        if receipt_path is None:
+            # Create a timestamp
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            # Define the file path for the receipt
+            receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}.json"
+            receipt_path = os.path.join(base_dir, receipt_filename)
+        else:
+            # Use the existing receipt_path
+            pass  # No need to change receipt_path
 
         # Check if the base directory exists, if not, create it
         if not os.path.exists(base_dir):

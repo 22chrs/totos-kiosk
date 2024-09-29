@@ -122,7 +122,7 @@ def book_total(which_terminal, receipt_no, amount):
         else:
             raise ValueError(f"Unknown terminal identifier: {which_terminal}")
 
-        exit_code = terminal.book_total(receipt_no, amount)
+        exit_code = terminal.book_total(which_terminal, receipt_no, amount)
         if exit_code == "00":
             return "BookTotal succeeded"
         else:
