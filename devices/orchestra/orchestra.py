@@ -176,6 +176,10 @@ async def process_active_orders(active_orders_file):
     marks it as processed, and sends the line via websocket.
     """
     while True:
+        # Initialize variables at the start of each loop
+        processed_line = None
+        client_alias = None
+        message = None
         try:
             # Acquire exclusive lock for reading and writing
             with open(active_orders_file, 'r+', encoding='utf-8') as f:
@@ -197,35 +201,42 @@ async def process_active_orders(active_orders_file):
                     f.seek(0)
                     f.truncate()
                     f.writelines(lines)
-                portalocker.unlock(f)
+                # No need to unlock; 'with' statement handles it
 
             if processed:
-                print(f"Processed line: {processed_line}")
-                # Determine the client alias from the line
-                client_alias, rest_of_line = processed_line.split(":", 1)
-                client_alias = client_alias.strip()
-                rest_of_line = rest_of_line.lstrip()
-                # Extract the message to send
-                if " =>" in rest_of_line:
-                    message, _ = rest_of_line.split(" =>", 1)
-                else:
-                    message = rest_of_line
-                # Send the message asynchronously
-            if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
-                await send_message_from_host(client_alias, message)
-            elif client_alias == "Coffeemachine":
-                print("Kommunikation Kaffeemaschine noch nicht ready")
-            elif client_alias == "Toto":
-                print("Kommunikation Toto noch nicht ready")
-            elif client_alias == "Gripper":
-                print("Kommunikation Greifer noch nicht ready")
-            elif client_alias == "Payment":
-                print("Kommunikation Payment noch nicht ready")
+                try:
+                    print(f"Processed line: {processed_line}")
+                    # Determine the client alias from the line
+                    if ":" in processed_line:
+                        client_alias, rest_of_line = processed_line.split(":", 1)
+                        client_alias = client_alias.strip()
+                        rest_of_line = rest_of_line.lstrip()
+                        # Extract the message to send
+                        if " =>" in rest_of_line:
+                            message, _ = rest_of_line.split(" =>", 1)
+                        else:
+                            message = rest_of_line
+                        # Send the message asynchronously
+                        if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
+                            await send_message_from_host(client_alias, message)
+                        elif client_alias == "Coffeemachine":
+                            print("Kommunikation Kaffeemaschine noch nicht ready")
+                        elif client_alias == "Toto":
+                            print("Kommunikation Toto noch nicht ready")
+                        elif client_alias == "Gripper":
+                            print("Kommunikation Greifer noch nicht ready")
+                        elif client_alias == "Payment":
+                            print("Kommunikation Payment noch nicht ready")
+                        else:
+                            print(f"Unknown Client Alias: {client_alias}")
+                    else:
+                        print(f"Processed line does not contain ':': {processed_line}")
+                except Exception as e:
+                    print(f"Error processing line: {e}")
             else:
-                print(f"Unbekannter Client Alias: {client_alias}")
-
+                print("No active orders to process.")
         except Exception as e:
-            print(f"Error processing active orders: {e}")
+            print(f"Error reading active orders: {e}")
 
         # Wait before next check
         await asyncio.sleep(1)
