@@ -20,10 +20,9 @@ from payment.payment_management import book_total
 # SCNACKBAR
 
 class OrderHandler(FileSystemEventHandler):
-    def __init__(self, orders_dir, active_orders_file, current_dir, failed_dir):
+    def __init__(self, orders_dir, active_orders_file, failed_dir):
         self.orders_dir = orders_dir
         self.active_orders_file = active_orders_file
-        self.current_dir = current_dir
         self.failed_dir = failed_dir
 
     def on_created(self, event):
@@ -46,6 +45,12 @@ class OrderHandler(FileSystemEventHandler):
                 print(f"Failed to decode JSON from {file_path}: {e}")
                 self.move_file(file_path, self.failed_dir)
                 return
+
+        payment_status = order_data.get('payment', {}).get('status')
+        if payment_status != "00":
+            print(f"Payment status is not '00' (status: {payment_status}), moving file to failed directory.")
+            self.move_file(file_path, self.failed_dir)
+            return  # Do not process further
 
         payment_status = order_data.get('payment', {}).get('status')
         if payment_status != "00":
@@ -160,9 +165,9 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"{RoboCube}: moveBecherschubseAndCloseSchleuse('Ausgabepostion') => 'isSensorSuccess'")
         recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
         recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
+        recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'") #! Not Waiting but checking periodically
         if is_last_product:
             recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
-        recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'") #! Not Waiting but checking periodically
         return recipe
     
 
@@ -295,29 +300,24 @@ async def process_active_orders(active_orders_file):
         # Wait before next check
         await asyncio.sleep(1)
 
-async def start_orchestra(orders_dir='Orders', active_orders_file='Orders/activeOrders.log', current_dir='Orders/ActiveOrders', failed_dir='Orders/FailedOrders'):
+async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders'):
     orders_dir = os.path.abspath(orders_dir)
-    current_dir = os.path.abspath(current_dir)
     failed_dir = os.path.abspath(failed_dir)
     active_orders_file = os.path.abspath(active_orders_file)
 
     print(f"Starting Orchestra with:")
     print(f"  Orders Directory: {orders_dir}")
     print(f"  Active Orders File: {active_orders_file}")
-    print(f"  Handled Directory: {current_dir}")
     print(f"  Failed Directory: {failed_dir}")
 
     if not os.path.exists(orders_dir):
         os.makedirs(orders_dir)
         print(f"Created orders directory: {orders_dir}")
-    if not os.path.exists(current_dir):
-        os.makedirs(current_dir)
-        print(f"Created handled directory: {current_dir}")
     if not os.path.exists(failed_dir):
         os.makedirs(failed_dir)
         print(f"Created failed directory: {failed_dir}")
 
-    event_handler = OrderHandler(orders_dir, active_orders_file, current_dir, failed_dir)
+    event_handler = OrderHandler(orders_dir, active_orders_file, failed_dir)
     observer = Observer()
     observer.schedule(event_handler, path=orders_dir, recursive=False)
     observer.start()

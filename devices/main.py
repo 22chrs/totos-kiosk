@@ -69,9 +69,9 @@ async def main():
 
     # Start the Orchestra component as an asyncio task
     orchestra_task = asyncio.create_task(start_orchestra(
-        orders_dir='Orders',
-        active_orders_file='Orders/activeOrders.log',
-        current_dir='Orders/ActiveOrders'
+        orders_dir='Orders/ActiveOrders',
+        active_orders_file='Orders/ActiveOrders/activeOrders.log',
+        failed_dir='Orders/FailedOrders'  # Include this if needed
     ))
     print("Orchestra component started.")
 

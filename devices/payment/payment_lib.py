@@ -83,8 +83,8 @@ class PaymentTerminal:
         return exit_code
     
     def load_order_details(self, whichTerminal, receipt_no):
-        # Define the base directory
-        base_dir = "Orders"
+        # Define the base directory to include 'ActiveOrders'
+        base_dir = os.path.join("Orders", "ActiveOrders")
 
         # Search for files matching pattern '*_{whichTerminal}_{receipt_no}.json' in base_dir
         pattern = f"*_{whichTerminal}_{receipt_no}.json"
@@ -385,6 +385,8 @@ class PaymentTerminal:
         # Extract products and payment information from message if present
         products = None
         payment_info = None
+        booked_info = None  # New variable to store booked payment details
+
         if 'message' in order_details:
             if isinstance(order_details['message'], str):
                 try:
@@ -395,19 +397,28 @@ class PaymentTerminal:
             if 'products' in order_details['message']:
                 products = order_details['message'].pop('products')
 
-            order_details['message']['orderStatus'] = 'paymentReserved'
+            # Keep existing orderStatus if present, or set to 'paymentReserved'
+            if 'orderStatus' not in order_details['message']:
+                order_details['message']['orderStatus'] = 'paymentReserved'
 
+        # Extract payment information
         if 'payment' in order_details:
-            payment_info = order_details.pop('payment')
+            payment_info = order_details['payment']
+
+        # Extract booked payment information
+        if 'booked' in order_details:
+            booked_info = order_details['booked']
 
         # Reconstruct the order details with products and payment at the same level
         new_order_details = {
-            'Order Details': order_details['message'] if 'message' in order_details else {}
+            'Order Details': order_details.get('message', {})
         }
         if products is not None:
             new_order_details['products'] = products
         if payment_info is not None:
             new_order_details['payment'] = payment_info
+        if booked_info is not None:
+            new_order_details['booked'] = booked_info
 
         # Pretty print the JSON with custom formatting (indentation and separators)
         formatted_details = json.dumps(new_order_details, indent=2, separators=(',', ': '))
@@ -415,8 +426,8 @@ class PaymentTerminal:
         return formatted_details
 
     def save_receipt_to_file(self, receipt_type, beleg_nr, order_details, receipt_path=None):
-        # Define the base directory
-        base_dir = "Orders"
+        # Define the base directory to be 'Orders/ActiveOrders'
+        base_dir = os.path.join("Orders", "ActiveOrders")
 
         if receipt_path is None:
             # Create a timestamp
