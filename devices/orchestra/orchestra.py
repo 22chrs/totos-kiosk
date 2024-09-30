@@ -129,7 +129,6 @@ class OrderHandler(FileSystemEventHandler):
     #! REZEPT GETRÄNK
     def generate_drink_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
         recipe = []
-        recipe.append("START")
         recipe.append(f"ServiceCube: askForCup('{choosen_mug}', '{choosen_size}') => 'initialCupPosition'") # Fragen ob und wo ein Becher ist
         recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'") # Becher hochfahren und freigeben
         recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '?->Becherkarusell('initialCupPosition')')") # Toto zur entsprechenden Becherposition fahren
@@ -167,14 +166,13 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'") #! Not Waiting but checking periodically
         if is_last_product:
             recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
-        recipe.append("END")
+            recipe.append("END")
         return recipe
     
 
     #! REZEPT SNACK
     def generate_snack_recipe(self, product_name, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
         recipe = []
-        recipe.append("START")
         recipe.append(f"RoboCubeFront: moveSnackbar('{product_name}')')")
         recipe.append(f"Toto: moveToto('?->PopelSnackOut')") # Toto zur entsprechenden Becherposition fahren
         recipe.append(f"Gripper: moveGripper('{product_name}', 'Close')") # Becher greifen
@@ -186,8 +184,8 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
         recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
         if is_last_product:
-             recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
-        recipe.append("END")
+            recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
+            recipe.append("END")
         return recipe
     
     #! ENDE REZEPT COFFEE !#
@@ -201,7 +199,7 @@ class OrderHandler(FileSystemEventHandler):
         with open(self.active_orders_file, 'a', encoding='utf-8') as f:
             try:
                 portalocker.lock(f, portalocker.LOCK_EX)
-                f.write(f"# receiptNumber: {receipt_number}, Timestamp: {time_stamp_order}, Terminal: {which_terminal}\n")
+                f.write(f"START // receiptNumber: {receipt_number}, Timestamp: {time_stamp_order}, Terminal: {which_terminal}\n")
                 for call in function_calls:
                     f.write(call + '\n')
                 f.write('\n')
@@ -252,15 +250,13 @@ async def process_active_orders(active_orders_file):
                             continue
                         if not line.startswith('#'):
                             lines[i] = '# ' + lines[i]
-                            processed_line = line
                             processed = True
                             if 'START' in line:
                                 pass  # Do nothing else
                             elif 'END' in line:
                                 receipt_number = order['receipt_number']
-                                timestamp = order['timestamp']
                                 which_terminal = order['which_terminal']
-                                order_filename = f"{timestamp}_{which_terminal}_{receipt_number}.json"
+                                order_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
                                 order_file_path = os.path.join('Orders', 'ActiveOrders', order_filename)
                                 if os.path.exists(order_file_path):
                                     target_dir = os.path.join('Orders', 'ProcessedOrders')

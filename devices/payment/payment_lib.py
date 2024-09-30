@@ -433,7 +433,7 @@ class PaymentTerminal:
                 payment_info.pop('payment_type', None)
                 payment_info.pop('card_id', None)
                 payment_info.pop('expiry_date', None)
-                new_order_details['booked_total'] = payment_info  # Rename the key to booked_total
+                new_order_details['book_total'] = payment_info  # Rename the key to booked_total
                 
             else:
                 new_order_details['reservation'] = payment_info
@@ -448,18 +448,19 @@ class PaymentTerminal:
     def save_receipt_to_file(self, which_terminal, receipt_number, order_details, receipt_path=None):
         base_dir = os.path.join("Orders", "ActiveOrders")
 
+        # Generate the formatted receipt content
+        receipt_content = self.format_order_details(order_details)
+        receipt_dict = json.loads(receipt_content)
+
         if receipt_path is None:
-            time_stamp_order = order_details.get('Order Details', {}).get('timeStampOrder')
+            time_stamp_order = receipt_dict.get('Order Details', {}).get('timeStampOrder')
             if not time_stamp_order:
-                time_stamp_order = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                time_stamp_order = "NO_TIMESTAMP"
             receipt_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
             receipt_path = os.path.join(base_dir, receipt_filename)
 
         os.makedirs(base_dir, exist_ok=True)
         print(f"Directory ensured: {base_dir}")
-
-        receipt_content = self.format_order_details(order_details)
-        receipt_dict = json.loads(receipt_content)
 
         if os.path.exists(receipt_path) and os.path.getsize(receipt_path) > 0:
             with open(receipt_path, 'r+', encoding='utf-8') as file:
@@ -473,7 +474,6 @@ class PaymentTerminal:
             print(f"Receipt appended to {receipt_path}")
         else:
             with open(receipt_path, "w", encoding="utf-8") as file:
-                # Initialize with a list or dict as needed
                 json.dump(receipt_dict, file, indent=2)
             print(f"Receipt written to {receipt_path}")
 
