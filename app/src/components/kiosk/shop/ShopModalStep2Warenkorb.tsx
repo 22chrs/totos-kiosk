@@ -61,10 +61,9 @@ function ShopModalStepWarenkorb({ onClose }) {
           : displayNumber === 'back'
             ? 'back'
             : 'unknown',
-      orderID: null, // set after payment successful
-      orderStatus: 'unpaid',
       timeStampOrder: formattedTimestamp,
       totalPrice: getCartTotalPrice() + getCartTotalPfand() + (Trinkgeld || 0),
+      deposit: getCartTotalPfand() || 0,
       tip: Trinkgeld || 0,
       products: cart.map((item) => ({
         // Directly from ProductCart

@@ -390,17 +390,13 @@ class PaymentTerminal:
             if 'products' in order_details['message']:
                 products = order_details['message'].pop('products')
 
-            # Keep existing orderStatus if present, or set to 'paymentReserved'
-            if 'orderStatus' not in order_details['message']:
-                order_details['message']['orderStatus'] = 'paymentReserved'
-
         # Extract payment information
         if 'payment' in order_details:
             payment_info = order_details['payment']
 
         # Extract booked payment information
-        if 'booked' in order_details:
-            booked_info = order_details['booked']
+        if 'book_total' in order_details:
+            booked_info = order_details['book_total']
 
         # Reconstruct the order details with products and payment at the same level
         new_order_details = {

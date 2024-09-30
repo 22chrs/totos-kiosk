@@ -19,10 +19,9 @@ export type ProductCart = {
 export type Bestellung = {
   automatenID?: string; // via Balena Automatenname gesetzt
   whichTerminal?: string; // front oder back
-  orderID?: string; // via Feig Terminal gesetzt
-  orderStatus?: string; // unpaid, paid, inPreparation, delivered
   timeStampOrder?: string;
   totalPrice?: number; // inklusive Trinkgeld
+  deposit?: number;
   tip?: number;
   products: {
     productName: string;
