@@ -378,7 +378,6 @@ class PaymentTerminal:
         # Extract products and payment information from message if present
         products = None
         payment_info = None
-        booked_info = None  # New variable to store booked payment details
 
         if 'message' in order_details:
             if isinstance(order_details['message'], str):
@@ -394,23 +393,30 @@ class PaymentTerminal:
         if 'reservation' in order_details:
             payment_info = order_details['reservation']
 
-        # Extract booked payment information
-        if 'book_total' in order_details:
-            booked_info = order_details['book_total']
+
 
         # Reconstruct the order details with products and payment at the same level
-        new_order_details = {
+        if payment_info.get('payment_style') == 'book_total':
+            new_order_details = {}
+        else:
+            new_order_details = {
             'Order Details': order_details.get('message', {})
         }
+
+
         if products is not None:
             new_order_details['products'] = products
         if payment_info is not None:
-            new_order_details['reservation'] = payment_info
-        if booked_info is not None:
-            new_order_details['booked'] = booked_info
+            # Check if payment_style is 'book_total' and adjust the reservation key to 'booked_total'
+            if payment_info.get('payment_style') == 'book_total':
+                new_order_details['booked_total'] = payment_info  # Rename the key to booked_total
+            else:
+                new_order_details['reservation'] = payment_info
 
         # Pretty print the JSON with custom formatting (indentation and separators)
         formatted_details = json.dumps(new_order_details, indent=2, separators=(',', ': '))
+
+        print(formatted_details)
 
         return formatted_details
 
