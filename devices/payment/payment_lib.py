@@ -110,27 +110,20 @@ class PaymentTerminal:
             raise ValueError("Receipt number must be a non-empty string.")
         if amount is not None and (not isinstance(amount, int) or amount < 0):
             raise ValueError("Amount must be a non-negative integer representing cents.")
-
         # Ensure the zvt++ executable is executable
         os.chmod(self.executable_path, 0o755)
-
         # Construct the command arguments
         cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
         if amount is not None:
             cmd_args.append(str(amount))
-
         # Running the external zvt++ program with the necessary arguments
         process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
         # Reading the output
         stdout, stderr = process.communicate()
-
         # Decode output for processing
         output = stdout.decode('utf-8') + stderr.decode('utf-8')
-
         # Find existing order_details from the receipt file
         order_details, receipt_path = self.load_order_details(whichTerminal, receipt_no)
-
         # Parse the output and return the result
         return self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
 
@@ -435,22 +428,18 @@ class PaymentTerminal:
             # Define the file path for the receipt
             receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}.json"
             receipt_path = os.path.join(base_dir, receipt_filename)
-        else:
-            # Use the existing receipt_path
-            pass  # No need to change receipt_path
 
-        # Check if the base directory exists, if not, create it
-        if not os.path.exists(base_dir):
-            os.makedirs(base_dir)
-            print(f"Created directory: {base_dir}")
+        # Ensure the base directory exists
+        os.makedirs(base_dir, exist_ok=True)
+        print(f"Directory ensured: {base_dir}")
 
-        # Append the order details to the receipt
+        # Format the order details
         receipt_content = self.format_order_details(order_details)
 
-        # Write the receipt content to a file in the chosen directory
-        with open(receipt_path, "w", encoding="utf-8") as file:
-            file.write(receipt_content)
-        print(f"Receipt saved to {receipt_path}")
+        # Open the file in append mode
+        with open(receipt_path, "a", encoding="utf-8") as file:
+            file.write(receipt_content + "\n")  # Add a newline for separation
+        print(f"Receipt appended to {receipt_path}")
 
     def endOfDay_uploadReceipts(self):
         # First, call the end of day process
