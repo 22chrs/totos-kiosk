@@ -409,7 +409,16 @@ class PaymentTerminal:
         if payment_info is not None:
             # Check if payment_style is 'book_total' and adjust the reservation key to 'booked_total'
             if payment_info.get('payment_style') == 'book_total':
+                payment_info.pop('terminal_id', None)
+                payment_info.pop('date', None)
+                payment_info.pop('time', None)
+                payment_info.pop('currency', None)
+                payment_info.pop('card_name', None)
+                payment_info.pop('payment_type', None)
+                payment_info.pop('card_id', None)
+                payment_info.pop('expiry_date', None)
                 new_order_details['booked_total'] = payment_info  # Rename the key to booked_total
+                
             else:
                 new_order_details['reservation'] = payment_info
 
@@ -421,27 +430,34 @@ class PaymentTerminal:
         return formatted_details
 
     def save_receipt_to_file(self, receipt_type, beleg_nr, order_details, receipt_path=None):
-        # Define the base directory to be 'Orders/ActiveOrders'
         base_dir = os.path.join("Orders", "ActiveOrders")
 
         if receipt_path is None:
-            # Create a timestamp
             timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            # Define the file path for the receipt
             receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}.json"
             receipt_path = os.path.join(base_dir, receipt_filename)
 
-        # Ensure the base directory exists
         os.makedirs(base_dir, exist_ok=True)
         print(f"Directory ensured: {base_dir}")
 
-        # Format the order details
         receipt_content = self.format_order_details(order_details)
+        receipt_dict = json.loads(receipt_content)
 
-        # Open the file in append mode
-        with open(receipt_path, "a", encoding="utf-8") as file:
-            file.write(receipt_content + "\n")  # Add a newline for separation
-        print(f"Receipt appended to {receipt_path}")
+        if os.path.exists(receipt_path) and os.path.getsize(receipt_path) > 0:
+            with open(receipt_path, 'r+', encoding='utf-8') as file:
+                data = json.load(file)
+                if isinstance(data, dict):
+                    data.update(receipt_dict)
+                elif isinstance(data, list):
+                    data.append(receipt_dict)
+                file.seek(0)
+                json.dump(data, file, indent=2)
+            print(f"Receipt appended to {receipt_path}")
+        else:
+            with open(receipt_path, "w", encoding="utf-8") as file:
+                # Initialize with a list or dict as needed
+                json.dump(receipt_dict, file, indent=2)
+            print(f"Receipt written to {receipt_path}")
 
     def endOfDay_uploadReceipts(self):
         # First, call the end of day process
