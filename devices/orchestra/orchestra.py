@@ -129,6 +129,7 @@ class OrderHandler(FileSystemEventHandler):
     #! REZEPT GETRÄNK
     def generate_drink_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
         recipe = []
+        recipe.append("START")
         recipe.append(f"ServiceCube: askForCup('{choosen_mug}', '{choosen_size}') => 'initialCupPosition'") # Fragen ob und wo ein Becher ist
         recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'") # Becher hochfahren und freigeben
         recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '?->Becherkarusell('initialCupPosition')')") # Toto zur entsprechenden Becherposition fahren
@@ -166,12 +167,14 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'") #! Not Waiting but checking periodically
         if is_last_product:
             recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
+        recipe.append("END")
         return recipe
     
 
     #! REZEPT SNACK
     def generate_snack_recipe(self, product_name, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
         recipe = []
+        recipe.append("START")
         recipe.append(f"RoboCubeFront: moveSnackbar('{product_name}')')")
         recipe.append(f"Toto: moveToto('?->PopelSnackOut')") # Toto zur entsprechenden Becherposition fahren
         recipe.append(f"Gripper: moveGripper('{product_name}', 'Close')") # Becher greifen
@@ -184,18 +187,21 @@ class OrderHandler(FileSystemEventHandler):
         recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
         if is_last_product:
              recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
+        recipe.append("END")
         return recipe
+    
     #! ENDE REZEPT COFFEE !#
 
     def update_active_orders(self, order_data, function_calls):
-        receipt_number = order_data.get('payment', {}).get('status') or order_data.get('reservation', {}).get('status')
+        receipt_number = order_data.get('payment', {}).get('receipt_number') or order_data.get('reservation', {}).get('receipt_number')
         time_stamp_order = order_data.get('Order Details', {}).get('timeStampOrder')
+        which_terminal = order_data.get('Order Details', {}).get('whichTerminal')
 
         # Use file locking when writing to the active_orders_file
         with open(self.active_orders_file, 'a', encoding='utf-8') as f:
             try:
                 portalocker.lock(f, portalocker.LOCK_EX)
-                f.write(f"# receiptNumber: {receipt_number}, Timestamp: {time_stamp_order}\n")
+                f.write(f"# receiptNumber: {receipt_number}, Timestamp: {time_stamp_order}, Terminal: {which_terminal}\n")
                 for call in function_calls:
                     f.write(call + '\n')
                 f.write('\n')
@@ -212,90 +218,95 @@ class OrderHandler(FileSystemEventHandler):
             print(f"Failed to move file {file_path} to {target_dir}: {e}")
 
 async def process_active_orders(active_orders_file):
-    """
-    Periodically scans the active_orders_file, finds the first unprocessed line,
-    marks it as processed, and sends the line via websocket.
-    """
     while True:
-        # Initialize variables at the start of each loop
-        processed_line = None
-        client_alias = None
-        message = None
         try:
-            # Acquire exclusive lock for reading and writing
             with open(active_orders_file, 'r+', encoding='utf-8') as f:
                 portalocker.lock(f, portalocker.LOCK_EX)
                 lines = f.readlines()
-                processed = False
+                orders = []
+                current_order = None
                 for i, line in enumerate(lines):
                     stripped_line = line.strip()
-                    if stripped_line == '':
-                        continue
-                    if not stripped_line.startswith('#'):
-                        # Mark line as processed
-                        lines[i] = '# ' + line
-                        processed_line = stripped_line
-                        processed = True
+                    if stripped_line.startswith('# receiptNumber:'):
+                        match = re.match(r'# receiptNumber: (\S+), Timestamp: (\S+), Terminal: (\S+)', stripped_line)
+                        if match:
+                            receipt_number = match.group(1)
+                            time_stamp_order = match.group(2)
+                            which_terminal = match.group(3)
+                            current_order = {
+                                'receipt_number': receipt_number,
+                                'timestamp': time_stamp_order,
+                                'which_terminal': which_terminal,
+                                'lines': [],
+                                'line_indices': []
+                            }
+                            orders.append(current_order)
+                    elif current_order is not None:
+                        current_order['lines'].append(stripped_line)
+                        current_order['line_indices'].append(i)
+                processed = False
+                for order in orders:
+                    for j, line in enumerate(order['lines']):
+                        i = order['line_indices'][j]
+                        if line == '':
+                            continue
+                        if not line.startswith('#'):
+                            lines[i] = '# ' + lines[i]
+                            processed_line = line
+                            processed = True
+                            if 'START' in line:
+                                pass  # Do nothing else
+                            elif 'END' in line:
+                                receipt_number = order['receipt_number']
+                                timestamp = order['timestamp']
+                                which_terminal = order['which_terminal']
+                                order_filename = f"{timestamp}_{which_terminal}_{receipt_number}.json"
+                                order_file_path = os.path.join('Orders', 'ActiveOrders', order_filename)
+                                if os.path.exists(order_file_path):
+                                    target_dir = os.path.join('Orders', 'ProcessedOrders')
+                                    if not os.path.exists(target_dir):
+                                        os.makedirs(target_dir)
+                                    shutil.move(order_file_path, target_dir)
+                                    print(f"Moved file {order_file_path} to {target_dir}")
+                                else:
+                                    print(f"No order file found: {order_file_path}")
+                            else:
+                                # Existing processing logic for other lines
+                                if ":" in line:
+                                    client_alias, rest_of_line = line.split(":", 1)
+                                    client_alias = client_alias.strip()
+                                    rest_of_line = rest_of_line.lstrip()
+                                    if " =>" in rest_of_line:
+                                        message, _ = rest_of_line.split(" =>", 1)
+                                    else:
+                                        message = rest_of_line
+                                    if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
+                                        await send_message_from_host(client_alias, message)
+                                    elif client_alias == "Payment":
+                                        match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
+                                        if match:
+                                            which_terminal_msg, receipt_no, amount_str, status = match.groups()
+                                            amount = int(amount_str)
+                                            result = book_total(which_terminal_msg, receipt_no, amount)
+                                            print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
+                                            print(f"{result}")
+                                        else:
+                                            print(f"Invalid Payment BookTotal message format: {message}")
+                                    else:
+                                        print(f"Unknown Client Alias: {client_alias}")
+                                else:
+                                    print(f"Processed line does not contain ':': {line}")
+                            break  # Process one line at a time
+                    if processed:
                         break
                 if processed:
-                    # Move file pointer to the beginning
                     f.seek(0)
                     f.truncate()
                     f.writelines(lines)
-                # No need to unlock; 'with' statement handles it
-
-            if processed:
-                try:
-                    print(f"Processed line: {processed_line}")
-                    # Determine the client alias from the line
-                    if ":" in processed_line:
-                        client_alias, rest_of_line = processed_line.split(":", 1)
-                        client_alias = client_alias.strip()
-                        rest_of_line = rest_of_line.lstrip()
-                        # Extract the message to send
-                        if " =>" in rest_of_line:
-                            message, _ = rest_of_line.split(" =>", 1)
-                        else:
-                            message = rest_of_line
-                        # Send the message asynchronously
-                        if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
-                            await send_message_from_host(client_alias, message)
-                        elif client_alias == "Coffeemachine":
-                            print("Kommunikation Kaffeemaschine noch nicht ready")
-                        elif client_alias == "Toto":
-                            print("Kommunikation Toto noch nicht ready")
-                        elif client_alias == "Gripper":
-                            print("Kommunikation Greifer noch nicht ready")
-                        elif client_alias == "Payment":
-                            # Expected message format: BookTotal('front', '30', '501', 'isSensorSuccess')
-                            match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
-                            if match:
-                                which_terminal, receipt_no, amount_str, status = match.groups()
-                                amount = int(amount_str)
-
-                                # Call the book_total function from payment_management
-                                result = book_total(which_terminal, receipt_no, amount)
-
-                                # Notify the client about the BookTotal result
-                                #await notify_client_payment_status(client_alias, result, clients, host_name)
-                                print(f"Called book_total for terminal: {which_terminal}, receipt_no: {receipt_no}, amount: {amount}")
-                                print(f"{result}")
-                            else:
-                                print(f"Invalid Payment BookTotal message format: {message}")
-                                print(f"{result}")
-                                #await notify_client_payment_status(client_alias, "Invalid BookTotal message format", clients, host_name)
-                        else:
-                            print(f"Unknown Client Alias: {client_alias}")
-                    else:
-                        print(f"Processed line does not contain ':': {processed_line}")
-                except Exception as e:
-                    print(f"Error processing line: {e}")
-            else:
-                print("No active orders to process.")
+                else:
+                    print("No active orders to process.")
         except Exception as e:
-            print(f"Error reading active orders: {e}")
-
-        # Wait before next check
+            print(f"Error processing active orders: {e}")
         await asyncio.sleep(1)
 
 async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', current_dir='Orders/ProcessedOrders'):

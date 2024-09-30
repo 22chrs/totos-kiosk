@@ -429,12 +429,14 @@ class PaymentTerminal:
 
         return formatted_details
 
-    def save_receipt_to_file(self, receipt_type, beleg_nr, order_details, receipt_path=None):
+    def save_receipt_to_file(self, which_terminal, receipt_number, order_details, receipt_path=None):
         base_dir = os.path.join("Orders", "ActiveOrders")
 
         if receipt_path is None:
-            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            receipt_filename = f"{timestamp}_{receipt_type}_{beleg_nr}.json"
+            time_stamp_order = order_details.get('Order Details', {}).get('timeStampOrder')
+            if not time_stamp_order:
+                time_stamp_order = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            receipt_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
             receipt_path = os.path.join(base_dir, receipt_filename)
 
         os.makedirs(base_dir, exist_ok=True)
