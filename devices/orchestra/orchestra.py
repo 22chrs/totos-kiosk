@@ -46,13 +46,13 @@ class OrderHandler(FileSystemEventHandler):
                 self.move_file(file_path, self.failed_dir)
                 return
 
-        payment_status = order_data.get('payment', {}).get('status')
+        payment_status = order_data.get('payment', {}).get('status') or order_data.get('reservation', {}).get('status')
         if payment_status != "00":
             print(f"Payment status is not '00' (status: {payment_status}), moving file to failed directory.")
             self.move_file(file_path, self.failed_dir)
             return  # Do not process further
 
-        payment_status = order_data.get('payment', {}).get('status')
+        payment_status = order_data.get('payment', {}).get('status') or order_data.get('reservation', {}).get('status')
         if payment_status != "00":
             print(f"Payment status is not '00' (status: {payment_status}), moving file to failed directory.")
             self.move_file(file_path, self.failed_dir)
@@ -62,8 +62,8 @@ class OrderHandler(FileSystemEventHandler):
         products = order_data.get("products", [])
 
         # Extract the receipt_number from the payment section
-        receipt_number = order_data.get("payment", {}).get("receipt_number")
-        amount_in_cents = order_data.get("payment", {}).get("amount_in_cents")
+        receipt_number = order_data.get("payment", {}).get("receipt_number") or order_data.get("reservation", {}).get("receipt_number")
+        amount_in_cents = order_data.get("payment", {}).get("amount_in_cents") or order_data.get("reservation", {}).get("amount_in_cents")
 
         # Generate function calls based on products
         function_calls = []
@@ -190,7 +190,7 @@ class OrderHandler(FileSystemEventHandler):
     #! ENDE REZEPT COFFEE !#
 
     def update_active_orders(self, order_data, function_calls):
-        receipt_number = order_data.get('payment', {}).get('receipt_number')
+        receipt_number = order_data.get('payment', {}).get('status') or order_data.get('reservation', {}).get('status')
         time_stamp_order = order_data.get('Order Details', {}).get('timeStampOrder')
 
         # Use file locking when writing to the active_orders_file

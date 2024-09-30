@@ -343,7 +343,7 @@ class PaymentTerminal:
         }
 
         # Append payment details to order_details for formatting
-        order_details['payment'] = payment_details
+        order_details['reservation'] = payment_details
 
         # Parse 'message' if it's a JSON string
         if 'message' in order_details:
@@ -391,8 +391,8 @@ class PaymentTerminal:
                 products = order_details['message'].pop('products')
 
         # Extract payment information
-        if 'payment' in order_details:
-            payment_info = order_details['payment']
+        if 'reservation' in order_details:
+            payment_info = order_details['reservation']
 
         # Extract booked payment information
         if 'book_total' in order_details:
@@ -405,7 +405,7 @@ class PaymentTerminal:
         if products is not None:
             new_order_details['products'] = products
         if payment_info is not None:
-            new_order_details['payment'] = payment_info
+            new_order_details['reservation'] = payment_info
         if booked_info is not None:
             new_order_details['booked'] = booked_info
 
