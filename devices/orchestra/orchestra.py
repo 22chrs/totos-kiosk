@@ -20,10 +20,11 @@ from payment.payment_management import book_total
 # SCNACKBAR
 
 class OrderHandler(FileSystemEventHandler):
-    def __init__(self, orders_dir, active_orders_file, failed_dir):
+    def __init__(self, orders_dir, active_orders_file, failed_dir, current_dir):
         self.orders_dir = orders_dir
         self.active_orders_file = active_orders_file
         self.failed_dir = failed_dir
+        self.current_dir = current_dir  # Add this line
 
     def on_created(self, event):
         if event.is_directory:
@@ -124,9 +125,6 @@ class OrderHandler(FileSystemEventHandler):
 
         # Append function calls to activeOrders file with file locking
         self.update_active_orders(order_data, function_calls)
-
-        # Move the processed order file to handled directory
-        self.move_file(file_path, self.current_dir)
 
     #! REZEPT GETRÄNK
     def generate_drink_recipe(self, product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
@@ -300,15 +298,16 @@ async def process_active_orders(active_orders_file):
         # Wait before next check
         await asyncio.sleep(1)
 
-async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders'):
+async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', current_dir='Orders/ProcessedOrders'):
     orders_dir = os.path.abspath(orders_dir)
     failed_dir = os.path.abspath(failed_dir)
-    active_orders_file = os.path.abspath(active_orders_file)
+    current_dir = os.path.abspath(current_dir)  # Add this line
 
     print(f"Starting Orchestra with:")
     print(f"  Orders Directory: {orders_dir}")
     print(f"  Active Orders File: {active_orders_file}")
     print(f"  Failed Directory: {failed_dir}")
+    print(f"  Processed Orders Directory: {current_dir}")  # Add this line
 
     if not os.path.exists(orders_dir):
         os.makedirs(orders_dir)
@@ -316,8 +315,11 @@ async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='
     if not os.path.exists(failed_dir):
         os.makedirs(failed_dir)
         print(f"Created failed directory: {failed_dir}")
+    if not os.path.exists(current_dir):  # Add this check
+        os.makedirs(current_dir)
+        print(f"Created processed directory: {current_dir}")
 
-    event_handler = OrderHandler(orders_dir, active_orders_file, failed_dir)
+    event_handler = OrderHandler(orders_dir, active_orders_file, failed_dir, current_dir)  # Pass current_dir
     observer = Observer()
     observer.schedule(event_handler, path=orders_dir, recursive=False)
     observer.start()
