@@ -287,9 +287,16 @@ async def process_active_orders(active_orders_file):
                                         if match:
                                             which_terminal_msg, receipt_no, amount_str, status = match.groups()
                                             amount = int(amount_str)
-                                            result = book_total(which_terminal_msg, receipt_no, amount)
-                                            print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
-                                            print(f"{result}")
+
+                                            # Run the blocking `book_total` in a separate thread
+                                            result = await asyncio.to_thread(book_total, which_terminal_msg, receipt_no, amount)
+
+                                            if result:
+                                                print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
+                                                print(f"{result}")
+                                            else:
+                                                print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
+                                                continue  # Skip further processing if book_total returns False
                                         else:
                                             print(f"Invalid Payment BookTotal message format: {message}")
                                     else:

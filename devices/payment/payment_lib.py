@@ -105,27 +105,30 @@ class PaymentTerminal:
             return order_details, order_file
 
     def book_total(self, whichTerminal, receipt_no, amount=None):
-        # Input validation for receipt number and amount
-        if not isinstance(receipt_no, str) or not receipt_no:
-            raise ValueError("Receipt number must be a non-empty string.")
-        if amount is not None and (not isinstance(amount, int) or amount < 0):
-            raise ValueError("Amount must be a non-negative integer representing cents.")
-        # Ensure the zvt++ executable is executable
-        os.chmod(self.executable_path, 0o755)
-        # Construct the command arguments
-        cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
-        if amount is not None:
-            cmd_args.append(str(amount))
-        # Running the external zvt++ program with the necessary arguments
-        process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        # Reading the output
-        stdout, stderr = process.communicate()
-        # Decode output for processing
-        output = stdout.decode('utf-8') + stderr.decode('utf-8')
-        # Find existing order_details from the receipt file
-        order_details, receipt_path = self.load_order_details(whichTerminal, receipt_no)
-        # Parse the output and return the result
-        return self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
+        try: # Input validation for receipt number and amount
+            if not isinstance(receipt_no, str) or not receipt_no:
+                raise ValueError("Receipt number must be a non-empty string.")
+            if amount is not None and (not isinstance(amount, int) or amount < 0):
+                raise ValueError("Amount must be a non-negative integer representing cents.")
+            os.chmod(self.executable_path, 0o755) # Ensure the zvt++ executable is executable
+            cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]  # Construct the command arguments
+            if amount is not None:
+                cmd_args.append(str(amount))
+            process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE) # Running the external zvt++ program with the necessary arguments
+            stdout, stderr = process.communicate()  # Reading the output
+            exit_code = process.returncode  # Check for process exit code
+            if exit_code != 0:
+                print(f"Process failed with exit code: {exit_code}")
+                print(f"stderr: {stderr.decode('utf-8')}")
+                return False
+            output = stdout.decode('utf-8') + stderr.decode('utf-8')  # Decode output for processing
+            order_details, receipt_path = self.load_order_details(whichTerminal, receipt_no) # Find existing order details from the receipt file
+            self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path) # Parse the output and return the result
+            self.move_receipt_to_succeeded_orders(receipt_path)
+            return True  # If everything is successful, return True
+        except Exception as e: # Log the error or handle it as needed
+            print(f"An error occurred: {e}")
+            return False  # Return False in case of any error
 
     async def pay(self, payment_style, amount, order_details):
         #! type = reservation or auth for direct payment
@@ -366,6 +369,19 @@ class PaymentTerminal:
         self.save_receipt_to_file(which_terminal, receipt_number, order_details, receipt_path=receipt_path)
 
         return status
+    
+    def move_receipt_to_succeeded_orders(self, receipt_path):
+        # Define the base directory 'Orders/SucceedOrders'
+        succeed_orders_dir = os.path.join("Orders", "SucceedOrders")
+        # Ensure the directory exists
+        os.makedirs(succeed_orders_dir, exist_ok=True)
+        # Get the filename from receipt_path
+        filename = os.path.basename(receipt_path)
+        # Construct the new path
+        new_path = os.path.join(succeed_orders_dir, filename)
+        # Move the file
+        os.rename(receipt_path, new_path)
+        print(f"Moved receipt to {new_path}")
 
     def format_order_details(self, order_details):
         # Check if order_details is a string and convert it to a dictionary
