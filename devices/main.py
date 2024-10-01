@@ -8,9 +8,8 @@ from websocket.websocket import start_websocket_server, clients, HOST_NAME
 
 # Payment Management Imports
 from payment.payment_management import (
-    schedule_payment_jobs, 
-    run_scheduled_payment_jobs, 
-    handle_order, 
+    schedule_end_of_day_job,
+    handle_order,
     check_connections_periodically
 )
 
@@ -51,10 +50,9 @@ async def main():
     # Start USB serial management as a separate task
     usb_task = asyncio.create_task(manage_usb_serial())
 
-    # Schedule payment jobs
-    schedule_payment_jobs()
-    payment_job_task = asyncio.create_task(run_scheduled_payment_jobs())
-    print("Scheduled payment jobs.")
+    # Schedule the end-of-day job
+    payment_job_task = asyncio.create_task(schedule_end_of_day_job())
+    print("Scheduled end-of-day job.")
 
     # Schedule periodic connection checks
     connection_check_task = asyncio.create_task(check_connections_periodically())
@@ -82,11 +80,5 @@ async def main():
 if __name__ == '__main__':
     print("Starting the integrated application.")
 
-    try:
-        # Run the main asyncio event loop
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("\nReceived exit signal. Shutting down gracefully...")
-    finally:
-        # Add any necessary cleanup here
-        print("Application has been shut down.")
+    # Run the main asyncio event loop
+    asyncio.run(main())

@@ -1,28 +1,14 @@
 # @chatgpt: in this file everything which connectes both websocket communication AND zvt/ payment
 # payment_management.py
-
-#! ToDo: 
-
-#! - Zahlung reservieren statt sofort buchen -> Welcher Befehl?
-#! - HIER: Fall A erfolgreich. Welcher Befehl um Zahlung jetzt auszuführen?
-#! - HIER: Fall A erfolgreich. Welcher Befehl um Zahlung zu stornieren?
-
-#! - Warten auf Karte Präsentieren stoppen, Zahlung abbrechen. Gibt es hier einen Befehl innerhalb der ZVT++?
-
-#! - End of Day Buchungen durchführen. Implementieren.
-#! - Testprotokoll alles buchen.
-
 import asyncio
-import schedule
 import json
 import socket
+import datetime
 from payment.payment_lib import PaymentTerminal
 from websocket.websocket import check_clients_connected, clients, HOST_NAME
 
-
 # TID 52500038 Plus #! WICHTIG
 # TID 52500041 PIN #! WICHTIG
-
 
 def check_ip(ip):
     try:
@@ -34,8 +20,6 @@ def check_ip(ip):
 # Global variables
 paymentTerminalIP_Front = "192.168.68.201" if check_ip("192.168.68.201") else "192.168.1.201"
 paymentTerminalIP_Back = "192.168.68.202" if check_ip("192.168.68.202") else "192.168.1.202"
-#paymentTerminalIP_Front = "192.168.1.201"
-#paymentTerminalIP_Back = "192.168.1.202"
 
 paymentTerminalFront = PaymentTerminal(paymentTerminalIP_Front)
 paymentTerminalBack = PaymentTerminal(paymentTerminalIP_Back)
@@ -43,18 +27,20 @@ paymentTerminalBack = PaymentTerminal(paymentTerminalIP_Back)
 order_details = None
 
 # Payment-related functions
-def end_of_day_job():
-    paymentTerminalFront.endOfDay_uploadReceipts()
-    paymentTerminalBack.endOfDay_uploadReceipts()
+async def end_of_day_job():
+    await paymentTerminalFront.endOfDay_uploadReceipts()
+    await paymentTerminalBack.endOfDay_uploadReceipts()
 
-def schedule_payment_jobs():
-    # Schedule the end-of-day job
-    schedule.every().day.at("23:59").do(end_of_day_job)
-
-async def run_scheduled_payment_jobs():
+async def schedule_end_of_day_job():
     while True:
-        schedule.run_pending()
-        await asyncio.sleep(1)
+        now = datetime.datetime.now()
+        target_time = now.replace(hour=23, minute=59, second=0, microsecond=0)
+        if now >= target_time:
+            # If we've passed the target time today, set it for tomorrow
+            target_time += datetime.timedelta(days=1)
+        time_to_sleep = (target_time - now).total_seconds()
+        await asyncio.sleep(time_to_sleep)
+        await end_of_day_job()
 
 # WebSocket message handler
 async def handle_order(websocket, message, client_alias, clients, host_name):
@@ -100,14 +86,13 @@ async def handle_order(websocket, message, client_alias, clients, host_name):
                         return
 
                     # Abort the payment process
-                    terminal.abort_payment()
+                    await terminal.abort_payment()
                 else:
                     print(f"Unknown message received from {client_alias}: {inner_message}")
         else:
             print("Outer data is missing 'message' key")
     except json.JSONDecodeError:
         print("Error: Received message is not valid JSON.")
-
 
 async def process_payment(terminal, payment_style, total_price_cents, order_details, client_alias, clients, host_name):
     result = await terminal.pay(payment_style, total_price_cents, order_details)
@@ -153,4 +138,3 @@ async def check_connections_periodically():
         if message:
             print(message)
         await asyncio.sleep(3)
-
