@@ -10,7 +10,21 @@ import asyncio
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from websocket.websocket import send_message_from_host  # Import send_message_from_host function
-from payment.payment_management import book_total
+from payment.payment_management import (
+    paymentTerminalFront,
+    paymentTerminalBack,
+    paymentTerminalIP_Front,
+    paymentTerminalIP_Back,
+    book_total  # Import the book_total function
+)
+
+def get_terminal_ip(which_terminal):
+    if which_terminal.lower() == 'front':
+        return paymentTerminalIP_Front
+    elif which_terminal.lower() == 'back':
+        return paymentTerminalIP_Back
+    else:
+        raise ValueError(f"Unknown terminal identifier: {which_terminal}")
 
 # TOTO / GREIFER
 # KAFFEEMASCHINE
@@ -260,7 +274,7 @@ async def process_active_orders(active_orders_file):
                                 order_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
                                 order_file_path = os.path.join('Orders', 'ActiveOrders', order_filename)
                                 if os.path.exists(order_file_path):
-                                    target_dir = os.path.join('Orders', 'ProcessedOrders')
+                                    target_dir = os.path.join('Orders', 'SucceedOrders')
                                     if not os.path.exists(target_dir):
                                         os.makedirs(target_dir)
                                     shutil.move(order_file_path, target_dir)
@@ -279,23 +293,33 @@ async def process_active_orders(active_orders_file):
                                         message = rest_of_line
                                     if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
                                         await send_message_from_host(client_alias, message)
+                                  
                                     elif client_alias == "Payment":
-                                        match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
-                                        if match:
-                                            which_terminal_msg, receipt_no, amount_str, status = match.groups()
-                                            amount = int(amount_str)
-
-                                            # Run the blocking `book_total` in a separate thread
-                                            result = await asyncio.to_thread(book_total, which_terminal_msg, receipt_no, amount)
-
-                                            if result:
-                                                print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
-                                                print(f"{result}")
+                                            match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
+                                            if match:
+                                                which_terminal_msg, receipt_no, amount_str, status = match.groups()
+                                                amount = int(amount_str)
+                                                
+                                                # Use existing PaymentTerminal instances
+                                                if which_terminal_msg.lower() == 'front':
+                                                    payment_terminal = paymentTerminalFront
+                                                elif which_terminal_msg.lower() == 'back':
+                                                    payment_terminal = paymentTerminalBack
+                                                else:
+                                                    raise ValueError(f"Unknown terminal identifier: {which_terminal_msg}")
+                                                
+                                                # Call book_total using await
+                                                result = await payment_terminal.book_total(which_terminal_msg, receipt_no, amount)
+                                                
+                                                if result:
+                                                    print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
+                                                    print(f"{result}")
+                                                else:
+                                                    print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
+                                                    continue  # Skip further processing if book_total returns False
                                             else:
-                                                print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
-                                                continue  # Skip further processing if book_total returns False
-                                        else:
-                                            print(f"Invalid Payment BookTotal message format: {message}")
+                                                print(f"Invalid Payment BookTotal message format: {message}")
+
                                     else:
                                         print(f"Unknown Client Alias: {client_alias}")
                                 else:
@@ -313,7 +337,7 @@ async def process_active_orders(active_orders_file):
             print(f"Error processing active orders: {e}")
         await asyncio.sleep(1)
 
-async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', current_dir='Orders/ProcessedOrders'):
+async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', current_dir='Orders/SucceedOrders'):
     orders_dir = os.path.abspath(orders_dir)
     failed_dir = os.path.abspath(failed_dir)
     current_dir = os.path.abspath(current_dir)  # Add this line

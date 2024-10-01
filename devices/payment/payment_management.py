@@ -19,6 +19,7 @@ import socket
 from payment.payment_lib import PaymentTerminal
 from websocket.websocket import check_clients_connected, clients, HOST_NAME
 
+
 # TID 52500038 Plus #! WICHTIG
 # TID 52500041 PIN #! WICHTIG
 
@@ -113,7 +114,7 @@ async def process_payment(terminal, payment_style, total_price_cents, order_deta
     # Send the result to the client that sent the order
     await notify_client_payment_status(client_alias, result, clients, host_name)
 
-def book_total(which_terminal, receipt_no, amount):
+async def book_total(which_terminal, receipt_no, amount):
     try:
         if which_terminal.lower() == 'front':
             terminal = paymentTerminalFront
@@ -122,11 +123,11 @@ def book_total(which_terminal, receipt_no, amount):
         else:
             raise ValueError(f"Unknown terminal identifier: {which_terminal}")
 
-        exit_code = terminal.book_total(which_terminal, receipt_no, amount)
-        if exit_code == "00":
-            return "BookTotal succeeded"
+        result = await terminal.book_total(which_terminal, receipt_no, amount)
+        if result:
+            return result  # Return the actual result
         else:
-            return f"BookTotal failed with exit code {exit_code}"
+            return f"BookTotal failed for terminal: {which_terminal}"
     except Exception as e:
         return f"BookTotal encountered an exception: {e}"
 
