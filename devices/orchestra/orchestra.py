@@ -199,7 +199,7 @@ class OrderHandler(FileSystemEventHandler):
         with open(self.active_orders_file, 'a', encoding='utf-8') as f:
             try:
                 portalocker.lock(f, portalocker.LOCK_EX)
-                f.write(f"START // receiptNumber: {receipt_number}, Timestamp: {time_stamp_order}, Terminal: {which_terminal}\n")
+                f.write(f"# receiptNumber: {receipt_number}, Timestamp: {time_stamp_order}, Terminal: {which_terminal}\n")
                 for call in function_calls:
                     f.write(call + '\n')
                 f.write('\n')
@@ -313,16 +313,16 @@ async def process_active_orders(active_orders_file):
             print(f"Error processing active orders: {e}")
         await asyncio.sleep(1)
 
-async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', succeed_dir='Orders/SucceedOrders'):
+async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', current_dir='Orders/ProcessedOrders'):
     orders_dir = os.path.abspath(orders_dir)
     failed_dir = os.path.abspath(failed_dir)
-    succeed_dir = os.path.abspath(succeed_dir)  # Add this line
+    current_dir = os.path.abspath(current_dir)  # Add this line
 
     print(f"Starting Orchestra with:")
     print(f"  Orders Directory: {orders_dir}")
     print(f"  Active Orders File: {active_orders_file}")
     print(f"  Failed Directory: {failed_dir}")
-    print(f"  Processed Orders Directory: {succeed_dir}")  # Add this line
+    print(f"  Processed Orders Directory: {current_dir}")  # Add this line
 
     if not os.path.exists(orders_dir):
         os.makedirs(orders_dir)
@@ -330,17 +330,17 @@ async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='
     if not os.path.exists(failed_dir):
         os.makedirs(failed_dir)
         print(f"Created failed directory: {failed_dir}")
-    if not os.path.exists(succeed_dir):  # Add this check
-        os.makedirs(succeed_dir)
-        print(f"Created processed directory: {succeed_dir}")
+    if not os.path.exists(current_dir):  # Add this check
+        os.makedirs(current_dir)
+        print(f"Created processed directory: {current_dir}")
 
-    # Ensure the active_orders_file exists
+        # Ensure the active_orders_file exists
     if not os.path.exists(active_orders_file):
         with open(active_orders_file, 'w', encoding='utf-8') as f:
             pass  # Create an empty file
         print(f"Created active orders file: {active_orders_file}")
 
-    event_handler = OrderHandler(orders_dir, active_orders_file, failed_dir, succeed_dir)  # Pass current_dir
+    event_handler = OrderHandler(orders_dir, active_orders_file, failed_dir, current_dir)  # Pass current_dir
     observer = Observer()
     observer.schedule(event_handler, path=orders_dir, recursive=False)
     observer.start()

@@ -13,6 +13,7 @@ class PaymentTerminal:
         self.executable_path = self.get_executable_path(executable_name)
         self.ip_address_terminal = ip_address_terminal
         self.current_process = None
+        self._terminal_lock = asyncio.Lock()  
 
     def get_executable_path(self, executable_name):
         # Get the absolute directory path of the current file
@@ -50,37 +51,47 @@ class PaymentTerminal:
 
         return executable_path
 
-    def end_of_day(self):
-        # Ensure the zvt++ executable is executable
-        os.chmod(self.executable_path, 0o755)
+    async def end_of_day(self):
+        async with self._terminal_lock:
+            # Ensure the zvt++ executable is executable
+            os.chmod(self.executable_path, 0o755)
 
-        # Running the external zvt++ program with the necessary arguments for end of day
-        process = subprocess.Popen([self.executable_path, "endOfDay", self.ip_address_terminal])
+            # Running the external zvt++ program asynchronously
+            process = await asyncio.create_subprocess_exec(
+                self.executable_path, "endOfDay", self.ip_address_terminal,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
+            )
 
-        # Wait for the process to complete and get the exit code
-        exit_code = process.wait()
+            stdout, stderr = await process.communicate()
+            exit_code = process.returncode
 
-        # Return the exit code (0 for success, non-zero for errors)
-        return exit_code
+            # Return the exit code (0 for success, non-zero for errors)
+            return exit_code
 
-    def display_text(self, duration, ascii_string):
-        # Input validation for duration and ascii_string
-        if not isinstance(duration, int) or duration < 0:
-            raise ValueError("Duration must be a non-negative integer representing seconds.")
-        if not isinstance(ascii_string, str) or not ascii_string:
-            raise ValueError("ASCII string must be a non-empty string.")
+    async def display_text(self, duration, ascii_string):
+            # Input validation for duration and ascii_string
+            if not isinstance(duration, int) or duration < 0:
+                raise ValueError("Duration must be a non-negative integer representing seconds.")
+            if not isinstance(ascii_string, str) or not ascii_string:
+                raise ValueError("ASCII string must be a non-empty string.")
 
-        # Ensure the zvt++ executable is executable
-        os.chmod(self.executable_path, 0o755)
+            async with self._terminal_lock:
+                # Ensure the zvt++ executable is executable
+                os.chmod(self.executable_path, 0o755)
 
-        # Running the external zvt++ program with the necessary arguments for displaying text
-        process = subprocess.Popen([self.executable_path, "display", self.ip_address_terminal, str(duration), ascii_string])
+                # Running the external zvt++ program asynchronously
+                process = await asyncio.create_subprocess_exec(
+                    self.executable_path, "display", self.ip_address_terminal, str(duration), ascii_string,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
 
-        # Wait for the process to complete and get the exit code
-        exit_code = process.wait()
+                stdout, stderr = await process.communicate()
+                exit_code = process.returncode
 
-        # Return the exit code (0 for success, non-zero for errors)
-        return exit_code
+                # Return the exit code (0 for success, non-zero for errors)
+                return exit_code
     
     def load_order_details(self, whichTerminal, receipt_no):
         # Define the base directory to include 'ActiveOrders'
@@ -104,90 +115,100 @@ class PaymentTerminal:
                 order_details = json.load(f)
             return order_details, order_file
 
-    def book_total(self, whichTerminal, receipt_no, amount=None):
-        try: # Input validation for receipt number and amount
+    async def book_total(self, whichTerminal, receipt_no, amount=None):
+        try:
+            # Input validation for receipt number and amount
             if not isinstance(receipt_no, str) or not receipt_no:
                 raise ValueError("Receipt number must be a non-empty string.")
             if amount is not None and (not isinstance(amount, int) or amount < 0):
                 raise ValueError("Amount must be a non-negative integer representing cents.")
-            os.chmod(self.executable_path, 0o755) # Ensure the zvt++ executable is executable
-            cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]  # Construct the command arguments
-            if amount is not None:
-                cmd_args.append(str(amount))
-            process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE) # Running the external zvt++ program with the necessary arguments
-            stdout, stderr = process.communicate()  # Reading the output
-            exit_code = process.returncode  # Check for process exit code
+
+            async with self._terminal_lock:
+                os.chmod(self.executable_path, 0o755)  # Ensure the zvt++ executable is executable
+                cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
+                if amount is not None:
+                    cmd_args.append(str(amount))
+
+                process = await asyncio.create_subprocess_exec(
+                    *cmd_args,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                stdout, stderr = await process.communicate()
+                exit_code = process.returncode
+
             if exit_code != 0:
                 print(f"Process failed with exit code: {exit_code}")
                 print(f"stderr: {stderr.decode('utf-8')}")
                 return False
-            output = stdout.decode('utf-8') + stderr.decode('utf-8')  # Decode output for processing
-            order_details, receipt_path = self.load_order_details(whichTerminal, receipt_no) # Find existing order details from the receipt file
-            self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path) # Parse the output and return the result
+
+            output = stdout.decode('utf-8') + stderr.decode('utf-8')
+            order_details, receipt_path = self.load_order_details(whichTerminal, receipt_no)
+            self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
             self.move_receipt_to_succeeded_orders(receipt_path)
-            return True  # If everything is successful, return True
-        except Exception as e: # Log the error or handle it as needed
+            return True
+        except Exception as e:
             print(f"An error occurred: {e}")
-            return False  # Return False in case of any error
+            return False
 
     async def pay(self, payment_style, amount, order_details):
-        #! type = reservation or auth for direct payment
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
 
         # Ensure the zvt++ executable is executable
         os.chmod(self.executable_path, 0o755)
 
-        try:
-            # Log start of payment process
-            print(f"Starting {payment_style} payment with amount: {amount}")
+        async with self._terminal_lock:
+            try:
+                # Log start of payment process
+                print(f"Starting {payment_style} payment with amount: {amount}")
 
-            # Running the external zvt++ program asynchronously
-            process = await asyncio.create_subprocess_exec(
-                self.executable_path, payment_style, self.ip_address_terminal, str(amount),
-                stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-            )
-            self.current_process = process 
-            # Log subprocess execution
-            print("Subprocess executed, awaiting response...")
+                # Running the external zvt++ program asynchronously
+                process = await asyncio.create_subprocess_exec(
+                    self.executable_path, payment_style, self.ip_address_terminal, str(amount),
+                    stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+                )
+                self.current_process = process 
+                # Log subprocess execution
+                print("Subprocess executed, awaiting response...")
 
-            # Read the output
-            stdout, stderr = await process.communicate()
-            self.current_process = None
+                # Read the output
+                stdout, stderr = await process.communicate()
+                self.current_process = None
 
-            # Log outputs for debugging
-            stdout_str = stdout.decode('utf-8')
-            stderr_str = stderr.decode('utf-8')
-            print(f"Subprocess stdout: {stdout_str}")
-            print(f"Subprocess stderr: {stderr_str}")
+                # Log outputs for debugging
+                stdout_str = stdout.decode('utf-8')
+                stderr_str = stderr.decode('utf-8')
+                print(f"Subprocess stdout: {stdout_str}")
+                print(f"Subprocess stderr: {stderr_str}")
 
-            # Check for empty output or errors
-            if not stdout_str and not stderr_str:
-                error_message = "No output from subprocess."
+                # Check for empty output or errors
+                if not stdout_str and not stderr_str:
+                    error_message = "No output from subprocess."
+                    print(error_message)
+                    self.write_error_file(error_message, self.ip_address_terminal)
+                    return "Subprocess produced no output"
+
+                # Decode output for processing
+                output = stdout_str + stderr_str
+
+                # Parse the output and return the result
+                print(f"Order Details1: {order_details}")
+                parsed_output = self.save_receipts(output, payment_style, order_details)
+
+                return parsed_output
+
+            except Exception as e:
+                error_message = f"Error during {payment_style} payment: {e}"
                 print(error_message)
                 self.write_error_file(error_message, self.ip_address_terminal)
-                return "Subprocess produced no output"
-
-            # Decode output for processing
-            output = stdout_str + stderr_str
-            #print(f"Full combined output: {output}")
-
-            # Parse the output and return the result
-            print(f"Order Details1: {order_details}")
-            parsed_output = self.save_receipts(output, payment_style, order_details)
-
-            return parsed_output
-
-        except Exception as e:
-            error_message = f"Error during {payment_style} payment: {e}"
-            print(error_message)
-            self.write_error_file(error_message, self.ip_address_terminal)
-            return error_message
+                return error_message
         
-    def abort_payment(self):
+    async def abort_payment(self):
         if self.current_process and self.current_process.returncode is None:
             print("Aborting payment process by killing the zvt++ binary.")
             self.current_process.kill()  # Forcefully terminate the subprocess
+            await self.current_process.wait()  # Wait for the process to terminate
             self.current_process = None  # Reset the process reference
 
             # Restart the zvt++ binary (if necessary)
@@ -196,10 +217,8 @@ class PaymentTerminal:
                 os.chmod(self.executable_path, 0o755)
 
                 # Optionally, start a new instance or perform any required initialization
-                # For example, if zvt++ needs to be running continuously, start it here
                 print("Restarting the zvt++ binary.")
-                # Since zvt++ is called per operation, you might not need to start it here
-                # If needed, implement the restart logic specific to your application
+                # Implement restart logic if necessary
             except Exception as e:
                 print(f"Failed to restart zvt++ binary: {e}")
         else:
@@ -207,20 +226,23 @@ class PaymentTerminal:
 
 
 
-    def reversal_payment_debug(self, receipt_no):
+    async def reversal_payment_debug(self, receipt_no):
         # Input validation for receipt number
         if not isinstance(receipt_no, str) or not receipt_no:
             raise ValueError("Receipt number must be a non-empty string.")
 
-        # Ensure the zvt++ executable is executable
-        os.chmod(self.executable_path, 0o755)
+        async with self._terminal_lock:
+            # Ensure the zvt++ executable is executable
+            os.chmod(self.executable_path, 0o755)
 
-        # Running the external zvt++ program with the necessary arguments for reversal
-        # Here, instead of capturing the output, we let it be displayed directly on the terminal
-        process = subprocess.Popen([self.executable_path, "reversal", self.ip_address_terminal, receipt_no])
-
-        # Wait for the process to complete and get the exit code
-        exit_code = process.wait()
+            # Running the external zvt++ program asynchronously
+            process = await asyncio.create_subprocess_exec(
+                self.executable_path, "reversal", self.ip_address_terminal, receipt_no,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
+            )
+            stdout, stderr = await process.communicate()
+            exit_code = process.returncode
 
         # Return the exit code (0 for success, non-zero for errors)
         return exit_code
