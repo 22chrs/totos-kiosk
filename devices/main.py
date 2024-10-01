@@ -22,7 +22,7 @@ async def manage_usb_serial():
     Manages USB serial connections and forwards commands asynchronously.
     """
     # Define the aliases for the boards you want to test with
-    teensys = {"RoboCubeBack"}  # Example set of board aliases
+    teensys = {'RoboCubeFront', 'RoboCubeBack'}   # Example set of board aliases
 
     # Instantiate the ConnectionManager with the specified parameters
     usb_manager = ConnectionManager(
@@ -35,7 +35,6 @@ async def manage_usb_serial():
 
     # Instantiate the SerialCommandForwarder and TeensyController
     command_forwarder = SerialCommandForwarder(usb_manager)
-    teensy_controller = TeensyController(usb_manager, command_forwarder)
 
     # Start the connection manager
     await usb_manager.start()
@@ -50,7 +49,7 @@ async def main():
     The main coroutine that orchestrates all asynchronous tasks.
     """
     # Start USB serial management as a separate task
-    #!usb_task = asyncio.create_task(manage_usb_serial())
+    usb_task = asyncio.create_task(manage_usb_serial())
 
     # Schedule payment jobs
     schedule_payment_jobs()
@@ -58,7 +57,7 @@ async def main():
     print("Scheduled payment jobs.")
 
     # Schedule periodic connection checks
-    #!connection_check_task = asyncio.create_task(check_connections_periodically())
+    connection_check_task = asyncio.create_task(check_connections_periodically())
     print("Scheduled periodic connection checks.")
 
     # Start the WebSocket server
@@ -73,9 +72,9 @@ async def main():
 
     # Await all tasks concurrently
     await asyncio.gather(
-        #usb_task,
+        usb_task,
         payment_job_task,
-        #connection_check_task,
+        connection_check_task,
         websocket_task,
         orchestra_task
     )
