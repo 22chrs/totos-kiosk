@@ -1,7 +1,6 @@
 // BoardSelect.cpp
 
 #include <BoardSelect.h>
-#include <Stepper.h>
 
 // Define the board variable
 byte board = 0;
@@ -84,13 +83,21 @@ BoardConfig *currentBoardConfig = nullptr;
 void init_BoardSelect() {
     if (!mcp.begin_I2C(0x20))  // A0,A1,A2=GND
     {
-        // currentBoardConfig = &RoboCubeFrontConfig;
-        // Serial.println("Board = RoboCube Front");
-        // board = ROBOCUBE_FRONT;
-
-        currentBoardConfig = &RoboCubeBackConfig;
-        Serial.println("Board = RoboCubeBack");
-        board = ROBOCUBE_BACK;
+        if (TestBoard == "RoboCubeFront") {
+            currentBoardConfig = &RoboCubeFrontConfig;
+            Serial.println("Board = RoboCubeFront");
+            board = ROBOCUBE_FRONT;
+        }
+        if (TestBoard == "RoboCubeBack") {
+            currentBoardConfig = &RoboCubeBackConfig;
+            Serial.println("Board = RoboCubeBack");
+            board = ROBOCUBE_BACK;
+        }
+        if (TestBoard == "ServiceCube") {
+            currentBoardConfig = &ServiceCubeConfig;
+            Serial.println("Board = ServiceCube");
+            board = SERVICE_CUBE;
+        }
     } else {
         mcp.pinMode(J1_PIN, INPUT);
         mcp.pinMode(J2_PIN, INPUT);

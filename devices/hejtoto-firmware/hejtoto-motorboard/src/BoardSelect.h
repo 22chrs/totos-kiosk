@@ -2,6 +2,7 @@
 #define BOARDSELECT_H
 
 #include <MCP23017.h>
+#include <Stepper.h>
 #include <_global.h>
 
 // Define board types

@@ -74,14 +74,14 @@ void setup() {
     //   moveDevice("Lift_B", 100, 100, 100);
     //   moveDevice("Lift_C", 100, 100, 100);
 
-    homeDevice("Lift_A", "timestamp");
-    homeDevice("Lift_B", "timestamp");
-    homeDevice("Lift_C", "timestamp");
+    // homeDevice("Lift_A", "timestamp");
+    // homeDevice("Lift_B", "timestamp");
+    // homeDevice("Lift_C", "timestamp");
     //  // //      // homeDevice("Lift_A");
 
-    homeDevice("Rodell_A", "timestamp");
-    homeDevice("Rodell_B", "timestamp");
-    homeDevice("Rodell_C", "timestamp");
+    // homeDevice("Rodell_A", "timestamp");
+    // homeDevice("Rodell_B", "timestamp");
+    // homeDevice("Rodell_C", "timestamp");
 
     buildInLEDBlik();
     // openDoor(5);

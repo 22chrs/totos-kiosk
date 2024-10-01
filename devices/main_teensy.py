@@ -2,7 +2,7 @@ import asyncio
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController  # Import necessary classes
 
 # Define the aliases for the boards you want to test with
-teensys = {"RoboCubeBack"}  # Example set of board aliases
+teensys = {'RoboCubeFront', 'RoboCubeBack'}  # Example set of board aliases
 
 if __name__ == '__main__':
     print("Starting event loop")
