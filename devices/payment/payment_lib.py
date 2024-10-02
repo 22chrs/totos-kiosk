@@ -7,6 +7,8 @@ import platform
 import glob
 import aiofiles
 
+paymentInUseFlag = False 
+
 class PaymentTerminal:
     def __init__(self, ip_address_terminal, executable_name='zvt++'):
         self.executable_path = self.get_executable_path(executable_name)
@@ -88,6 +90,16 @@ class PaymentTerminal:
             return order_details, order_file
 
     async def book_total(self, whichTerminal, receipt_no, amount=None):
+        global paymentInUseFlag  # Declare the flag as global
+
+        # Check if a payment is already in use
+        if paymentInUseFlag:
+            print("Payment is already in use. Cannot book total at this time.")
+            return False
+
+        # Set the flag to indicate a payment is in progress
+        paymentInUseFlag = True
+
         try:
             if not isinstance(receipt_no, str) or not receipt_no:
                 raise ValueError("Receipt number must be a non-empty string.")
@@ -121,12 +133,27 @@ class PaymentTerminal:
         except Exception as e:
             print(f"An error occurred: {e}")
             return False
+        finally:
+            # Reset the flag after operation completes
+            paymentInUseFlag = False
 
     async def pay(self, payment_style, amount, order_details):
+        global paymentInUseFlag  # Ensure access to the global flag
+
+        # Check if a payment is already in progress
+        if paymentInUseFlag:
+            error_message = "Payment already in progress. Cannot start a new payment."
+            print(error_message)
+            return error_message
+
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
 
         os.chmod(self.executable_path, 0o755)
+        
+        # Set the flag to True as the payment process is starting
+        paymentInUseFlag = True
+
         async with self._terminal_lock:
             try:
                 print(f"Starting {payment_style} payment with amount: {amount}")
@@ -135,6 +162,7 @@ class PaymentTerminal:
                     stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
                 )
                 self.current_process = process
+
                 print("Subprocess executed, awaiting response...")
                 stdout, stderr = await process.communicate()
                 self.current_process = None
@@ -159,7 +187,13 @@ class PaymentTerminal:
                 await self.write_error_file(error_message, self.ip_address_terminal)
                 return error_message
 
+            finally:
+                # Reset the flag after the payment process completes
+                paymentInUseFlag = False
+            
     async def abort_payment(self):
+        global paymentInUseFlag
+        paymentInUseFlag = True
         if self.current_process and self.current_process.returncode is None:
             print("Aborting payment process by killing the zvt++ binary.")
             self.current_process.kill()
@@ -171,8 +205,11 @@ class PaymentTerminal:
                 # Implement restart logic if necessary
             except Exception as e:
                 print(f"Failed to restart zvt++ binary: {e}")
+            finally:
+                paymentInUseFlag = False
         else:
             print("No active payment process to abort.")
+        
 
     async def reversal_payment_debug(self, receipt_no):
         if not isinstance(receipt_no, str) or not receipt_no:

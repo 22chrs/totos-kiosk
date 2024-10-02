@@ -115,7 +115,7 @@ async def book_total(which_terminal, receipt_no, amount):
 
         result = await terminal.book_total(which_terminal, receipt_no, amount)
         if result:
-            return result  # Return the actual result
+            return result  # Return the actual result 
         else:
             return f"BookTotal failed for terminal: {which_terminal}"
     except Exception as e:
