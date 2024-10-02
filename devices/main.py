@@ -48,7 +48,7 @@ async def main():
     The main coroutine that orchestrates all asynchronous tasks.
     """
     # Start USB serial management as a separate task
-    usb_task = asyncio.create_task(manage_usb_serial())
+    #usb_task = asyncio.create_task(manage_usb_serial())
 
     # Schedule the end-of-day job
     payment_job_task = asyncio.create_task(schedule_end_of_day_job())
@@ -70,7 +70,7 @@ async def main():
 
     # Await all tasks concurrently
     await asyncio.gather(
-        usb_task,
+        #usb_task,
         payment_job_task,
         connection_check_task,
         websocket_task,

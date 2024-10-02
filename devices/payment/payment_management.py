@@ -1,5 +1,5 @@
-# @chatgpt: in this file everything which connectes both websocket communication AND zvt/ payment
 # payment_management.py
+
 import asyncio
 import json
 import socket
@@ -11,14 +11,7 @@ from websocket.websocket import check_clients_connected, clients, HOST_NAME
 # TID 52500038 Plus #! WICHTIG
 # TID 52500041 PIN #! WICHTIG
 
-def check_ip(ip):
-    try:
-        socket.gethostbyname(ip)
-        return True
-    except socket.error:
-        return False
-
-# Global variables
+# # Global variables
 if platform.system() == "Darwin":  # "Darwin" is the system name for macOS
     paymentTerminalIP_Front = "192.168.68.201"
     paymentTerminalIP_Back = "192.168.68.202"
@@ -28,6 +21,9 @@ else:
 
 paymentTerminalFront = PaymentTerminal(paymentTerminalIP_Front)
 paymentTerminalBack = PaymentTerminal(paymentTerminalIP_Back)
+
+paymentTerminalFront_lock = asyncio.Lock()
+paymentTerminalBack_lock = asyncio.Lock()
 
 order_details = None
 
@@ -41,7 +37,6 @@ async def schedule_end_of_day_job():
         now = datetime.datetime.now()
         target_time = now.replace(hour=23, minute=59, second=0, microsecond=0)
         if now >= target_time:
-            # If we've passed the target time today, set it for tomorrow
             target_time += datetime.timedelta(days=1)
         time_to_sleep = (target_time - now).total_seconds()
         await asyncio.sleep(time_to_sleep)
@@ -56,20 +51,15 @@ async def handle_order(websocket, message, client_alias, clients, host_name):
         order_details = outer_data
 
         if "message" in outer_data:
-            # Check if the message is a JSON string or a simple command
             inner_message = outer_data["message"]
             try:
-                # Try parsing the inner message as JSON
                 inner_message_json = json.loads(inner_message)
-                # Now process the inner JSON message as an order
                 if 'whichTerminal' in inner_message_json and 'totalPrice' in inner_message_json:
                     print("Valid order data found")
                     print("Payment started")
 
-                    # Add the client alias to order details to notify the right client later
                     order_details['client_alias'] = client_alias
 
-                    # Convert totalPrice to cents
                     total_price_cents = int(round(inner_message_json['totalPrice'] * 100))
                     terminal = paymentTerminalFront if inner_message_json['whichTerminal'] == 'front' else paymentTerminalBack
 
@@ -78,10 +68,8 @@ async def handle_order(websocket, message, client_alias, clients, host_name):
                 else:
                     print("Received a message with 'message' key but missing 'whichTerminal' or 'totalPrice'")
             except json.JSONDecodeError:
-                # If inner message is not JSON, handle it as a command
                 if inner_message == "abort_payment":
                     print(f"Abort payment command received from {client_alias}")
-                    # Determine which terminal to abort based on the client alias
                     if client_alias == 'app_front':
                         terminal = paymentTerminalFront
                     elif client_alias == 'app_back':
@@ -100,24 +88,55 @@ async def handle_order(websocket, message, client_alias, clients, host_name):
         print("Error: Received message is not valid JSON.")
 
 async def process_payment(terminal, payment_style, total_price_cents, order_details, client_alias, clients, host_name):
-    result = await terminal.pay(payment_style, total_price_cents, order_details)
-    # Send the result to the client that sent the order
+    if terminal == paymentTerminalFront:
+        lock = paymentTerminalFront_lock
+    elif terminal == paymentTerminalBack:
+        lock = paymentTerminalBack_lock
+    else:
+        raise ValueError("Unknown terminal")
+
+    try:
+        # Perform the network operation without holding the lock
+        result = await asyncio.wait_for(
+            terminal.pay(payment_style, total_price_cents, order_details),
+            timeout=30
+        )
+    except asyncio.TimeoutError:
+        result = "Payment operation timed out"
+    except Exception as e:
+        result = f"Payment encountered an exception: {e}"
+
+    # Now acquire the lock to update shared resources if needed
+    async with lock:
+        # Update shared resources here
+        pass  # Replace with actual code
+
     await notify_client_payment_status(client_alias, result, clients, host_name)
 
 async def book_total(which_terminal, receipt_no, amount):
     try:
         if which_terminal.lower() == 'front':
             terminal = paymentTerminalFront
+            lock = paymentTerminalFront_lock
         elif which_terminal.lower() == 'back':
             terminal = paymentTerminalBack
+            lock = paymentTerminalBack_lock
         else:
             raise ValueError(f"Unknown terminal identifier: {which_terminal}")
 
-        result = await terminal.book_total(which_terminal, receipt_no, amount)
-        if result:
-            return result  # Return the actual result 
-        else:
-            return f"BookTotal failed for terminal: {which_terminal}"
+        async with lock:
+            try:
+                # Add a timeout to the book_total operation
+                result = await asyncio.wait_for(
+                    terminal.book_total(which_terminal, receipt_no, amount),
+                    timeout=15  # Timeout after 15 seconds
+                )
+            except asyncio.TimeoutError:
+                result = f"BookTotal operation timed out for terminal: {which_terminal}"
+            except Exception as e:
+                result = f"BookTotal encountered an exception: {e}"
+
+        return result
     except Exception as e:
         return f"BookTotal encountered an exception: {e}"
 
@@ -125,10 +144,7 @@ async def notify_client_payment_status(client_alias, result, clients, host_name)
     if client_alias in clients:
         client = clients[client_alias]
         try:
-            # Prepare the result message (success or failure)
             result_message = json.dumps({"Payment": result})
-            
-            # Send the result message to the client
             await client.send(result_message)
             print(f"Payment result sent to {client_alias}: {result_message}")
         except Exception as e:
