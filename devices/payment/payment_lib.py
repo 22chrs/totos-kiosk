@@ -9,6 +9,25 @@ import aiofiles
 # TID 52500038 Plus #! WICHTIG 
 # TID 52500041 PIN #! WICHTIG
 
+class AcquireLockWithTimeout:
+    def __init__(self, lock, timeout):
+        self.lock = lock
+        self.timeout = timeout
+        self.acquired = False
+
+    async def __aenter__(self):
+        try:
+            await asyncio.wait_for(self.lock.acquire(), timeout=self.timeout)
+            self.acquired = True
+            return self
+        except asyncio.TimeoutError:
+            self.acquired = False
+            return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.acquired:
+            self.lock.release()
+
 class PaymentTerminal:
     def __init__(self, ip_address_terminal, executable_name='zvt++'):
         """
@@ -84,7 +103,6 @@ class PaymentTerminal:
                 order_details = {}
             return order_details, order_file
 
-
     async def book_total(self, which_terminal, receipt_no, amount=None):
         """
         Book the total amount on the terminal.
@@ -95,30 +113,38 @@ class PaymentTerminal:
             if amount is not None and (not isinstance(amount, int) or amount < 0):
                 raise ValueError("Amount must be a non-negative integer representing cents.")
 
-            async with self._terminal_lock:
-                os.chmod(self.executable_path, 0o755)
-                cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
-                if amount is not None:
-                    cmd_args.append(str(amount))
+            async with AcquireLockWithTimeout(self._terminal_lock, timeout=30) as lock:
+                if not lock.acquired:
+                    print("Timeout while waiting for terminal lock in book_total")
+                    return False  # Or raise an exception
 
-                process = await asyncio.create_subprocess_exec(
-                    *cmd_args,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE
-                )
-                stdout, stderr = await process.communicate()
-                exit_code = process.returncode
+                try:
+                    os.chmod(self.executable_path, 0o755)
+                    cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
+                    if amount is not None:
+                        cmd_args.append(str(amount))
 
-                if exit_code != 0:
-                    print(f"Process failed with exit code: {exit_code}")
-                    print(f"stderr: {stderr.decode('utf-8')}")
+                    process = await asyncio.create_subprocess_exec(
+                        *cmd_args,
+                        stdout=asyncio.subprocess.PIPE,
+                        stderr=asyncio.subprocess.PIPE
+                    )
+                    stdout, stderr = await process.communicate()
+                    exit_code = process.returncode
+
+                    if exit_code != 0:
+                        print(f"Process failed with exit code: {exit_code}")
+                        print(f"stderr: {stderr.decode('utf-8')}")
+                        return False
+
+                    output = stdout.decode('utf-8') + stderr.decode('utf-8')
+                    order_details, receipt_path = await self.load_order_details(which_terminal, receipt_no)
+                    await self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
+                    await self.move_receipt_to_succeeded_orders(receipt_path)
+                    return True
+                except Exception as e:
+                    print(f"An error occurred during book_total: {e}")
                     return False
-
-                output = stdout.decode('utf-8') + stderr.decode('utf-8')
-                order_details, receipt_path = await self.load_order_details(which_terminal, receipt_no)
-                await self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
-                await self.move_receipt_to_succeeded_orders(receipt_path)
-                return True
         except Exception as e:
             print(f"An error occurred: {e}")
             return False
@@ -130,7 +156,14 @@ class PaymentTerminal:
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
         os.chmod(self.executable_path, 0o755)
-        async with self._terminal_lock:
+
+        async with AcquireLockWithTimeout(self._terminal_lock, timeout=5) as lock:
+            if not lock.acquired:
+                error_message = "Timeout while waiting for terminal lock in pay"
+                print(error_message)
+                await self.write_error_file(error_message, self.ip_address_terminal)
+                return error_message
+
             try:
                 print(f"Starting {payment_style} payment with amount: {amount}")
                 process = await asyncio.create_subprocess_exec(
@@ -223,6 +256,7 @@ class PaymentTerminal:
             order_details = {}
 
         payment_details = self.parse_payment_output(output)
+        payment_details['payment_style'] = payment_style  # <-- Added line
 
         order_details['reservation'] = payment_details
 
@@ -239,7 +273,7 @@ class PaymentTerminal:
             order_details['message'] = {}
 
         which_terminal = order_details.get('whichTerminal',
-                                           order_details['message'].get('whichTerminal', "UnknownTerminal"))
+                                        order_details['message'].get('whichTerminal', "UnknownTerminal"))
 
         await self.save_receipt_to_file(which_terminal, payment_details.get('receipt_number', ''), order_details, receipt_path=receipt_path)
         return payment_details.get('status', '')
@@ -463,6 +497,7 @@ class PaymentTerminal:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
+# The rest of your code remains unchanged
 
 # Global variables
 if platform.system() == "Darwin":  # "Darwin" is the system name for macOS
