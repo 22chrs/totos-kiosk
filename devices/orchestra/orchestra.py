@@ -152,7 +152,6 @@ def generate_drink_recipe(product_name, choosen_size, choosen_sugar, choosen_mug
     recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'")
     if is_last_product:
         recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
-        recipe.append("END")
     return recipe
 
 def generate_snack_recipe(product_name, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
@@ -169,7 +168,6 @@ def generate_snack_recipe(product_name, which_terminal, RoboCube, receipt_number
     recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
     if is_last_product:
         recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
-        recipe.append("END")
     return recipe
 
 async def append_to_locked_file(filename, data, mode='a', encoding='utf-8'):
@@ -204,6 +202,7 @@ async def process_active_orders(active_orders_file):
                     await send_message_from_host(client_alias, message)
                 elif task[0] == 'payment':
                     message = task[1]
+                    order = task[2]  # Access the order data
                     match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
                     if match:
                         which_terminal_msg, receipt_no, amount_str, status = match.groups()
@@ -218,6 +217,20 @@ async def process_active_orders(active_orders_file):
                         if result:
                             print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
                             print(f"{result}")
+                            # Move the order file after successful payment
+                            receipt_number = order['receipt_number']
+                            which_terminal = order['which_terminal']
+                            time_stamp_order = order['timestamp']
+                            order_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
+                            order_file_path = os.path.join('Orders', 'ActiveOrders', order_filename)
+                            if os.path.exists(order_file_path):
+                                target_dir = os.path.join('Orders', 'SucceedOrders')
+                                if not os.path.exists(target_dir):
+                                    os.makedirs(target_dir)
+                                shutil.move(order_file_path, target_dir)
+                                print(f"Moved file {order_file_path} to {target_dir}")
+                            else:
+                                print(f"No order file found: {order_file_path}")
                         else:
                             print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
                             continue
@@ -269,20 +282,6 @@ async def process_active_orders_file(active_orders_file):
                         processed = True
                         if 'START' in line:
                             pass
-                        elif 'END' in line:
-                            receipt_number = order['receipt_number']
-                            which_terminal = order['which_terminal']
-                            time_stamp_order = order['timestamp']
-                            order_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
-                            order_file_path = os.path.join('Orders', 'ActiveOrders', order_filename)
-                            if os.path.exists(order_file_path):
-                                target_dir = os.path.join('Orders', 'SucceedOrders')
-                                if not os.path.exists(target_dir):
-                                    os.makedirs(target_dir)
-                                shutil.move(order_file_path, target_dir)
-                                print(f"Moved file {order_file_path} to {target_dir}")
-                            else:
-                                print(f"No order file found: {order_file_path}")
                         else:
                             if ":" in line:
                                 client_alias, rest_of_line = line.split(":", 1)
@@ -295,7 +294,7 @@ async def process_active_orders_file(active_orders_file):
                                 if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
                                     tasks_to_schedule.append(('send_message', client_alias, message))
                                 elif client_alias == "Payment":
-                                    tasks_to_schedule.append(('payment', rest_of_line))
+                                    tasks_to_schedule.append(('payment', rest_of_line, order))  # Include order data
                                 else:
                                     print(f"Unknown Client Alias: {client_alias}")
                             else:
