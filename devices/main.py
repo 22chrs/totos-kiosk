@@ -47,7 +47,7 @@ async def main():
     The main coroutine that orchestrates all asynchronous tasks.
     """
     # Start USB serial management as a separate task
-    #usb_task = asyncio.create_task(manage_usb_serial())
+    # usb_task = asyncio.create_task(manage_usb_serial())
 
     # Schedule the end-of-day job
     payment_job_task = asyncio.create_task(schedule_end_of_day_job())
@@ -67,17 +67,32 @@ async def main():
     orchestra_task = asyncio.create_task(start_orchestra())
     print("Orchestra component started.")
 
-    # Await all tasks concurrently
-    await asyncio.gather(
-        #usb_task,
-        payment_job_task,
-        connection_check_task,
-        websocket_task,
-        orchestra_task
-    )
+    # Await all tasks concurrently with exception handling
+    try:
+        await asyncio.gather(
+            # usb_task,
+            payment_job_task,
+            connection_check_task,
+            websocket_task,
+            orchestra_task
+        )
+    except asyncio.CancelledError:
+        print("Main tasks have been cancelled.")
+    except Exception as e:
+        print(f"An error occurred in the async tasks: {e}")
 
 if __name__ == '__main__':
     print("Starting the integrated application.")
 
-    # Run the main asyncio event loop
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(main())
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt received. Shutting down.")
+    finally:
+        # Cancel all running tasks
+        tasks = [t for t in asyncio.all_tasks(loop) if not t.done()]
+        for task in tasks:
+            task.cancel()
+        loop.run_until_complete(asyncio.gather(*tasks, return_exceptions=True))
+        loop.close()

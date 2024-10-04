@@ -148,7 +148,7 @@ class PaymentTerminal:
         except Exception as e:
             print(f"An error occurred: {e}")
             return False
-
+        
     async def pay(self, payment_style, amount, order_details):
         """
         Perform a payment operation on the terminal.
