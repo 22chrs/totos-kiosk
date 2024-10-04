@@ -113,41 +113,59 @@ class PaymentTerminal:
             if amount is not None and (not isinstance(amount, int) or amount < 0):
                 raise ValueError("Amount must be a non-negative integer representing cents.")
 
+            max_retries = 20
+            retry_delay = 0.5  # seconds
+            retry_count = 0
+
             async with AcquireLockWithTimeout(self._terminal_lock, timeout=30) as lock:
                 if not lock.acquired:
                     print("Timeout while waiting for terminal lock in book_total")
                     return False  # Or raise an exception
 
-                try:
-                    os.chmod(self.executable_path, 0o755)
-                    cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
-                    if amount is not None:
-                        cmd_args.append(str(amount))
+                while retry_count < max_retries:
+                    try:
+                        os.chmod(self.executable_path, 0o755)
+                        cmd_args = [self.executable_path, "book_total", self.ip_address_terminal, receipt_no]
+                        if amount is not None:
+                            cmd_args.append(str(amount))
 
-                    process = await asyncio.create_subprocess_exec(
-                        *cmd_args,
-                        stdout=asyncio.subprocess.PIPE,
-                        stderr=asyncio.subprocess.PIPE
-                    )
-                    stdout, stderr = await process.communicate()
-                    exit_code = process.returncode
+                        process = await asyncio.create_subprocess_exec(
+                            *cmd_args,
+                            stdout=asyncio.subprocess.PIPE,
+                            stderr=asyncio.subprocess.PIPE
+                        )
+                        stdout, stderr = await process.communicate()
+                        exit_code = process.returncode
 
-                    if exit_code != 0:
-                        print(f"Process failed with exit code: {exit_code}")
-                        print(f"stderr: {stderr.decode('utf-8')}")
+                        output = stdout.decode('utf-8') + stderr.decode('utf-8')
+
+                        if 'Nack' in output:
+                            print("Received Nack, terminal might be busy. Retrying...")
+                            retry_count += 1
+                            await asyncio.sleep(retry_delay)
+                            continue  # Retry the command
+                        elif exit_code != 0:
+                            print(f"Process failed with exit code: {exit_code}")
+                            print(f"stderr: {stderr.decode('utf-8')}")
+                            return False
+                        else:
+                            # Success, process the output
+                            # print(f"book_total received output:\n{output}")
+                            order_details, receipt_path = await self.load_order_details(which_terminal, receipt_no)
+                            await self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
+                            await self.move_receipt_to_succeeded_orders(receipt_path)
+                            return True
+
+                    except Exception as e:
+                        print(f"An error occurred during book_total: {e}")
                         return False
-
-                    output = stdout.decode('utf-8') + stderr.decode('utf-8')
-                    order_details, receipt_path = await self.load_order_details(which_terminal, receipt_no)
-                    await self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
-                    await self.move_receipt_to_succeeded_orders(receipt_path)
-                    return True
-                except Exception as e:
-                    print(f"An error occurred during book_total: {e}")
+                else:
+                    print("Max retries reached, failed to execute book_total")
                     return False
         except Exception as e:
             print(f"An error occurred: {e}")
             return False
+
         
     async def pay(self, payment_style, amount, order_details):
         """
@@ -272,8 +290,7 @@ class PaymentTerminal:
         else:
             order_details['message'] = {}
 
-        which_terminal = order_details.get('whichTerminal',
-                                        order_details['message'].get('whichTerminal', "UnknownTerminal"))
+        which_terminal = order_details.get('whichTerminal', order_details['message'].get('whichTerminal', "UnknownTerminal"))
 
         await self.save_receipt_to_file(which_terminal, payment_details.get('receipt_number', ''), order_details, receipt_path=receipt_path)
         return payment_details.get('status', '')
@@ -282,41 +299,58 @@ class PaymentTerminal:
         """
         Parse the output from the payment process and extract payment details.
         """
+        # print(f"parse_payment_output received output:\n{output}")
         lines = output.split('\n')
         payment_details = {}
 
+        operation_queued = False
+
         for line in lines:
             clean_line = line.replace('<-PT|', '').rstrip('|').strip()
-            if "trace" in line:
+
+            # Detect if operation was queued
+            if "transaction queued" in line.lower():
+                operation_queued = True
+                payment_details['status'] = "Operation Queued"
+                payment_details['message'] = line.strip()
+                continue
+
+            # Detect if transaction is approved after waiting
+            if "transaction approved" in line.lower():
+                payment_details['status'] = "00"
+                continue
+
+            # Existing parsing logic...
+            if "trace" in line.lower():
                 payment_details['trace'] = line.split()[-1] if len(line.split()) > 0 else ""
-            if "status" in line:
+            if "status" in line.lower():
                 payment_details['status'] = line.split()[-1] if len(line.split()) > 0 else ""
-            if "expiry_date" in clean_line:
+            if "expiry_date" in clean_line.lower():
                 payment_details['expiry_date'] = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
-            elif "date" in clean_line and "expiry_date" not in clean_line:
+            elif "date" in clean_line.lower() and "expiry_date" not in clean_line.lower():
                 payment_details['date'] = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
-            if "receipt_number" in line:
+            if "receipt_number" in line.lower():
                 parts = line.split()
                 if len(parts) > 1:
                     payment_details['receipt_number'] = parts[-1].strip()
-            if "time" in line:
+            if "time" in line.lower():
                 time_str = line.split()[-1] if len(line.split()) > 0 else ""
                 if time_str:
                     payment_details['time'] = f"{time_str[:2]}:{time_str[2:4]}:{time_str[4:]} CET"
-            if "tid" in line:
+            if "tid" in line.lower():
                 parts = line.split()
                 if len(parts) > 1:
                     payment_details['terminal_id'] = parts[-1].strip()
-            if "currency" in line:
+            if "currency" in line.lower():
                 parts = line.split()
                 if len(parts) > 1:
                     currency_code = parts[-1].strip()
                     payment_details['currency'] = "EUR" if currency_code == "978" else currency_code
-            if "card_name" in line:
+            if "card_name" in line.lower():
                 parts = line.split()
                 if len(parts) > 1:
                     payment_details['card_name'] = parts[-1].strip().replace('\u0000', '')
-            if "amount in cent" in line:
+            if "amount in cent" in line.lower():
                 parts = line.split()
                 if len(parts) > 1:
                     amount = parts[-1].strip()
@@ -324,16 +358,22 @@ class PaymentTerminal:
                         payment_details['amount_in_cents'] = int(amount)
                     except ValueError:
                         print(f"Warning: Invalid amount format in line: {line}")
-            if "pan" in line:
+            if "pan" in line.lower():
                 parts = line.split()
                 if len(parts) > 1:
                     payment_details['card_id'] = parts[-1].strip()
-            if "payment_type" in line:
+            if "payment_type" in line.lower():
                 parts = line.split()
                 if len(parts) > 1:
                     payment_details['payment_type'] = parts[-1].strip()
 
+        # Handle case when operation was queued and then completed
+        if operation_queued and 'status' not in payment_details:
+            payment_details['status'] = "00"  # Default to success if transaction approved
+
+        # print(f"Parsed payment details: {payment_details}")
         return payment_details
+
 
     async def move_receipt_to_succeeded_orders(self, receipt_path):
         """
