@@ -4,6 +4,7 @@ import websockets
 import os
 import json
 import ssl
+import asyncio
 
 HOST_NAME = 'devices'
 
@@ -104,3 +105,11 @@ async def check_clients_connected(client_names):
             all_connected_displayed = True  # Set the flag to prevent repeated messages
             return "All specified clients are connected."
         return ""
+    
+# WebSocket-related functions
+async def check_connections_periodically():
+    while True:
+        message = await check_clients_connected(["app_front", "app_back"])
+        if message:
+            print(message)
+        await asyncio.sleep(3)

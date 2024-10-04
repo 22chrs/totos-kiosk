@@ -4,13 +4,12 @@ import asyncio
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController
 
 # WebSocket Imports
-from websocket.websocket import start_websocket_server, clients, HOST_NAME
+from websocket.websocket import (start_websocket_server, check_connections_periodically, clients, HOST_NAME)
 
 # Payment Management Imports
 from payment.payment_management import (
     schedule_end_of_day_job,
-    handle_order,
-    check_connections_periodically
+    handle_order
 )
 
 # Orchestra Import

@@ -1,13 +1,14 @@
 import asyncio
 import os
-import subprocess
 import json
 import datetime
 import platform
 import glob
 import aiofiles
 
-paymentInUseFlag = False 
+# TID 52500038 Plus #! WICHTIG
+# TID 52500041 PIN #! WICHTIG
+
 
 class PaymentTerminal:
     def __init__(self, ip_address_terminal, executable_name='zvt++'):
@@ -55,23 +56,6 @@ class PaymentTerminal:
             exit_code = process.returncode
             return exit_code
 
-    async def display_text(self, duration, ascii_string):
-        if not isinstance(duration, int) or duration < 0:
-            raise ValueError("Duration must be a non-negative integer representing seconds.")
-        if not isinstance(ascii_string, str) or not ascii_string:
-            raise ValueError("ASCII string must be a non-empty string.")
-
-        async with self._terminal_lock:
-            os.chmod(self.executable_path, 0o755)
-            process = await asyncio.create_subprocess_exec(
-                self.executable_path, "display", self.ip_address_terminal, str(duration), ascii_string,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
-            )
-            stdout, stderr = await process.communicate()
-            exit_code = process.returncode
-            return exit_code
-
     async def load_order_details(self, whichTerminal, receipt_no):
         base_dir = os.path.join("Orders", "ActiveOrders")
         pattern = f"*_{whichTerminal}_{receipt_no}.json"
@@ -89,17 +73,7 @@ class PaymentTerminal:
                 order_details = json.loads(content)
             return order_details, order_file
 
-    async def book_total(self, whichTerminal, receipt_no, amount=None):
-        global paymentInUseFlag  # Declare the flag as global
-
-        # Check if a payment is already in use
-        if paymentInUseFlag:
-            print("Payment is already in use. Cannot book total at this time.")
-            return False
-
-        # Set the flag to indicate a payment is in progress
-        paymentInUseFlag = True
-
+    async def book_total(self, which_terminal, receipt_no, amount=None):
         try:
             if not isinstance(receipt_no, str) or not receipt_no:
                 raise ValueError("Receipt number must be a non-empty string.")
@@ -120,40 +94,24 @@ class PaymentTerminal:
                 stdout, stderr = await process.communicate()
                 exit_code = process.returncode
 
-            if exit_code != 0:
-                print(f"Process failed with exit code: {exit_code}")
-                print(f"stderr: {stderr.decode('utf-8')}")
-                return False
+                if exit_code != 0:
+                    print(f"Process failed with exit code: {exit_code}")
+                    print(f"stderr: {stderr.decode('utf-8')}")
+                    return False
 
-            output = stdout.decode('utf-8') + stderr.decode('utf-8')
-            order_details, receipt_path = await self.load_order_details(whichTerminal, receipt_no)
-            await self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
-            await self.move_receipt_to_succeeded_orders(receipt_path)
-            return True
+                output = stdout.decode('utf-8') + stderr.decode('utf-8')
+                order_details, receipt_path = await self.load_order_details(which_terminal, receipt_no)
+                await self.save_receipts(output, payment_style="book_total", order_details=order_details, receipt_path=receipt_path)
+                await self.move_receipt_to_succeeded_orders(receipt_path)
+                return True
         except Exception as e:
             print(f"An error occurred: {e}")
             return False
-        finally:
-            # Reset the flag after operation completes
-            paymentInUseFlag = False
 
     async def pay(self, payment_style, amount, order_details):
-        global paymentInUseFlag  # Ensure access to the global flag
-
-        # Check if a payment is already in progress
-        if paymentInUseFlag:
-            error_message = "Payment already in progress. Cannot start a new payment."
-            print(error_message)
-            return error_message
-
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
-
         os.chmod(self.executable_path, 0o755)
-        
-        # Set the flag to True as the payment process is starting
-        paymentInUseFlag = True
-
         async with self._terminal_lock:
             try:
                 print(f"Starting {payment_style} payment with amount: {amount}")
@@ -186,14 +144,8 @@ class PaymentTerminal:
                 print(error_message)
                 await self.write_error_file(error_message, self.ip_address_terminal)
                 return error_message
-
-            finally:
-                # Reset the flag after the payment process completes
-                paymentInUseFlag = False
             
     async def abort_payment(self):
-        global paymentInUseFlag
-        paymentInUseFlag = True
         if self.current_process and self.current_process.returncode is None:
             print("Aborting payment process by killing the zvt++ binary.")
             self.current_process.kill()
@@ -205,8 +157,6 @@ class PaymentTerminal:
                 # Implement restart logic if necessary
             except Exception as e:
                 print(f"Failed to restart zvt++ binary: {e}")
-            finally:
-                paymentInUseFlag = False
         else:
             print("No active payment process to abort.")
         

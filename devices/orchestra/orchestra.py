@@ -12,7 +12,7 @@ from payment.payment_management import (
     paymentTerminalBack,
     paymentTerminalIP_Front,
     paymentTerminalIP_Back,
-    book_total  # Ensure this is an async function
+    process_book_total  # Ensure this is an async function
 )
 
 def get_terminal_ip(which_terminal):

@@ -2,14 +2,10 @@
 
 import asyncio
 import json
-import socket
 import platform
 import datetime
 from payment.payment_lib import PaymentTerminal
-from websocket.websocket import check_clients_connected, clients, HOST_NAME
 
-# TID 52500038 Plus #! WICHTIG
-# TID 52500041 PIN #! WICHTIG
 
 # # Global variables
 if platform.system() == "Darwin":  # "Darwin" is the system name for macOS
@@ -113,7 +109,7 @@ async def process_payment(terminal, payment_style, total_price_cents, order_deta
 
     await notify_client_payment_status(client_alias, result, clients, host_name)
 
-async def book_total(which_terminal, receipt_no, amount):
+async def process_book_total(which_terminal, receipt_no, amount):
     try:
         if which_terminal.lower() == 'front':
             terminal = paymentTerminalFront
@@ -129,7 +125,7 @@ async def book_total(which_terminal, receipt_no, amount):
                 # Add a timeout to the book_total operation
                 result = await asyncio.wait_for(
                     terminal.book_total(which_terminal, receipt_no, amount),
-                    timeout=15  # Timeout after 15 seconds
+                    timeout=30  # Timeout after 15 seconds
                 )
             except asyncio.TimeoutError:
                 result = f"BookTotal operation timed out for terminal: {which_terminal}"
@@ -152,10 +148,3 @@ async def notify_client_payment_status(client_alias, result, clients, host_name)
     else:
         print(f"Client {client_alias} not found")
 
-# WebSocket-related functions
-async def check_connections_periodically():
-    while True:
-        message = await check_clients_connected(["app_front", "app_back"])
-        if message:
-            print(message)
-        await asyncio.sleep(3)
