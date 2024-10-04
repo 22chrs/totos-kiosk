@@ -7,7 +7,7 @@ from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, Teens
 from websocket.websocket import (start_websocket_server, check_connections_periodically, clients, HOST_NAME)
 
 # Payment Management Imports
-from payment.payment_management import (
+from payment.payment_lib import (
     schedule_end_of_day_job,
     handle_order
 )

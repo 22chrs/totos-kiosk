@@ -7,12 +7,11 @@ import aiofiles
 from watchgod import awatch, Change
 import portalocker
 from websocket.websocket import send_message_from_host  # Ensure this is an async function
-from payment.payment_management import (
+from payment.payment_lib import (
     paymentTerminalFront,
     paymentTerminalBack,
     paymentTerminalIP_Front,
     paymentTerminalIP_Back,
-    process_book_total  # Ensure this is an async function
 )
 
 def get_terminal_ip(which_terminal):
@@ -319,7 +318,7 @@ async def watch_orders_directory(orders_dir, active_orders_file, failed_dir, cur
     async for changes in awatch(orders_dir):
         for change_type, file_path in changes:
             if change_type == Change.added and file_path.endswith('.json'):
-                print(f"Processing new order file: {file_path}")
+                print(f"Detected new order file: {file_path}")
                 await process_order(file_path, active_orders_file, failed_dir, current_dir)
 
 async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', current_dir='Orders/SucceedOrders'):
