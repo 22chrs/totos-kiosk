@@ -431,7 +431,6 @@ class PaymentTerminal:
                 new_order_details['reservation'] = payment_info
 
         formatted_details = json.dumps(new_order_details, indent=2, separators=(',', ': '))
-        print(formatted_details)
         return formatted_details
 
     async def save_receipt_to_file(self, which_terminal, receipt_number, order_details, receipt_path=None):

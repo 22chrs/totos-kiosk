@@ -232,7 +232,7 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(1)
+                await asyncio.sleep(30)
 
                 if self.serial_connection is not None and self.board_info["alias"]:
                     if not self.is_heartbeat_sent:

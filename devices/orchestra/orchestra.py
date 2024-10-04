@@ -240,8 +240,8 @@ async def process_payment_task(message, order, line_index, active_orders_file):
                     os.makedirs(target_dir)
                 shutil.move(order_file_path, target_dir)
                 print(f"Moved file {order_file_path} to {target_dir}")
-            else:
-                print(f"No order file found: {order_file_path}")
+            #else:
+            #    print(f"No order file found: {order_file_path}")
             # Update the line in active_orders_file from '-># ' to '#-># '
             await update_line_marker(active_orders_file, line_index, '->#', '#->#')
         else:
@@ -315,12 +315,18 @@ async def process_active_orders_file(active_orders_file):
                                     message, _ = rest_of_line.split(" =>", 1)
                                 else:
                                     message = rest_of_line
-                                if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
+                                if client_alias in ["app_front", "app_back"]: # Websocket
                                     lines[i] = '# ' + lines[i]
                                     tasks_to_schedule.append(('send_message', client_alias, message))
-                                if client_alias in ["Toto", "Gripper", "Coffeemachine"]:
+                                elif client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube"]: # USB
                                     lines[i] = '# ' + lines[i]
-                                    tasks_to_schedule.append(('send_message', client_alias, message))
+                                    print(f"Noch nicht implementiert: {client_alias}: {message}")
+                                elif client_alias in ["Toto", "Gripper", "Coffeemachine"]: # RS485
+                                    lines[i] = '# ' + lines[i]
+                                    print(f"Noch nicht implementiert: {client_alias}: {message}")
+                                elif client_alias in ["Toto"]: # Toto
+                                    lines[i] = '# ' + lines[i]
+                                    print(f"Noch nicht implementiert: {client_alias}: {message}")
                                 elif client_alias == "Payment":
                                     lines[i] = '-># ' + lines[i]
                                     tasks_to_schedule.append(('payment', rest_of_line, order, i))  # Include line index
@@ -337,8 +343,8 @@ async def process_active_orders_file(active_orders_file):
                 f.seek(0)
                 f.truncate()
                 f.writelines(lines)
-            else:
-                print("No active orders to process.")
+            # else:
+            #     print("No active orders to process.")
             portalocker.unlock(f)
         return tasks_to_schedule
     tasks = await loop.run_in_executor(None, process_file)
