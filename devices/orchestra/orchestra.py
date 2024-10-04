@@ -203,44 +203,71 @@ async def process_active_orders(active_orders_file):
                 elif task[0] == 'payment':
                     message = task[1]
                     order = task[2]  # Access the order data
-                    match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
-                    if match:
-                        which_terminal_msg, receipt_no, amount_str, status = match.groups()
-                        amount = int(amount_str)
-                        if which_terminal_msg.lower() == 'front':
-                            payment_terminal = paymentTerminalFront
-                        elif which_terminal_msg.lower() == 'back':
-                            payment_terminal = paymentTerminalBack
-                        else:
-                            raise ValueError(f"Unknown terminal identifier: {which_terminal_msg}")
-                        result = await payment_terminal.book_total(which_terminal_msg, receipt_no, amount)
-                        if result:
-                            print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
-                            print(f"{result}")
-                            # Move the order file after successful payment
-                            receipt_number = order['receipt_number']
-                            which_terminal = order['which_terminal']
-                            time_stamp_order = order['timestamp']
-                            order_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
-                            order_file_path = os.path.join('Orders', 'ActiveOrders', order_filename)
-                            if os.path.exists(order_file_path):
-                                target_dir = os.path.join('Orders', 'SucceedOrders')
-                                if not os.path.exists(target_dir):
-                                    os.makedirs(target_dir)
-                                shutil.move(order_file_path, target_dir)
-                                print(f"Moved file {order_file_path} to {target_dir}")
-                            else:
-                                print(f"No order file found: {order_file_path}")
-                        else:
-                            print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
-                            continue
-                    else:
-                        print(f"Invalid Payment BookTotal message format: {message}")
+                    line_index = task[3]  # Line index in active_orders_file
+                    # Start payment processing in the background
+                    asyncio.create_task(process_payment_task(message, order, line_index, active_orders_file))
                 else:
                     print(f"Unknown task type: {task[0]}")
         except Exception as e:
             print(f"Error processing active orders: {e}")
         await asyncio.sleep(1)
+
+async def process_payment_task(message, order, line_index, active_orders_file):
+    match = re.match(r"BookTotal\('(\w+)',\s*'(\w+)',\s*'(\d+)',\s*'(\w+)'\)", message)
+    if match:
+        which_terminal_msg, receipt_no, amount_str, status = match.groups()
+        amount = int(amount_str)
+        if which_terminal_msg.lower() == 'front':
+            payment_terminal = paymentTerminalFront
+        elif which_terminal_msg.lower() == 'back':
+            payment_terminal = paymentTerminalBack
+        else:
+            print(f"Unknown terminal identifier: {which_terminal_msg}")
+            return
+        result = await payment_terminal.book_total(which_terminal_msg, receipt_no, amount)
+        if result:
+            print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
+            print(f"{result}")
+            # Move the order file after successful payment
+            receipt_number = order['receipt_number']
+            which_terminal = order['which_terminal']
+            time_stamp_order = order['timestamp']
+            order_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
+            order_file_path = os.path.join('Orders', 'ActiveOrders', order_filename)
+            if os.path.exists(order_file_path):
+                target_dir = os.path.join('Orders', 'SucceedOrders')
+                if not os.path.exists(target_dir):
+                    os.makedirs(target_dir)
+                shutil.move(order_file_path, target_dir)
+                print(f"Moved file {order_file_path} to {target_dir}")
+            else:
+                print(f"No order file found: {order_file_path}")
+            # Update the line in active_orders_file from '-># ' to '#-># '
+            await update_line_marker(active_orders_file, line_index, '->#', '#->#')
+        else:
+            print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
+    else:
+        print(f"Invalid Payment BookTotal message format: {message}")
+
+async def update_line_marker(filename, line_index, old_marker, new_marker):
+    loop = asyncio.get_event_loop()
+    def update_line():
+        with open(filename, 'r+', encoding='utf-8') as f:
+            portalocker.lock(f, portalocker.LOCK_EX)
+            lines = f.readlines()
+            if line_index < len(lines):
+                line = lines[line_index]
+                if line.startswith(old_marker):
+                    lines[line_index] = line.replace(old_marker, new_marker, 1)
+                    f.seek(0)
+                    f.truncate()
+                    f.writelines(lines)
+                else:
+                    print(f"Line at index {line_index} does not start with '{old_marker}'")
+            else:
+                print(f"Line index {line_index} out of range")
+            portalocker.unlock(f)
+    await loop.run_in_executor(None, update_line)
 
 async def process_active_orders_file(active_orders_file):
     loop = asyncio.get_event_loop()
@@ -276,10 +303,7 @@ async def process_active_orders_file(active_orders_file):
                     i = order['line_indices'][j]
                     if line == '':
                         continue
-                    if not line.startswith('#'):
-                        lines[i] = '# ' + lines[i]
-                        processed_line = line
-                        processed = True
+                    if not line.startswith('#') and not line.startswith('->#'):
                         if 'START' in line:
                             pass
                         else:
@@ -292,13 +316,20 @@ async def process_active_orders_file(active_orders_file):
                                 else:
                                     message = rest_of_line
                                 if client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube", "app_front", "app_back"]:
+                                    lines[i] = '# ' + lines[i]
+                                    tasks_to_schedule.append(('send_message', client_alias, message))
+                                if client_alias in ["Toto", "Gripper", "Coffeemachine"]:
+                                    lines[i] = '# ' + lines[i]
                                     tasks_to_schedule.append(('send_message', client_alias, message))
                                 elif client_alias == "Payment":
-                                    tasks_to_schedule.append(('payment', rest_of_line, order))  # Include order data
+                                    lines[i] = '-># ' + lines[i]
+                                    tasks_to_schedule.append(('payment', rest_of_line, order, i))  # Include line index
                                 else:
                                     print(f"Unknown Client Alias: {client_alias}")
                             else:
                                 print(f"Processed line does not contain ':': {line}")
+                        processed_line = line
+                        processed = True
                         break
                 if processed:
                     break
