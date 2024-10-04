@@ -6,29 +6,29 @@ import platform
 import glob
 import aiofiles
 
-
-order_details = None
-
 # TID 52500038 Plus #! WICHTIG 
 # TID 52500041 PIN #! WICHTIG
 
 class PaymentTerminal:
     def __init__(self, ip_address_terminal, executable_name='zvt++'):
+        """
+        Initialize the PaymentTerminal with the given IP address and executable name.
+        """
         self.executable_path = self.get_executable_path(executable_name)
         self.ip_address_terminal = ip_address_terminal
         self.current_process = None
         self._terminal_lock = asyncio.Lock()
 
     def get_executable_path(self, executable_name):
+        """
+        Determine the executable path based on system architecture.
+        """
         dir_path = os.path.dirname(os.path.abspath(__file__))
         system_arch = platform.machine()
         builds_dir = os.path.join(dir_path, 'zvt++', '_builds')
 
         if 'arm' in system_arch or 'aarch64' in system_arch:
-            if platform.system() == 'Darwin':
-                suffix = 'mac'
-            else:
-                suffix = 'pi5'
+            suffix = 'mac' if platform.system() == 'Darwin' else 'pi5'
         elif 'x86' in system_arch or 'x86_64' in system_arch:
             suffix = 'x64'
         else:
@@ -47,6 +47,9 @@ class PaymentTerminal:
         return executable_path
 
     async def end_of_day(self):
+        """
+        Perform end-of-day operation on the payment terminal.
+        """
         async with self._terminal_lock:
             os.chmod(self.executable_path, 0o755)
             process = await asyncio.create_subprocess_exec(
@@ -58,24 +61,34 @@ class PaymentTerminal:
             exit_code = process.returncode
             return exit_code
 
-    async def load_order_details(self, whichTerminal, receipt_no):
+    async def load_order_details(self, which_terminal, receipt_no):
+        """
+        Load order details from the JSON file.
+        """
         base_dir = os.path.join("Orders", "ActiveOrders")
-        pattern = f"*_{whichTerminal}_{receipt_no}.json"
+        pattern = f"*_{which_terminal}_{receipt_no}.json"
         full_pattern = os.path.join(base_dir, pattern)
         matching_files = glob.glob(full_pattern)
 
         if not matching_files:
-            print(f"No existing order file found for whichTerminal: {whichTerminal}, receipt_no: {receipt_no}")
+            print(f"No existing order file found for whichTerminal: {which_terminal}, receipt_no: {receipt_no}")
             return {}, None
         else:
             matching_files.sort()
             order_file = matching_files[-1]
-            async with aiofiles.open(order_file, 'r', encoding='utf-8') as f:
-                content = await f.read()
-                order_details = json.loads(content)
+            try:
+                async with aiofiles.open(order_file, 'r', encoding='utf-8') as f:
+                    content = await f.read()
+                    order_details = json.loads(content)
+            except Exception as e:
+                order_details = {}
             return order_details, order_file
 
+
     async def book_total(self, which_terminal, receipt_no, amount=None):
+        """
+        Book the total amount on the terminal.
+        """
         try:
             if not isinstance(receipt_no, str) or not receipt_no:
                 raise ValueError("Receipt number must be a non-empty string.")
@@ -111,6 +124,9 @@ class PaymentTerminal:
             return False
 
     async def pay(self, payment_style, amount, order_details):
+        """
+        Perform a payment operation on the terminal.
+        """
         if not isinstance(amount, int) or amount < 0:
             raise ValueError("Amount must be a non-negative integer representing cents.")
         os.chmod(self.executable_path, 0o755)
@@ -128,8 +144,6 @@ class PaymentTerminal:
                 self.current_process = None
                 stdout_str = stdout.decode('utf-8')
                 stderr_str = stderr.decode('utf-8')
-                #print(f"Subprocess stdout: {stdout_str}")
-                #print(f"Subprocess stderr: {stderr_str}")
 
                 if not stdout_str and not stderr_str:
                     error_message = "No output from subprocess."
@@ -146,8 +160,11 @@ class PaymentTerminal:
                 print(error_message)
                 await self.write_error_file(error_message, self.ip_address_terminal)
                 return error_message
-            
+
     async def abort_payment(self):
+        """
+        Abort the ongoing payment process.
+        """
         if self.current_process and self.current_process.returncode is None:
             print("Aborting payment process by killing the zvt++ binary.")
             self.current_process.kill()
@@ -161,9 +178,11 @@ class PaymentTerminal:
                 print(f"Failed to restart zvt++ binary: {e}")
         else:
             print("No active payment process to abort.")
-        
 
     async def reversal_payment_debug(self, receipt_no):
+        """
+        Perform a reversal of a payment using the receipt number.
+        """
         if not isinstance(receipt_no, str) or not receipt_no:
             raise ValueError("Receipt number must be a non-empty string.")
 
@@ -179,17 +198,14 @@ class PaymentTerminal:
         return exit_code
 
     async def write_error_file(self, error_message, ip_address):
+        """
+        Write an error message to a file.
+        """
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         base_dir = "Orders"
         error_dir = os.path.join(base_dir, "ERROR")
 
-        if not os.path.exists(base_dir):
-            os.makedirs(base_dir)
-            print(f"Created directory: {base_dir}")
-
-        if not os.path.exists(error_dir):
-            os.makedirs(error_dir)
-            print(f"Created error directory: {error_dir}")
+        os.makedirs(error_dir, exist_ok=True)
 
         error_filename = f"{timestamp}_ERR.txt"
         error_path = os.path.join(error_dir, error_filename)
@@ -200,86 +216,13 @@ class PaymentTerminal:
         print(f"Error file saved to {error_path}")
 
     async def save_receipts(self, output, payment_style, order_details=None, receipt_path=None):
+        """
+        Save the receipt details after payment.
+        """
         if order_details is None:
             order_details = {}
 
-        lines = output.split('\n')
-        receipt_number = ""
-        trace = ""
-        expiry_date = ""
-        status = ""
-        card_name = ""
-        date = ""
-        time_str = ""
-        terminal_id = ""
-        currency = ""
-        amount_in_cents = ""
-        card_id = ""
-        payment_type = ""
-
-        for line in lines:
-            clean_line = line.replace('<-PT|', '').rstrip('|').strip()
-            if "trace" in line:
-                trace = line.split()[-1] if len(line.split()) > 0 else ""
-            if "status" in line:
-                status = line.split()[-1] if len(line.split()) > 0 else ""
-            if "expiry_date" in clean_line:
-                expiry_date = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
-            elif "date" in clean_line and "expiry_date" not in clean_line:
-                date = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
-            if "receipt_number" in line:
-                parts = line.split()
-                if len(parts) > 1:
-                    receipt_number = parts[-1].strip()
-            if "time" in line:
-                time_str = line.split()[-1] if len(line.split()) > 0 else ""
-                if time_str:
-                    time = f"{time_str[:2]}:{time_str[2:4]}:{time_str[4:]} CET"
-            if "tid" in line:
-                parts = line.split()
-                if len(parts) > 1:
-                    terminal_id = parts[-1].strip()
-            if "currency" in line:
-                parts = line.split()
-                if len(parts) > 1:
-                    currency_code = parts[-1].strip()
-                    currency = "EUR" if currency_code == "978" else currency_code
-            if "card_name" in line:
-                parts = line.split()
-                if len(parts) > 1:
-                    card_name = parts[-1].strip().replace('\u0000', '')
-            if "amount in cent" in line:
-                parts = line.split()
-                if len(parts) > 1:
-                    amount = parts[-1].strip()
-                    try:
-                        amount_in_cents = int(amount)
-                    except ValueError:
-                        print(f"Warning: Invalid amount format in line: {line}")
-            if "pan" in line:
-                parts = line.split()
-                if len(parts) > 1:
-                    card_id = parts[-1].strip()
-            if "payment_type" in line:
-                parts = line.split()
-                if len(parts) > 1:
-                    payment_type = parts[-1].strip()
-
-        payment_details = {
-            'status': status,
-            'receipt_number': receipt_number,
-            'payment_style': payment_style,
-            'date': date,
-            'time': time_str,
-            'amount_in_cents': amount_in_cents,
-            'currency': currency,
-            'card_name': card_name,
-            'payment_type': payment_type,
-            'card_id': card_id,
-            'expiry_date': expiry_date,
-            'terminal_id': terminal_id,
-            'trace': trace
-        }
+        payment_details = self.parse_payment_output(output)
 
         order_details['reservation'] = payment_details
 
@@ -296,12 +239,72 @@ class PaymentTerminal:
             order_details['message'] = {}
 
         which_terminal = order_details.get('whichTerminal',
-                            order_details['message'].get('whichTerminal', "UnknownTerminal"))
+                                           order_details['message'].get('whichTerminal', "UnknownTerminal"))
 
-        await self.save_receipt_to_file(which_terminal, receipt_number, order_details, receipt_path=receipt_path)
-        return status
+        await self.save_receipt_to_file(which_terminal, payment_details.get('receipt_number', ''), order_details, receipt_path=receipt_path)
+        return payment_details.get('status', '')
+
+    def parse_payment_output(self, output):
+        """
+        Parse the output from the payment process and extract payment details.
+        """
+        lines = output.split('\n')
+        payment_details = {}
+
+        for line in lines:
+            clean_line = line.replace('<-PT|', '').rstrip('|').strip()
+            if "trace" in line:
+                payment_details['trace'] = line.split()[-1] if len(line.split()) > 0 else ""
+            if "status" in line:
+                payment_details['status'] = line.split()[-1] if len(line.split()) > 0 else ""
+            if "expiry_date" in clean_line:
+                payment_details['expiry_date'] = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
+            elif "date" in clean_line and "expiry_date" not in clean_line:
+                payment_details['date'] = clean_line.split()[-1].strip() if len(clean_line.split()) > 0 else ""
+            if "receipt_number" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    payment_details['receipt_number'] = parts[-1].strip()
+            if "time" in line:
+                time_str = line.split()[-1] if len(line.split()) > 0 else ""
+                if time_str:
+                    payment_details['time'] = f"{time_str[:2]}:{time_str[2:4]}:{time_str[4:]} CET"
+            if "tid" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    payment_details['terminal_id'] = parts[-1].strip()
+            if "currency" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    currency_code = parts[-1].strip()
+                    payment_details['currency'] = "EUR" if currency_code == "978" else currency_code
+            if "card_name" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    payment_details['card_name'] = parts[-1].strip().replace('\u0000', '')
+            if "amount in cent" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    amount = parts[-1].strip()
+                    try:
+                        payment_details['amount_in_cents'] = int(amount)
+                    except ValueError:
+                        print(f"Warning: Invalid amount format in line: {line}")
+            if "pan" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    payment_details['card_id'] = parts[-1].strip()
+            if "payment_type" in line:
+                parts = line.split()
+                if len(parts) > 1:
+                    payment_details['payment_type'] = parts[-1].strip()
+
+        return payment_details
 
     async def move_receipt_to_succeeded_orders(self, receipt_path):
+        """
+        Move the receipt file to the succeeded orders directory.
+        """
         succeed_orders_dir = os.path.join("Orders", "SucceedOrders")
         os.makedirs(succeed_orders_dir, exist_ok=True)
         filename = os.path.basename(receipt_path)
@@ -311,6 +314,9 @@ class PaymentTerminal:
         print(f"Moved receipt to {new_path}")
 
     def format_order_details(self, order_details):
+        """
+        Format the order details into a JSON string.
+        """
         if isinstance(order_details, str):
             try:
                 order_details = json.loads(order_details)
@@ -333,7 +339,7 @@ class PaymentTerminal:
         if 'reservation' in order_details:
             payment_info = order_details['reservation']
 
-        if payment_info.get('payment_style') == 'book_total':
+        if payment_info and payment_info.get('payment_style') == 'book_total':
             new_order_details = {}
         else:
             new_order_details = {
@@ -344,14 +350,8 @@ class PaymentTerminal:
             new_order_details['products'] = products
         if payment_info is not None:
             if payment_info.get('payment_style') == 'book_total':
-                payment_info.pop('terminal_id', None)
-                payment_info.pop('date', None)
-                payment_info.pop('time', None)
-                payment_info.pop('currency', None)
-                payment_info.pop('card_name', None)
-                payment_info.pop('payment_type', None)
-                payment_info.pop('card_id', None)
-                payment_info.pop('expiry_date', None)
+                for key in ['terminal_id', 'date', 'time', 'currency', 'card_name', 'payment_type', 'card_id', 'expiry_date']:
+                    payment_info.pop(key, None)
                 new_order_details['book_total'] = payment_info
             else:
                 new_order_details['reservation'] = payment_info
@@ -361,19 +361,19 @@ class PaymentTerminal:
         return formatted_details
 
     async def save_receipt_to_file(self, which_terminal, receipt_number, order_details, receipt_path=None):
+        """
+        Save the formatted order details to a file.
+        """
         base_dir = os.path.join("Orders", "ActiveOrders")
         receipt_content = self.format_order_details(order_details)
         receipt_dict = json.loads(receipt_content)
 
         if receipt_path is None:
-            time_stamp_order = receipt_dict.get('Order Details', {}).get('timeStampOrder')
-            if not time_stamp_order:
-                time_stamp_order = "NO_TIMESTAMP"
+            time_stamp_order = receipt_dict.get('Order Details', {}).get('timeStampOrder', "NO_TIMESTAMP")
             receipt_filename = f"{time_stamp_order}_{which_terminal}_{receipt_number}.json"
             receipt_path = os.path.join(base_dir, receipt_filename)
 
         os.makedirs(base_dir, exist_ok=True)
-        # print(f"Directory ensured: {base_dir}")
 
         loop = asyncio.get_event_loop()
         file_exists = await loop.run_in_executor(None, os.path.exists, receipt_path)
@@ -399,6 +399,9 @@ class PaymentTerminal:
             print(f"Receipt written to {receipt_path}")
 
     async def endOfDay_uploadReceipts(self):
+        """
+        Perform end-of-day operations and upload receipts.
+        """
         result = await self.end_of_day()
         if result != 0:
             print("End of day process failed.")
@@ -406,6 +409,7 @@ class PaymentTerminal:
 
         base_dir = "Orders"
         try:
+            # Git add
             git_add = await asyncio.create_subprocess_exec(
                 "git", "add", ".",
                 cwd=base_dir,
@@ -418,6 +422,7 @@ class PaymentTerminal:
                 return
             print("Added all files to git staging area.")
 
+            # Git commit
             commit_message = "Upload receipts"
             git_commit = await asyncio.create_subprocess_exec(
                 "git", "commit", "-m", commit_message,
@@ -431,6 +436,7 @@ class PaymentTerminal:
                 return
             print("Committed changes to git.")
 
+            # Git push
             git_push = await asyncio.create_subprocess_exec(
                 "git", "push",
                 cwd=base_dir,
@@ -443,6 +449,7 @@ class PaymentTerminal:
                 return
             print("Pushed changes to remote repository.")
 
+            # Delete local files
             files_to_delete = []
             for dirpath, dirnames, filenames in os.walk(base_dir):
                 for filename in filenames:
@@ -456,7 +463,8 @@ class PaymentTerminal:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
-# # Global variables
+
+# Global variables
 if platform.system() == "Darwin":  # "Darwin" is the system name for macOS
     paymentTerminalIP_Front = "192.168.68.201"
     paymentTerminalIP_Back = "192.168.68.202"
@@ -476,7 +484,11 @@ async def end_of_day_job():
     await paymentTerminalFront.endOfDay_uploadReceipts()
     await paymentTerminalBack.endOfDay_uploadReceipts()
 
+
 async def schedule_end_of_day_job():
+    """
+    Schedule the end-of-day job to run every day at 23:59.
+    """
     while True:
         now = datetime.datetime.now()
         target_time = now.replace(hour=23, minute=59, second=0, microsecond=0)
@@ -486,8 +498,12 @@ async def schedule_end_of_day_job():
         await asyncio.sleep(time_to_sleep)
         await end_of_day_job()
 
+
 # WebSocket message handler
 async def handle_order(websocket, message, client_alias, clients, host_name):
+    """
+    Handle incoming order messages from clients.
+    """
     payment_style = "reservation"  # "reservation" for reservation or "auth" for direct pay
     global order_details
     try:
@@ -531,7 +547,11 @@ async def handle_order(websocket, message, client_alias, clients, host_name):
     except json.JSONDecodeError:
         print("Error: Received message is not valid JSON.")
 
+
 async def process_payment(terminal, payment_style, total_price_cents, order_details, client_alias, clients, host_name):
+    """
+    Process the payment asynchronously.
+    """
     if terminal == paymentTerminalFront:
         lock = paymentTerminalFront_lock
     elif terminal == paymentTerminalBack:
@@ -557,7 +577,11 @@ async def process_payment(terminal, payment_style, total_price_cents, order_deta
 
     await notify_client_payment_status(client_alias, result, clients, host_name)
 
+
 async def notify_client_payment_status(client_alias, result, clients, host_name):
+    """
+    Notify the client of the payment status.
+    """
     if client_alias in clients:
         client = clients[client_alias]
         try:
@@ -568,4 +592,3 @@ async def notify_client_payment_status(client_alias, result, clients, host_name)
             print(f"Error sending payment result to {client_alias}: {e}")
     else:
         print(f"Client {client_alias} not found")
-
