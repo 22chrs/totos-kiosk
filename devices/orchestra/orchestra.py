@@ -123,7 +123,7 @@ async def process_order(file_path, active_orders_file, failed_dir, current_dir):
 def generate_drink_recipe(product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
     recipe = []
     recipe.append(f"ServiceCube: askForCup('{choosen_mug}', '{choosen_size}') => 'initialCupPosition'")
-    recipe.append(f"RoboCubeBack: fireLED()") #! TEMP
+    recipe.append(f"{RoboCube}: fireLED()") #! TEMP
     recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'")
     recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '?->Becherkarusell('initialCupPosition')')")
     recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Close')")
@@ -326,8 +326,7 @@ async def process_active_orders_file(active_orders_file):
                                 if client_alias in ["app_front", "app_back"]: # Websocket
                                     lines[i] = '# ' + lines[i]
                                     tasks_to_schedule.append(('send_message_via_websocket', client_alias, message))
-                                #elif client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube"]: # USB
-                                elif client_alias in ["RoboCubeBack"]: # USB
+                                elif client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube"]: # USB
                                     lines[i] = '# ' + lines[i]
                                     tasks_to_schedule.append(('send_message_via_serial', client_alias, message))
                                 elif client_alias in ["Toto", "Gripper", "Coffeemachine"]: # RS485

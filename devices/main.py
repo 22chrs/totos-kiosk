@@ -34,7 +34,7 @@ async def main():
     The main coroutine that orchestrates all asynchronous tasks.
     """
     # Define the aliases for the boards you want to connect with
-    teensys = {'RoboCubeBack'}
+    teensys = {'RoboCubeFront', 'RoboCubeBack', 'ServiceCube'}
     # If you have multiple Teensy devices, include their aliases
     # teensys = {'RoboCubeFront', 'RoboCubeBack'}
 
