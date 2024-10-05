@@ -5,6 +5,8 @@ import serial
 import time
 import threading
 
+incoming_stamp_futures = {}
+
 from serial.tools import list_ports
 class BoardSerial:
     def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
@@ -26,6 +28,7 @@ class BoardSerial:
         self.need_to_send_ack = False
         self.last_unacknowledged_message_and_timestamp = None  #! include the orginally timestamp of that message pls -> timestamp|message
         self.retry_count = 0
+
 
     def read_from_serial(self):
         """Read from the serial port and handle incomplete data."""
@@ -152,12 +155,13 @@ class BoardSerial:
                     ack_timestamp = message_content.split("ACK:")[1].strip()
                     self.check_acknowledgment(ack_timestamp)
 
-                if message_content.startswith("SUCCESS:"): #! chatgpt here is the messeage incoming. if that happens with after the ":" beeing our timestamp we want to proceed
-                    print("Success received") 
-                    #! Do something here SUCCESS:timestamp -> timestamp we waited for -> SUCCESS CASE
-                if message_content.startswith("FAIL:"):
-                    print("FAIL received")
-                    #! Do something here FAIL:timestamp -> timestamp we waited for -> FAIL CASE
+                if message_content.startswith("SUCCESS:") or message_content.startswith("FAIL:"):
+                    # Extract status and timestamp
+                    status, timestamp = message_content.split(":")
+                    print(f"Status = {status}")
+                    print(f"message_content = {message_content}")
+                    # Call INCOMING_STAMP
+                    self.INCOMING_STAMP(timestamp, status)
 
                 return message_content
             except ValueError:
@@ -166,6 +170,14 @@ class BoardSerial:
         else:
             print(f"### {alias_to_print} -> {processed_data} ###")
             return ""
+        
+    def INCOMING_STAMP(self, timestamp, status):
+        if timestamp in incoming_stamp_futures:
+            future = incoming_stamp_futures.pop(timestamp)
+            future.set_result(status)
+            print(f"Set future for timestamp {timestamp} with status {status}")
+        else:
+            print(f"Received {status} for unknown timestamp {timestamp}")
 
     def connect(self):
         try:

@@ -15,6 +15,7 @@ from payment.payment_lib import (
     paymentTerminalIP_Front,
     paymentTerminalIP_Back,
 )
+from usbserial.usbserial import incoming_stamp_futures
 
 def get_terminal_ip(which_terminal):
     if which_terminal.lower() == 'front':
@@ -202,21 +203,24 @@ async def process_active_orders(active_orders_file, teensy_controller):
             for task in tasks_to_schedule:
                 if task[0] == 'send_message_via_serial':
                     client_alias, message = task[1], task[2]
-                    timestamp = await teensy_controller.send_gerneral_serial_message(client_alias, message)
-                    print(timestamp)
-
-                    #! wait here non blocking for preprocess_data to return a message before proceeding with our process_active_orders_file (maybe with a timeout)
-                elif task[0] == 'send_message_via_websocket':
-                    client_alias, message = task[1], task[2]
-                    await send_message_from_host(client_alias, message)
-                elif task[0] == 'payment':
-                    message = task[1]
-                    order = task[2]  # Access the order data
-                    line_index = task[3]  # Line index in active_orders_file
-                    # Start payment processing in the background
-                    asyncio.create_task(process_payment_task(message, order, line_index, active_orders_file))
-                else:
-                    print(f"Unknown task type: {task[0]}")
+                    timestampTask = await teensy_controller.send_gerneral_serial_message(client_alias, message)
+                    
+                    # Create a Future and store it
+                    future = asyncio.get_event_loop().create_future()
+                    incoming_stamp_futures[timestampTask] = future
+                    
+                    # Wait for the acknowledgment
+                    try:
+                        result = await asyncio.wait_for(future, timeout=60) #! ###
+                        if result == "SUCCESS":
+                            print(f"Command '{message}' executed successfully.")
+                            # Proceed with next steps
+                        elif result == "FAIL":
+                            print(f"Command '{message}' failed.")
+                            # Handle failure accordingly
+                    except asyncio.TimeoutError:
+                        print(f"Timeout waiting for response to timestamp {timestampTask}")
+                        # Handle timeout
         except Exception as e:
             print(f"Error processing active orders: {e}")
         await asyncio.sleep(1)
@@ -327,7 +331,7 @@ async def process_active_orders_file(active_orders_file):
                                 if client_alias in ["app_front", "app_back"]: # Websocket
                                     lines[i] = '# ' + lines[i]
                                     tasks_to_schedule.append(('send_message_via_websocket', client_alias, message))
-                                elif client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube"]: # USB
+                                elif client_alias in ["RoboCubeBack"]: # USB #! ###
                                     lines[i] = '# ' + lines[i]
                                     tasks_to_schedule.append(('send_message_via_serial', client_alias, message))
                                 elif client_alias in ["Toto", "Gripper", "Coffeemachine"]: # RS485
