@@ -281,10 +281,10 @@ class BoardSerial:
             # Return the final timestamp with suffix
             return new_timestamp + self.timestamp_suffix
         
-    def send_data(self, message):
+    def send_data(self, message):  # Returns the timestamp when successful, else "FAIL"
         if self.serial_connection is None:
             print(f"Error: Cannot send data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} - Serial connection is None")
-            return
+            return "FAIL"
 
         timestamp = self.generate_timestamp()
         
@@ -292,8 +292,8 @@ class BoardSerial:
             # Check if the message is a retry message
             if '|' in message and len(message.split('|')[0]) == 16 and message[:15].isdigit():
                 retry_timestamp, retry_message = message.split('|', 1)
-                message = retry_message  # Use the part after | as the actual message
-                timestamp = retry_timestamp  # Use the part after | as the actual message
+                message = retry_message  # Use the part after '|' as the actual message
+                timestamp = retry_timestamp  # Use the retry timestamp
 
             message_with_crc = self.add_crc_and_frame(message, timestamp)
             self.serial_connection.write((message_with_crc + '\n').encode())
@@ -306,9 +306,12 @@ class BoardSerial:
                 with self.lock:
                     self.sent_messages.append((time.time(), f"{timestamp}|{message}"))
 
+            return timestamp  # Return the timestamp when successful
+
         except (serial.SerialException, OSError) as e:
-            print(f"Error: Sending data to {self.board_info['alias'] if self.board_info['alias'] else 'unknown device'} failed: {str(e)}")
+            print(f"Error: Sending data to {alias} failed: {str(e)}")
             self.disconnect()
+            return "FAIL"
 
     def add_crc_and_frame(self, message, timestamp):
         message_with_timestamp = f"{timestamp}|{message}"
@@ -423,12 +426,14 @@ class SerialCommandForwarder:
         self.connection_manager = connection_manager
 
     async def forward_command(self, alias, message):
-        #print(f"[DEBUG] Forwarding command to alias '{alias}': {message}")
         if alias in self.connection_manager.boards:
             board = self.connection_manager.boards[alias]
-            board.send_data(message)
+            timestamp = board.send_data(message)
+            return timestamp  # Return the timestamp received from send_data
         else:
             print(f"[DEBUG] Failed to forward command. Alias '{alias}' not found.")
+            return "FAIL"
+
 
     async def monitor_and_forward(self):
         while True:
@@ -457,21 +462,26 @@ class TeensyController:
     async def send_move_device_command(self, alias, stepper_name, position, max_speed_percentage, drive_current_percentage, desiredRingPercentage):
         if alias in self.connection_manager.boards:
             command = f'moveDevice("{stepper_name}", {position}, {max_speed_percentage}, {drive_current_percentage}, {desiredRingPercentage})'
-            await self.command_forwarder.forward_command(alias, command)
+            timestamp = await self.command_forwarder.forward_command(alias, command)
+            return timestamp  # Return the timestamp
         else:
             print(f"[DEBUG] Failed to send moveDevice command. Alias '{alias}' not found.")
+            return "FAIL"
 
     async def send_home_device_command(self, alias, stepper_name):
         if alias in self.connection_manager.boards:
             command = f'homeDevice("{stepper_name}")'
-            await self.command_forwarder.forward_command(alias, command)
+            timestamp = await self.command_forwarder.forward_command(alias, command)
+            return timestamp  # Return the timestamp
         else:
             print(f"[DEBUG] Failed to send homeDevice command. Alias '{alias}' not found.")
+            return "FAIL"
 
-    async def send_gerneral_serial_message(self, alias, message):
+    async def send_gerneral_serial_message(self, alias, message):  # Returns the timestamp
         if alias in self.connection_manager.boards:
-            command = f'{message})'
-            await self.command_forwarder.forward_command(alias, command)
+            command = f'{message}'
+            timestamp = await self.command_forwarder.forward_command(alias, command)
+            return timestamp  # Return the timestamp
         else:
-            print(f"[DEBUG] Failed to send homeDevice command. Alias '{alias}' not found.")
-
+            print(f"[DEBUG] Failed to send general serial message. Alias '{alias}' not found.")
+            return "FAIL"
