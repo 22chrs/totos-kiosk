@@ -1,3 +1,5 @@
+# orchestra.py
+
 import os
 import json
 import shutil
@@ -121,6 +123,7 @@ async def process_order(file_path, active_orders_file, failed_dir, current_dir):
 def generate_drink_recipe(product_name, choosen_size, choosen_sugar, choosen_mug, choosen_lid, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
     recipe = []
     recipe.append(f"ServiceCube: askForCup('{choosen_mug}', '{choosen_size}') => 'initialCupPosition'")
+    recipe.append(f"ServiceBack: fireLED()") #! TEMP
     recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'")
     recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '?->Becherkarusell('initialCupPosition')')")
     recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Close')")
@@ -192,12 +195,15 @@ async def update_active_orders(order_data, function_calls, active_orders_file):
 
     await append_to_locked_file(active_orders_file, data_to_write)
 
-async def process_active_orders(active_orders_file):
+async def process_active_orders(active_orders_file, teensy_controller):
     while True:
         try:
             tasks_to_schedule = await process_active_orders_file(active_orders_file)
             for task in tasks_to_schedule:
-                if task[0] == 'send_message':
+                if task[0] == 'send_message_via_serial':
+                    client_alias, message = task[1], task[2]
+                    await teensy_controller.send_gerneral_serial_message(client_alias, message)
+                elif task[0] == 'send_message_via_websocket':
                     client_alias, message = task[1], task[2]
                     await send_message_from_host(client_alias, message)
                 elif task[0] == 'payment':
@@ -243,7 +249,7 @@ async def process_payment_task(message, order, line_index, active_orders_file):
             #else:
             #    print(f"No order file found: {order_file_path}")
             # Update the line in active_orders_file from '-># ' to '#-># '
-            await update_line_marker(active_orders_file, line_index, '->#', '#->#')
+            await update_line_marker(active_orders_file, line_index, '-> #', '# -> #')
         else:
             print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
     else:
@@ -303,7 +309,7 @@ async def process_active_orders_file(active_orders_file):
                     i = order['line_indices'][j]
                     if line == '':
                         continue
-                    if not line.startswith('#') and not line.startswith('->#'):
+                    if not line.startswith('#') and not line.startswith('-> #'):
                         if 'START' in line:
                             pass
                         else:
@@ -317,20 +323,22 @@ async def process_active_orders_file(active_orders_file):
                                     message = rest_of_line
                                 if client_alias in ["app_front", "app_back"]: # Websocket
                                     lines[i] = '# ' + lines[i]
-                                    tasks_to_schedule.append(('send_message', client_alias, message))
-                                elif client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube"]: # USB
+                                    tasks_to_schedule.append(('send_message_via_websocket', client_alias, message))
+                                #elif client_alias in ["RoboCubeFront", "RoboCubeBack", "ServiceCube"]: # USB
+                                elif client_alias in ["RoboCubeBack"]: # USB
                                     lines[i] = '# ' + lines[i]
-                                    print(f"Noch nicht implementiert: {client_alias}: {message}")
+                                    tasks_to_schedule.append(('send_message_via_serial', client_alias, message))
                                 elif client_alias in ["Toto", "Gripper", "Coffeemachine"]: # RS485
                                     lines[i] = '# ' + lines[i]
-                                    print(f"Noch nicht implementiert: {client_alias}: {message}")
+                                    print(f"// Noch nicht implementiert: {client_alias}: {message}")
                                 elif client_alias in ["Toto"]: # Toto
                                     lines[i] = '# ' + lines[i]
-                                    print(f"Noch nicht implementiert: {client_alias}: {message}")
+                                    print(f"// Noch nicht implementiert: {client_alias}: {message}")
                                 elif client_alias == "Payment":
-                                    lines[i] = '-># ' + lines[i]
+                                    lines[i] = '-> # ' + lines[i]
                                     tasks_to_schedule.append(('payment', rest_of_line, order, i))  # Include line index
                                 else:
+                                    lines[i] = '### FAILED // Unknown Client Alias  # ' + lines[i]
                                     print(f"Unknown Client Alias: {client_alias}")
                             else:
                                 print(f"Processed line does not contain ':': {line}")
@@ -357,7 +365,13 @@ async def watch_orders_directory(orders_dir, active_orders_file, failed_dir, cur
                 print(f"Detected new order file: {file_path}")
                 await process_order(file_path, active_orders_file, failed_dir, current_dir)
 
-async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='Orders/ActiveOrders/activeOrders.log', failed_dir='Orders/FailedOrders', current_dir='Orders/SucceedOrders'):
+async def start_orchestra(
+    orders_dir='Orders/ActiveOrders',
+    active_orders_file='Orders/ActiveOrders/activeOrders.log',
+    failed_dir='Orders/FailedOrders',
+    current_dir='Orders/SucceedOrders',
+    teensy_controller=None  
+):
     orders_dir = os.path.abspath(orders_dir)
     failed_dir = os.path.abspath(failed_dir)
     current_dir = os.path.abspath(current_dir)
@@ -389,7 +403,7 @@ async def start_orchestra(orders_dir='Orders/ActiveOrders', active_orders_file='
     # Start the process_active_orders coroutine and the directory watcher
     try:
         await asyncio.gather(
-            process_active_orders(active_orders_file),
+            process_active_orders(active_orders_file, teensy_controller),
             watch_orders_directory(orders_dir, active_orders_file, failed_dir, current_dir)
         )
     except KeyboardInterrupt:

@@ -1,3 +1,5 @@
+# usbserial.py
+
 import asyncio
 import serial
 import time
@@ -462,6 +464,13 @@ class TeensyController:
     async def send_home_device_command(self, alias, stepper_name):
         if alias in self.connection_manager.boards:
             command = f'homeDevice("{stepper_name}")'
+            await self.command_forwarder.forward_command(alias, command)
+        else:
+            print(f"[DEBUG] Failed to send homeDevice command. Alias '{alias}' not found.")
+
+    async def send_gerneral_serial_message(self, alias, message):
+        if alias in self.connection_manager.boards:
+            command = f'{message})'
             await self.command_forwarder.forward_command(alias, command)
         else:
             print(f"[DEBUG] Failed to send homeDevice command. Alias '{alias}' not found.")
