@@ -123,31 +123,6 @@ class BoardSerial:
                 print(f"Error in check_old_ack_messages: {str(e)}")
                 break
 
-    async def check_old_ack_messages(self):
-        while True:
-            try:
-                current_time = time.time()
-                with self.lock:
-                    to_remove = []
-                    for i in range(len(self.sent_messages)):
-                        send_time, message = self.sent_messages[i]
-                        if current_time - send_time > 0.05:
-                            self.need_to_send_ack = True
-                            self.last_unacknowledged_message_and_timestamp = message  # Store the entire message (timestamp|message) for retry
-                            to_remove.append(i)
-                            break
-
-                    for index in to_remove:
-                        removed_message = self.sent_messages.pop(index)
-                        #print(f"[DEBUG] Removing message '{removed_message}' from sent_messages.")
-
-                self.send_ack_retry()
-
-                await asyncio.sleep(0.01)
-            except Exception as e:
-                print(f"Error in check_old_ack_messages: {str(e)}")
-                break
-
     # The new function to send an acknowledgment message
     def send_acknowledgment(self, timestamp_received):
         ack_message = f"ACK:{timestamp_received}"
@@ -176,6 +151,13 @@ class BoardSerial:
                 if message_content.startswith("ACK:"):
                     ack_timestamp = message_content.split("ACK:")[1].strip()
                     self.check_acknowledgment(ack_timestamp)
+
+                if message_content.startswith("SUCCESS:"): #! chatgpt here is the messeage incoming. if that happens with after the ":" beeing our timestamp we want to proceed
+                    print("Success received") 
+                    #! Do something here SUCCESS:timestamp -> timestamp we waited for -> SUCCESS CASE
+                if message_content.startswith("FAIL:"):
+                    print("FAIL received")
+                    #! Do something here FAIL:timestamp -> timestamp we waited for -> FAIL CASE
 
                 return message_content
             except ValueError:

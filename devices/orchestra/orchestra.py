@@ -202,7 +202,9 @@ async def process_active_orders(active_orders_file, teensy_controller):
             for task in tasks_to_schedule:
                 if task[0] == 'send_message_via_serial':
                     client_alias, message = task[1], task[2]
-                    await teensy_controller.send_gerneral_serial_message(client_alias, message)
+                    timestamp = await teensy_controller.send_gerneral_serial_message(client_alias, message)
+                    print(timestamp)
+                    #! wait here not blocking for the SUCCESS CASE we marked in the other file @chatgpt
                 elif task[0] == 'send_message_via_websocket':
                     client_alias, message = task[1], task[2]
                     await send_message_from_host(client_alias, message)

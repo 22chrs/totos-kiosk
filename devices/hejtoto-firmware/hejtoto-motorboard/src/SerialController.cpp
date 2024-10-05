@@ -271,9 +271,9 @@ void SerialController::processGeneralCommand(const String &message, const String
     fireLED();
     boolean hatGeklappt = fireLED();
     if (hatGeklappt == true) {
-        sendMessage(timestamp + ":OK");
+        sendMessage("SUCCESS:" + timestamp);
     } else if (hatGeklappt == false) {
-        sendMessage(timestamp + ":FAIL");
+        sendMessage("FAIL:" + timestamp);
     }
 }
 
