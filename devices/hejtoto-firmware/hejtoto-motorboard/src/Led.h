@@ -3,6 +3,7 @@
 #ifndef LED_H
 #define LED_H
 
+#include <Adafruit_NeoPixel.h>
 #include <_global.h>
 
 #define BUILD_IN_LED_PIN 13

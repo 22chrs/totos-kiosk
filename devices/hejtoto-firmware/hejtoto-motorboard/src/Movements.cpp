@@ -32,6 +32,11 @@ boolean homeDevice(const String &stepperName, String timestamp) {
     return false;
 }
 
+boolean fireLED() {
+    buildInLEDBlik();
+    return true;
+}
+
 boolean moveDevice(const String &stepperName, double position, int maxSpeedPercentage, int driveCurrentPercentage, double desiredRingPercentage, String timestamp) {
     if (currentBoardConfig == nullptr) {
         Serial.println("Error: Board configuration not initialized.");

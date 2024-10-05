@@ -37,6 +37,7 @@ class SerialController {
 
     // Private methods for internal operations
     void handleReceivedMessage(const String &message);
+    void processGeneralCommand(const String &message, const String &timestamp);
     void processHomeDeviceCommand(const String &message, const String &timestamp);
     void processMoveDeviceCommand(const String &message, const String &timestamp);
     boolean isValidMessage(const String &message);

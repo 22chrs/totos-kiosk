@@ -200,6 +200,8 @@ void SerialController::handleReceivedMessage(const String &message) {
                         if (cmdWithoutTimestamp == "connected") {
                             Neopixel(GREEN);
                             connectionStatus = true;
+                        } else if (cmdWithoutTimestamp.startsWith("fireLED")) {
+                            processGeneralCommand(cmdWithoutTimestamp, timestamp);
                         } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
                             processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
                         } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
@@ -248,6 +250,31 @@ void SerialController::processMoveDeviceCommand(const String &message, const Str
     int ringPercentage = message.substring(fourthComma + 1).toInt();                      // Extract the ringPercentage
 
     moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage, ringPercentage, timestamp);  // Pass the ringPercentage to moveDevice
+}
+
+void SerialController::processGeneralCommand(const String &message, const String &timestamp) {
+    // int secondQuote = message.indexOf('"', firstQuote + 1);
+    // String stepperName = message.substring(firstQuote + 1, secondQuote);
+
+    // int firstComma = message.indexOf(',', secondQuote);
+    // int secondComma = message.indexOf(',', firstComma + 1);
+    // int thirdComma = message.indexOf(',', secondComma + 1);
+    // int fourthComma = message.indexOf(',', thirdComma + 1);
+
+    // float position = message.substring(firstComma + 1, secondComma).toFloat();
+    // int maxSpeedPercentage = message.substring(secondComma + 1, thirdComma).toInt();
+    // int driveCurrentPercentage = message.substring(thirdComma + 1, fourthComma).toInt();  // Update to extract the correct substring
+    // int ringPercentage = message.substring(fourthComma + 1).toInt();                      // Extract the ringPercentage
+
+    fireLED();
+    fireLED();
+    fireLED();
+    boolean hatGeklappt = fireLED();
+    if (hatGeklappt == true) {
+        sendMessage(timestamp + ":OK");
+    } else if (hatGeklappt == false) {
+        sendMessage(timestamp + ":FAIL");
+    }
 }
 
 String SerialController::sendMessage(const String &message) {

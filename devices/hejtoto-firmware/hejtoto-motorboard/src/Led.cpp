@@ -3,8 +3,6 @@
 #include <Led.h>
 // led.cpp
 
-#include <Adafruit_NeoPixel.h>
-
 // Declare our NeoPixel strip object:
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, NEOPIXEL_PIN, NEO_GRBW + NEO_KHZ800);
 
@@ -59,6 +57,14 @@ void init_LEDs() {
 }
 
 void buildInLEDBlik() {
+    setBuiltInLEDState(HIGH);
+    delay(100);
+    setBuiltInLEDState(LOW);
+    delay(100);
+    setBuiltInLEDState(HIGH);
+    delay(100);
+    setBuiltInLEDState(LOW);
+    delay(100);
     setBuiltInLEDState(HIGH);
     delay(100);
     setBuiltInLEDState(LOW);
