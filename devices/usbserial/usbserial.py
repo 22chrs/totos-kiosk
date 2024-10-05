@@ -178,6 +178,25 @@ class BoardSerial:
             print(f"Set future for timestamp {timestamp} with status {status}")
         else:
             print(f"Received {status} for unknown timestamp {timestamp}")
+        
+        # Cleanup after every 10 INCOMING_STAMP calls
+        self.cleanup_counter += 1
+        if self.cleanup_counter >= 10:
+            self.cleanup_old_futures(max_wait_time=600)
+            self.cleanup_counter = 0
+    
+    def cleanup_old_futures(self, max_wait_time=600):
+        current_time = time.time()
+        to_remove = []
+        for timestamp, future in incoming_stamp_futures.items():
+            if current_time - float(timestamp) > max_wait_time:  # Assuming timestamp is in seconds
+                to_remove.append(timestamp)
+
+        for timestamp in to_remove:
+            future = incoming_stamp_futures.pop(timestamp, None)
+            if future and not future.done():
+                future.cancel()  # Optionally cancel the future if it's not resolved
+
 
     def connect(self):
         try:
