@@ -271,40 +271,26 @@ async def homeAllDevices(teensy_controller, whichBoard):
         devices = ["Lift_A", "Rodell_A", "Lift_B", "Rodell_B", "Lift_C", "Rodell_C"]
     else:
         print(f"Unknown board: {whichBoard}")
-        return  # Exit the function if the board is unrecognized
-
-    # Set client_alias based on whichBoard if necessary
-    # Assuming RoboCubeFront and RoboCubeBack are controlled by different aliases
-    if whichBoard == "RoboCubeFront":
-        client_alias = "RoboCubeFrontAlias"  # Replace with the actual alias
-    elif whichBoard == "RoboCubeBack":
-        client_alias = "RoboCubeBack"  # As per your original assumption
-    elif whichBoard == "ServiceCube":
-        client_alias = "ServiceCubeAlias"  # Replace with the actual alias
-    else:
-        client_alias = "UnknownAlias"
+        return
 
     for device in devices:
         message = f"homeDevice('{device}')"
-        timestampTask = await teensy_controller.send_gerneral_serial_message(client_alias, message)
-        
+        timestampTask = await teensy_controller.send_gerneral_serial_message(whichBoard, message)
+
         # Create a Future and store it
         future = asyncio.get_event_loop().create_future()
         incoming_stamp_futures[timestampTask] = future
-        
+
         # Wait for the acknowledgment with a timeout of 60 seconds
         try:
             result = await asyncio.wait_for(future, timeout=60)
             if result == "SUCCESS":
                 print(f"Command '{message}' executed successfully.")
-                # Proceed to next device
             elif result == "FAIL":
                 print(f"Command '{message}' failed.")
-                # Handle failure accordingly
                 break  # Stop proceeding to next devices
         except asyncio.TimeoutError:
             print(f"Timeout waiting for response to timestamp {timestampTask}")
-            # Handle timeout
             break  # Stop proceeding
 
 async def update_line_marker(filename, line_index, old_marker, new_marker):

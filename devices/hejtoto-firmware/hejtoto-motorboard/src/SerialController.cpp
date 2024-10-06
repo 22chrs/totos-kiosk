@@ -222,9 +222,9 @@ void SerialController::handleReceivedMessage(const String &message) {
 }
 
 void SerialController::processHomeDeviceCommand(const String &message, const String &timestamp) {
-    // Extract the stepper name from the command
-    int firstQuote = message.indexOf('"');
-    int secondQuote = message.indexOf('"', firstQuote + 1);
+    // Extract the stepper name from the command using single quotes
+    int firstQuote = message.indexOf('\'');
+    int secondQuote = message.indexOf('\'', firstQuote + 1);
     String stepperName = message.substring(firstQuote + 1, secondQuote);
 
     // Call the homeDevice function with the extracted stepperName

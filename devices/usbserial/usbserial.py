@@ -28,6 +28,7 @@ class BoardSerial:
         self.need_to_send_ack = False
         self.last_unacknowledged_message_and_timestamp = None  #! include the orginally timestamp of that message pls -> timestamp|message
         self.retry_count = 0
+        self.cleanup_counter = 0  
 
 
     def read_from_serial(self):
@@ -158,8 +159,8 @@ class BoardSerial:
                 if message_content.startswith("SUCCESS:") or message_content.startswith("FAIL:"):
                     # Extract status and timestamp
                     status, timestamp = message_content.split(":")
-                    print(f"Status = {status}")
-                    print(f"message_content = {message_content}")
+                    #print(f"Status = {status}")
+                    #print(f"message_content = {message_content}")
                     # Call INCOMING_STAMP
                     self.INCOMING_STAMP(timestamp, status)
 
@@ -175,7 +176,7 @@ class BoardSerial:
         if timestamp in incoming_stamp_futures:
             future = incoming_stamp_futures.pop(timestamp)
             future.set_result(status)
-            print(f"Set future for timestamp {timestamp} with status {status}")
+            #print(f"Set future for timestamp {timestamp} with status {status}")
         else:
             print(f"Received {status} for unknown timestamp {timestamp}")
         
@@ -200,7 +201,7 @@ class BoardSerial:
 
     def connect(self):
         try:
-            print(f"[DEBUG] Attempting to connect to {self.port}.")
+            #print(f"[DEBUG] Attempting to connect to {self.port}.")
             self.serial_connection = serial.Serial(self.board_info['port'], self.baudrate, timeout=self.timeout)
             print(f"Connected to board at {self.board_info['port']}")
             self.connected = True
@@ -235,7 +236,7 @@ class BoardSerial:
                 if processed_data:
                     if processed_data in self.valid_aliases:
                         self.board_info["alias"] = processed_data
-                        print(f"[DEBUG] Alias set to: {processed_data}")
+                        #print(f"[DEBUG] Alias set to: {processed_data}")
                         self.is_heartbeat_sent = False
                         self.send_data("connected")
                     else:
@@ -348,7 +349,7 @@ class BoardSerial:
             self.serial_connection.close()
         self.connected = False
         self.board_info['alias'] = None
-        print(f"[DEBUG] Disconnected from port: {self.port}")
+        #print(f"[DEBUG] Disconnected from port: {self.port}")
 
 
 class ConnectionManager:
@@ -361,9 +362,11 @@ class ConnectionManager:
         self.boards = {}
         self.all_aliases_connected_flag = False  
 
-
-    def print_object_properties(self):
-        print(f"[DEBUG] ConnectionManager properties: VID={self.vid}, PID={self.pid}, Baudrate={self.baudrate}, Timeout={self.timeout}")
+    async def wait_until_all_aliases_connected(self):
+        """Waits until all required aliases are connected."""
+        while not self.all_required_aliases_connected():
+            await asyncio.sleep(0.5)
+        print("All required aliases are now connected.")
 
     async def check_required_aliases(self):
         missing_aliases = [alias for alias in self.required_aliases if alias not in self.boards]
@@ -372,9 +375,8 @@ class ConnectionManager:
             self.all_aliases_connected_flag = False  # Update flag
         else:
             if not self.all_aliases_connected_flag:
-                print("All required aliases are connected.")
                 self.all_aliases_connected_flag = True  # Update flag
-        print(f"[DEBUG] Checked required aliases: {missing_aliases if missing_aliases else 'None missing'}")
+        #print(f"[DEBUG] Checked required aliases: {missing_aliases if missing_aliases else 'None missing'}")
 
     def all_required_aliases_connected(self):
         result = all(alias in self.boards for alias in self.required_aliases)
@@ -412,7 +414,7 @@ class ConnectionManager:
 
     async def discover_boards(self):
         available_ports = self._get_ports_with_pid_and_vid(self.vid, self.pid)
-        print(f"[DEBUG] Available ports for VID={self.vid}, PID={self.pid}: {available_ports}")
+        #able ports for VID={self.vid}, PID={self.pid}: {available_ports}")
         for port_info in available_ports:
             if any(board.port == port_info.device for board in self.boards.values()):
                 continue

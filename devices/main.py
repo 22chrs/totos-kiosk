@@ -2,42 +2,21 @@
 
 import asyncio
 
-# USB Serial Imports
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController
+from orchestra.orchestra import homeAllDevices, start_orchestra
+from websocket.websocket import start_websocket_server, check_connections_periodically, clients, HOST_NAME
+from payment.payment_lib import schedule_end_of_day_job, handle_order
 
-# WebSocket Imports
-from websocket.websocket import (start_websocket_server, check_connections_periodically, clients, HOST_NAME)
-
-# Payment Management Imports
-from payment.payment_lib import (
-    schedule_end_of_day_job,
-    handle_order
-)
-
-# Orchestra Import
-from orchestra.orchestra import start_orchestra
-
+# Serial management
 async def manage_usb_serial(usb_manager, command_forwarder):
-    """
-    Manages USB serial connections and forwards commands asynchronously.
-    """
     # Start the connection manager
     await usb_manager.start()
-    print("USB Connection Manager started.")
-
-    # Start monitoring and forwarding commands as a background task
-    asyncio.create_task(command_forwarder.monitor_and_forward())
-    print("Serial Command Forwarder is monitoring and forwarding commands.")
+    asyncio.create_task(command_forwarder.monitor_and_forward()) # Start monitoring and forwarding commands as a background task
 
 async def main():
-    """
-    The main coroutine that orchestrates all asynchronous tasks.
-    """
-    # Define the aliases for the boards you want to connect with
-    #teensys = {'RoboCubeFront', 'RoboCubeBack', 'ServiceCube'}
-    teensys = {'RoboCubeBack'}
+    teensys = {'RoboCubeBack'}  # Define the aliases for the boards you want to connect with
 
-    # Instantiate the ConnectionManager, CommandForwarder, and TeensyController
+    #! Serial
     usb_manager = ConnectionManager(
         vid=0x16C0,
         pid=0x0483,
@@ -47,34 +26,29 @@ async def main():
     )
     command_forwarder = SerialCommandForwarder(usb_manager)
     teensy_controller = TeensyController(usb_manager, command_forwarder)
+    asyncio.create_task(manage_usb_serial(usb_manager, command_forwarder))  # Start USB serial management as a separate task
+    await usb_manager.wait_until_all_aliases_connected() # Wait until all required aliases are connected
+    # Home all devices for each alias
+    for alias in teensys:
+        await homeAllDevices(teensy_controller, alias)
 
-    # Start USB serial management as a separate task
-    usb_task = asyncio.create_task(manage_usb_serial(usb_manager, command_forwarder))
+    #! Payment
+    payment_job_task = asyncio.create_task(schedule_end_of_day_job()) # print("Scheduled end-of-day job.")
 
-    # Schedule the end-of-day job
-    payment_job_task = asyncio.create_task(schedule_end_of_day_job())
-    print("Scheduled end-of-day job.")
-
-    # Schedule periodic connection checks for WebSocket clients
-    connection_check_task = asyncio.create_task(check_connections_periodically())
-    print("Scheduled periodic connection checks.")
-
-    # Start the WebSocket server
+    #! Websocket
+    connection_check_task = asyncio.create_task(check_connections_periodically()) 
     websocket_task = asyncio.create_task(
         start_websocket_server(handle_order, clients, HOST_NAME)
     )
-    print("WebSocket server started.")
 
-    # Start the Orchestra component as an asyncio task, passing teensy_controller
+    #! Orchestra
     orchestra_task = asyncio.create_task(
         start_orchestra(teensy_controller=teensy_controller)
     )
-    print("Orchestra component started.")
 
     # Await all tasks concurrently with exception handling
     try:
         await asyncio.gather(
-            usb_task,
             payment_job_task,
             connection_check_task,
             websocket_task,
@@ -86,8 +60,6 @@ async def main():
         print(f"An error occurred in the async tasks: {e}")
 
 if __name__ == '__main__':
-    print("Starting the integrated application.")
-
     loop = asyncio.get_event_loop()
     try:
         loop.run_until_complete(main())
@@ -100,3 +72,4 @@ if __name__ == '__main__':
             task.cancel()
         loop.run_until_complete(asyncio.gather(*tasks, return_exceptions=True))
         loop.close()
+

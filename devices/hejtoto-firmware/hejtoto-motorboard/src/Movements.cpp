@@ -28,7 +28,6 @@ boolean homeDevice(const String &stepperName, String timestamp) {
         return true;
     } else {
         serialController.sendMessage("FAIL:" + timestamp);
-        Serial.println("Error: Stepper with name " + stepperName + " not found.");
         return false;
     }
 }

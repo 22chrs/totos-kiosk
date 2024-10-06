@@ -491,17 +491,18 @@ Chrono checkIntervalChrono;
 
 void loop_StepperReachedDesiredRingPercentage() {
     // Check if 500 milliseconds have passed since the last check
-    if (checkIntervalChrono.hasPassed(500)) {
-        for (int i = 0; i < StepperCount; i++) {                                     // Loop over all stepper motors
-            if (stepperMotors[i].state.isActivated) {                                // Check if the stepper is currently activated
-                double percentageCompleted = stepperMovementPercentageCompleted(i);  // Calculate the percentage completed
+    if (checkIntervalChrono.hasPassed(100)) {
+        for (int i = 0; i < StepperCount; i++) {                                             // Loop over all stepper motors
+            if ((stepperMotors[i].state.isActivated) && (stepperMotors[i].state.isHomed)) {  // Check if the stepper is currently activated
+                double percentageCompleted = stepperMovementPercentageCompleted(i);          // Calculate the percentage completed
+                if (stepperMotors[i].state.desiredRingPercentage != 0) {
+                    // Check if the stepper has reached or exceeded the desired ring percentage
+                    if (percentageCompleted >= stepperMotors[i].state.desiredRingPercentage) {
+                        String successMessage = "SUCCESS:" + String(stepperMotors[i].state.desiredRingPercentage);
+                        serialController.sendMessage(successMessage);
 
-                // Check if the stepper has reached or exceeded the desired ring percentage
-                if (percentageCompleted >= stepperMotors[i].state.desiredRingPercentage) {
-                    String successMessage = "SUCCESS:" + String(stepperMotors[i].state.desiredRingPercentage);
-                    serialController.sendMessage(successMessage);
-
-                    // stepperMotors[i].state.isActivated = false; //! not because ring percentage could be less than 100%
+                        // stepperMotors[i].state.isActivated = false; //! not because ring percentage could be less than 100%
+                    }
                 }
             }
         }
