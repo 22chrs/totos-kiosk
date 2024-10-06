@@ -7,6 +7,7 @@
 #include <LimitSwitch.h>
 #include <MCP23017.h>
 // #include <TMC2209.h>
+#include <SerialController.h>
 #include <TMCStepper.h>
 #include <TeensyStep4.h>  // https://github.com/luni64/TeensyStep4
 #include <_global.h>
@@ -93,7 +94,7 @@ void setSpeedMotor(byte stepperX, long speed);
 void changeCurrentStateCombinedMotors(byte stepperX, byte stepperY, int current);
 void moveMotorToAbsPosition(byte stepperX, double newPosition);
 void moveMotorToRelPosition(byte stepperX, double newPosition);
-void checkAndSendAllSteppersHomed();
+boolean checkAndSendAllSteppersHomed();
 boolean moveCombinedMotorsToAbsPosition(byte stepperX, byte stepperY, double newPosition);
 void stopMotor(byte stepperX);
 boolean motorMovingState(byte stepperX);

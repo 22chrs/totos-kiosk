@@ -1,6 +1,5 @@
 // Stepper.cpp
 
-#include <SerialController.h>
 #include <Stepper.h>
 
 void enableMotor(byte stepperX, boolean isEnabled) {
@@ -63,7 +62,7 @@ void init_Stepper() {
         stepperMotors[i].state.startPosition = 0.0;            // Initialize
         stepperMotors[i].state.destinationPosition = 0.0;      // Initialize
         stepperMotors[i].state.desiredRingPercentage = 100.0;  // Initialize
-        stepperMotors[i].state.messageID = 'null';             // Initialize
+        stepperMotors[i].state.messageID = '\0';               // Fixed: Assign null character
 
         //! new
         // stepperMotors[i].driver->pdn_disable(true);      // Use UART
@@ -92,7 +91,7 @@ void stepperCheckObstruction() {
         // Print stall value for debugging
         stallValue = stepperMotors[i].driver->SG_RESULT();
         // Check for a stall condition
-        // Serial.println(stallValue);
+        Serial.println(stallValue);
     }
 }
 
@@ -315,7 +314,6 @@ boolean homeMotor(byte stepperX) {
         stepperMotors[stepperX].state.startPosition = 0;
         stepperMotors[stepperX].state.destinationPosition = 0;
 
-        checkAndSendAllSteppersHomed();
         return true;
     }
     // If none of the conditions for a successful homing are met, return false
@@ -437,8 +435,6 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     stepperMotors[stepperX].state.destinationPosition = 0;
     stepperMotors[stepperY].state.destinationPosition = 0;
 
-    checkAndSendAllSteppersHomed();
-
     return true;
 
     // If none of the conditions for a successful homing are met, return false
@@ -502,13 +498,10 @@ void loop_StepperReachedDesiredRingPercentage() {
 
                 // Check if the stepper has reached or exceeded the desired ring percentage
                 if (percentageCompleted >= stepperMotors[i].state.desiredRingPercentage) {
-                    // Serial.print("Stepper ");
-                    // Serial.print(i);
-                    // Serial.println(" has reached the desired ring percentage.");
-                    // serialController.sendMessage(stepperMotors[i].state.messageID + "Ring");
+                    String successMessage = "SUCCESS:" + String(stepperMotors[i].state.desiredRingPercentage);
+                    serialController.sendMessage(successMessage);
 
-                    // Optionally, you might want to deactivate further checks for this stepper
-                    // stepperMotors[i].state.isActivated = false;
+                    // stepperMotors[i].state.isActivated = false; //! not because ring percentage could be less than 100%
                 }
             }
         }
@@ -517,7 +510,7 @@ void loop_StepperReachedDesiredRingPercentage() {
     }
 }
 
-void checkAndSendAllSteppersHomed() {
+boolean checkAndSendAllSteppersHomed() {
     bool allSteppersHomed = true;
     String homedState = "";  // String to accumulate the isHomed states
 
@@ -534,9 +527,16 @@ void checkAndSendAllSteppersHomed() {
     Serial.print("Steppers homed state: ");  //! ### Absturz wenn kein ?!
     Serial.println(homedState);
 
-    if (allSteppersHomed) {  // Only send the message if all steppers are homed
+    if (allSteppersHomed) {
+        return true;
+
+        // stepperMotors[i].state.isActivated = false; //! maybe?
+
+        // Only send the message if all steppers are homed
         // String timestamp = serialController.sendMessage("allhomed");
         //  Optionally, you could implement logic to wait and retry for ACK if needed
         //! wait and retry for ACK
+    } else {
+        return false;
     }
 }

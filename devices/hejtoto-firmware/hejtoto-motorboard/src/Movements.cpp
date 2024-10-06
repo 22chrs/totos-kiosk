@@ -4,32 +4,33 @@
 boolean homeDevice(const String &stepperName, String timestamp) {
     if (currentBoardConfig == nullptr) {
         Serial.println("Error: Board configuration not initialized.");
+        serialController.sendMessage("FAIL:" + timestamp);
         return false;
     }
+    boolean isHomed = false;
+
     // Find the index of the stepper by friendly name
     for (int i = 0; i < 6; ++i) {
         if (currentBoardConfig->stepper[i].name == stepperName) {
             // Check if there are any other motors with the same name
             for (int j = 0; j < 6; ++j) {
                 if (i != j && currentBoardConfig->stepper[j].name == stepperName) {
-                    // Serial.print("Homing combined motors: ");
-                    // Serial.print(currentBoardConfig->stepper[i].name);
-                    // Serial.print(" and ");
-                    // Serial.println(currentBoardConfig->stepper[j].name);
-                    // Call the function to home combined motors
-
-                    return homeCombinedMotors(i, j);  // Use indices of combined motors
+                    isHomed = homeCombinedMotors(i, j);  // Use indices of combined motors
                 }
             }
             // If no combined motors, home single motor
 
-            return homeMotor(i);  // Pass the index as a byte (or unsigned char)
+            isHomed = homeMotor(i);  // Pass the index as a byte (or unsigned char)
         }
     }
-    Serial.print("Error: Stepper with name ");
-    Serial.print(stepperName);
-    Serial.println(" not found.");
-    return false;
+    if (isHomed == true) {
+        serialController.sendMessage("SUCCESS:" + timestamp);
+        return true;
+    } else {
+        serialController.sendMessage("FAIL:" + timestamp);
+        Serial.println("Error: Stepper with name " + stepperName + " not found.");
+        return false;
+    }
 }
 
 boolean fireLED() {
@@ -83,8 +84,6 @@ boolean moveDevice(const String &stepperName, double position, int maxSpeedPerce
             return true;
         }
     }
-    Serial.print("Error: Stepper with name ");
-    Serial.print(stepperName);
-    Serial.println(" not found.");
+    Serial.println("Error: Stepper with name " + stepperName + " not found.");
     return false;
 }
