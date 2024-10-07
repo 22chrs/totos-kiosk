@@ -127,9 +127,9 @@ def generate_drink_recipe(product_name, choosen_size, choosen_sugar, choosen_mug
     #! recipe.append(f"{RoboCube}: fireLED()") #! TEMP
     #! recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'")
     recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '600', '100', '100', '100')")
-    recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '0', '100', '100', '100')")
-    recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '600', '100', '100', '100')")
-    recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '0', '100', '100', '100')")
+    #! recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '0', '100', '100', '100')")
+    #! recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '600', '100', '100', '100')")
+    #! recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '0', '100', '100', '100')")
     #! recipe.append(f"Toto: moveToto('{choosen_mug}', '{choosen_size}', '?->Becherkarusell('initialCupPosition')')")
     #! recipe.append(f"Gripper: moveGripper('{choosen_mug}', '{choosen_size}', 'Close')")
     if choosen_sugar != 'zero':
@@ -164,16 +164,17 @@ def generate_drink_recipe(product_name, choosen_size, choosen_sugar, choosen_mug
 
 def generate_snack_recipe(product_name, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):
     recipe = []
-    recipe.append(f"RoboCubeFront: moveSnackbar('{product_name}')')")
-    recipe.append(f"Toto: moveToto('?->PopelSnackOut')")
-    recipe.append(f"Gripper: moveGripper('{product_name}', 'Close')")
-    recipe.append(f"{RoboCube}: moveBecherschubse('LiftPositionSnack')")
-    recipe.append(f"Toto: moveToto('{which_terminal}', 'PopeledSnackOut->LiftPositionSnack')")
-    recipe.append(f"Gripper: moveGripper('{product_name}', 'Open')")
-    recipe.append(f"Toto: moveToto('{which_terminal}', 'LiftPositionSnack->LiftPositionSnackNotDisturbing')")
-    recipe.append(f"{RoboCube}: moveBecherschubseAndCloseSchleuse('AusgabepostionSnacks') => 'isSensorSuccess'")
-    recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
-    recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
+    recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '0', '100', '100', '100')")
+    #! recipe.append(f"RoboCubeFront: moveSnackbar('{product_name}')')")
+    #! recipe.append(f"Toto: moveToto('?->PopelSnackOut')")
+    #! recipe.append(f"Gripper: moveGripper('{product_name}', 'Close')")
+    #! recipe.append(f"{RoboCube}: moveBecherschubse('LiftPositionSnack')")
+    #! recipe.append(f"Toto: moveToto('{which_terminal}', 'PopeledSnackOut->LiftPositionSnack')")
+    #! recipe.append(f"Gripper: moveGripper('{product_name}', 'Open')")
+    #! recipe.append(f"Toto: moveToto('{which_terminal}', 'LiftPositionSnack->LiftPositionSnackNotDisturbing')")
+    #! recipe.append(f"{RoboCube}: moveBecherschubseAndCloseSchleuse('AusgabepostionSnacks') => 'isSensorSuccess'")
+    #! recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
+    #! recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
     if is_last_product:
         recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
     return recipe

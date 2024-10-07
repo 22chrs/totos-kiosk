@@ -72,7 +72,7 @@ class BoardSerial:
     def send_ack_retry(self):
         if self.serial_connection is not None and self.board_info["alias"]:
             if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
-                if self.retry_count >= 10:
+                if self.retry_count >= 30:
                     print(f"Maximum retry limit reached for message: {self.last_unacknowledged_message_and_timestamp}")
                     self.need_to_send_ack = False  # Stop retrying after reaching the limit
                     return
@@ -249,8 +249,8 @@ class BoardSerial:
         while True:
             try:
                 await asyncio.sleep(30)
-                # if self.retry_count >= 3:
-                #     await asyncio.sleep(500)
+                if self.retry_count >= 5:
+                    await asyncio.sleep(500)
                 if self.serial_connection is not None and self.board_info["alias"]:
                     if not self.is_heartbeat_sent:
                         self.send_data("heartbeat")

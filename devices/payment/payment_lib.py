@@ -540,8 +540,10 @@ class PaymentTerminal:
 
 # Global variables
 if platform.system() == "Darwin":  # "Darwin" is the system name for macOS
-    paymentTerminalIP_Front = "192.168.68.201"
-    paymentTerminalIP_Back = "192.168.68.202"
+    #paymentTerminalIP_Front = "192.168.68.201"
+    #paymentTerminalIP_Back = "192.168.68.202"
+    paymentTerminalIP_Front = "192.168.1.201"
+    paymentTerminalIP_Back = "192.168.1.202"
 else:
     paymentTerminalIP_Front = "192.168.1.201"
     paymentTerminalIP_Back = "192.168.1.202"

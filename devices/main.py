@@ -19,7 +19,7 @@ async def main():
     
 
     #! Serial
-    teensys = {'RoboCubeFront', 'RoboCubeBack', 'ServiceCube'}  # Define the aliases for the boards you want to connect with
+    teensys = {}  # Define the aliases for the boards you want to connect with
     
     usb_manager = ConnectionManager(
         vid=0x16C0,

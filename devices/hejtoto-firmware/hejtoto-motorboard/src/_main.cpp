@@ -90,6 +90,9 @@ void setup() {
     // delay(10000);
     // moveDevice("Lift_B", 629, 100, 100, 100, "timestamp");
     // moveDevice("Lift_C", 300, 100, 100, 100, "timestamp");
+    fireLED();
+    fireLED();
+    fireLED();
 }
 
 unsigned long previousMillis2 = 0;  // Store the last time a task was executed
