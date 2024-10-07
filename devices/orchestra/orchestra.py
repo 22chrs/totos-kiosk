@@ -226,6 +226,14 @@ async def process_active_orders(active_orders_file, teensy_controller):
                     except asyncio.TimeoutError:
                         print(f"Timeout waiting for response to timestamp {timestampTask}")
                         # Handle timeout
+                elif task[0] == 'payment':
+                    message = task[1]
+                    order = task[2]  # Access the order data
+                    line_index = task[3]  # Line index in active_orders_file
+                    # Start payment processing in the background
+                    asyncio.create_task(process_payment_task(message, order, line_index, active_orders_file))
+                else:
+                    print(f"Unknown task type: {task[0]}")
         except Exception as e:
             print(f"Error processing active orders: {e}")
         await asyncio.sleep(0.05)
@@ -245,7 +253,7 @@ async def process_payment_task(message, order, line_index, active_orders_file):
         result = await payment_terminal.book_total(which_terminal_msg, receipt_no, amount)
         if result:
             print(f"Called book_total for terminal: {which_terminal_msg}, receipt_no: {receipt_no}, amount: {amount}")
-            print(f"{result}")
+            #print(f"{result}")
             # Move the order file after successful payment
             receipt_number = order['receipt_number']
             which_terminal = order['which_terminal']
