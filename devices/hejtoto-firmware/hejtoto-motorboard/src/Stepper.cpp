@@ -498,7 +498,7 @@ void loop_StepperReachedDesiredRingPercentage() {
                 if (stepperMotors[i].state.desiredRingPercentage != 0) {
                     // Check if the stepper has reached or exceeded the desired ring percentage
                     if (percentageCompleted >= stepperMotors[i].state.desiredRingPercentage) {
-                        String successMessage = "SUCCESS:" + String(stepperMotors[i].state.desiredRingPercentage);
+                        String successMessage = "SUCCESS:" + String(stepperMotors[i].state.messageID);
                         serialController.sendMessage(successMessage);
 
                         // stepperMotors[i].state.isActivated = false; //! not because ring percentage could be less than 100%

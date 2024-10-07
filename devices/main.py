@@ -14,9 +14,13 @@ async def manage_usb_serial(usb_manager, command_forwarder):
     asyncio.create_task(command_forwarder.monitor_and_forward()) # Start monitoring and forwarding commands as a background task
 
 async def main():
-    teensys = {'RoboCubeBack'}  # Define the aliases for the boards you want to connect with
+    # Initial delay on first start
+    #print("Main is starting. Waiting 2 seconds...")
+    
 
     #! Serial
+    teensys = {'RoboCubeFront', 'RoboCubeBack', 'ServiceCube'}  # Define the aliases for the boards you want to connect with
+    
     usb_manager = ConnectionManager(
         vid=0x16C0,
         pid=0x0483,
@@ -27,10 +31,15 @@ async def main():
     command_forwarder = SerialCommandForwarder(usb_manager)
     teensy_controller = TeensyController(usb_manager, command_forwarder)
     asyncio.create_task(manage_usb_serial(usb_manager, command_forwarder))  # Start USB serial management as a separate task
+    print("Starting wait_until_all_aliases_connected...")
     await usb_manager.wait_until_all_aliases_connected() # Wait until all required aliases are connected
-    # Home all devices for each alias
+    print("Starting to home all devices...")
+    print(teensys)
     for alias in teensys:
+        print(f"Homing {alias}...")
         await homeAllDevices(teensy_controller, alias)
+
+ 
 
     #! Payment
     payment_job_task = asyncio.create_task(schedule_end_of_day_job()) # print("Scheduled end-of-day job.")

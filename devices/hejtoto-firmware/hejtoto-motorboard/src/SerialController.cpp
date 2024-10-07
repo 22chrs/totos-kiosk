@@ -10,7 +10,7 @@ SerialController::SerialController()
       connectionStatus(false),
       lastReceivedMessage(0),
       connectionTimeout(40),
-      receivedInitialTimestamp(""),
+      receivedInitialTimestamp("0"),
       timestampMillisOffset(0),
       lastSentTimestamp(""),
       timestampSuffix('A') {
@@ -235,21 +235,67 @@ void SerialController::processHomeDeviceCommand(const String &message, const Str
 }
 
 void SerialController::processMoveDeviceCommand(const String &message, const String &timestamp) {
-    int firstQuote = message.indexOf('"');
-    int secondQuote = message.indexOf('"', firstQuote + 1);
-    String stepperName = message.substring(firstQuote + 1, secondQuote);
+    Serial.println("Message: " + message);
 
-    int firstComma = message.indexOf(',', secondQuote);
-    int secondComma = message.indexOf(',', firstComma + 1);
-    int thirdComma = message.indexOf(',', secondComma + 1);
-    int fourthComma = message.indexOf(',', thirdComma + 1);  // Add this line to get the index of the fourth comma
+    int startParen = message.indexOf('(');
+    int endParen = message.indexOf(')', startParen);
 
-    float position = message.substring(firstComma + 1, secondComma).toFloat();
-    int maxSpeedPercentage = message.substring(secondComma + 1, thirdComma).toInt();
-    int driveCurrentPercentage = message.substring(thirdComma + 1, fourthComma).toInt();  // Update to extract the correct substring
-    int ringPercentage = message.substring(fourthComma + 1).toInt();                      // Extract the ringPercentage
+    if (startParen == -1 || endParen == -1) {
+        Serial.println("Invalid message format: Missing parentheses.");
+        return;
+    }
 
-    moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage, ringPercentage, timestamp);  // Pass the ringPercentage to moveDevice
+    String argsString = message.substring(startParen + 1, endParen);
+
+    const int expectedArgs = 5;
+    String args[expectedArgs];
+    int currentPos = 0;
+    int argIndex = 0;
+
+    while (argIndex < expectedArgs) {
+        int commaPos = argsString.indexOf(',', currentPos);
+        if (commaPos == -1 && argIndex < expectedArgs - 1) {
+            Serial.println("Invalid message format: Not enough arguments.");
+            return;
+        }
+        String arg;
+        if (commaPos != -1) {
+            arg = argsString.substring(currentPos, commaPos);
+            currentPos = commaPos + 1;  // Move past the comma for the next iteration
+        } else {
+            arg = argsString.substring(currentPos);  // Last argument
+        }
+        arg.trim();
+        if (arg.startsWith("'") && arg.endsWith("'")) {
+            arg = arg.substring(1, arg.length() - 1);
+        } else {
+            Serial.println("Invalid argument format: Missing quotes.");
+            return;
+        }
+
+        args[argIndex++] = arg;
+    }
+
+    String stepperName = args[0];
+    double position = args[1].toFloat();
+    int maxSpeedPercentage = args[2].toInt();
+    int driveCurrentPercentage = args[3].toInt();
+    double ringPercentage = args[4].toFloat();
+
+    // // Optional: Confirm the action
+    // Serial.print("Moved device ");
+    // Serial.print(stepperName);
+    // Serial.print(" to position ");
+    // Serial.print(position);
+    // Serial.print(" with max speed ");
+    // Serial.print(maxSpeedPercentage);
+    // Serial.print("%, drive current ");
+    // Serial.print(driveCurrentPercentage);
+    // Serial.print("%, ring percentage ");
+    // Serial.print(ringPercentage);
+    // Serial.println("%.");
+
+    moveDevice(stepperName, position, maxSpeedPercentage, driveCurrentPercentage, ringPercentage, timestamp);
 }
 
 void SerialController::processGeneralCommand(const String &message, const String &timestamp) {

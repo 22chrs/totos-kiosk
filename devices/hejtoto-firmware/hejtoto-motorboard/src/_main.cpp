@@ -7,21 +7,19 @@
 #include <MCP23017.h>  //0x20
 #include <Mosfet.h>
 #include <Movements.h>
+#include <SerialController.h>
 #include <Stepper.h>
 #include <TCA9548A.h>     //0x70
 #include <Temperature.h>  //0x45
 #include <ToF.h>          //0x29 (TOF050C)
 #include <_global.h>
 
-// Define the alias for this device
-#include "SerialController.h"
-
 Chrono helperChrono;
 
 void setup() {
     init_LEDs();
     buildInLEDBlik();
-    Neopixel(RED);
+    Neopixel(GREEN);
 
     Wire.begin();           // Initialize I2C
     Wire.setClock(400000);  // Set I2C speed to 400kHz (Standard 100kHz)
@@ -52,10 +50,10 @@ void setup() {
     // homeDevice("Rodell_A");
 
     // moveDevice("Lift_A", 629, 100, 100);
-    // homeDevice("Schleuse");
-    // homeDevice("Becherschubse");
-    // homeDevice("Shield");
-    // homeDevice("Snackbar");
+    // homeDevice("Schleuse", "timestamp");
+    // homeDevice("Becherschubse", "timestamp");
+    // homeDevice("Shield", "timestamp");
+    // homeDevice("Snackbar", "timestamp");
 
     //     moveDevice("Schleuse", 100, 100, 100);
     //     moveDevice("Lift_A", -10, 100, 100);
@@ -85,9 +83,9 @@ void setup() {
     // homeDevice("Rodell_B", "timestamp");
     // homeDevice("Rodell_C", "timestamp");
 
-    buildInLEDBlik();
-    // openDoor(5);
-    // openDoor(4);
+    // buildInLEDBlik();
+    //  openDoor(5);
+    //  openDoor(4);
 
     // delay(10000);
     // moveDevice("Lift_B", 629, 100, 100, 100, "timestamp");
@@ -137,7 +135,6 @@ void loop() {
     // deviceStatus("Schleuse", statusSchleuse);
     // deviceStatus("Becherschubse", statusBecherschubse);
     // deviceStatus("Snackbar", statusSnackbar);
-    // deviceStatus("Shield", statusShield);
 
     // if (statusSchleuse.position == 0) {
     //     moveDevice("Schleuse", currentBoardConfig->stepper[0].maxTravel, 100, 100);

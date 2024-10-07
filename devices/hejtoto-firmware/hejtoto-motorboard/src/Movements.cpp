@@ -15,14 +15,17 @@ boolean homeDevice(const String &stepperName, String timestamp) {
             // Check if there are any other motors with the same name
             for (int j = 0; j < 6; ++j) {
                 if (i != j && currentBoardConfig->stepper[j].name == stepperName) {
+                    Serial.println("Home Combined");
                     isHomed = homeCombinedMotors(i, j);  // Use indices of combined motors
                 }
             }
-            // If no combined motors, home single motor
-
-            isHomed = homeMotor(i);  // Pass the index as a byte (or unsigned char)
+            if (isHomed == false) {
+                Serial.println("Home Single");
+                isHomed = homeMotor(i);  // Pass the index as a byte (or unsigned char)
+            }
         }
     }
+
     if (isHomed == true) {
         serialController.sendMessage("SUCCESS:" + timestamp);
         return true;

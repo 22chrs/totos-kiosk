@@ -249,7 +249,8 @@ class BoardSerial:
         while True:
             try:
                 await asyncio.sleep(30)
-
+                # if self.retry_count >= 3:
+                #     await asyncio.sleep(500)
                 if self.serial_connection is not None and self.board_info["alias"]:
                     if not self.is_heartbeat_sent:
                         self.send_data("heartbeat")
@@ -268,7 +269,7 @@ class BoardSerial:
         try:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self.connect)
-            asyncio.ensure_future(self.send_periodic_ack())
+            #! asyncio.ensure_future(self.send_periodic_ack()) ### Periodisches senden ACK heartbeat
             asyncio.ensure_future(self.check_old_ack_messages())
         except Exception as e:
             print(f"Error during async_connect: {str(e)}")
@@ -365,7 +366,8 @@ class ConnectionManager:
     async def wait_until_all_aliases_connected(self):
         """Waits until all required aliases are connected."""
         while not self.all_required_aliases_connected():
-            await asyncio.sleep(0.5)
+            print("Not all Teensys connected.")
+            await asyncio.sleep(2)
         print("All required aliases are now connected.")
 
     async def check_required_aliases(self):
@@ -376,7 +378,7 @@ class ConnectionManager:
         else:
             if not self.all_aliases_connected_flag:
                 self.all_aliases_connected_flag = True  # Update flag
-        #print(f"[DEBUG] Checked required aliases: {missing_aliases if missing_aliases else 'None missing'}")
+        print(f"[DEBUG] Checked required aliases: {missing_aliases if missing_aliases else 'None missing'}")
 
     def all_required_aliases_connected(self):
         result = all(alias in self.boards for alias in self.required_aliases)
@@ -434,6 +436,7 @@ class ConnectionManager:
         await self.discover_boards()
         await self.check_required_aliases()
         asyncio.ensure_future(self.reconnect_boards())
+        print("ConnectionManager started.")
 
 
 class SerialCommandForwarder:

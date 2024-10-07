@@ -67,3 +67,6 @@ services:
   #   privileged: true
   #   volumes:
   #     - "shared-certs:/certs" # Mount the shared volume
+  #   depends_on:
+  #     - app
+  #     - certs
