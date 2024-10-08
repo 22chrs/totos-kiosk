@@ -235,7 +235,7 @@ void SerialController::processHomeDeviceCommand(const String &message, const Str
 }
 
 void SerialController::processMoveDeviceCommand(const String &message, const String &timestamp) {
-    Serial.println("Message: " + message);
+    // Serial.println("Message: " + message);
 
     int startParen = message.indexOf('(');
     int endParen = message.indexOf(')', startParen);
