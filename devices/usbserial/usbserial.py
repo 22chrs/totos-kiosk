@@ -29,6 +29,7 @@ class BoardSerial:
         self.last_unacknowledged_message_and_timestamp = None  #! include the orginally timestamp of that message pls -> timestamp|message
         self.retry_count = 0
         self.cleanup_counter = 0  
+        self.is_homing = False
 
 
     def read_from_serial(self):
@@ -187,13 +188,17 @@ class BoardSerial:
         if timestamp in incoming_stamp_futures:
             future = incoming_stamp_futures.pop(timestamp)
             future.set_result(status)
-            #print(f"Set future for timestamp {timestamp} with status {status}")
         else:
             print(f"Received {status} for unknown timestamp {timestamp}")
-        
-        # Cleanup after every 10 INCOMING_STAMP calls
+
+        # Reset the homing flag if this is the homing command's response
+        if hasattr(self, 'homing_timestamp') and timestamp == self.homing_timestamp:
+            self.is_homing = False
+            del self.homing_timestamp  # Clean up the stored timestamp
+
+        # Existing cleanup code...
         self.cleanup_counter += 1
-        if self.cleanup_counter >= 10:
+        if self.cleanup_counter >= 20:
             self.cleanup_old_futures(max_wait_time=600)
             self.cleanup_counter = 0
     
@@ -259,11 +264,11 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(2)
+                await asyncio.sleep(2)  # Adjust the sleep interval as needed
                 if self.retry_count >= 5:
                     await asyncio.sleep(500)
                 if self.serial_connection is not None and self.board_info["alias"]:
-                    if not self.is_heartbeat_sent:
+                    if not self.is_heartbeat_sent and not self.is_homing:
                         self.send_data("heartbeat")
                         self.is_heartbeat_sent = True
 
@@ -313,12 +318,12 @@ class BoardSerial:
             return "FAIL"
 
         timestamp = self.generate_timestamp()
-        
+
         try:
             # Check if the message is a retry message
             if '|' in message and len(message.split('|')[0]) == 16 and message[:15].isdigit():
                 retry_timestamp, retry_message = message.split('|', 1)
-                message = retry_message  # Use the part after '|' as the actual message
+                message = retry_message  # Use the part after '|'
                 timestamp = retry_timestamp  # Use the retry timestamp
 
             message_with_crc = self.add_crc_and_frame(message, timestamp)
@@ -327,7 +332,12 @@ class BoardSerial:
             alias = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
             print(f"@{alias} -------> {timestamp}|{message}")
 
-            # Skip adding to sent_messages if the message contains "ACK:"
+            # Set the homing flag if it's a homing command
+            if "homeDevice" in message:
+                self.is_homing = True
+                self.homing_timestamp = timestamp  # Store the timestamp for later reference
+
+            # Existing code to handle sent_messages...
             if "REQUEST_ALIAS" not in message and "ACK:" not in message:
                 with self.lock:
                     self.sent_messages.append((time.time(), f"{timestamp}|{message}"))
