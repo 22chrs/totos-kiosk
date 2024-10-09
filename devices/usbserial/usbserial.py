@@ -134,16 +134,26 @@ class BoardSerial:
 
     # The updated preprocess_data function with the conditional call to send_acknowledgment
     def preprocess_data(self, data, alias=None):
-        processed_data = data.strip()
+        processed_data = data.strip()^
         alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
         
         if processed_data.startswith("<STX>") and processed_data.endswith("<ETX>"):
             try:
-                message, crc = processed_data[5:-5].rsplit("|", 1)
+                message_and_crc = processed_data[5:-5]
+                message, crc = message_and_crc.rsplit("|", 1)
+
+                # Verify CRC
+                calculated_crc = self.calculate_crc(message)
+                if calculated_crc != crc.lower():
+                    print(f"### {alias_to_print} -> Invalid CRC: {calculated_crc} (calculated) != {crc} (received)")
+                    return ""
 
                 if '|' in message:
                     timestamp_received, message_content = message.split('|', 1)
                     self.received_timestamps[timestamp_received] = message_content
+                else:
+                    print(f"### {alias_to_print} -> Malformed message: missing '|' in message: {message}")
+                    return ""
 
                 print(f"{alias_to_print} -> {timestamp_received}|{message_content}")
                 
@@ -153,19 +163,16 @@ class BoardSerial:
 
                 # Additional logging for ACKs
                 if message_content.startswith("ACK:"):
-                    ack_timestamp = message_content.split("ACK:")[1].strip()
+                    ack_timestamp = message_content.split("ACK:", 1)[1].strip()
                     self.check_acknowledgment(ack_timestamp)
 
                 if message_content.startswith("SUCCESS:") or message_content.startswith("FAIL:"):
                     # Extract status and timestamp
-                    status, timestamp = message_content.split(":")
-                    #print(f"Status = {status}")
-                    #print(f"message_content = {message_content}")
-                    # Call INCOMING_STAMP
+                    status, timestamp = message_content.split(":", 1)
                     self.INCOMING_STAMP(timestamp, status)
 
                 return message_content
-            except ValueError:
+            except Exception as e:
                 print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
                 return ""
         else:

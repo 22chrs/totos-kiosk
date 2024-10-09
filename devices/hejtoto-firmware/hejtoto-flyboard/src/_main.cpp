@@ -1,39 +1,37 @@
 
+// #include <Cam.h>
+// #include <Led.h>
+// #include <LimitSwitch.h>
+// #include <Stepper.h>
 #include <_global.h>
-#include <Stepper.h>
-#include <Led.h>
-#include <LimitSwitch.h>
-#include <Cam.h>
 
-void setup()
-{
+void setup() {
+    Serial.begin(9600);
+    // init_LEDs();
+    // Neopixel(OFF);
+    // // while (!Serial)
+    // //     ;
 
-    Serial.begin(115200);
-    init_LEDs();
-    Neopixel(OFF);
-    // while (!Serial)
-    //     ;
+    // // SPI.begin();
 
-    SPI.begin();
+    // // init_Stepper();
 
-    init_Stepper();
+    // // init_LimitSwitch();
 
-    // init_LimitSwitch();
+    // Neopixel(PURPLE);
+    // // setupCam();
 
-    Neopixel(PURPLE);
-    // setupCam();
+    // delay(3000);
+    // Serial.println("Started.");
 
-    delay(3000);
-    Serial.println("Started.");
-
-    Neopixel(GREEN);
+    // Neopixel(GREEN);
     // moveMotorAbs(-10);
     // homeMotor();
 }
 
-void loop()
-{
-    moveMotorAbs(-105);
+void loop() {
+    // moveMotorAbs(-105);
+    Serial.println("Hello.");
     // delay(60 * 1000);
     // moveMotorAbs(0);
     // delay(60 * 1000);
