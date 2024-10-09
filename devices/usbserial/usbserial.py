@@ -70,20 +70,24 @@ class BoardSerial:
             print(f"Error reading from serial: {str(e)}")
 
     def send_ack_retry(self):
-        if self.serial_connection is not None and self.board_info["alias"]:
-            if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
-                if self.retry_count >= 30:
-                    print(f"Maximum retry limit reached for message: {self.last_unacknowledged_message_and_timestamp}")
-                    self.need_to_send_ack = False  # Stop retrying after reaching the limit
-                    return
+        try:
+            if self.serial_connection is not None and self.board_info["alias"]:
+                if self.need_to_send_ack and self.last_unacknowledged_message_and_timestamp:
+                    if self.retry_count >= 30:
+                        print(f"Maximum retry limit reached for message: {self.last_unacknowledged_message_and_timestamp}")
+                        self.need_to_send_ack = False  # Stop retrying after reaching the limit
+                        self.retry_count = 0 
+                        return
 
-                self.retry_count += 1  # Increment the retry count
+                    self.retry_count += 1  # Increment the retry count
 
-                # Append the retry count to the original message
-                retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
-                #print(f"ACK retry {self.retry_count}")  # Debug: Show the retry count
-                self.send_data(retry_message)
-                self.need_to_send_ack = False  # Reset the flag after sending
+                    # Append the retry cocunt to the original message
+                    retry_message = f"{self.last_unacknowledged_message_and_timestamp}|{self.retry_count + 1}"
+                    #print(f"ACK retry {self.retry_count}")  # Debug: Show the retry count
+                    self.send_data(retry_message)
+                    self.need_to_send_ack = False  # Reset the flag after sending
+        except Exception as e:
+            print(f"Error in send_ack_retry: {str(e)}")
 
     def check_acknowledgment(self, ack_timestamp):
         with self.lock:
@@ -134,7 +138,7 @@ class BoardSerial:
 
     # The updated preprocess_data function with the conditional call to send_acknowledgment
     def preprocess_data(self, data, alias=None):
-        processed_data = data.strip()^
+        processed_data = data.strip()
         alias_to_print = self.board_info['alias'] if self.board_info['alias'] else 'unknown device'
         
         if processed_data.startswith("<STX>") and processed_data.endswith("<ETX>"):
@@ -255,7 +259,7 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(30)
+                await asyncio.sleep(2)
                 if self.retry_count >= 5:
                     await asyncio.sleep(500)
                 if self.serial_connection is not None and self.board_info["alias"]:
@@ -276,7 +280,7 @@ class BoardSerial:
         try:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self.connect)
-            #! asyncio.ensure_future(self.send_periodic_ack()) ### Periodisches senden ACK heartbeat
+            asyncio.ensure_future(self.send_periodic_ack()) ### Periodisches senden ACK heartbeat
             asyncio.ensure_future(self.check_old_ack_messages())
         except Exception as e:
             print(f"Error during async_connect: {str(e)}")
@@ -476,6 +480,7 @@ class SerialCommandForwarder:
             except Exception as e:
                 print(f"[DEBUG] Exception in monitor_and_forward: {str(e)}")
             await asyncio.sleep(0.01)
+            
 
 
 # Class to handle sending commands to the Teensy and processing acknowledgments

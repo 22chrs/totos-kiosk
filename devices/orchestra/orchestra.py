@@ -316,10 +316,10 @@ async def homeAllDevices(teensy_controller, whichBoard):
                 print(f"Command '{message}' executed successfully.")
             elif result == "FAIL":
                 print(f"Command '{message}' failed.")
-                break  # Stop proceeding to next devices
+                #break  # Stop proceeding to next devices
         except asyncio.TimeoutError:
             print(f"Timeout waiting for response to timestamp {timestampTask}")
-            break  # Stop proceeding
+            #break  # Stop proceeding
 
 async def update_line_marker(filename, line_index, old_marker, new_marker):
     loop = asyncio.get_event_loop()

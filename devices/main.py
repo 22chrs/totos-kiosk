@@ -19,7 +19,7 @@ async def main():
     
 
     #! Serial
-    teensys = {'RoboCubeFront', 'RoboCubeBack', 'ServiceCube'}  # Define the aliases for the boards you want to connect with
+    teensys = {'RoboCubeBack'}  # Define the aliases for the boards you want to connect with
     
     usb_manager = ConnectionManager(
         vid=0x16C0,
@@ -33,13 +33,19 @@ async def main():
     asyncio.create_task(manage_usb_serial(usb_manager, command_forwarder))  # Start USB serial management as a separate task
     print("Starting wait_until_all_aliases_connected...")
     await usb_manager.wait_until_all_aliases_connected() # Wait until all required aliases are connected
-    print("Starting to home all devices...")
-    print(teensys)
-    for alias in teensys:
-        print(f"Homing {alias}...")
-        await homeAllDevices(teensy_controller, alias)
 
- 
+    print("Starting to home all devices...")
+    for alias in teensys:
+        try:
+            print(f"Homing {alias}...")
+            result = await homeAllDevices(teensy_controller, alias)
+            if result != "SUCCESS":
+                print(f"### {alias} -> Homing failed ###")
+                # Additional recovery logic can be added here
+        except Exception as e:
+            print(f"Error homing {alias}: {e}")
+            # Optionally handle recovery or retry logic here
+
 
     #! Payment
     payment_job_task = asyncio.create_task(schedule_end_of_day_job()) # print("Scheduled end-of-day job.")
