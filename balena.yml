@@ -1,6 +1,6 @@
 name: hej-toto-app
 type: sw.application
-version: 20.0.0
+version: 22.0.0
 joinable: false
 description: >-
   Hej Toto App
@@ -8,11 +8,11 @@ assets:
   repository:
     type: blob.asset
     data:
-      url: 'https://github.com/balena-labs-projects/browser'
+      url: "https://github.com/balena-labs-projects/browser"
   logo:
     type: blob.asset
     data:
-      url: 'https://raw.githubusercontent.com/balena-labs-projects/browser/master/logo.png'
+      url: "https://raw.githubusercontent.com/balena-labs-projects/browser/master/logo.png"
 data:
   # applicationConfigVariables:
   #   - RESIN_HOST_CONFIG_gpu_mem: 2048

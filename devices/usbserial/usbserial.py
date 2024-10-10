@@ -127,7 +127,7 @@ class BoardSerial:
 
                 self.send_ack_retry()
 
-                await asyncio.sleep(0.01)
+                await asyncio.sleep(0.1) #! retry cout > 10 than asyncio.sleep(0.5)
             except Exception as e:
                 print(f"Error in check_old_ack_messages: {str(e)}")
                 break
@@ -150,14 +150,14 @@ class BoardSerial:
                 # Verify CRC
                 calculated_crc = self.calculate_crc(message)
                 if calculated_crc != crc.lower():
-                    print(f"### {alias_to_print} -> Invalid CRC: {calculated_crc} (calculated) != {crc} (received)")
+                    print(f"{alias_to_print}: Invalid CRC: {calculated_crc} (calculated) != {crc} (received)")
                     return ""
 
                 if '|' in message:
                     timestamp_received, message_content = message.split('|', 1)
                     self.received_timestamps[timestamp_received] = message_content
                 else:
-                    print(f"### {alias_to_print} -> Malformed message: missing '|' in message: {message}")
+                    print(f"{alias_to_print}: Malformed message: missing '|' in message: {message}")
                     return ""
 
                 print(f"{alias_to_print} -> {timestamp_received}|{message_content}")
@@ -178,7 +178,7 @@ class BoardSerial:
 
                 return message_content
             except Exception as e:
-                print(f"### {alias_to_print} -> Malformed message: {processed_data} ###")
+                print(f"{alias_to_print} -> Malformed message: {processed_data}")
                 return ""
         else:
             print(f"### {alias_to_print} -> {processed_data} ###")
@@ -264,7 +264,7 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(2)  # Adjust the sleep interval as needed
+                await asyncio.sleep(60)  # Adjust the sleep interval as needed
                 if self.retry_count >= 5:
                     await asyncio.sleep(500)
                 if self.serial_connection is not None and self.board_info["alias"]:
