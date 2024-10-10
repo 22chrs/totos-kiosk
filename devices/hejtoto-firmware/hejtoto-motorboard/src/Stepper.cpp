@@ -317,7 +317,7 @@ boolean homeMotor(byte stepperX) {
         return true;
     }
     // If none of the conditions for a successful homing are met, return false
-    Serial.println("Homing failed.");  // Optional: add this line if you want to log the failure before returning
+    Serial.println("Homing failed. 0");  // Optional: add this line if you want to log the failure before returning
     stepperMotors[stepperX].state.isHomed = false;
     return false;
 }
@@ -350,7 +350,7 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
             delay(1);
         }
         if (failedHoming == true) {
-            Serial.println("Homing failed");
+            Serial.println("Homing failed 1");
             stepperMotors[stepperX].state.isHomed = false;
             stepperMotors[stepperY].state.isHomed = false;
             return false;
@@ -399,7 +399,7 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
             delay(1);
         }
         if (failedHoming == true) {
-            Serial.println("Homing failed");
+            Serial.println("Homing failed. 2");
             stepperMotors[stepperX].state.isHomed = false;
             stepperMotors[stepperY].state.isHomed = false;
             return false;
@@ -438,7 +438,7 @@ boolean homeCombinedMotors(byte stepperX, byte stepperY) {
     return true;
 
     // If none of the conditions for a successful homing are met, return false
-    Serial.println("Homing failed.");  // Optional: add this line if you want to log the failure before returning
+    Serial.println("Homing failed. 3");  // Optional: add this line if you want to log the failure before returning
     stepperMotors[stepperX].state.isHomed = false;
     stepperMotors[stepperY].state.isHomed = false;
     return false;

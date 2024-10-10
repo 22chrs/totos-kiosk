@@ -127,7 +127,7 @@ class BoardSerial:
 
                 self.send_ack_retry()
 
-                await asyncio.sleep(0.1) #! retry cout > 10 than asyncio.sleep(0.5)
+                await asyncio.sleep(0.001) #! retry cout >  than asyncio.sleep(0.5)
             except Exception as e:
                 print(f"Error in check_old_ack_messages: {str(e)}")
                 break
@@ -264,7 +264,7 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(60)  # Adjust the sleep interval as needed
+                await asyncio.sleep(120)  # Adjust the sleep interval as needed
                 if self.retry_count >= 5:
                     await asyncio.sleep(500)
                 if self.serial_connection is not None and self.board_info["alias"]:
@@ -489,7 +489,7 @@ class SerialCommandForwarder:
                         print(f"[DEBUG] Board '{alias}' disconnected and removed from manager.")
             except Exception as e:
                 print(f"[DEBUG] Exception in monitor_and_forward: {str(e)}")
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(0.02)
             
 
 

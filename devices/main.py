@@ -35,7 +35,7 @@ async def main():
     teensy_controller = TeensyController(usb_manager, command_forwarder)
     asyncio.create_task(manage_usb_serial(usb_manager, command_forwarder))  # Start USB serial management as a separate task
     print("Starting wait_until_all_aliases_connected...")
-    await usb_manager.wait_until_all_aliases_connected()  # Wait until all required aliases are connected
+    #!await usb_manager.wait_until_all_aliases_connected()  # Wait until all required aliases are connected
 
     homing_successful = True  # Initialize the homing success flag
     print("Starting to home all devices...")

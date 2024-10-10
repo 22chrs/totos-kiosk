@@ -4,6 +4,7 @@
 **/env/
 **/.pytest_cache/
 **/__pycache__/
+**/__init__.py/
 **/CMakeFiles/
 **/.next/
 **/.vscode/
@@ -16,6 +17,7 @@ devices/payment/receipts
 devices/payment/quene.txt
 devices/payment/zvt\+\+/stuff
 devices/payment/zvt\+\+/ssrc
+devices/WS-431E backup
 
 
 devices/CODE-teensy
@@ -23,6 +25,7 @@ devices/CODE-teensy
 ### TOTO
 toto/ur_log/
 toto/robot/
+toto/facetracking/
 
 ### APP
 

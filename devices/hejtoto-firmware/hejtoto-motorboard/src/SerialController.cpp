@@ -194,10 +194,12 @@ void SerialController::handleReceivedMessage(const String &message) {
                 } else {
                     if (!cmdWithoutTimestamp.startsWith("ACK:")) {
                         sendAckMessage(timestamp);
+                        Serial.println("Received: " + cmdWithoutTimestamp);
                     }
 
                     if (!isRepeatedTimestamp(timestamp)) {
                         if (cmdWithoutTimestamp == "connected") {
+                            Serial.println(Version);
                             Neopixel(GREEN);
                             connectionStatus = true;
                         } else if (cmdWithoutTimestamp.startsWith("fireLED")) {
