@@ -164,7 +164,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                         Ein- oder Mehrweg:
                       </Heading>
 
-                      <Flex gap='6'>
+                      <Flex gap='5'>
                         {['einwegVariable', 'mehrwegVariable'].map(
                           (option, index) => (
                             <Button
@@ -208,7 +208,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                       <Heading variant='h2_Kiosk' py='6'>
                         Deckel:
                       </Heading>
-                      <Flex gap='6'>
+                      <Flex gap='5'>
                         {lidOptions.map((option, index) => (
                           <Button
                             gap='2'

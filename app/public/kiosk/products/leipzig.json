@@ -14,16 +14,15 @@
       "products": [
         {
           "id": "1",
-          "name": "Schwarzer Kaffee",
-          "description": "Reicher Espresso mit heißem Wasser, erzeugt eine leichte Crema. Ein nuanciertes Geschmacksprofil.",
+          "name": "Espresso",
+          "description": "Der Klassiker: Intensiver, purer Kaffee, ideal für den schnellen, kräftigen Koffeinkick.",
           "price": 1.0,
           "vat": 0.19,
           "sizes": [
-            { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "400 ml", "additionalCost": 2.0 }
+            { "size": "30 ml", "additionalCost": 0.0 },
+            { "size": "60 ml", "additionalCost": 1.0 }
           ],
-          "allergens": [""],
+          "allergens": [],
           "vegan": true,
           "glutenfree": true,
           "freshWaterRatio": 1.2,
@@ -34,14 +33,14 @@
         },
         {
           "id": "2",
-          "name": "Expresso",
-          "description": "",
+          "name": "Latte Macchiato",
+          "description": "Sanfter Espresso mit viel Hafermilch und Schaum, perfekt für Fans milder, cremiger Kaffees.",
           "price": 2.51,
           "vat": 0.19,
-          "allergens": [""],
+          "allergens": ["Weizen"],
           "sizes": [
-            { "size": "35 ml", "additionalCost": 0.0 },
-            { "size": "50 ml", "additionalCost": 0.7 }
+            { "size": "220 ml", "additionalCost": 0.0 },
+            { "size": "300 ml", "additionalCost": 0.7 }
           ],
           "vegan": true,
           "glutenfree": false,
@@ -53,18 +52,17 @@
         },
         {
           "id": "3",
-          "name": "Latte Macchiato",
-          "description": "Eine cremige Mischung aus kräftigem Espresso und aufgeschäumter Mandelmilch. Ein reicher, tröstender Geschmack.",
+          "name": "Flat White",
+          "description": "Doppelter Espresso mit cremiger Hafermilch, kräftiger Geschmack und samtige Textur in kompakter Form.",
           "price": 2.54,
           "vat": 0.19,
-          "allergens": ["Mandeln"],
+          "allergens": ["Weizen"],
           "sizes": [
-            { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "400 ml", "additionalCost": 2.0 }
+            { "size": "150 ml", "additionalCost": 0.0 },
+            { "size": "180 ml", "additionalCost": 1.0 }
           ],
-          "vegan": false,
-          "glutenfree": true,
+          "vegan": true,
+          "glutenfree": false,
           "freshWaterRatio": 0.7,
           "wasteWaterRatio": 0.2,
           "milkRatio": 0.5,
@@ -73,17 +71,16 @@
         },
         {
           "id": "4",
-          "name": "Flat White",
-          "description": "",
+          "name": "Cappuccino",
+          "description": "Ein harmonischer Mix aus Espresso, Hafermilch und Schaum, ideal für jede Tageszeit.",
           "price": 4.19,
           "vat": 0.19,
-          "allergens": ["Mandeln"],
+          "allergens": ["Weizen"],
           "sizes": [
-            { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "400 ml", "additionalCost": 2.0 }
+            { "size": "150 ml", "additionalCost": 0.0 },
+            { "size": "180 ml", "additionalCost": 1.0 }
           ],
-          "vegan": false,
+          "vegan": true,
           "glutenfree": false,
           "freshWaterRatio": 0.4,
           "wasteWaterRatio": 0.2,
@@ -93,15 +90,14 @@
         },
         {
           "id": "5",
-          "name": "Black White",
-          "description": "",
+          "name": "Americano",
+          "description": "Verlängerter Espresso mit heißem Wasser, für einen milden, aber vollmundigen Kaffee.",
           "price": 4.19,
           "vat": 0.19,
-          "allergens": ["Mandeln"],
+          "allergens": [],
           "sizes": [
-            { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "300 ml", "additionalCost": 1.0 },
-            { "size": "400 ml", "additionalCost": 2.0 }
+            { "size": "180 ml", "additionalCost": 0.0 },
+            { "size": "240 ml", "additionalCost": 1.0 }
           ],
           "vegan": true,
           "glutenfree": true,
@@ -113,36 +109,18 @@
         },
         {
           "id": "8",
-          "name": "Grüner Tee",
-          "description": "Ein erfrischender grüner Tee mit einer leichten bitteren Note. Ein perfektes, belebendes Getränk.",
+          "name": "Black White",
+          "description": "Intensiver Espresso mit nur einem Hauch Hafermilch, für einen sanft abgerundeten Geschmack.",
           "price": 2.5,
           "vat": 0.19,
           "allergens": [],
           "sizes": [
-            { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "300 ml", "additionalCost": 2.0 }
+            { "size": "120 ml", "additionalCost": 0.0 },
+            { "size": "150 ml", "additionalCost": 2.0 }
           ],
           "vegan": true,
           "glutenfree": true,
           "capacity": 100,
-          "freshWaterRatio": 1.2,
-          "wasteWaterRatio": 0.2,
-          "milkRatio": 0
-        },
-        {
-          "id": "9",
-          "name": "Schwarzer Tee",
-          "description": "Ein starker, robuster Tee mit einem reichen, vollen Geschmack. Eine klassische, zeitlose Wahl.",
-          "price": 2.5,
-          "vat": 0.19,
-          "allergens": [],
-          "sizes": [
-            { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "300 ml", "additionalCost": 2.0 }
-          ],
-          "vegan": true,
-          "glutenfree": true,
-          "capacity": 120,
           "freshWaterRatio": 1.2,
           "wasteWaterRatio": 0.2,
           "milkRatio": 0
@@ -206,24 +184,6 @@
           "vegan": true,
           "glutenfree": true,
           "capacity": 100,
-          "freshWaterRatio": 1.2,
-          "wasteWaterRatio": 0.2,
-          "milkRatio": 0
-        },
-        {
-          "id": "9",
-          "name": "Schwarzer Tee",
-          "description": "Ein starker, robuster Tee mit einem reichen, vollen Geschmack. Eine klassische, zeitlose Wahl.",
-          "price": 2.5,
-          "vat": 0.19,
-          "allergens": [],
-          "sizes": [
-            { "size": "200 ml", "additionalCost": 0.0 },
-            { "size": "300 ml", "additionalCost": 2.0 }
-          ],
-          "vegan": true,
-          "glutenfree": true,
-          "capacity": 120,
           "freshWaterRatio": 1.2,
           "wasteWaterRatio": 0.2,
           "milkRatio": 0

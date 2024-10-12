@@ -252,7 +252,10 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
     }
   };
 
-  const displayedProducts = products.slice(productIndex, productIndex + 5);
+  const displayedProducts =
+    products.length > 6
+      ? products.slice(productIndex, productIndex + 5)
+      : products.slice(productIndex, productIndex + 6);
 
   return (
     <Grid
@@ -271,7 +274,7 @@ const Main: React.FC<MainProps> = ({ category, products, formatPrice }) => {
         />
       ))}
 
-      {products.length > 5 && (
+      {products.length > 6 && (
         <Flex justifyContent='center' alignItems='center'>
           <Button gap='5' variant='kiosk_rainbow_big' onClick={handleNext}>
             Weitere

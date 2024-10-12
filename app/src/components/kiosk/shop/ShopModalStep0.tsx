@@ -143,7 +143,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                           <Heading variant='h2_Kiosk' pb='6' pt='8'>
                             Größe:
                           </Heading>
-                          <Flex gap='6'>
+                          <Flex gap='5'>
                             {selectedProduct.sizes.map((size, index) => (
                               <Button
                                 key={index}
@@ -171,7 +171,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                       <Heading variant='h2_Kiosk' py='6'>
                         Zucker:
                       </Heading>
-                      <Flex gap='6'>
+                      <Flex gap='5'>
                         {sugarLevels.map((level, index) => (
                           <Button
                             key={index}
