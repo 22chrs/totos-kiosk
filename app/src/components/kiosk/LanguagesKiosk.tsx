@@ -49,15 +49,15 @@ export const LanguagesTabsKiosk = () => {
       Deutsch: 'DE', //!
       English: 'EN', //!
       Français: 'FR', //!
-      Русский: 'RU', //!
       Español: 'ES',
       Italiano: 'IT', //!
-      Nederlands: 'NL', //!
-      Polski: 'PL',
-      Українська: 'UK', //!
+      Русский: 'RU', //!
       Türkçe: 'TR', //!
-      العربية: 'AR', //!
-      中文: 'ZN', //!
+      // Nederlands: 'NL', //!
+      // Polski: 'PL',
+      // Українська: 'UK', //!
+      // العربية: 'AR', //!
+      // 中文: 'ZN', //!
     };
     return languageMap[lang] || lang; // Return the original language name if no mapping is found
   };

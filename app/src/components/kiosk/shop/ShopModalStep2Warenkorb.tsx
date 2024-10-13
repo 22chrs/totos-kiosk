@@ -26,6 +26,7 @@ import { KIOSK_HEIGHTCONTENT_MODAL } from 'src/constants';
 import { useState } from 'react';
 import { useWebSocket } from '@/websocket/WebSocketContext';
 import { ArrowRightSharpSolid } from '@/components/icons/icons';
+import { t } from 'i18next';
 
 function ShopModalStepWarenkorb({ onClose }) {
   const ws = useWebSocket();
@@ -109,7 +110,7 @@ function ShopModalStepWarenkorb({ onClose }) {
         >
           <Box>
             <Heading pb='5' variant='h1_Kiosk'>
-              Deine Bestellung
+              {t(`Deine Bestellung`)}
             </Heading>
           </Box>
           {/* <ScrollFade> */}
@@ -183,7 +184,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                       }
                     }}
                   >
-                    <Box>Gesamt:</Box>
+                    <Box>{t(`Gesamt`)}:</Box>
                     <Box>
                       {formatPrice({
                         amount: getCartTotalPrice() + getCartTotalPfand(),
@@ -202,7 +203,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                       onClose(); // Close the modal
                     }}
                   >
-                    Artikel hinzufügen
+                    {t(`Artikel hinzufuegen`)}
                     <Icon boxSize='2.5rem' as={FaPlus} />
                   </Button>
                 </Box>
@@ -219,7 +220,7 @@ function ShopModalStepWarenkorb({ onClose }) {
                         }
                       }}
                     >
-                      Zur Kasse
+                      {t(`Zur Kasse`)}
                       <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
                     </Button>
                   </Box>

@@ -41,6 +41,7 @@ import i18n, { standardSprache } from '@/internationalization/i18n';
 
 import { useRouter } from '@/providers/DisplayContext';
 import { useWebSocket } from '@/websocket/WebSocketContext';
+import { t } from 'i18next';
 
 function StepperChoose({ steps }) {
   const { activeStep, setActiveStep } = useStepper();
@@ -252,7 +253,7 @@ function ConfirmCloseModal({ isOpen, onClose, onConfirm }) {
             }}
             _hover={{ bgColor: 'transparent', borderColor: 'transparent' }}
           />
-          <Heading variant='h1_Kiosk'>Zahlvorgang abbrechen?</Heading>
+          <Heading variant='h1_Kiosk'>{t(`Zahlvorgang abbrechen`)}?</Heading>
         </ModalHeader>
         <ModalBody></ModalBody>
 
@@ -269,7 +270,7 @@ function ConfirmCloseModal({ isOpen, onClose, onConfirm }) {
             onClick={onConfirm}
           >
             <Icon boxSize='14' as={XmarkSharpSolid} />
-            Abbruch
+            {t(`Ja`)}
           </Button>
 
           <Button
@@ -284,7 +285,7 @@ function ConfirmCloseModal({ isOpen, onClose, onConfirm }) {
             onClick={onClose}
           >
             <Icon boxSize={12} as={CreditCardRegular} />
-            Zahlung fortsetzen
+            {t(`Zahlung fortsetzen`)}
           </Button>
         </ModalFooter>
       </ModalContent>

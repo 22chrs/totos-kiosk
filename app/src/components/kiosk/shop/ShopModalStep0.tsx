@@ -24,6 +24,7 @@ import { useStepper } from '@/providers/StepperContext';
 import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 import { handleUmlauts } from './utils';
 import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
   const sugarLevels = ['zero', 's', 'm', 'l'];
@@ -38,6 +39,31 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
   } = useStepper();
 
   const { addToCart } = useCart();
+  const { i18n, t } = useTranslation();
+
+  // Helper function to get the correct product description based on the active language
+  const getProductDescription = () => {
+    const lang = i18n.language;
+
+    switch (lang) {
+      case 'Deutsch': // German
+        return selectedProduct.description_DE || selectedProduct.description_EN;
+      case 'English': // English
+        return selectedProduct.description_EN || selectedProduct.description_DE;
+      case 'Français': // French
+        return selectedProduct.description_FR || selectedProduct.description_EN;
+      case 'Español': // Spanish
+        return selectedProduct.description_ES || selectedProduct.description_EN;
+      case 'Italiano': // Italian
+        return selectedProduct.description_IT || selectedProduct.description_EN;
+      case 'Русский': // Russian
+        return selectedProduct.description_RU || selectedProduct.description_EN;
+      case 'Türkçe': // Turkish
+        return selectedProduct.description_TR || selectedProduct.description_EN;
+      default:
+        return selectedProduct.description_EN;
+    }
+  };
 
   const handleAddToCart = () => {
     const productCart = {
@@ -114,11 +140,11 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
               <Box>
                 <Box maxW='93%'>
                   <Heading
-                    py='0'
+                    pb='1'
                     variant='h1_Kiosk'
                     //transform='translateY(-0.2rem)'
                   >
-                    {t(`${selectedProduct?.name}`)}
+                    {t(`${selectedProduct.name}`)}
                   </Heading>
                   <HStack>
                     <Icon
@@ -132,7 +158,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                   </HStack>
 
                   <Text pt='8' variant='kiosk'>
-                    {t(`${selectedProduct.description}`)}
+                    {getProductDescription()}
                   </Text>
                 </Box>
 
@@ -141,8 +167,8 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                     {selectedProduct.sizes &&
                       selectedProduct.sizes.length > 1 && (
                         <>
-                          <Heading variant='h2_Kiosk' pb='6' pt='8'>
-                            {t(`Größe`)}:
+                          <Heading variant='h2_Kiosk' pb='6' pt='12'>
+                            {t(`Groesse`)}:
                           </Heading>
                           <Flex gap='5'>
                             {selectedProduct.sizes.map((size, index) => (
@@ -159,7 +185,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                                 h='3rem'
                                 px='4'
                               >
-                                {size.size}
+                                {t(`${size.size}`)}
                               </Button>
                             ))}
                           </Flex>

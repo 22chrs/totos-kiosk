@@ -22,6 +22,7 @@ import { KISOK_BORDERRADIUS } from 'src/constants';
 import { formatPrice, handleUmlauts } from '../utils';
 import MyMenuButton from './MenuButtons';
 import { PlusMinus } from './PlusMinus';
+import { t } from 'i18next';
 
 export const ItemBestellung = ({ productCart }) => {
   const { removeFromCart } = useCart();
@@ -60,7 +61,7 @@ export const ItemBestellung = ({ productCart }) => {
         >
           <HStack>
             <Heading variant='h2_Kiosk' pr='3' pb='1'>
-              {productCart.product.name}
+              {t(`${productCart.product.name}`)}
             </Heading>
           </HStack>
 
@@ -78,14 +79,14 @@ export const ItemBestellung = ({ productCart }) => {
                   </Heading>
                   <Button px='3' variant='kiosk_pricetag_mini'>
                     {productCart.choosenLid === 'ohneDeckel'
-                      ? '1 € Pfand'
-                      : '2 € Pfand'}
+                      ? '1 € ' + t(`Pfand`)
+                      : '2 € ' + t(`Pfand`)}
                   </Button>
                 </HStack>
               )}
               {productCart.quantity > 1 && (
                 <Heading pl='2' variant='kiosk_pricetag_heading' pr='1'>
-                  p.A.
+                  {t(`p.A.`)}
                 </Heading>
               )}
             </HStack>
@@ -100,7 +101,7 @@ export const ItemBestellung = ({ productCart }) => {
               as='u'
               onClick={() => removeFromCart(productCart.idCart)}
             >
-              Artikel entfernen
+              {t(`Artikel entfernen`)}
             </Text>
           </HStack>
         </VStack>
@@ -118,7 +119,7 @@ export const ItemBestellung = ({ productCart }) => {
               <AuswahlMenuZucker productCart={productCart} />
             </HStack>
             <HStack gap='5' style={{ alignItems: 'flex-start' }}>
-              <AuswahlMenuEinweg productCart={productCart} />
+              {/* <AuswahlMenuEinweg productCart={productCart} /> */}
               <AuswahlMenuDeckel productCart={productCart} />
             </HStack>
           </VStack>
@@ -183,12 +184,12 @@ const AuswahlMenuDeckel = ({ productCart }) => {
     () => [
       {
         compareValue: 'ohneDeckel',
-        text: 'Ohne Deckel',
+        text: t(`Ohne Deckel`),
         icons: [BanRegular],
       },
       {
         compareValue: 'inklusiveDeckel',
-        text: 'Inklusive Deckel',
+        text: t(`Inklusive Deckel`),
         icons: [CirclePlusRegular],
       },
     ],
@@ -201,7 +202,7 @@ const AuswahlMenuDeckel = ({ productCart }) => {
         productCart={productCart}
         colorButton={colorButton}
         bgColorButton={bgColorButton}
-        menuTitle='Deckel'
+        menuTitle={t(`Deckel`)}
         menuOptions={menuOptions}
         initialSelectedOption={productCart.choosenLid}
         selectedItemKey='choosenLid'
@@ -220,22 +221,22 @@ const AuswahlMenuZucker = ({ productCart }) => {
   const menuOptions = useMemo(
     () => [
       {
-        text: 'Kein Zucker',
+        text: t(`Kein Zucker2`),
         icons: [BanRegular],
         compareValue: 'zero',
       },
       {
-        text: 'Wenig Zucker',
+        text: t(`Wenig`),
         icons: [RxCube],
         compareValue: 's',
       },
       {
-        text: 'Mittel',
+        text: t(`Mittel`),
         icons: [RxCube, RxCube],
         compareValue: 'm',
       },
       {
-        text: 'Viel Zucker',
+        text: t(`Viel`),
         icons: [RxCube, RxCube, RxCube],
         compareValue: 'l',
       },
@@ -249,7 +250,7 @@ const AuswahlMenuZucker = ({ productCart }) => {
         productCart={productCart}
         colorButton={colorButton}
         bgColorButton={bgColorButton}
-        menuTitle='Zuckergehalt'
+        menuTitle={t(`Zucker`)}
         menuOptions={menuOptions}
         initialSelectedOption={productCart.choosenSugar}
         selectedItemKey='choosenSugar'
@@ -265,7 +266,7 @@ const AuswahlMenuSize = ({ productCart }) => {
   const menuOptions = useMemo(
     () =>
       productCart.product.sizes.map((sizeObj) => ({
-        text: sizeObj.size,
+        text: t(`${sizeObj.size}`),
         icons: [Scale],
         compareValue: sizeObj.size,
       })),
@@ -278,7 +279,7 @@ const AuswahlMenuSize = ({ productCart }) => {
         productCart={productCart}
         colorButton={colorButton}
         bgColorButton={bgColorButton}
-        menuTitle='Größe'
+        menuTitle={t(`Groesse`)}
         menuOptions={menuOptions}
         initialSelectedOption={productCart.choosenSize}
         selectedItemKey='choosenSize'

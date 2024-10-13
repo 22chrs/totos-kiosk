@@ -1,3 +1,10 @@
+// Trinkgeld https://stock.adobe.com/de/video/amazed-blond-teenager-girl-dressed-in-sweater-looking-scared-isolated-on-blue-background-what-to-do-expression/415073990
+// Danke https://stock.adobe.com/de/video/exciting-3d-rendering-of-white-love-hearts-increasing-and-flying-away-on-a-pink-computer-screen-covered-with-numerous-pixels-through-iris-out-effect-the-animation-looks-dreamlike-and-lovely/170510915
+// https://stock.adobe.com/de/video/3d-neon-glowing-abstract-rainbow-heart-tunnel-in-lgbt-pride-colors-disco-music-party-valentines-day-celebration-retro-y2k-cyber-sci-fi-vj-videogame-futuristic-background-animation-loop-30fps-4k/836455980
+// https://stock.adobe.com/de/video/a-funny-incident-at-the-farm-goats-take-a-banana-away-from-a-tourist/471449562
+// again https://stock.adobe.com/de/video/hamster-repeats-travolta-meme-small-domestic-hamster-isolated-on-green-background/765062495
+// thx  https://stock.adobe.com/de/video/funny-motion-design-little-purebred-dog-s-muzzle-on-human-body-in-pink-pajamas-dancing-on-green-background-stop-motion-animation-concept-of-animal-theme-surrealism-fun-and-joy-dynamics/713210099
+
 import {
   ArrowDownSharpSolid,
   ArrowRightSharpSolid,
@@ -5,6 +12,7 @@ import {
   CircleCheckSharpSolid,
   CreditCardRegular,
   ShieldCheckSharpSolid,
+  XmarkSharpSolid,
 } from '@/components/icons/icons';
 
 import {
@@ -40,6 +48,7 @@ import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 import shopData from '@/public/kiosk/products/leipzig.json';
 import { useWebSocket } from '@/websocket/WebSocketContext';
 import { FaHeart } from 'react-icons/fa';
+import { t } from 'i18next';
 
 const automatenID = shopData.automatenID;
 
@@ -267,9 +276,9 @@ function ShopModalStep3({ onClose }) {
           <Stack overflowY='hidden'>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
-                <Box width='100%' pb='8'>
-                  <Heading pb='0' variant='h1_Kiosk' w='100%'>
-                    Kasse
+                <Box width='100%' pb='5'>
+                  <Heading pb='1' variant='h1_Kiosk' w='100%'>
+                    {t(`Kasse`)}
                   </Heading>
 
                   <HStack gap='2'>
@@ -278,8 +287,8 @@ function ShopModalStep3({ onClose }) {
                       boxSize='1.2rem'
                       as={ShieldCheckSharpSolid}
                     />
-                    <Text as='u' pt='0'>
-                      Kontaktlos und sicher.
+                    <Text as='u' pb='2'>
+                      {t(`Kontaktlos und sicher`)}
                     </Text>
                   </HStack>
                 </Box>
@@ -288,18 +297,13 @@ function ShopModalStep3({ onClose }) {
                 <HStack align='top' justify='space-between' maxW='55%'>
                   <Text pt='0' variant='kiosk' pb='12'>
                     {payment === 'idle' && 'Nothing here. Pls go.'}
-                    {payment === 'processing' &&
-                      'Bitte präsentiere dein Zahlungsmittel am Lesegerät, um kontaktlos zu zahlen.'}
-                    {payment === 'waitingForTrinkgeld' &&
-                      'Du möchtest Trinkgeld geben? Toto freut sich! Wie viel möchtest du geben?'}
+                    {payment === 'processing' && t(`kontaktlosZahlen`)}
+                    {payment === 'waitingForTrinkgeld' && t(`TrinkgeldHoehe`)}
                     {payment === 'danke' &&
-                      'Super sweet! Bitte präsentiere dein Zahlungsmittel am Lesegerät, um kontaktlos zu zahlen.'}
-                    {payment === 'waiting' &&
-                      'Bitte folge den Anweisungen am Kartenterminal.'}
-                    {payment === 'success' &&
-                      'Zahlung erfolgreich! Vielen Dank für Deine Bestellung, Toto bereitet diese nun für Dich zu.'}
-                    {payment === 'error' &&
-                      `Deine Zahlung ist fehlgeschlagen. ${errorCode}`}
+                      `${t('Super sweet')}! ${t('kontaktlosZahlen')}`}
+                    {payment === 'waiting' && t(`AnweisungenTerminal`)}
+                    {payment === 'success' && t(`ZahlungErfolgreich`)}
+                    {payment === 'error' && `${errorCode}`}
                   </Text>
 
                   <Spacer />
@@ -376,7 +380,7 @@ function ShopModalStep3({ onClose }) {
                   >
                     <HStack gap='5'>
                       <Text variant='kiosk' p='0' pr='5'>
-                        Trinkgeld für Toto?
+                        {t(`Trinkgeld fuer Toto`)}
                       </Text>
                       <HStack gap='7'>
                         <Button
@@ -395,7 +399,7 @@ function ShopModalStep3({ onClose }) {
                             ws.send('devices', 'abort_payment');
                           }}
                         >
-                          Ja!
+                          {t(`Ja`)}!
                           <Icon as={FaHeart} />
                         </Button>
                         <Button
@@ -408,7 +412,7 @@ function ShopModalStep3({ onClose }) {
                             setShowTrinkgeld(false);
                           }}
                         >
-                          Nein.
+                          {t(`Nein`)}.
                         </Button>
                       </HStack>
                     </HStack>
@@ -474,7 +478,9 @@ function ShopModalStep3({ onClose }) {
                       <Button
                         fontSize='xl'
                         h='3rem'
-                        px='4'
+                        pl='3'
+                        pr='4'
+                        gap='2'
                         variant='outline'
                         colorScheme='purple'
                         onClick={() => {
@@ -485,7 +491,8 @@ function ShopModalStep3({ onClose }) {
                           handlePaymentClick(0);
                         }}
                       >
-                        Kein Trinkgeld
+                        <Icon boxSize='1.5rem' as={XmarkSharpSolid} />
+                        {t(`Kein Trinkgeld`)}
                       </Button>
                     </HStack>
                   </Box>
@@ -502,7 +509,7 @@ function ShopModalStep3({ onClose }) {
                   >
                     <HStack spacing={3}>
                       <Text variant='kiosk' p={0}>
-                        Danke!
+                        {t(`Danke`)}!
                       </Text>
                       <Icon as={FaHeart} />
                       <Icon as={FaHeart} />
@@ -532,7 +539,7 @@ function ShopModalStep3({ onClose }) {
                     {payment !== 'success' ? (
                       <>
                         <Button gap='5' variant='kiosk_pricetag_big'>
-                          <Box>Gesamt:</Box>
+                          <Box>{t(`Gesamt`)}:</Box>
                           <Box>
                             {formatPrice({
                               amount:

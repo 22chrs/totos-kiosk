@@ -29,6 +29,7 @@ import { Product } from '@/components/kiosk/shop/Interface';
 import { useStepper } from '@/providers/StepperContext';
 import { useEffect, useState } from 'react';
 import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
+import { t } from 'i18next';
 
 // Your ModalProductCardProps interface
 interface ModalProductCardProps {
@@ -136,8 +137,8 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
             >
               <Box>
                 <Box maxW='93%'>
-                  <Heading pb='0' variant='h1_Kiosk'>
-                    Becherwahl
+                  <Heading pb='1' variant='h1_Kiosk'>
+                    {t(`Verpackung`)}
                   </Heading>
                   <HStack>
                     <Icon
@@ -146,20 +147,20 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                       as={HiOutlineMagnifyingGlass}
                     />
                     <Text as='u' pt='0' fontSize='xl'>
-                      Nachhaltigkeit
+                      {t(`Nachhaltigkeit`)}
                     </Text>
                   </HStack>
 
                   <Text pt='8' variant='kiosk'>
                     {selectedReusableOption === 'mehrwegVariable'
                       ? 'Die Mehrwegartikel kannst du deutschlandweit bei allen RECUP-Partnern zurückgeben.'
-                      : 'Unsere Einwegbecher und Deckel bestehen aus einem umweltfreundlichen Material und sind biologisch abbaubar.'}
+                      : t(`BeschreibungEinweg`)}
                   </Text>
                 </Box>
 
                 {selectedCategory.mugs.length > 1 && (
                   <Box>
-                    <Box>
+                    {/* <Box>
                       <Heading variant='h2_Kiosk' pb='6' pt='8'>
                         Ein- oder Mehrweg:
                       </Heading>
@@ -202,11 +203,11 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                           ),
                         )}
                       </Flex>
-                    </Box>
+                    </Box> */}
 
-                    <Box pt='6'>
-                      <Heading variant='h2_Kiosk' py='6'>
-                        Deckel:
+                    <Box>
+                      <Heading variant='h2_Kiosk' pb='6' pt='12'>
+                        {t(`Deckel`)}:
                       </Heading>
                       <Flex gap='5'>
                         {lidOptions.map((option, index) => (
@@ -233,9 +234,9 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                               </>
                             )}
                             {option === 'ohneDeckel'
-                              ? 'Ohne Deckel'
+                              ? t(`Ohne Deckel`)
                               : option === 'inklusiveDeckel'
-                                ? 'Inklusive Deckel'
+                                ? t(`Inklusive Deckel`)
                                 : ''}
                           </Button>
                         ))}
@@ -262,8 +263,8 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                     <Box>
                       <Button variant='kiosk_pricetag_big'>
                         {selectedLidOption === 'ohneDeckel'
-                          ? '+ 1 € Pfand'
-                          : '+ 2 € Pfand'}
+                          ? '1 € ' + t(`Pfand`)
+                          : '2 € ' + t(`Pfand`)}
                       </Button>
                     </Box>
                   </HStack>
@@ -284,7 +285,7 @@ function ShopModalStep1({ selectedProduct, selectedCategory, formatPrice }) {
                       setActiveStep((prevStep) => prevStep + 1);
                     }}
                   >
-                    Weiter
+                    {t(`Weiter`)}
                     <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
                   </Button>
                 </HStack>

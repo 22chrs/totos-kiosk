@@ -22,6 +22,7 @@ import i18n, { standardSprache } from '@/internationalization/i18n';
 import { useCart } from '@/providers/CardContext';
 import { useRouter } from '@/providers/DisplayContext';
 import { FaArrowRight } from 'react-icons/fa';
+import { t } from 'i18next';
 
 type FooterShopElementProps = {
   itemCount: number;
@@ -101,7 +102,7 @@ export const WarenkorbButton = () => {
       //zIndex='10'
       // colorScheme='brand'
     >
-      Deine Bestellung
+      {t(`Deine Bestellung`)}
       {/* <Icon pl='5' boxSize={'3.5rem'} as={FaWrench} /> */}
       <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
     </Button>
