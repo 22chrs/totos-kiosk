@@ -41,6 +41,7 @@ import {
   ArrowRightSharpSolid,
   ArrowUpSharpSolid,
 } from '@/components/icons/icons';
+import { t } from 'i18next';
 
 // Type definitions for Categories component
 interface CategoriesProps {
@@ -111,7 +112,7 @@ const Categories: React.FC<CategoriesProps> = React.memo(function Categories({
                     : 'kiosk_categoryTagAselected'
                 }
               >
-                {title}
+                {t(`${title}`)}
               </Button>
               {isSelected ? (
                 <Box position='absolute' top='95%' left='0' pl='40' zIndex='10'>
@@ -189,7 +190,7 @@ const ProductCard: React.FC<ProductCardProps> = React.memo(
 
         <CardBody zIndex='5' p='0'>
           <Flex width='100%' pl='4' pt='4' justifyContent='flex-start'>
-            <Button variant='kiosk_nametag'>{product.name}</Button>
+            <Button variant='kiosk_nametag'>{t(`${product.name}`)}</Button>
           </Flex>
         </CardBody>
 

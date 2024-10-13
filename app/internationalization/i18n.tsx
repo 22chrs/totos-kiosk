@@ -1,13 +1,13 @@
-import ar_AR from '@/internationalization/locales/ar/ar_AR.json';
+// import ar_AR from '@/internationalization/locales/ar/ar_AR.json';
 import de_DE from '@/internationalization/locales/de/de_DE.json';
 import en_US from '@/internationalization/locales/en/en_US.json';
 import es_ES from '@/internationalization/locales/es/es_ES.json';
 import fr_FR from '@/internationalization/locales/fr/fr_FR.json';
 import it_IT from '@/internationalization/locales/it/it_IT.json';
-import nl_NL from '@/internationalization/locales/nl/nl_NL.json';
+// import nl_NL from '@/internationalization/locales/nl/nl_NL.json';
 import ru_RU from '@/internationalization/locales/ru/ru_RU.json';
 import tr_TR from '@/internationalization/locales/tr/tr_TR.json';
-import uk_UA from '@/internationalization/locales/uk/uk_UA.json';
+// import uk_UA from '@/internationalization/locales/uk/uk_UA.json';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import XHR from 'i18next-http-backend';
@@ -46,9 +46,9 @@ const resources = {
   Русский: {
     translation: ru_RU,
   },
-  // Türk: {
-  //   translation: tr_TR,
-  // },
+  Türkçe: {
+    translation: tr_TR,
+  },
   // العربية: {
   //   translation: ar_AR,
   // },

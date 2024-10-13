@@ -15,6 +15,7 @@ import { FaChevronDown, FaChevronLeft } from 'react-icons/fa';
 import { KIOSK_LANG_HEIGHT } from 'src/constants';
 import { ArrowIcon, LanguageRegular, RobotRegular } from '../icons/icons';
 import { useState } from 'react';
+import { t } from 'i18next';
 
 //https://help.ubuntu.com/stable/ubuntu-help/figures/input-methods-switcher.png
 
@@ -54,7 +55,7 @@ export const LanguagesTabsKiosk = () => {
       Nederlands: 'NL', //!
       Polski: 'PL',
       Українська: 'UK', //!
-      Türk: 'TR', //!
+      Türkçe: 'TR', //!
       العربية: 'AR', //!
       中文: 'ZN', //!
     };
@@ -319,7 +320,7 @@ export const LanguagesTabsKiosk = () => {
                 'primaryFontColor.lightMode',
               )}
             >
-              START
+              {t('START')} {/* Translation key for "START" */}
             </Heading>
             <Icon
               as={ArrowIcon}

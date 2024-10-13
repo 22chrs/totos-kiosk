@@ -1,3 +1,13 @@
 {
-  "kiosk": "chiosco"
+  "START": "AVVIA",
+  "Kaffee": "Caffè",
+  "Trinkschoki": "Choco Bev",
+  "Snacks": "Snacks",
+  "Espresso": "Espresso",
+  "Latte Macchiato": "Latte Macchiato",
+  "Flat White": "Flat White",
+  "Cappuccino": "Cappuccino",
+  "Americano": "Americano",
+  "Black White": "Black White",
+  "Allergene und Produktinformationen": "Allergeni e informazioni sul prodotto"
 }

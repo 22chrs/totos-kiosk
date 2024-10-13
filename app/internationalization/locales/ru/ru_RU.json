@@ -1,3 +1,13 @@
 {
-  "kiosk": "киоск"
+  "START": "СТАРТ",
+  "Kaffee": "Кофе",
+  "Trinkschoki": "Пить Шок",
+  "Snacks": "Снэки",
+  "Espresso": "Эспрессо",
+  "Latte Macchiato": "Латте Макиато",
+  "Flat White": "Флэт Уайт",
+  "Cappuccino": "Капучино",
+  "Americano": "Американо",
+  "Black White": "Блэк Уайт",
+  "Allergene und Produktinformationen": "Аллергены и информация о продукте"
 }

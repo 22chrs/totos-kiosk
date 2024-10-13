@@ -23,6 +23,7 @@ import { useCart } from '@/providers/CardContext';
 import { useStepper } from '@/providers/StepperContext';
 import { KIOSK_HEIGHTCONTENT_MODAL, KISOK_BORDERRADIUS } from 'src/constants';
 import { handleUmlauts } from './utils';
+import { t } from 'i18next';
 
 function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
   const sugarLevels = ['zero', 's', 'm', 'l'];
@@ -117,7 +118,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                     variant='h1_Kiosk'
                     //transform='translateY(-0.2rem)'
                   >
-                    {selectedProduct?.name}
+                    {t(`${selectedProduct?.name}`)}
                   </Heading>
                   <HStack>
                     <Icon
@@ -126,12 +127,12 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                       as={HiOutlineMagnifyingGlass}
                     />
                     <Text as='u' pt='0' fontSize='xl'>
-                      Allergene und Produktinformationen
+                      {t(`Allergene und Produktinformationen`)}
                     </Text>
                   </HStack>
 
                   <Text pt='8' variant='kiosk'>
-                    {selectedProduct.description}
+                    {t(`${selectedProduct.description}`)}
                   </Text>
                 </Box>
 
@@ -141,7 +142,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                       selectedProduct.sizes.length > 1 && (
                         <>
                           <Heading variant='h2_Kiosk' pb='6' pt='8'>
-                            Größe:
+                            {t(`Größe`)}:
                           </Heading>
                           <Flex gap='5'>
                             {selectedProduct.sizes.map((size, index) => (
@@ -169,7 +170,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                   {selectedCategory.additives?.includes('sugar') && (
                     <Box py='6'>
                       <Heading variant='h2_Kiosk' py='6'>
-                        Zucker:
+                        {t(`Zucker`)}:
                       </Heading>
                       <Flex gap='5'>
                         {sugarLevels.map((level, index) => (
@@ -211,13 +212,13 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                             )}
                             <Box pl={level === selectedSugarOption ? 2 : 0}>
                               {level === 'zero'
-                                ? 'Kein Zucker'
+                                ? t(`Kein Zucker`)
                                 : level === 's'
-                                  ? 'Wenig'
+                                  ? t(`Wenig`)
                                   : level === 'm'
-                                    ? 'Mittel'
+                                    ? t(`Mittel`)
                                     : level === 'l'
-                                      ? 'Viel'
+                                      ? t(`Viel`)
                                       : ''}
                             </Box>
                           </Button>
@@ -276,7 +277,7 @@ function ShopModalStep0({ selectedProduct, selectedCategory, formatPrice }) {
                       }
                     }}
                   >
-                    Weiter
+                    {t(`Weiter`)}
                     <Icon boxSize='3.5rem' as={ArrowRightSharpSolid} />
                   </Button>
                 </HStack>

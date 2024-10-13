@@ -1,3 +1,13 @@
 {
-  "kiosk": "kiosque"
+  "START": "DÉMARRER",
+  "Kaffee": "Café",
+  "Trinkschoki": "Choc Boire",
+  "Snacks": "Snacks",
+  "Espresso": "Espresso",
+  "Latte Macchiato": "Latte Macchiato",
+  "Flat White": "Flat White",
+  "Cappuccino": "Cappuccino",
+  "Americano": "Americano",
+  "Black White": "Black White",
+  "Allergene und Produktinformationen": "Allergènes et informations sur le produit"
 }

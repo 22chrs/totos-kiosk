@@ -15,7 +15,7 @@
         {
           "id": "1",
           "name": "Espresso",
-          "description": "Der Klassiker: Intensiver, purer Kaffee, ideal für den schnellen, kräftigen Koffeinkick.",
+          "description": "Der Klassiker: Intensiver und purer Geschmack, ideal für den schnellen, kräftigen Koffeinkick.",
           "price": 1.0,
           "vat": 0.19,
           "sizes": [

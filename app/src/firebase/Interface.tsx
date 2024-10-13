@@ -1,6 +1,6 @@
 import shopData from '@/public/kiosk/products/leipzig.json';
 const teeCategory = shopData.categories.find(
-  (category) => category.name === 'Tee'
+  (category) => category.name === 'Tee',
 );
 
 export type Automat = {
@@ -10,11 +10,8 @@ export type Automat = {
   lastRefillDate: string;
   lastOrderDate: string;
   lastValidOrder?: string;
-
   AutomatConstants: AutomatConstants;
-
   Verpackungen: Record<string, ProductCategory>;
-
   Additive: Record<string, ProductCategory>;
   Tee?: Record<string, ProductCategory>;
   Schokoriegel?: Record<string, ProductCategory>;
@@ -48,7 +45,7 @@ export const refillAutomat = (automat: Automat): Automat => {
     lastRefillDate: 'updated in function',
   };
   function refillProducts(
-    productName: keyof Automat
+    productName: keyof Automat,
   ): Record<string, ProductCategory> {
     return Object.fromEntries(
       Object.entries(refillBasicElements[productName] || {}).map(
@@ -58,8 +55,8 @@ export const refillAutomat = (automat: Automat): Automat => {
             ...(productCategory as ProductCategory),
             current: 0, //(productCategory as ProductCategory).capacity,
           },
-        ]
-      )
+        ],
+      ),
     );
   }
   return {
@@ -83,10 +80,10 @@ function getAutomatConstantsFromJson(data: any): AutomatConstants {
 }
 
 function getProductCategoryFromJson(
-  product: string
+  product: string,
 ): Record<string, Record<string, ProductCategory>> {
   const productCategory = shopData.categories.find(
-    (category) => category.name === product
+    (category) => category.name === product,
   );
 
   if (!productCategory) {
@@ -103,7 +100,7 @@ function getProductCategoryFromJson(
           current: 0, // replace with actual data if available
           unit: productCategory.unit, // replace with actual data if available
         },
-      ])
+      ]),
     ),
   };
 }
