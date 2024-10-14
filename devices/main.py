@@ -1,5 +1,4 @@
 # main.py
-
 import asyncio
 
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController
@@ -15,12 +14,12 @@ async def manage_usb_serial(usb_manager, command_forwarder):
 
 async def main():
     # Set debug flag
-    debug = False  #! Set to True to allow the orchestra to start even if homing failed
+    debug = False  # Set to True to allow the orchestra to start even if homing failed
     print(f"Debug-Mode = {debug}")
 
-    #! Serial
-    if debug == True:
-        teensys = {'RoboCubeBack'}
+    # Serial
+    if debug:
+        teensys = {'RoboCubeFront'}
     else:
         teensys = {'RoboCubeFront', 'RoboCubeBack', 'ServiceCube'}  # Define the aliases for the boards you want to connect with
 
@@ -34,8 +33,9 @@ async def main():
     command_forwarder = SerialCommandForwarder(usb_manager)
     teensy_controller = TeensyController(usb_manager, command_forwarder)
     asyncio.create_task(manage_usb_serial(usb_manager, command_forwarder))  # Start USB serial management as a separate task
+
     print("Starting wait_until_all_aliases_connected...")
-    #!await usb_manager.wait_until_all_aliases_connected()  # Wait until all required aliases are connected
+    await usb_manager.wait_until_all_aliases_connected()  # Wait until all required aliases are connected
 
     homing_successful = True  # Initialize the homing success flag
     print("Starting to home all devices...")
@@ -53,17 +53,17 @@ async def main():
             # Optionally handle recovery or retry logic here
 
     if homing_successful or debug:
-        print("Homing successful (or debug mode is on). Proceeding to start tasks.")
-        #! Payment
-        payment_job_task = asyncio.create_task(schedule_end_of_day_job())  # print("Scheduled end-of-day job.")
+        print("Homing successful. Proceeding to start tasks.")
+        # Payment
+        payment_job_task = asyncio.create_task(schedule_end_of_day_job())  # Scheduled end-of-day job.
 
-        #! Websocket
+        # Websocket
         connection_check_task = asyncio.create_task(check_connections_periodically())
         websocket_task = asyncio.create_task(
             start_websocket_server(handle_order, clients, HOST_NAME)
         )
 
-        #! Orchestra
+        # Orchestra
         orchestra_task = asyncio.create_task(
             start_orchestra(teensy_controller=teensy_controller)
         )

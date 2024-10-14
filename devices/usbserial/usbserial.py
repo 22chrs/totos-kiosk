@@ -285,7 +285,7 @@ class BoardSerial:
         try:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self.connect)
-            asyncio.ensure_future(self.send_periodic_ack()) ### Periodisches senden ACK heartbeat
+            #!asyncio.ensure_future(self.send_periodic_ack()) ### Periodisches senden ACK heartbeat
             asyncio.ensure_future(self.check_old_ack_messages())
         except Exception as e:
             print(f"Error during async_connect: {str(e)}")

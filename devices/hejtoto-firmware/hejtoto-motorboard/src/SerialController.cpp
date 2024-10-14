@@ -194,7 +194,7 @@ void SerialController::handleReceivedMessage(const String &message) {
                 } else {
                     if (!cmdWithoutTimestamp.startsWith("ACK:")) {
                         sendAckMessage(timestamp);
-                        Serial.println("Received: " + cmdWithoutTimestamp);
+                        // Serial.println("Received: " + cmdWithoutTimestamp);
                     }
 
                     if (!isRepeatedTimestamp(timestamp)) {

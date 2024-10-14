@@ -19,7 +19,7 @@ Chrono helperChrono;
 void setup() {
     init_LEDs();
     buildInLEDBlik();
-    Neopixel(GREEN);
+    Neopixel(BLUE);
 
     Wire.begin();           // Initialize I2C
     Wire.setClock(400000);  // Set I2C speed to 400kHz (Standard 100kHz)
@@ -51,7 +51,7 @@ void setup() {
 
     // moveDevice("Lift_A", 629, 100, 100);
     // homeDevice("Schleuse", "timestamp");
-    // homeDevice("Becherschubse", "timestamp");
+    // homeDevice("Snackbar", "timestamp");
     // homeDevice("Shield", "timestamp");
     // homeDevice("Snackbar", "timestamp");
 

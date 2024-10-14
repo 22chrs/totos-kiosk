@@ -91,7 +91,7 @@ void stepperCheckObstruction() {
         // Print stall value for debugging
         stallValue = stepperMotors[i].driver->SG_RESULT();
         // Check for a stall condition
-        Serial.println(stallValue);
+        // Serial.println(stallValue);
     }
 }
 
@@ -526,7 +526,7 @@ boolean checkAndSendAllSteppersHomed() {
     }
 
     // Serial print the homed state string
-    Serial.print("Steppers homed state: ");  //! ### Absturz wenn kein ?!
+    // Serial.print("Steppers homed state: ");  //! ### Absturz wenn kein ?!
     Serial.println(homedState);
 
     if (allSteppersHomed) {

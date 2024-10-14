@@ -299,7 +299,9 @@ async def homeAllDevices(teensy_controller, whichBoard):
         print("ToHome: ServiceCube")
     else:
         print(f"Unknown board: {whichBoard}")
-        return
+        return "FAIL"
+
+    all_homed_successfully = True
 
     for device in devices:
         message = f"homeDevice('{device}')"
@@ -316,10 +318,17 @@ async def homeAllDevices(teensy_controller, whichBoard):
                 print(f"Command '{message}' executed successfully.")
             elif result == "FAIL":
                 print(f"Command '{message}' failed.")
-                #break  # Stop proceeding to next devices
+                all_homed_successfully = False
+                break  # Stop proceeding to next devices
         except asyncio.TimeoutError:
             print(f"Timeout waiting for response to timestamp {timestampTask}")
-            #break  # Stop proceeding
+            all_homed_successfully = False
+            break  # Stop proceeding
+
+    if all_homed_successfully:
+        return "SUCCESS"
+    else:
+        return "FAIL"
 
 async def update_line_marker(filename, line_index, old_marker, new_marker):
     loop = asyncio.get_event_loop()

@@ -60,15 +60,15 @@ services:
     depends_on:
       - certs
 
-  camera:
-    hostname: camera
-    build: ./camera
-    restart: always
-    privileged: true
-    devices:
-      - "/dev/video0:/dev/video0"
-    ports:
-      - "8081:8081"
+  # camera:
+  #   hostname: camera
+  #   build: ./camera
+  #   restart: always
+  #   privileged: true
+  #   devices:
+  #     - "/dev/video0:/dev/video0"
+  #   ports:
+  #     - "8081:8081"
 
   # toto:
   #   hostname: toto
