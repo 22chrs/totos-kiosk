@@ -26,9 +26,11 @@ boolean homeDevice(const String &stepperName, String timestamp) {
 
     if (isHomed == true) {
         serialController.sendMessage("SUCCESS:" + timestamp);
+        delay(10);
         return true;
     } else {
         serialController.sendMessage("FAIL:" + timestamp);
+        delay(10);
         return false;
     }
 }

@@ -1,4 +1,3 @@
-# main.py
 import asyncio
 import time
 
@@ -13,14 +12,36 @@ async def manage_usb_serial(usb_manager, command_forwarder):
     await usb_manager.start()
     asyncio.create_task(command_forwarder.monitor_and_forward())  # Start monitoring and forwarding commands as a background task
 
+# Function to wait until all clients are connected
+async def wait_until_all_clients_connected(client_names):
+    while True:
+        all_connected = True
+        for client_name in client_names:
+            if client_name not in clients:
+                all_connected = False
+                print(f"Waiting for client {client_name} to connect...")
+        if all_connected:
+            print("All specified clients are connected.")
+            return
+        await asyncio.sleep(1)
+
 async def main():
     # Set debug flag
-    debug = True  # Set to True to allow the orchestra to start even if homing failed
+    debug = False  # Set to True to allow the orchestra to start even if homing failed
     print(f"Debug-Mode = {debug}")
+
+    # Start the WebSocket server as a background task
+    print("Starting WebSocket server...")
+    websocket_task = asyncio.create_task(
+        start_websocket_server(handle_order, clients, HOST_NAME)
+    )
+
+    # Wait until all specified clients are connected
+    await wait_until_all_clients_connected(["app_front", "app_back"])
 
     # Serial
     if debug:
-        teensys = {'RoboCubeFront'}
+        teensys = {'RoboCubeBack'}
     else:
         teensys = {'RoboCubeFront', 'RoboCubeBack', 'ServiceCube'}  # Define the aliases for the boards you want to connect with
 
@@ -37,9 +58,7 @@ async def main():
 
     print("Starting wait_until_all_aliases_connected...")
     await usb_manager.wait_until_all_aliases_connected()  # Wait until all required aliases are connected
-    #time.sleep(10)
 
-    homing_successful = True  # Initialize the homing success flag
     print("Starting to home all devices...")
     for alias in teensys:
         try:
@@ -54,51 +73,33 @@ async def main():
             homing_successful = False  # Update the flag if an exception occurs
             # Optionally handle recovery or retry logic here
 
-    if homing_successful or debug:
-        print("Homing successful. Proceeding to start tasks.")
-        # Payment
-        payment_job_task = asyncio.create_task(schedule_end_of_day_job())  # Scheduled end-of-day job.
+    payment_job_task = asyncio.create_task(schedule_end_of_day_job())  # Scheduled end-of-day job.
 
-        # Websocket
-        connection_check_task = asyncio.create_task(check_connections_periodically())
-        websocket_task = asyncio.create_task(
-            start_websocket_server(handle_order, clients, HOST_NAME)
+    # Start periodic connection check
+    connection_check_task = asyncio.create_task(check_connections_periodically())
+
+    # Orchestra
+    orchestra_task = asyncio.create_task(
+        start_orchestra(teensy_controller=teensy_controller)
+    )
+
+    # Await all tasks concurrently with exception handling
+    try:
+        await asyncio.gather(
+            payment_job_task,
+            connection_check_task,
+            websocket_task,
+            orchestra_task
         )
-
-        # Orchestra
-        orchestra_task = asyncio.create_task(
-            start_orchestra(teensy_controller=teensy_controller)
-        )
-
-        # Await all tasks concurrently with exception handling
-        try:
-            await asyncio.gather(
-                payment_job_task,
-                connection_check_task,
-                websocket_task,
-                orchestra_task
-            )
-        except asyncio.CancelledError:
-            print("Main tasks have been cancelled.")
-        except Exception as e:
-            print(f"An error occurred in the async tasks: {e}")
-    else:
-        print("Homing failed and debug mode is off. Not starting the orchestra.")
-        while True:
-            # You could retry homing after some time if desired
-            await asyncio.sleep(3600)  # Sleep for an hour (or any other period)
-            # The program remains active and you can add any logic to check/retry/etc.
+    except asyncio.CancelledError:
+        print("Main tasks have been cancelled.")
+    except Exception as e:
+        print(f"An error occurred in the async tasks: {e}")
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(main())
+        asyncio.run(main())
     except KeyboardInterrupt:
         print("KeyboardInterrupt received. Shutting down.")
-    finally:
-        # Cancel all running tasks
-        tasks = [t for t in asyncio.all_tasks(loop) if not t.done()]
-        for task in tasks:
-            task.cancel()
-        loop.run_until_complete(asyncio.gather(*tasks, return_exceptions=True))
-        loop.close()
+    except Exception as e:
+        print(f"An error occurred: {e}")

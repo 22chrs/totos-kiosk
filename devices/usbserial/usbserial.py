@@ -9,7 +9,7 @@ incoming_stamp_futures = {}
 
 from serial.tools import list_ports
 class BoardSerial:
-    def __init__(self, port, baudrate, timeout, alias_timeout=5, valid_aliases=None):
+    def __init__(self, port, baudrate, timeout, alias_timeout=60, valid_aliases=None):
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout

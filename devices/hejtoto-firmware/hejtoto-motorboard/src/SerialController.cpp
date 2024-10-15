@@ -89,7 +89,7 @@ void SerialController::checkForAckTimeouts() {
         // Check if enough time has passed since the last retry attempt
         if (currentMillis - sentMessages[i].lastRetryTime >= 150) {
             // Retry sending the message
-            Serial.println("i = " + String(i));
+
             Serial.flush();
 
             Serial.println(sentMessages[i].message);
@@ -158,7 +158,6 @@ void SerialController::sendAckMessage(const String &timestamp) {
     Serial.flush();
     Serial.println(messageToSend);
     Serial.flush();
-    delay(10);
 
     // Do not store ACK messages for retries
     // We do not store ACK messages in sentMessages because ACKs are not acknowledged
@@ -356,7 +355,6 @@ String SerialController::sendMessage(const String &message) {
     Serial.flush();
     Serial.println(messageToSend);
     Serial.flush();
-    delay(10);
 
     // Store the sent message for potential retries
     if (sentMessageCount < 10) {  // Ensure we do not exceed the buffer size

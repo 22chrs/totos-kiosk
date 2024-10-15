@@ -281,7 +281,6 @@ async def process_payment_task(message, order, line_index, active_orders_file):
             print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
     else:
         print(f"Invalid Payment BookTotal message format: {message}")
-
 async def homeAllDevices(teensy_controller, whichBoard):
     if whichBoard == "RoboCubeFront":
         devices = ["Shield", "Schleuse", "Becherschubse", "Snackbar"]
@@ -299,26 +298,56 @@ async def homeAllDevices(teensy_controller, whichBoard):
     all_homed_successfully = True
 
     for device in devices:
-        message = f"homeDevice('{device}')"
-        timestampTask = await teensy_controller.send_gerneral_serial_message(whichBoard, message)
+        max_retries = 5
+        retry_delay = 10  # seconds
+        attempt = 0
+        success = False
 
-        # Create a Future and store it
-        future = asyncio.get_event_loop().create_future()
-        incoming_stamp_futures[timestampTask] = future
+        while attempt < max_retries and not success:
+            attempt += 1
+            message = f"homeDevice('{device}')"
+            print(f"Attempt {attempt} to home device '{device}'.")
 
-        # Wait for the acknowledgment with a timeout of 60 seconds
-        try:
-            result = await asyncio.wait_for(future, timeout=60)
-            if result == "SUCCESS":
-                print(f"Command '{message}' executed successfully.")
-            elif result == "FAIL":
-                print(f"Command '{message}' failed.")
-                all_homed_successfully = False
-                break  # Stop proceeding to next devices
-        except asyncio.TimeoutError:
-            print(f"Timeout waiting for response to timestamp {timestampTask}")
+            try:
+                timestampTask = await teensy_controller.send_gerneral_serial_message(whichBoard, message)
+
+                # Create a Future and store it
+                future = asyncio.get_event_loop().create_future()
+                incoming_stamp_futures[timestampTask] = future
+
+                # Wait for the acknowledgment with a timeout of 60 seconds
+                result = await asyncio.wait_for(future, timeout=60)
+
+                if result == "SUCCESS":
+                    print(f"Command '{message}' executed successfully on attempt {attempt}.")
+                    success = True  # Exit the retry loop
+                elif result == "FAIL":
+                    print(f"Command '{message}' failed on attempt {attempt}.")
+                    if attempt < max_retries:
+                        print(f"Retrying in {retry_delay} seconds...")
+                        await asyncio.sleep(retry_delay)
+                else:
+                    print(f"Unexpected result '{result}' for command '{message}' on attempt {attempt}.")
+                    if attempt < max_retries:
+                        print(f"Retrying in {retry_delay} seconds...")
+                        await asyncio.sleep(retry_delay)
+
+            except asyncio.TimeoutError:
+                print(f"Timeout waiting for response to timestamp {timestampTask} on attempt {attempt}.")
+                if attempt < max_retries:
+                    print(f"Retrying in {retry_delay} seconds...")
+                    await asyncio.sleep(retry_delay)
+
+            except Exception as e:
+                print(f"An error occurred on attempt {attempt} for device '{device}': {e}")
+                if attempt < max_retries:
+                    print(f"Retrying in {retry_delay} seconds...")
+                    await asyncio.sleep(retry_delay)
+
+        if not success:
+            print(f"Failed to home device '{device}' after {max_retries} attempts.")
             all_homed_successfully = False
-            break  # Stop proceeding
+            break  # Stop proceeding to next devices
 
     if all_homed_successfully:
         return "SUCCESS"
