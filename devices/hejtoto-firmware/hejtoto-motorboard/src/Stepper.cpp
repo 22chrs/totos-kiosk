@@ -499,8 +499,27 @@ void loop_StepperReachedDesiredRingPercentage() {
                     // Check if the stepper has reached or exceeded the desired ring percentage
                     if (percentageCompleted >= stepperMotors[i].state.desiredRingPercentage) {
                         String successMessage = "SUCCESS:" + String(stepperMotors[i].state.messageID);
-                        serialController.sendMessage(successMessage);
+
                         stepperMotors[i].state.desiredRingPercentage = -1.0;
+
+                        boolean CombinedRunningSteppersFound = false;
+                        // check for combined steppers
+                        //! j = potentieller combined motor
+                        //! i = aktuelle motor
+
+                        for (int j = 0; j < 6; ++j) {
+                            if (i != j && currentBoardConfig->stepper[j].name == currentBoardConfig->stepper[i].name) {
+                                if (stepperMotors[j].state.desiredRingPercentage == -1.0) {
+                                    CombinedRunningSteppersFound = true;
+
+                                } else if (stepperMotors[j].state.desiredRingPercentage != -1.0) {
+                                    stepperMotors[i].state.desiredRingPercentage = -1.0;
+                                }
+                            }
+                        }
+                        if (CombinedRunningSteppersFound == false) {
+                            serialController.sendMessage(successMessage);
+                        }
 
                         // stepperMotors[i].state.isActivated = false; //! not because ring percentage could be less than 100%
                     }

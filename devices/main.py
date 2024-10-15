@@ -15,7 +15,7 @@ async def manage_usb_serial(usb_manager, command_forwarder):
 
 async def main():
     # Set debug flag
-    debug = False  # Set to True to allow the orchestra to start even if homing failed
+    debug = True  # Set to True to allow the orchestra to start even if homing failed
     print(f"Debug-Mode = {debug}")
 
     # Serial
@@ -37,7 +37,7 @@ async def main():
 
     print("Starting wait_until_all_aliases_connected...")
     await usb_manager.wait_until_all_aliases_connected()  # Wait until all required aliases are connected
-    time.sleep(10)
+    #time.sleep(10)
 
     homing_successful = True  # Initialize the homing success flag
     print("Starting to home all devices...")

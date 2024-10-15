@@ -126,17 +126,14 @@ def generate_drink_recipe(product_name, choosen_size, choosen_sugar, choosen_mug
     #! recipe.append(f"ServiceCube: askForCup('{choosen_mug}', '{choosen_size}') => 'initialCupPosition'")
     #! recipe.append(f"{RoboCube}: fireLED()") #! TEMP
     #! recipe.append(f"ServiceCube: provideCup('{choosen_mug}', '{choosen_size}', 'initialCupPosition') => 'minimumLagerbestandCup'")
-    recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '600', '100', '100', '50')")
-    recipe.append("RoboCubeBack:  moveDevice('Becherschubse', '600', '100', '100', '100')")
-    recipe.append("RoboCubeBack:  moveDevice('Schleuse', '100', '100', '100', '20')")
+    recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '100', '100', '100', '100')")
+    recipe.append("RoboCubeFront:  moveDevice('Becherschubse', '0', '100', '100', '10')")
+
     recipe.append("RoboCubeFront:  moveDevice('Schleuse', '50', '100', '100', '1')")
     recipe.append("RoboCubeFront:  moveDevice('Shield', '100', '100', '100', '100')")
     recipe.append("RoboCubeFront:  moveDevice('Schleuse', '0', '100', '100', '10')")
     recipe.append("RoboCubeFront:  moveDevice('Shield', '0', '100', '100', '10')")
-    recipe.append("RoboCubeFront:  moveDevice('Becherschubse', '0', '100', '100', '10')")
-    recipe.append("RoboCubeBack:  moveDevice('Becherschubse', '0', '100', '100', '10')")
-    recipe.append("RoboCubeBack:  moveDevice('Shield', '0', '100', '100', '10')")
-    recipe.append("RoboCubeBack:  moveDevice('Schleuse', '0', '100', '100', '10')")
+    
     #! recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '0', '100', '100', '100')")
     #! recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '600', '100', '100', '100')")
     #! recipe.append(f"{RoboCube}:  moveDevice('Becherschubse', '0', '100', '100', '100')")
@@ -168,8 +165,8 @@ def generate_drink_recipe(product_name, choosen_size, choosen_sugar, choosen_mug
     #! recipe.append(f"Coffeemachine: showFinalDisplayMessageOnCoffeemaschine('{which_terminal}', 'isSensorSuccess')")
     #! recipe.append(f"{RoboCube}: openAusgabe('isSensorSuccess')")
     #! recipe.append(f"{RoboCube}: checkAusgabeEmpty() => 'isAusgabeEmpty'")
-    if is_last_product:
-        recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
+    #! if is_last_product:
+    #!     recipe.append(f"Payment: BookTotal('{which_terminal}', '{receipt_number}', '{amount_in_cents}', 'isSensorSuccess')")
     return recipe
 
 def generate_snack_recipe(product_name, which_terminal, RoboCube, receipt_number, amount_in_cents, is_last_product=False):

@@ -19,7 +19,7 @@ Chrono helperChrono;
 void setup() {
     init_LEDs();
     buildInLEDBlik();
-    Neopixel(BLUE);
+    Neopixel(GREEN);
 
     Wire.begin();           // Initialize I2C
     Wire.setClock(400000);  // Set I2C speed to 400kHz (Standard 100kHz)

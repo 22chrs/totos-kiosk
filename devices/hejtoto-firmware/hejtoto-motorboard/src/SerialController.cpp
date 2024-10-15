@@ -35,25 +35,28 @@ void SerialController::update(uint32_t baudRate) {
         return;
     }
 
-    static char buffer[256];
+    static char buffer[1024];
     static size_t index = 0;
+    const size_t MAX_BUFFER_SIZE = sizeof(buffer);  // Set buffer limit
 
     while (Serial.available() > 0) {
         char incomingChar = Serial.read();
 
-        if (index < sizeof(buffer) - 1) {
-            if (incomingChar == '\n') {
-                buffer[index] = '\0';
-                if (isValidMessage(buffer)) {
-                    handleReceivedMessage(buffer);
-                }
-                index = 0;
-                lastReceivedMessage = millis();
-            } else {
-                buffer[index++] = incomingChar;
+        // Check for buffer overflow before adding new data
+        if (index >= MAX_BUFFER_SIZE - 1) {
+            index = 0;  // Reset the index (or handle overflow in another way)
+            Serial.println("Warning: Buffer overflow. Clearing buffer.");
+        }
+
+        if (incomingChar == '\n') {
+            buffer[index] = '\0';
+            if (isValidMessage(buffer)) {
+                handleReceivedMessage(buffer);
             }
-        } else {
             index = 0;
+            lastReceivedMessage = millis();
+        } else {
+            buffer[index++] = incomingChar;
         }
     }
 
@@ -84,9 +87,13 @@ void SerialController::checkForAckTimeouts() {
         }
 
         // Check if enough time has passed since the last retry attempt
-        if (currentMillis - sentMessages[i].lastRetryTime >= 50) {
+        if (currentMillis - sentMessages[i].lastRetryTime >= 150) {
             // Retry sending the message
+            Serial.println("i = " + String(i));
+            Serial.flush();
+
             Serial.println(sentMessages[i].message);
+
             Serial.flush();
 
             // Update the last retry time and increment the retry count
@@ -149,12 +156,9 @@ void SerialController::sendAckMessage(const String &timestamp) {
 
     // Ensure the serial buffer is clear before sending a new message
     Serial.flush();
-
-    // Send the message
     Serial.println(messageToSend);
-
-    // Ensure the data is fully sent
     Serial.flush();
+    delay(10);
 
     // Do not store ACK messages for retries
     // We do not store ACK messages in sentMessages because ACKs are not acknowledged
@@ -352,10 +356,13 @@ String SerialController::sendMessage(const String &message) {
     Serial.flush();
     Serial.println(messageToSend);
     Serial.flush();
+    delay(10);
 
     // Store the sent message for potential retries
     if (sentMessageCount < 10) {  // Ensure we do not exceed the buffer size
         sentMessages[sentMessageCount++] = {messageTimestamp, messageToSend, millis(), millis(), 0};
+    } else {
+        Serial.println("Sent message buffer is full. Cannot store more messages.");
     }
 
     return messageTimestamp;
