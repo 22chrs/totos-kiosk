@@ -66,12 +66,9 @@ async def main():
             result = await homeAllDevices(teensy_controller, alias)
             if result != "SUCCESS":
                 print(f"{alias} -> Homing failed!")
-                homing_successful = False  # Update the flag if homing fails
-                # Additional recovery logic can be added here
         except Exception as e:
             print(f"Error homing {alias}: {e}")
-            homing_successful = False  # Update the flag if an exception occurs
-            # Optionally handle recovery or retry logic here
+   
 
     payment_job_task = asyncio.create_task(schedule_end_of_day_job())  # Scheduled end-of-day job.
 

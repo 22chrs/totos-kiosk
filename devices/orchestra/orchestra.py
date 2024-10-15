@@ -281,7 +281,18 @@ async def process_payment_task(message, order, line_index, active_orders_file):
             print(f"BookTotal failed for terminal: {which_terminal_msg}, receipt_no: {receipt_no}")
     else:
         print(f"Invalid Payment BookTotal message format: {message}")
+        
 async def homeAllDevices(teensy_controller, whichBoard):
+    async def periodic_status_printer(stop_event):
+        """Prints a status message every 5 seconds until stop_event is set."""
+        while not stop_event.is_set():
+            print("Homing in progress...")
+            try:
+                # Wait for 5 seconds or until the stop_event is set
+                await asyncio.wait_for(stop_event.wait(), timeout=5.0)
+            except asyncio.TimeoutError:
+                continue  # Timeout occurred, loop continues
+
     if whichBoard == "RoboCubeFront":
         devices = ["Shield", "Schleuse", "Becherschubse", "Snackbar"]
         print("ToHome: RoboCubeFront")
@@ -297,62 +308,72 @@ async def homeAllDevices(teensy_controller, whichBoard):
 
     all_homed_successfully = True
 
-    for device in devices:
-        max_retries = 5
-        retry_delay = 10  # seconds
-        attempt = 0
-        success = False
+    # Create an event to signal the periodic printer to stop
+    stop_event = asyncio.Event()
+    # Start the periodic status printer
+    status_printer_task = asyncio.create_task(periodic_status_printer(stop_event))
 
-        while attempt < max_retries and not success:
-            attempt += 1
-            message = f"homeDevice('{device}')"
-            print(f"Attempt {attempt} to home device '{device}'.")
+    try:
+        for device in devices:
+            max_retries = 5
+            retry_delay = 10  # seconds
+            attempt = 0
+            success = False
 
-            try:
-                timestampTask = await teensy_controller.send_gerneral_serial_message(whichBoard, message)
+            while attempt < max_retries and not success:
+                attempt += 1
+                message = f"homeDevice('{device}')"
+                print(f"Attempt {attempt} to home device '{device}'.")
 
-                # Create a Future and store it
-                future = asyncio.get_event_loop().create_future()
-                incoming_stamp_futures[timestampTask] = future
+                try:
+                    timestampTask = await teensy_controller.send_gerneral_serial_message(whichBoard, message)
 
-                # Wait for the acknowledgment with a timeout of 60 seconds
-                result = await asyncio.wait_for(future, timeout=60)
+                    # Create a Future and store it
+                    future = asyncio.get_event_loop().create_future()
+                    incoming_stamp_futures[timestampTask] = future
 
-                if result == "SUCCESS":
-                    print(f"Command '{message}' executed successfully on attempt {attempt}.")
-                    success = True  # Exit the retry loop
-                elif result == "FAIL":
-                    print(f"Command '{message}' failed on attempt {attempt}.")
+                    # Wait for the acknowledgment with a timeout of 60 seconds
+                    result = await asyncio.wait_for(future, timeout=60)
+
+                    if result == "SUCCESS":
+                        print(f"Command '{message}' executed successfully on attempt {attempt}.")
+                        success = True  # Exit the retry loop
+                    elif result == "FAIL":
+                        print(f"Command '{message}' failed on attempt {attempt}.")
+                        if attempt < max_retries:
+                            print(f"Retrying in {retry_delay} seconds...")
+                            await asyncio.sleep(retry_delay)
+                    else:
+                        print(f"Unexpected result '{result}' for command '{message}' on attempt {attempt}.")
+                        if attempt < max_retries:
+                            print(f"Retrying in {retry_delay} seconds...")
+                            await asyncio.sleep(retry_delay)
+
+                except asyncio.TimeoutError:
+                    print(f"Timeout waiting for response to timestamp {timestampTask} on attempt {attempt}.")
                     if attempt < max_retries:
                         print(f"Retrying in {retry_delay} seconds...")
                         await asyncio.sleep(retry_delay)
-                else:
-                    print(f"Unexpected result '{result}' for command '{message}' on attempt {attempt}.")
+
+                except Exception as e:
+                    print(f"An error occurred on attempt {attempt} for device '{device}': {e}")
                     if attempt < max_retries:
                         print(f"Retrying in {retry_delay} seconds...")
                         await asyncio.sleep(retry_delay)
 
-            except asyncio.TimeoutError:
-                print(f"Timeout waiting for response to timestamp {timestampTask} on attempt {attempt}.")
-                if attempt < max_retries:
-                    print(f"Retrying in {retry_delay} seconds...")
-                    await asyncio.sleep(retry_delay)
+            if not success:
+                print(f"Failed to home device '{device}' after {max_retries} attempts.")
+                all_homed_successfully = False
+                break  # Stop proceeding to next devices
 
-            except Exception as e:
-                print(f"An error occurred on attempt {attempt} for device '{device}': {e}")
-                if attempt < max_retries:
-                    print(f"Retrying in {retry_delay} seconds...")
-                    await asyncio.sleep(retry_delay)
-
-        if not success:
-            print(f"Failed to home device '{device}' after {max_retries} attempts.")
-            all_homed_successfully = False
-            break  # Stop proceeding to next devices
-
-    if all_homed_successfully:
-        return "SUCCESS"
-    else:
-        return "FAIL"
+        if all_homed_successfully:
+            return "SUCCESS"
+        else:
+            return "FAIL"
+    finally:
+        # Signal the periodic printer to stop and wait for it to finish
+        stop_event.set()
+        await status_printer_task
 
 async def update_line_marker(filename, line_index, old_marker, new_marker):
     loop = asyncio.get_event_loop()

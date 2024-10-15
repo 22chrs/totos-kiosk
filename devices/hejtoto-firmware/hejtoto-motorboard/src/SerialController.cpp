@@ -223,7 +223,7 @@ void SerialController::handleReceivedMessage(const String &message) {
                         if (!isRepeatedTimestamp(timestamp)) {
                             if (cmdWithoutTimestamp == "connected") {
                                 Serial.println(Version);
-                                Neopixel(GREEN);
+                                // Neopixel(GREEN);
                                 connectionStatus = true;
                             } else if (cmdWithoutTimestamp.startsWith("fireLED")) {
                                 processGeneralCommand(cmdWithoutTimestamp, timestamp);

@@ -254,7 +254,7 @@ class BoardSerial:
                         self.board_info["alias"] = processed_data
                         #print(f"[DEBUG] Alias set to: {processed_data}")
                         self.is_heartbeat_sent = False
-                        self.send_data("connected")
+                        
                     else:
                         print(f"Alias '{processed_data}' is not in the list of valid aliases. Ignoring board.")
                     break
@@ -390,6 +390,8 @@ class ConnectionManager:
             print("Not all Teensys connected.")
             await asyncio.sleep(2)
         print("All required aliases are now connected.")
+        for board in self.boards.values():
+            board.send_data("connected")
 
     async def check_required_aliases(self):
         missing_aliases = [alias for alias in self.required_aliases if alias not in self.boards]
@@ -406,6 +408,7 @@ class ConnectionManager:
         if result != self.all_aliases_connected_flag:  # Only log if the status changes
             print(f"[DEBUG] All required aliases connected: {result}")
             self.all_aliases_connected_flag = result  # Update flag
+            
         return result
 
     def check_board_connections(self):
