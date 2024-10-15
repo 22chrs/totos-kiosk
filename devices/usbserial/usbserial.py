@@ -440,7 +440,6 @@ class ConnectionManager:
 
     async def discover_boards(self):
         available_ports = self._get_ports_with_pid_and_vid(self.vid, self.pid)
-        #able ports for VID={self.vid}, PID={self.pid}: {available_ports}")
         for port_info in available_ports:
             if any(board.port == port_info.device for board in self.boards.values()):
                 continue
@@ -451,6 +450,7 @@ class ConnectionManager:
             await board.async_connect()
             if board.board_info['alias']:
                 self.boards[board.board_info['alias']] = board
+            await asyncio.sleep(2)  # Add delay of 3 seconds between connecting to each board
 
     def _get_ports_with_pid_and_vid(self, vid, pid):
         ports = [port_info for port_info in list_ports.comports() if (port_info.vid == vid and port_info.pid == pid)]
