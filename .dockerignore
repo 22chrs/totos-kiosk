@@ -14,6 +14,7 @@
 ### DEVICES
 #devices/Orders
 devices/payment/receipts
+devices/payment/Orders
 devices/payment/quene.txt
 devices/payment/zvt\+\+/stuff
 devices/payment/zvt\+\+/ssrc

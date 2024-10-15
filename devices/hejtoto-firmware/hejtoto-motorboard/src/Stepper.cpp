@@ -495,7 +495,7 @@ void loop_StepperReachedDesiredRingPercentage() {
         for (int i = 0; i < StepperCount; i++) {                                             // Loop over all stepper motors
             if ((stepperMotors[i].state.isActivated) && (stepperMotors[i].state.isHomed)) {  // Check if the stepper is currently activated
                 double percentageCompleted = stepperMovementPercentageCompleted(i);          // Calculate the percentage completed
-                if (stepperMotors[i].state.desiredRingPercentage != 0) {
+                if (stepperMotors[i].state.desiredRingPercentage > 0) {
                     // Check if the stepper has reached or exceeded the desired ring percentage
                     if (percentageCompleted >= stepperMotors[i].state.desiredRingPercentage) {
                         String successMessage = "SUCCESS:" + String(stepperMotors[i].state.messageID);

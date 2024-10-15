@@ -142,10 +142,10 @@ void SerialController::sendAckMessage(const String &timestamp) {
     String ackMessage = "ACK:" + timestamp;
 
     // Generate the current timestamp with a unique letter suffix
-    String timestampToSend = generateTimestampWithSuffix();
+    String messageTimestamp = generateTimestampWithSuffix();
 
     // Add STX, ETX, and CRC to the acknowledgment message
-    String messageToSend = "<STX>" + timestampToSend + "|" + ackMessage + "|" + calculateCRC(timestampToSend + "|" + ackMessage) + "<ETX>";
+    String messageToSend = "<STX>" + messageTimestamp + "|" + ackMessage + "|" + calculateCRC(messageTimestamp + "|" + ackMessage) + "<ETX>";
 
     // Ensure the serial buffer is clear before sending a new message
     Serial.flush();
@@ -155,7 +155,13 @@ void SerialController::sendAckMessage(const String &timestamp) {
 
     // Ensure the data is fully sent
     Serial.flush();
+
+    // Store the sent ACK message for potential retries
+    if (sentMessageCount < 10) {  // Ensure we do not exceed the buffer size
+        sentMessages[sentMessageCount++] = {messageTimestamp, messageToSend, millis(), millis(), 0};
+    }
 }
+
 void SerialController::processStatusMessage(const String &message) {
     String statusType = message.substring(0, message.indexOf(':'));
     String originalTimestamp = message.substring(message.indexOf(':') + 1);
@@ -342,8 +348,8 @@ void SerialController::processGeneralCommand(const String &message, const String
 }
 
 String SerialController::sendMessage(const String &message) {
-    String timestamp = generateTimestampWithSuffix();
-    String messageToSend = "<STX>" + timestamp + "|" + message + "|" + calculateCRC(timestamp + "|" + message) + "<ETX>";
+    String messageTimestamp = generateTimestampWithSuffix();  // Use a distinct variable name
+    String messageToSend = "<STX>" + messageTimestamp + "|" + message + "|" + calculateCRC(messageTimestamp + "|" + message) + "<ETX>";
 
     Serial.flush();
     Serial.println(messageToSend);
@@ -351,10 +357,10 @@ String SerialController::sendMessage(const String &message) {
 
     // Store the sent message for potential retries
     if (sentMessageCount < 10) {  // Ensure we do not exceed the buffer size
-        sentMessages[sentMessageCount++] = {timestamp, messageToSend, millis(), millis(), 0};
+        sentMessages[sentMessageCount++] = {messageTimestamp, messageToSend, millis(), millis(), 0};
     }
 
-    return timestamp;
+    return messageTimestamp;
 }
 
 String SerialController::calculateCRC(const String &message) {
