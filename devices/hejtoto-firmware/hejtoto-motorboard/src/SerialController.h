@@ -45,7 +45,7 @@ class SerialController {
     unsigned long getMillisFromTimestamp(const String &timestamp);
     String generateTimestampWithSuffix();  // Method to generate a timestamp with a suffix
     void checkForAckTimeouts();            // Method to check for ACK timeouts and resend messages
-
+    void processStatusMessage(const String &message);
     // Methods to check and update the timestamp buffer
     bool isRepeatedTimestamp(const String &timestamp);    // Method to check if a timestamp is repeated
     void updateTimestampBuffer(const String &timestamp);  // Method to update the timestamp buffer
@@ -61,6 +61,7 @@ class SerialController {
     String getInitialTimestamp() const;              // Method to get the received timestamp
     unsigned long getTimestampMillisOffset() const;  // Method to get the millis offset
     String getCurrentTime();                         // Method to calculate the current exact time
+    void delayButListen(unsigned long delayTime);
 };
 
 extern SerialController serialController;

@@ -149,7 +149,7 @@ class BoardSerial:
 
                 # Verify CRC
                 calculated_crc = self.calculate_crc(message)
-                if calculated_crc != crc.lower():
+                if int(calculated_crc, 16) != int(crc.lower(), 16):
                     print(f"{alias_to_print}: Invalid CRC: {calculated_crc} (calculated) != {crc} (received)")
                     return ""
 
@@ -264,7 +264,7 @@ class BoardSerial:
     async def send_periodic_ack(self):
         while True:
             try:
-                await asyncio.sleep(120)  # Adjust the sleep interval as needed
+                await asyncio.sleep(60)  # Adjust the sleep interval as needed
                 if self.retry_count >= 5:
                     await asyncio.sleep(500)
                 if self.serial_connection is not None and self.board_info["alias"]:
@@ -285,7 +285,7 @@ class BoardSerial:
         try:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self.connect)
-            #!asyncio.ensure_future(self.send_periodic_ack()) ### Periodisches senden ACK heartbeat
+            asyncio.ensure_future(self.send_periodic_ack()) ### Periodisches senden ACK heartbeat
             asyncio.ensure_future(self.check_old_ack_messages())
         except Exception as e:
             print(f"Error during async_connect: {str(e)}")

@@ -156,6 +156,18 @@ void SerialController::sendAckMessage(const String &timestamp) {
     // Ensure the data is fully sent
     Serial.flush();
 }
+void SerialController::processStatusMessage(const String &message) {
+    String statusType = message.substring(0, message.indexOf(':'));
+    String originalTimestamp = message.substring(message.indexOf(':') + 1);
+
+    // Log or handle the status message as needed
+    Serial.print("Received ");
+    Serial.print(statusType);
+    Serial.print(" for timestamp ");
+    Serial.println(originalTimestamp);
+
+    // Optionally, you can remove the original command from any pending lists if necessary
+}
 
 void SerialController::handleReceivedMessage(const String &message) {
     if (message.startsWith("<STX>") && message.endsWith("<ETX>")) {
@@ -173,44 +185,51 @@ void SerialController::handleReceivedMessage(const String &message) {
 
                 if (cmdWithoutTimestamp.startsWith("ACK:")) {
                     String ackedTimestamp = cmdWithoutTimestamp.substring(4);
+                    ackedTimestamp.trim();
 
                     // Remove the acknowledged message from the retry list
+                    bool found = false;
                     for (int i = 0; i < sentMessageCount; ++i) {
                         if (sentMessages[i].timestamp == ackedTimestamp) {
-                            // Shift the remaining messages down
+                            // Message found; remove it from the list
                             for (int j = i; j < sentMessageCount - 1; ++j) {
                                 sentMessages[j] = sentMessages[j + 1];
                             }
                             --sentMessageCount;
+                            found = true;
                             break;
                         }
                     }
-                }
+                    if (!found) {
+                        Serial.println("ACK received for unknown timestamp: " + ackedTimestamp);
+                    }
 
-                if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
-                    receivedInitialTimestamp = timestamp;
-                    timestampMillisOffset = millis();
-                    sendMessage(alias);
                 } else {
-                    if (!cmdWithoutTimestamp.startsWith("ACK:")) {
+                    if (cmdWithoutTimestamp == "REQUEST_ALIAS") {
+                        receivedInitialTimestamp = timestamp;
+                        timestampMillisOffset = millis();
+                        sendMessage(alias);
+                    } else {
+                        // Send ACK for any message that is not an ACK itself
                         sendAckMessage(timestamp);
-                        // Serial.println("Received: " + cmdWithoutTimestamp);
-                    }
 
-                    if (!isRepeatedTimestamp(timestamp)) {
-                        if (cmdWithoutTimestamp == "connected") {
-                            Serial.println(Version);
-                            Neopixel(GREEN);
-                            connectionStatus = true;
-                        } else if (cmdWithoutTimestamp.startsWith("fireLED")) {
-                            processGeneralCommand(cmdWithoutTimestamp, timestamp);
-                        } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
-                            processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
-                        } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
-                            processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                        if (!isRepeatedTimestamp(timestamp)) {
+                            if (cmdWithoutTimestamp == "connected") {
+                                Serial.println(Version);
+                                Neopixel(GREEN);
+                                connectionStatus = true;
+                            } else if (cmdWithoutTimestamp.startsWith("fireLED")) {
+                                processGeneralCommand(cmdWithoutTimestamp, timestamp);
+                            } else if (cmdWithoutTimestamp.startsWith("moveDevice")) {
+                                processMoveDeviceCommand(cmdWithoutTimestamp, timestamp);
+                            } else if (cmdWithoutTimestamp.startsWith("homeDevice")) {
+                                processHomeDeviceCommand(cmdWithoutTimestamp, timestamp);
+                            } else if (cmdWithoutTimestamp.startsWith("SUCCESS:") || cmdWithoutTimestamp.startsWith("FAIL:")) {
+                                processStatusMessage(cmdWithoutTimestamp);
+                            }
                         }
+                        updateTimestampBuffer(timestamp);
                     }
-                    updateTimestampBuffer(timestamp);
                 }
             } else {
                 Serial.println("Invalid message format: Timestamp separator '|' not found");
@@ -314,9 +333,6 @@ void SerialController::processGeneralCommand(const String &message, const String
     // int driveCurrentPercentage = message.substring(thirdComma + 1, fourthComma).toInt();  // Update to extract the correct substring
     // int ringPercentage = message.substring(fourthComma + 1).toInt();                      // Extract the ringPercentage
 
-    fireLED();
-    fireLED();
-    fireLED();
     boolean hatGeklappt = fireLED();
     if (hatGeklappt == true) {
         sendMessage("SUCCESS:" + timestamp);
@@ -419,4 +435,17 @@ String SerialController::generateTimestampWithSuffix() {
     }
 
     return newTimestamp + timestampSuffix;
+}
+
+void SerialController::delayButListen(unsigned long delayTime) {
+    unsigned long startTime = millis();
+
+    // Continue until the full delay time has passed
+    while (millis() - startTime < delayTime) {
+        // Update the serial controller (handling serial communication)
+        serialController.update(BaudRateSerial);
+
+        // Small non-blocking delay to avoid overwhelming the CPU
+        delay(5);
+    }
 }
