@@ -1,5 +1,6 @@
 # main.py
 import asyncio
+import time
 
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController
 from orchestra.orchestra import homeAllDevices, start_orchestra
@@ -36,6 +37,7 @@ async def main():
 
     print("Starting wait_until_all_aliases_connected...")
     await usb_manager.wait_until_all_aliases_connected()  # Wait until all required aliases are connected
+    time.sleep(10)
 
     homing_successful = True  # Initialize the homing success flag
     print("Starting to home all devices...")
@@ -44,7 +46,7 @@ async def main():
             print(f"Homing {alias}...")
             result = await homeAllDevices(teensy_controller, alias)
             if result != "SUCCESS":
-                print(f"### {alias} -> Homing failed ###")
+                print(f"{alias} -> Homing failed!")
                 homing_successful = False  # Update the flag if homing fails
                 # Additional recovery logic can be added here
         except Exception as e:

@@ -156,21 +156,19 @@ void SerialController::sendAckMessage(const String &timestamp) {
     // Ensure the data is fully sent
     Serial.flush();
 
-    // Store the sent ACK message for potential retries
-    if (sentMessageCount < 10) {  // Ensure we do not exceed the buffer size
-        sentMessages[sentMessageCount++] = {messageTimestamp, messageToSend, millis(), millis(), 0};
-    }
+    // Do not store ACK messages for retries
+    // We do not store ACK messages in sentMessages because ACKs are not acknowledged
 }
 
 void SerialController::processStatusMessage(const String &message) {
     String statusType = message.substring(0, message.indexOf(':'));
     String originalTimestamp = message.substring(message.indexOf(':') + 1);
 
-    // Log or handle the status message as needed
-    Serial.print("Received ");
-    Serial.print(statusType);
-    Serial.print(" for timestamp ");
-    Serial.println(originalTimestamp);
+    // // Log or handle the status message as needed
+    // Serial.print("Received ");
+    // Serial.print(statusType);
+    // Serial.print(" for timestamp ");
+    // Serial.println(originalTimestamp);
 
     // Optionally, you can remove the original command from any pending lists if necessary
 }
