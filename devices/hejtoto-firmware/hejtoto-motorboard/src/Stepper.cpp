@@ -81,6 +81,7 @@ void init_Stepper() {
         stepperMotors[i].stepper->setPosition(0);
         deactivateDriverViaUART(i);  // Treiber alle deaktiveren via UART
         delay(5);
+        delay(500);  // Wegen Spitzenstrom & Netzteil
     }
 }
 

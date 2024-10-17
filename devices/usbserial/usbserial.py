@@ -385,13 +385,31 @@ class ConnectionManager:
         self.all_aliases_connected_flag = False  
 
     async def wait_until_all_aliases_connected(self):
-        """Waits until all required aliases are connected."""
+        """Waits until all required aliases are connected and have acknowledged the 'connected' message."""
         while not self.all_required_aliases_connected():
             print("Not all Teensys connected.")
             await asyncio.sleep(2)
-        print("All required aliases are now connected.")
-        for board in self.boards.values():
+        
+        print("All required aliases are now connected. Waiting 5 seconds ...")
+        await asyncio.sleep(5)
+        
+        # Send 'connected' message to each board and wait for ACK
+        ack_futures = []
+        for alias, board in self.boards.items():
+            future = asyncio.get_event_loop().create_future()
+            incoming_stamp_futures[board.generate_timestamp()] = future  # Store the future with the timestamp as key
+           
             board.send_data("connected")
+            ack_futures.append(future)
+            print(f"Sent 'connected' to {alias}, waiting for ACK.")
+        
+        try:
+            # Wait for all ACKs with a timeout
+            await asyncio.wait_for(asyncio.gather(*ack_futures), timeout=10.0)
+            print("Received all ACKs for 'connected' messages.")
+        except asyncio.TimeoutError:
+            print("Timeout waiting for ACKs of 'connected' messages.")
+            # Handle retries or take necessary actions here
 
     async def check_required_aliases(self):
         missing_aliases = [alias for alias in self.required_aliases if alias not in self.boards]

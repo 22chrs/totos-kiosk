@@ -5,11 +5,10 @@
 
 #include <_global.h>
 
-#define NEOPIXEL_PIN D4
+#define NEOPIXEL_PIN D10
 #define NUM_LEDS 3
 
-enum ColorName
-{
+enum ColorName {
     RED,
     ORANGE,
     GREEN,

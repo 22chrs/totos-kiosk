@@ -19,7 +19,7 @@ TMC2209Stepper TMCdriver(&MySerial1, R_SENSE, DRIVER_ADDRESS);
 #define DIR_PIN D1  // Direction
 #define STP_PIN D0  // Step
 #define EN_PIN D3   // Enable
-#define DIAG_PIN D10;
+#define DIAG_PIN D8
 
 const int MICROSTEPS = 16;
 
@@ -27,7 +27,7 @@ const int MICROSTEPS = 16;
 ESP_FlexyStepper stepper;
 const int RESOLUTION = 200;  // Steps/turn
 
-const int SPEED_IN_STEPS_PER_SECOND = 2 * RESOLUTION * MICROSTEPS;
+const int SPEED_IN_STEPS_PER_SECOND = 2 * RESOLUTION * MICROSTEPS * 10;
 const int ACCELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
 const int DECELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
 
@@ -73,13 +73,13 @@ void init_Stepper() {
 
 void moveMotorAbs(float absolutePositionToMoveToInMillimeters) {
     TMCdriver.rms_current(400);
-    TMCdriver.microsteps(256);  // Set microsteps  to 2
+    TMCdriver.microsteps(128);  // Set microsteps  to 2
     Serial.print(F("Read microsteps via UART to test UART receive : "));
     Serial.println(TMCdriver.microsteps());  // check if reads 2
 
     stepper.moveToPositionInMillimeters(absolutePositionToMoveToInMillimeters);
 
-    delay(1000);
+    // delay(1000);
 }
 
 void homeMotor() {
