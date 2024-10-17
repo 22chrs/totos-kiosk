@@ -58,11 +58,11 @@ void init_LEDs() {
 
     pinMode(BUILTIN_LED, OUTPUT);  // Initialize the built-in LED
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 3; i++) {
         digitalWrite(BUILTIN_LED, LOW);  // Turn the LED on
-        delay(200);
+        delay(100);
         digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off
-        delay(200);                       // Wait
+        delay(100);                       // Wait
     }
 }
 

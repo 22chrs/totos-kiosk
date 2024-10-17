@@ -20,19 +20,18 @@ TMC2209Stepper TMCdriver(&MySerial1, R_SENSE, DRIVER_ADDRESS);
 #define STP_PIN D0  // Step
 #define EN_PIN D3   // Enable
 #define DIAG_PIN D8
+#define POSITIVE_DIRECTION HIGH  // invert direction
+#define NEGATIVE_DIRECTION LOW   // invert direction
 
-const int MICROSTEPS = 16;
+const int MICROSTEPS = 128;
 
 // !stepper
-ESP_FlexyStepper stepper;
-const int RESOLUTION = 200;  // Steps/turn
-
-const int SPEED_IN_STEPS_PER_SECOND = 2 * RESOLUTION * MICROSTEPS * 10;
+const int RESOLUTION = 200;               // Steps/turn
+const float RATIO = (20.0 / 32.0) * 4.0;  // geometry
+const int SPEED_IN_STEPS_PER_SECOND = 5 * RESOLUTION * MICROSTEPS;
 const int ACCELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
 const int DECELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
-
-// !geometry
-const float RATIO = (20.0 / 32.0) * 2.0;
+const float maxDistanceToMoveInMillimeters = 80;
 
 // #define RXD1 D6 // <<<<<<<<
 // #define TXD1 D7 // <<<<<<<<<
@@ -47,42 +46,48 @@ void init_Stepper() {
     pinMode(EN_PIN, OUTPUT);
     pinMode(STP_PIN, OUTPUT);
     pinMode(DIR_PIN, OUTPUT);
-    // pinMode(DIAG_PIN, INPUT);
+    //! pinMode(DIAG_PIN, INPUT);
     digitalWrite(EN_PIN, LOW);  // Enable driver in hardware
 
     TMCdriver.begin();                 // UART: Init SW UART (if selected) with default 115200 baudrate
     TMCdriver.toff(3);                 // Enables driver in software
-    TMCdriver.rms_current(500);        // Set motor RMS current
+    TMCdriver.rms_current(400);        // Set motor RMS current
     TMCdriver.microsteps(MICROSTEPS);  // Set microsteps
     delay(100);
 
     stepper.connectToPins(STP_PIN, DIR_PIN);
+    stepper.setDirectionToHome(1);  // tell the ESP_flexystepper in which direction to move when homing is required (only works with a homing / limit switch connected)
     stepper.setSpeedInStepsPerSecond(SPEED_IN_STEPS_PER_SECOND);
     stepper.setAccelerationInStepsPerSecondPerSecond(ACCELERATION_IN_STEPS_PER_SECOND);
     stepper.setDecelerationInStepsPerSecondPerSecond(DECELERATION_IN_STEPS_PER_SECOND);
 
     stepper.setStepsPerMillimeter(200 * MICROSTEPS / RATIO);
-
+    stepper.registerTargetPositionReachedCallback(targetPositionReachedCallback);
     stepper.startAsService(1);  // you might get away with starting the service on core 0, if you experience jitter, start it on core 1
 
     // Ask for the current setting
-    uint16_t current = TMCdriver.rms_current();
-    Serial.print("Current RMS set inside the driver: ");
-    Serial.println(current);
+    // uint16_t current = TMCdriver.rms_current();
+    // Serial.print("Current RMS set inside the driver: ");
+    // Serial.println(current);
+}
+
+void targetPositionReachedCallback(long position) {
+    Neopixel(GREEN);
+    // Serial.printf("Stepper reached target position %ld\n", position);
 }
 
 void moveMotorAbs(float absolutePositionToMoveToInMillimeters) {
-    TMCdriver.rms_current(400);
-    TMCdriver.microsteps(128);  // Set microsteps  to 2
-    Serial.print(F("Read microsteps via UART to test UART receive : "));
-    Serial.println(TMCdriver.microsteps());  // check if reads 2
-
-    stepper.moveToPositionInMillimeters(absolutePositionToMoveToInMillimeters);
-
-    // delay(1000);
+    Neopixel(BLUE);
+    stepper.setTargetPositionInMillimeters(absolutePositionToMoveToInMillimeters * (-1));
 }
 
-void homeMotor() {
+boolean homeMotor() {
+    // langsamer
+    stepper.setSpeedInStepsPerSecond(SPEED_IN_STEPS_PER_SECOND * 0.5);
+    stepper.setAccelerationInStepsPerSecondPerSecond(ACCELERATION_IN_STEPS_PER_SECOND * 0.5);
+    stepper.setDecelerationInStepsPerSecondPerSecond(DECELERATION_IN_STEPS_PER_SECOND * 0.5);
+
+    // Optional -> Fall 1: Limit switch triggered -> Rausfahren
     if (check_limitSwitch() == true) {
         stepper.setCurrentPositionAsHomeAndStop();
         stepper.moveToPositionInMillimeters(-10);
@@ -91,8 +96,9 @@ void homeMotor() {
         }
     }
 
+    // Fall 2: Limit switch not triggered -> Einfahren
     if (check_limitSwitch() == false) {
-        stepper.moveToHomeInRevolutions(-1, SPEED_IN_STEPS_PER_SECOND, 20 * MICROSTEPS, ES_PIN);
+        stepper.moveToHomeInMillimeters(-1, SPEED_IN_STEPS_PER_SECOND, maxDistanceToMoveInMillimeters + 5.0, ES_PIN);
         while (stepper.motionComplete() == false) {
             delay(1);
         }
@@ -102,5 +108,13 @@ void homeMotor() {
             delay(1);
         }
         stepper.setCurrentPositionAsHomeAndStop();
+
+        // Geschwindigkeiten normal machen
+        stepper.setSpeedInStepsPerSecond(SPEED_IN_STEPS_PER_SECOND);
+        stepper.setAccelerationInStepsPerSecondPerSecond(ACCELERATION_IN_STEPS_PER_SECOND);
+        stepper.setDecelerationInStepsPerSecondPerSecond(DECELERATION_IN_STEPS_PER_SECOND);
+
+        Neopixel(GREEN);
     }
+    return true;
 }

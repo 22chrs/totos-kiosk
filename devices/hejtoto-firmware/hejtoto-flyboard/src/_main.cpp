@@ -8,26 +8,32 @@
 #include <_global.h>
 
 void setup() {
-    Serial.begin(9600);
+    // delay(5000);
+    // Serial.begin(9600);
     SPI.begin();
     init_LEDs();
+    Neopixel(RED);
 
     init_Fan();
     init_Stepper();
     init_LimitSwitch();
-    init_RS485();
+    // init_RS485();
 
-    Neopixel(BLUE);
     // setupCam();
 
-    // moveMotorAbs(100);
-    // moveMotorAbs(0);
-    pwmFan(0);
-    // homeMotor();
+    homeMotor();
+    // loop_endstopDetected();
+    moveMotorAbs(60.0);
 }
 
 void loop() {
-    // loop_RS485();
-    //  check_limitSwitch();
-    delay(100);
+    // loop_endstopDetected();
+    //  Neopixel(GREEN);
+    //    moveMotorAbs(0);
+    //     loop_endstopDetected();
+    //      loop_RS485();
+    //       check_limitSwitch();
+    //   delay(1000);
+    //   Neopixel(RED);
+    //   delay(1000);
 }

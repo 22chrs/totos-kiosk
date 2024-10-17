@@ -3,12 +3,13 @@
 #ifndef STEPPER_H
 #define STEPPER_H
 
-#include <_global.h>
-#include <TMCStepper.h>
-#include <HardwareSerial.h>
-
 #include <ESP_FlexyStepper.h>
+#include <HardwareSerial.h>
 #include <LimitSwitch.h>
+#include <TMCStepper.h>
+#include <_global.h>
+
+inline ESP_FlexyStepper stepper;
 
 // const float maxTravel = 10000;  // mm //! geraten
 // const long maxSpeed = 6000;     // stp/s
@@ -22,6 +23,8 @@ void init_Stepper();
 
 void loopStepper();
 void moveMotorAbs(float absolutePositionToMoveToInMillimeters);
-
+boolean homeMotor();
+void loop_endstopDetected();
+void targetPositionReachedCallback(long position);
 
 #endif
