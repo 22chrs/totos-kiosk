@@ -21,12 +21,11 @@ void setup() {
 
     // setupCam();
 
-    // homeMotor();
-    Neopixel(RED);
-    // delay(3000);
-    Neopixel(BLUE);
-    //  loop_endstopDetected();
-    // moveMotorAbs(71.0);
+    homeMotor();
+
+    // fadeNeopixel(RED);
+    //   loop_endstopDetected();
+    moveMotorAbs(71.0);
 }
 
 void loop() {
@@ -42,5 +41,5 @@ void loop() {
     //     Neopixel(RED);
     //     delay(1000);
 
-    loop_updateLEDs();
+    updateFadeNeopixel();
 }

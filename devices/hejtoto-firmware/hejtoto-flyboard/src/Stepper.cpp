@@ -72,12 +72,12 @@ void init_Stepper() {
 }
 
 void targetPositionReachedCallback(long position) {
-    Neopixel(GREEN);
+    fadeNeopixel(GREEN);
     // Serial.printf("Stepper reached target position %ld\n", position);
 }
 
 void moveMotorAbs(float absolutePositionToMoveToInMillimeters) {
-    Neopixel(BLUE);
+    fadeNeopixel(BLUE);
     stepper.setTargetPositionInMillimeters(absolutePositionToMoveToInMillimeters * (-1));
 }
 

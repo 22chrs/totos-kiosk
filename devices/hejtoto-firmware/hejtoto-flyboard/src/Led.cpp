@@ -195,5 +195,84 @@ void Neopixel(ColorName colorName) {
     strip.setPixelColor(0, color);  // Set color of the first pixel
     strip.setPixelColor(1, color);  // Set color of the first pixel
     strip.setPixelColor(2, color);  // Set color of the first pixel
-    strip.show();                   // Update the strip to show the color change
+    strip.show();
+
+    // Update the strip to show the color change
+}
+
+// Global variables for fadeNeopixel
+uint32_t fadeTargetColor;              // The target color we're fading to
+int fadeTotalSteps = 100;              // Total number of steps in the fade
+int fadeCurrentStep = 0;               // Current step in the fade
+bool fadeInProgress = false;           // Flag to indicate if fading is in progress
+unsigned long fadePreviousMillis = 0;  // Time since last update
+int fadeInterval = 20;                 // Interval between fade steps in milliseconds
+
+void fadeNeopixel(ColorName colorName) {
+    uint32_t color;
+    switch (colorName) {
+        case RED:
+            color = strip.Color(255, 0, 0);  // Red
+            break;
+        case ORANGE:
+            color = strip.Color(255, 165, 0);  // Orange
+            break;
+        case GREEN:
+            color = strip.Color(0, 255, 0);  // Green
+            break;
+        case BLUE:
+            color = strip.Color(0, 0, 255);  // Blue
+            break;
+        case YELLOW:
+            color = strip.Color(255, 255, 0);  // Yellow
+            break;
+        case PURPLE:
+            color = strip.Color(160, 32, 240);  // Purple
+            break;
+        case PINK:
+            color = strip.Color(255, 105, 180);  // Pink
+            break;
+        case WHITE:
+            color = strip.Color(255, 255, 255);  // White
+            break;
+        case OFF:
+            color = strip.Color(0, 0, 0);  // Off
+            break;
+        default:
+            color = strip.Color(0, 0, 0);  // Default to off if color is unknown
+    }
+
+    fadeTargetColor = color;  // Set the target color for fading
+    fadeCurrentStep = 0;      // Reset the current step
+    fadeInProgress = true;    // Start the fading process
+}
+
+void updateFadeNeopixel() {
+    if (fadeInProgress) {
+        unsigned long currentMillis = millis();
+        if (currentMillis - fadePreviousMillis >= fadeInterval) {
+            fadePreviousMillis = currentMillis;
+
+            // Extract RGB components from the target color
+            uint8_t targetRed = (fadeTargetColor >> 16) & 0xFF;
+            uint8_t targetGreen = (fadeTargetColor >> 8) & 0xFF;
+            uint8_t targetBlue = fadeTargetColor & 0xFF;
+
+            // Calculate the current color based on the fade progress
+            uint8_t currentRed = (targetRed * fadeCurrentStep) / fadeTotalSteps;
+            uint8_t currentGreen = (targetGreen * fadeCurrentStep) / fadeTotalSteps;
+            uint8_t currentBlue = (targetBlue * fadeCurrentStep) / fadeTotalSteps;
+
+            // Set the color for all pixels in the strip
+            for (uint16_t i = 0; i < pixelNumber; i++) {
+                strip.setPixelColor(i, strip.Color(currentRed, currentGreen, currentBlue));
+            }
+            strip.show();
+
+            fadeCurrentStep++;
+            if (fadeCurrentStep > fadeTotalSteps) {
+                fadeInProgress = false;  // Fade complete
+            }
+        }
+    }
 }

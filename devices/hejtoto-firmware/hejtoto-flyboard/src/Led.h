@@ -26,5 +26,7 @@ void setBuiltInLEDState(bool state);
 void loop_updateLEDs();
 void rainbow(uint8_t wait);
 void theaterChaseRainbow(uint8_t wait);
+void fadeNeopixel(ColorName colorName);
+void updateFadeNeopixel();
 
 #endif
