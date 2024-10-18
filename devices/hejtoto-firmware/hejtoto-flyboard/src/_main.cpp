@@ -21,19 +21,26 @@ void setup() {
 
     // setupCam();
 
-    homeMotor();
-    // loop_endstopDetected();
-    moveMotorAbs(60.0);
+    // homeMotor();
+    Neopixel(RED);
+    // delay(3000);
+    Neopixel(BLUE);
+    //  loop_endstopDetected();
+    // moveMotorAbs(71.0);
 }
 
 void loop() {
-    // loop_endstopDetected();
-    //  Neopixel(GREEN);
-    //    moveMotorAbs(0);
-    //     loop_endstopDetected();
-    //      loop_RS485();
-    //       check_limitSwitch();
-    //   delay(1000);
-    //   Neopixel(RED);
-    //   delay(1000);
+    // rainbow(200);
+    //  theaterChaseRainbow(200);
+    //   loop_endstopDetected();
+    //    Neopixel(GREEN);
+    //      moveMotorAbs(0);
+    //       loop_endstopDetected();
+    //        loop_RS485();
+    //         check_limitSwitch();
+    //     delay(1000);
+    //     Neopixel(RED);
+    //     delay(1000);
+
+    loop_updateLEDs();
 }

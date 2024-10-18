@@ -23,5 +23,8 @@ enum ColorName {
 void init_LEDs();
 void Neopixel(ColorName colorName);
 void setBuiltInLEDState(bool state);
+void loop_updateLEDs();
+void rainbow(uint8_t wait);
+void theaterChaseRainbow(uint8_t wait);
 
 #endif

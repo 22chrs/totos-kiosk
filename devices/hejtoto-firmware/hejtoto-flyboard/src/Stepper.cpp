@@ -23,15 +23,15 @@ TMC2209Stepper TMCdriver(&MySerial1, R_SENSE, DRIVER_ADDRESS);
 #define POSITIVE_DIRECTION HIGH  // invert direction
 #define NEGATIVE_DIRECTION LOW   // invert direction
 
-const int MICROSTEPS = 128;
+const int MICROSTEPS = 16;
 
 // !stepper
 const int RESOLUTION = 200;               // Steps/turn
 const float RATIO = (20.0 / 32.0) * 4.0;  // geometry
-const int SPEED_IN_STEPS_PER_SECOND = 5 * RESOLUTION * MICROSTEPS;
-const int ACCELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
-const int DECELERATION_IN_STEPS_PER_SECOND = 800 * MICROSTEPS;
-const float maxDistanceToMoveInMillimeters = 80;
+const int SPEED_IN_STEPS_PER_SECOND = 4 * RESOLUTION * MICROSTEPS;
+const int ACCELERATION_IN_STEPS_PER_SECOND = 1200 * MICROSTEPS;
+const int DECELERATION_IN_STEPS_PER_SECOND = 1200 * MICROSTEPS;
+const float maxDistanceToMoveInMillimeters = 71.0;
 
 // #define RXD1 D6 // <<<<<<<<
 // #define TXD1 D7 // <<<<<<<<<
@@ -40,7 +40,7 @@ void init_Stepper() {
     // SoftSerial.begin(115200);
     MySerial1.begin(115200, SERIAL_8N1, D6, D7);
 
-    delay(500);
+    delay(100);
     // TMCdriver.beginSerial(11520); // Initialize UART
 
     pinMode(EN_PIN, OUTPUT);
@@ -90,7 +90,7 @@ boolean homeMotor() {
     // Optional -> Fall 1: Limit switch triggered -> Rausfahren
     if (check_limitSwitch() == true) {
         stepper.setCurrentPositionAsHomeAndStop();
-        stepper.moveToPositionInMillimeters(-10);
+        stepper.moveToPositionInMillimeters(-12);
         while (stepper.motionComplete() == false) {
             delay(1);
         }
@@ -98,12 +98,12 @@ boolean homeMotor() {
 
     // Fall 2: Limit switch not triggered -> Einfahren
     if (check_limitSwitch() == false) {
-        stepper.moveToHomeInMillimeters(-1, SPEED_IN_STEPS_PER_SECOND, maxDistanceToMoveInMillimeters + 5.0, ES_PIN);
+        stepper.moveToHomeInMillimeters(-1, SPEED_IN_STEPS_PER_SECOND, maxDistanceToMoveInMillimeters, ES_PIN);
         while (stepper.motionComplete() == false) {
             delay(1);
         }
         stepper.setCurrentPositionAsHomeAndStop();
-        stepper.moveToPositionInMillimeters(5);
+        stepper.moveToPositionInMillimeters(10);
         while (stepper.motionComplete() == false) {
             delay(1);
         }
