@@ -9,3 +9,10 @@ URCaps SDK
 install.sh      - The script for installing the api and archetype in your local maven repository. Run this first.
 newURCap.sh     - The script for creating a URCap in your current working directory
 upgradeURCap.sh - The script for updating an existing URCap (project) to specify which robot series the URCap is compatible with
+
+
+1. wsl ubuntu installieren
+2. über wsl terminal in vsc code auf gemountede git zugreifen
+3. auf linux java installieren und maven
+4. script dos2unix machen falls noch nötig
+5. script ausfürhen
