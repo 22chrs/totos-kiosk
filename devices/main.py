@@ -3,7 +3,7 @@ import time
 
 from usbserial.usbserial import ConnectionManager, SerialCommandForwarder, TeensyController
 from orchestra.orchestra import homeAllDevices, start_orchestra
-from websocket.websocket import start_websocket_server, check_connections_periodically, clients, HOST_NAME
+from websocket.websocket import start_websocket_server, check_connections_periodically,send_message_from_host, clients, HOST_NAME
 from payment.payment_lib import schedule_end_of_day_job, handle_order
 
 # Serial management
@@ -13,16 +13,29 @@ async def manage_usb_serial(usb_manager, command_forwarder):
     asyncio.create_task(command_forwarder.monitor_and_forward())  # Start monitoring and forwarding commands as a background task
 
 # Function to wait until all clients are connected
+# Function to wait until all clients are connected, sending a message "hello" to "toto" every 3 seconds
 async def wait_until_all_clients_connected(client_names):
+    hello_interval = 2  # Interval in seconds to send "hello" to "toto"
+    last_hello_time = time.time()
+
     while True:
         all_connected = True
         for client_name in client_names:
             if client_name not in clients:
                 all_connected = False
                 print(f"Waiting for client {client_name} to connect...")
+        
+        # Send "hello" to "toto" every 3 seconds
+        if "toto" in clients and time.time() - last_hello_time >= hello_interval:
+            print("Sent 'hello' to 'toto'")
+            await send_message_from_host("toto", "hallo2")
+            
+            last_hello_time = time.time()
+
         if all_connected:
             print("All specified clients are connected.")
             return
+
         await asyncio.sleep(1)
 
 async def main():

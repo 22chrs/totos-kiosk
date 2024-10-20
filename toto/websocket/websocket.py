@@ -3,10 +3,19 @@ import websockets
 import json
 import os
 import ssl
+import logging
+
+# Configure logging for essential output
+logging.basicConfig(
+    level=logging.INFO,  # Set to INFO to capture essential logs
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 websocket_global = None
 
 def is_running_in_docker():
+    """Check if the code is running inside a Docker container."""
     return os.getenv('RUNNING_IN_DOCKER') == 'true'
 
 # Client connection handling function
@@ -21,32 +30,47 @@ async def client(uri: str, alias: str):
             ssl_context.check_hostname = False
             ssl_context.verify_mode = ssl.CERT_NONE
 
+        logging.info(f"Attempting to connect to WebSocket server at {uri} as '{alias}'")
         async with websockets.connect(uri, ssl=ssl_context) as websocket:
             websocket_global = websocket
             await websocket.send(alias)
-            print(f"Connected to host '{uri}' as '{alias}'")
+            logging.info(f"Connected to host '{uri}' as '{alias}'")
 
             # Message receiving loop
             async def receive_loop():
                 while True:
                     try:
                         message = await websocket.recv()
-                        data = json.loads(message)
-                        print(f"{data['from']}: {data['message']}")
-                    except websockets.ConnectionClosed:
-                        print(f"Disconnected from host '{uri}'")
+                        #print(f"Raw incoming message: {message}")
+
+                        if not message:
+                            logging.warning("Received an empty message.")
+                            continue
+
+                        # Attempt to parse the message as JSON
+                        try:
+                            data = json.loads(message)
+                            sender = data.get('from', 'unknown')
+                            content = data.get('message', '')
+                            print(f"{sender}: {content}")
+                        except json.JSONDecodeError:
+                            # Handle non-JSON messages
+                            print(f"Server: {message}")
+
+                    except websockets.ConnectionClosed as cc:
+                        logging.warning(f"Disconnected from host '{uri}': {cc}")
                         break
                     except Exception as e:
-                        print(f"Error receiving message: {e}")
+                        logging.error(f"Error receiving message: {e}")
                         break
 
             # Run receive_loop
             await receive_loop()
-    except websockets.ConnectionClosed:
-        print(f"Connection to '{uri}' as '{alias}' closed")
+    except websockets.ConnectionClosed as cc:
+        logging.warning(f"Connection to '{uri}' as '{alias}' closed: {cc}")
     except Exception as e:
-        print(f"WebSocket client '{alias}' encountered an error: {e}")
-        print("Retrying in 2 seconds...")
+        logging.error(f"WebSocket client '{alias}' encountered an error: {e}")
+        logging.info("Retrying in 2 seconds...")
         await asyncio.sleep(2)
 
 # Function to send a message
@@ -54,14 +78,15 @@ async def send_message(target: str, message: str) -> bool:
     global websocket_global
     if websocket_global:
         try:
-            await websocket_global.send(json.dumps({"target": target, "message": message}))
+            payload = json.dumps({"target": target, "message": message})
+            await websocket_global.send(payload)
             print(f"Sent to {target}: {message}")
             return True
         except Exception as e:
-            print(f"Error sending message: {e}")
+            logging.error(f"Error sending message: {e}")
             return False
     else:
-        print("WebSocket is not connected.")
+        logging.warning("WebSocket is not connected.")
     return False
 
 # Main function to handle WebSocket connection
@@ -69,18 +94,25 @@ async def websocket_main():
     # Determine if running inside Docker
     if is_running_in_docker():
         uri = os.environ.get("WEBSOCKET_SERVER_URI", "wss://localhost:8765")
+        logging.info("Running inside Docker.")
     else:
         uri = os.environ.get("WEBSOCKET_SERVER_URI", "ws://localhost:8765")
+        logging.info("Running outside Docker.")
+    
     alias = os.environ.get("CLIENT_ALIAS", "toto")
+    logging.info(f"Client alias set to '{alias}'")
 
     while True:
         try:
-            print(f"Attempting to connect '{alias}' to {uri}")
             await client(uri, alias)
         except Exception as e:
-            print(f"Connection error: {e}")
-            print("Retrying in 2 seconds...")
+            logging.error(f"Connection error: {e}. Retrying in 2 seconds...")
             await asyncio.sleep(2)
 
 if __name__ == "__main__":
-    asyncio.run(websocket_main())
+    try:
+        asyncio.run(websocket_main())
+    except KeyboardInterrupt:
+        logging.info("WebSocket client terminated by user.")
+    except Exception as e:
+        logging.critical(f"Unhandled exception: {e}")

@@ -11,7 +11,7 @@ if __name__ == '__main__':
         while True:
             await asyncio.sleep(5)
             await send_message("devices", "Hallo Devices! (by toto)")
-            #await send_message("orchester", "Hallo Orchester! (by devices)")
+
  
     loop.create_task(websocket_main())
     loop.create_task(send_periodically())
