@@ -15,14 +15,17 @@ else:
     print("Unsupported operating system")
     exit(1)
 
-resolution = os.getenv('RESOLUTION', '640x480').split('x')
+# Configuration settings
+resolution = os.getenv('RESOLUTION', '1920x1080').split('x')
 frame_rate = int(os.getenv('FRAME_RATE', 30))
 stream_port = int(os.getenv('STREAM_PORT', 8081))
+enable_face_tracking = os.getenv('ENABLE_FACE_TRACKING', 'True').lower() in ['true', '1', 'yes']
 
 print(f"Device: {device}")
 print(f"Resolution: {resolution[0]}x{resolution[1]}")
 print(f"Frame Rate: {frame_rate}")
 print(f"Stream Port: {stream_port}")
+print(f"Face Tracking Enabled: {enable_face_tracking}")
 
 app = Flask(__name__)
 
@@ -37,10 +40,12 @@ def gen_frames():
         print(f"Error: Could not open video device {device}")
         return
 
-    # Load detection models
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    hog = cv2.HOGDescriptor()
-    hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+    # Load detection models if face tracking is enabled
+    if enable_face_tracking:
+        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        if face_cascade.empty():
+            print("Error: Failed to load face cascade classifier.")
+            return
 
     try:
         while True:
@@ -49,22 +54,16 @@ def gen_frames():
                 print("Warning: Failed to read frame from camera.")
                 break
 
-            # Convert to grayscale for face detection
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            if enable_face_tracking:
+                # Convert to grayscale for face detection
+                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            # Face detection
-            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+                # Face detection
+                faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-            # Draw rectangles around faces
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-
-            # Human detection
-            rects, weights = hog.detectMultiScale(frame, winStride=(8, 8), padding=(16, 16), scale=1.05)
-
-            # Draw rectangles around humans
-            for (x, y, w, h) in rects:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                # Draw rectangles around faces
+                for (x, y, w, h) in faces:
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
             # Encode the processed frame
             ret, jpeg = cv2.imencode('.jpg', frame)

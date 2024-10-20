@@ -1,0 +1,5 @@
+setup.py
+URBasic.egg-info/PKG-INFO
+URBasic.egg-info/SOURCES.txt
+URBasic.egg-info/dependency_links.txt
+URBasic.egg-info/top_level.txt

@@ -1,0 +1,55 @@
+def P02_move_back():
+  global _hidden_verificationVariable=0
+  set_tcp(p[5.985810787446089E-4,0.0020402095158835107,0.17719534435995413,0.0,0.0,0.0])
+  set_target_payload(0.001000, [0.000000, 0.000000, 0.000000], [0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000])
+  set_gravity([0.0, 0.0, 9.82])
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tool_communication(True, 115200, 0, 1, 1.5, 3.5)
+  set_tool_output_mode(0)
+  set_tool_digital_output_mode(0, 1)
+  set_tool_digital_output_mode(1, 1)
+  set_tool_voltage(0)
+  modbus_add_signal("192.168.1.101", 255, 0, 2, "MODBUS_1", False)
+  modbus_set_signal_update_frequency("MODBUS_1", 10)
+  modbus_add_signal("192.168.1.101", 255, 0, 2, "MODBUS_2", False)
+  modbus_set_signal_update_frequency("MODBUS_2", 10)
+  set_safety_mode_transition_hardness(1)
+  global tschauhome=p[0.09193868628606418,-0.13209828878395144,0.693632573899399,-1.2079453233871906,1.2128578750035333,-1.2059658490999983]
+  # begin: URCap Installation Node
+  #   Source: rs485, 1.0.0, FZI Research Center for Information Technology
+  #   Type: RS485
+  global rs485=rpc_factory("xmlrpc", "http://127.0.0.1:40404/RPC2")
+  # end: URCap Installation Node
+  step_count_6a4602c5_03c8_463d_b97e_291158d06dcc = 0.0
+  thread Step_Counter_Thread_8e45c07e_5a0f_4581_aaa8_6e706ffab64d():
+    while (True):
+      step_count_6a4602c5_03c8_463d_b97e_291158d06dcc = step_count_6a4602c5_03c8_463d_b97e_291158d06dcc + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_8e45c07e_5a0f_4581_aaa8_6e706ffab64d()
+  global Waypoint_1_p=p[.575733719395, .184926780380, .281887925312, -1.173238564604, 1.193147490740, -1.182745571071]
+  global Waypoint_1_q=[0.9105284214019775, -2.3403812847533167, -1.4871563911437988, 0.730358286494873, 0.679535448551178, 2.067089080810547E-4]
+  global Waypoint_2_p=p[.522926034477, .136496984824, .527647843806, -1.130039202271, 1.291128556083, -1.272024326390]
+  global Waypoint_2_q=[1.0232337713241577, -1.868136545220846, -1.0016299486160278, -0.2430998843959351, 0.443634033203125, 2.886652946472168E-4]
+  global Waypoint_3_p=p[.143762640272, -.374264251201, .656272154156, -.001196149760, 2.061481675260, -1.760472539483]
+  global Waypoint_3_q=[0.6084626913070679, -1.685937067071432, 0.21206647554506475, -1.3286848825267334, -0.29922181764711553, 2.61741632129997E-4]
+  global Waypoint_4_p=p[-.000932909177, -.401534940406, .690224131600, -.000506989542, -2.227681460306, 2.214751553516]
+  global Waypoint_4_q=[5.7563338486943394E-5, -1.5707980595030726, -4.4086555135436356E-5, -1.5707554902695229, -2.175966371709137E-5, 1.5974044799804688E-5]
+  $ 1 "Robot Program"
+  $ 2 "MoveJ"
+  $ 3 "Waypoint_1" "breakAfter"
+  movej(get_inverse_kin(Waypoint_1_p, qnear=Waypoint_1_q), a=1.3962634015954636, v=1.0471975511965976)
+  $ 4 "Waypoint_2" "breakAfter"
+  movej(get_inverse_kin(Waypoint_2_p, qnear=Waypoint_2_q), a=1.3962634015954636, v=1.0471975511965976)
+  $ 5 "Waypoint_3" "breakAfter"
+  movej(get_inverse_kin(Waypoint_3_p, qnear=Waypoint_3_q), a=1.3962634015954636, v=1.0471975511965976)
+  $ 6 "Waypoint_4" "breakAfter"
+  movej(get_inverse_kin(Waypoint_4_p, qnear=Waypoint_4_q), a=1.3962634015954636, v=1.0471975511965976)
+end

@@ -1,16 +1,6 @@
-# example to send a basic ur script file
-
-# UPDATE in realTimeClient.py 
-# we added this function at the end of the realTimeClient.py
-# def wait_for_program_finish(self):
-#         if self.__thread is not None:
-#             self.__thread.join()
-
 import URBasic
-import time
 import threading
 
-#ROBOT_IP = "192.168.178.83"
 ROBOT_IP = '192.168.1.124'
 ACCELERATION = 0.3  # Robot acceleration value
 VELOCITY = 0.5  # Robot speed value

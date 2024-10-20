@@ -4,7 +4,6 @@
 **/env/
 **/.pytest_cache/
 **/__pycache__/
-**/__init__.py/
 **/CMakeFiles/
 **/.next/
 **/.vscode/

@@ -79,3 +79,7 @@ services:
       - "shared-certs:/certs" # Mount the shared volume
     depends_on:
       - certs
+    ports:
+      - "30004:30004" # RTDE default port
+      - "29999:29999" # UR Script Interface (optional, depends on your use case)
+      - "50002:50002" # Secondary interface (optional)
