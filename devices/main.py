@@ -12,11 +12,9 @@ async def manage_usb_serial(usb_manager, command_forwarder):
     await usb_manager.start()
     asyncio.create_task(command_forwarder.monitor_and_forward())  # Start monitoring and forwarding commands as a background task
 
-# Function to wait until all clients are connected
-# Function to wait until all clients are connected, sending a message "hello" to "toto" every 3 seconds
 async def wait_until_all_clients_connected(client_names):
-    hello_interval = 2  # Interval in seconds to send "hello" to "toto"
-    last_hello_time = time.time()
+    # hello_interval = 2  # Interval in seconds to send "hello" to "toto"
+    # last_hello_time = time.time()
 
     while True:
         all_connected = True
@@ -26,11 +24,11 @@ async def wait_until_all_clients_connected(client_names):
                 print(f"Waiting for client {client_name} to connect...")
         
         # Send "hello" to "toto" every 3 seconds
-        if "toto" in clients and time.time() - last_hello_time >= hello_interval:
-            print("Sent 'hello' to 'toto'")
-            await send_message_from_host("toto", "hallo2")
+        # if "toto" in clients and time.time() - last_hello_time >= hello_interval:
+        #     print("Sent 'hello' to 'toto'")
+        #     await send_message_from_host("toto", "hallo2")
             
-            last_hello_time = time.time()
+        #     last_hello_time = time.time()
 
         if all_connected:
             print("All specified clients are connected.")

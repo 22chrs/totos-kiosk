@@ -19,17 +19,10 @@ def is_running_in_docker():
     return os.getenv('RUNNING_IN_DOCKER') == 'true'
 
 # Client connection handling function
-async def client(uri: str, alias: str):
+async def client(uri: str, alias: str, ssl_context=None):
     global websocket_global
-    try:
-        ssl_context = None
-        if uri.startswith('wss://'):
-            # Create an SSL context for secure connections
-            ssl_context = ssl.create_default_context()
-            # For self-signed certificates (not recommended for production)
-            ssl_context.check_hostname = False
-            ssl_context.verify_mode = ssl.CERT_NONE
 
+    try:
         logging.info(f"Attempting to connect to WebSocket server at {uri} as '{alias}'")
         async with websockets.connect(uri, ssl=ssl_context) as websocket:
             websocket_global = websocket
@@ -91,20 +84,38 @@ async def send_message(target: str, message: str) -> bool:
 
 # Main function to handle WebSocket connection
 async def websocket_main():
-    # Determine if running inside Docker
-    if is_running_in_docker():
-        uri = os.environ.get("WEBSOCKET_SERVER_URI", "wss://localhost:8765")
-        logging.info("Running inside Docker.")
-    else:
-        uri = os.environ.get("WEBSOCKET_SERVER_URI", "ws://localhost:8765")
-        logging.info("Running outside Docker.")
-    
-    alias = os.environ.get("CLIENT_ALIAS", "toto")
+    # Retrieve server host from environment variable or default to 'localhost'
+    server_host = os.getenv('SERVER_HOST', 'localhost')  # Critical: Do not use '0.0.0.0'
+    port = int(os.getenv('PORT', 8765))
+
+    alias = os.getenv("CLIENT_ALIAS", "toto")
     logging.info(f"Client alias set to '{alias}'")
+
+    ssl_context = None
+    if is_running_in_docker():
+        uri = f"wss://{server_host}:{port}"
+        ssl_cert_path = '/certs/devices.pem'
+        ssl_key_path = '/certs/devices-key.pem'
+        ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        try:
+            ssl_context.load_cert_chain(ssl_cert_path, ssl_key_path)
+            logging.info(f"Loaded SSL certificates from {ssl_cert_path} and {ssl_key_path}")
+        except Exception as e:
+            logging.error(f"Failed to load SSL certificates: {e}")
+            # Depending on your setup, you might want to proceed without SSL or terminate
+            return
+
+        # For self-signed certificates (not recommended for production)
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+    else:
+        uri = f"ws://{server_host}:{port}"
+
+    logging.info(f"WebSocket URI set to '{uri}'")
 
     while True:
         try:
-            await client(uri, alias)
+            await client(uri, alias, ssl_context)
         except Exception as e:
             logging.error(f"Connection error: {e}. Retrying in 2 seconds...")
             await asyncio.sleep(2)

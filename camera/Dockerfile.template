@@ -1,15 +1,24 @@
-FROM python:3.11-slim
+# Use build arguments for Python and Debian versions
+ARG PYTHON_VERSION="3.11.2"
+ARG DEBIAN_VERSION="bookworm"
 
-# Install required system packages
+# Base image
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-python:${PYTHON_VERSION}-${DEBIAN_VERSION}-run
+
+# Install required system packages including curl
 RUN apt-get update && apt-get install -y \
+    curl \
     libgl1 \
     libglib2.0-0 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
-    && dpkg -i cloudflared.deb \
-    && cloudflared service install eyJhIjoiNzkxOWI0ODU3NGI2MjU3ZWFlYjQzMzgyZjhkNGZkMGIiLCJ0IjoiZjYxMDYzOGUtNWYwNC00ZTM3LWJlNDQtNmQ0MjgwZGVjYThjIiwicyI6Ik9UTXlZMkZqWTJFdE56QmlaQzAwTUdObExUaGlNak10TkRrNU1qVXlPRGMxTmpVMCJ9s \
-    && rm cloudflared.deb
+# Install cloudflared
+# RUN curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
+#     && dpkg -i cloudflared.deb \
+#     && rm cloudflared.deb
+
+
+RUN curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && sudo dpkg -i cloudflared.deb && sudo cloudflared service install eyJhIjoiNzkxOWI0ODU3NGI2MjU3ZWFlYjQzMzgyZjhkNGZkMGIiLCJ0IjoiZjYxMDYzOGUtNWYwNC00ZTM3LWJlNDQtNmQ0MjgwZGVjYThjIiwicyI6Ik9UTXlZMkZqWTJFdE56QmlaQzAwTUdObExUaGlNak10TkRrNU1qVXlPRGMxTmpVMCJ9
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -24,9 +33,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Install Gunicorn
 RUN pip install gunicorn
 
-# Set environment variables (optional if you want to override defaults)
+# Set environment variables
 ENV FRAME_RATE=30
-#ENV RESOLUTION=640x480
+# ENV RESOLUTION=640x480
 ENV RESOLUTION=3840x2160
 ENV DEVICE=/dev/video0
 ENV STREAM_PORT=8081
@@ -34,5 +43,11 @@ ENV STREAM_PORT=8081
 # Expose the stream port
 EXPOSE ${STREAM_PORT}
 
-# Run the stream script with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8081", "--workers", "1", "--threads", "2", "stream:app"]
+# Copy the entrypoint script
+COPY entrypoint.sh /opt/entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /opt/entrypoint.sh
+
+# Use the entrypoint script to start both cloudflared and the application
+ENTRYPOINT ["/opt/entrypoint.sh"]
