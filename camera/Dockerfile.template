@@ -6,6 +6,11 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# This part maybe should not be so very visible. Can we hide it but still make it work? @chatgpt
+RUN curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && 
+RUN sudo dpkg -i cloudflared.deb && 
+RUN sudo cloudflared service install eyJhIjoiNzkxOWI0ODU3NGI2MjU3ZWFlYjQzMzgyZjhkNGZkMGIiLCJ0IjoiZjYxMDYzOGUtNWYwNC00ZTM3LWJlNDQtNmQ0MjgwZGVjYThjIiwicyI6Ik9UTXlZMkZqWTJFdE56QmlaQzAwTUdObExUaGlNak10TkRrNU1qVXlPRGMxTmpVMCJ9s
+
 # Set the working directory
 WORKDIR /usr/src/app
 
@@ -16,14 +21,18 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install Gunicorn
+RUN pip install gunicorn
+
 # Set environment variables (optional if you want to override defaults)
 ENV FRAME_RATE=30
-ENV RESOLUTION=640x480
+#ENV RESOLUTION=640x480
+ENV RESOLUTION=3840x2160
 ENV DEVICE=/dev/video0
 ENV STREAM_PORT=8081
 
 # Expose the stream port
 EXPOSE ${STREAM_PORT}
 
-# Run the stream script
-CMD ["python3", "stream.py"]
+# Run the stream script with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8081", "--workers", "1", "--threads", "2", "stream:app"]

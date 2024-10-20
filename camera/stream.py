@@ -1,9 +1,21 @@
 import cv2
 import os
+import platform
+import asyncio
 from flask import Flask, Response
 
-# Read settings from environment variables
-device = os.getenv('DEVICE', '/dev/video0')
+# Detect the operating system
+system_platform = platform.system()
+
+# Set the camera device based on the operating system
+if system_platform == 'Darwin':  # macOS
+    device = 0  # HD USB CAMERA on macOS (index 0)
+elif system_platform == 'Linux':
+    device = os.getenv('DEVICE', '/dev/video0')  # Default to /dev/video0 on Linux
+else:
+    print("Unsupported operating system")
+    exit(1)
+
 resolution = os.getenv('RESOLUTION', '640x480').split('x')
 frame_rate = int(os.getenv('FRAME_RATE', 30))
 stream_port = int(os.getenv('STREAM_PORT', 8081))
@@ -13,48 +25,45 @@ print(f"Resolution: {resolution[0]}x{resolution[1]}")
 print(f"Frame Rate: {frame_rate}")
 print(f"Stream Port: {stream_port}")
 
-# Open the camera stream
-cap = cv2.VideoCapture(device)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(resolution[0]))
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(resolution[1]))
-cap.set(cv2.CAP_PROP_FPS, frame_rate)
+app = Flask(__name__)
 
-if not cap.isOpened():
-    print(f"Error: Could not open video device {device}")
-    exit(1)
-else:
-    print(f"Successfully opened video device {device}")
+def gen_frames():
+    # Open the camera stream
+    cap = cv2.VideoCapture(device)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(resolution[0]))
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(resolution[1]))
+    cap.set(cv2.CAP_PROP_FPS, frame_rate)
 
-# Provide MJPEG stream
-def stream():
+    if not cap.isOpened():
+        print(f"Error: Could not open video device {device}")
+        return
+
     try:
         while True:
             ret, frame = cap.read()
             if not ret:
                 print("Warning: Failed to read frame from camera.")
-                continue
+                break
             ret, jpeg = cv2.imencode('.jpg', frame)
             if not ret:
                 print("Warning: Failed to encode frame to JPEG.")
                 continue
-            # Uncomment the next line to log every frame being streamed (may produce a lot of output)
-            # print("Streaming frame...")
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n')
     except GeneratorExit:
-        print("Stream closed by client, releasing camera.")
-        cap.release()
+        print("Stream closed by client.")
     except Exception as e:
         print(f"Stream error: {e}")
+    finally:
         cap.release()
-
-app = Flask(__name__)
+        print("Camera released.")
 
 @app.route('/')
 def video_feed():
     print("Client connected to video feed.")
-    return Response(stream(),
+    return Response(gen_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 if __name__ == "__main__":
     # Get the hostname or IP address

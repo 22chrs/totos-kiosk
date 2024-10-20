@@ -1,6 +1,6 @@
 
 1. Virtuelle Umgebung installieren
-    - python3 -m venv venv  
+    - python3 -m venv venv
 2. Virtuelle Umgebung aktiveren
     - source venv/bin/activate
 3. Requirments installieren
