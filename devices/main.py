@@ -37,7 +37,7 @@ async def main():
     )
 
     # Wait until all specified clients are connected
-    await wait_until_all_clients_connected(["app_front", "app_back"])
+    await wait_until_all_clients_connected(["app_front", "app_back"]) #! ### toto
 
     # Serial
     if debug:

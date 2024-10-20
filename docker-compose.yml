@@ -70,13 +70,12 @@ services:
     ports:
       - "8081:8081"
 
-  # toto:
-  #   hostname: toto
-  #   build: ./toto
-  #   restart: always
-  #   privileged: true
-  #   volumes:
-  #     - "shared-certs:/certs" # Mount the shared volume
-  #   depends_on:
-  #     - app
-  #     - certs
+  toto:
+    hostname: toto
+    build: ./toto
+    restart: always
+    privileged: true
+    volumes:
+      - "shared-certs:/certs" # Mount the shared volume
+    depends_on:
+      - certs

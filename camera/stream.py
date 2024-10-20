@@ -1,7 +1,6 @@
 import cv2
 import os
 import platform
-import asyncio
 from flask import Flask, Response
 
 # Detect the operating system
@@ -38,16 +37,41 @@ def gen_frames():
         print(f"Error: Could not open video device {device}")
         return
 
+    # Load detection models
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    hog = cv2.HOGDescriptor()
+    hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+
     try:
         while True:
             ret, frame = cap.read()
             if not ret:
                 print("Warning: Failed to read frame from camera.")
                 break
+
+            # Convert to grayscale for face detection
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+            # Face detection
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+            # Draw rectangles around faces
+            for (x, y, w, h) in faces:
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+
+            # Human detection
+            rects, weights = hog.detectMultiScale(frame, winStride=(8, 8), padding=(16, 16), scale=1.05)
+
+            # Draw rectangles around humans
+            for (x, y, w, h) in rects:
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+            # Encode the processed frame
             ret, jpeg = cv2.imencode('.jpg', frame)
             if not ret:
                 print("Warning: Failed to encode frame to JPEG.")
                 continue
+
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n')
     except GeneratorExit:
@@ -63,7 +87,6 @@ def video_feed():
     print("Client connected to video feed.")
     return Response(gen_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-
 
 if __name__ == "__main__":
     # Get the hostname or IP address
