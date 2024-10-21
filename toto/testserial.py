@@ -16,7 +16,7 @@ logging.basicConfig(
 
 # RS485 configuration
 RS485_PORT = '/dev/tty.usbmodem586D0047721'  # Replace with your actual port
-BAUD_RATE = 115200  # Ensure this matches your RS485 device's baud rate
+BAUD_RATE = 9600  # Ensure this matches your RS485 device's baud rate
 
 def configure_rs485():
     try:

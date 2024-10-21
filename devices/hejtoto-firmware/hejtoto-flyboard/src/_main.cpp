@@ -8,7 +8,7 @@
 #include <_global.h>
 
 void setup() {
-    // delay(5000);
+    delay(15000);
     // Serial.begin(9600);
     SPI.begin();
     init_LEDs();
@@ -17,7 +17,7 @@ void setup() {
     init_Fan();
     init_Stepper();
     init_LimitSwitch();
-    // init_RS485();
+    init_RS485();
 
     // setupCam();
 
@@ -41,5 +41,6 @@ void loop() {
     //     Neopixel(RED);
     //     delay(1000);
 
-    updateFadeNeopixel();
+    loop_RS485();
+    // updateFadeNeopixel();
 }
