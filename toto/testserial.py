@@ -56,7 +56,11 @@ def listen_serial(ser):
         while True:
             if ser.in_waiting:
                 data = ser.read(ser.in_waiting)
-                logging.info(f"Received: {data}")
+                try:
+                    decoded_data = data.decode('utf-8')
+                    logging.info(f"Received: {decoded_data}")
+                except UnicodeDecodeError:
+                    logging.warning(f"Received undecodable bytes: {data}")
             time.sleep(0.1)  # Adjust the sleep duration as needed
     except serial.SerialException as e:
         logging.error(f"SerialException during listening: {e}")
@@ -67,7 +71,11 @@ def send_message_periodically(ser, interval=5):
     try:
         while True:
             message = b'Hello RS485'
-            logging.info(f"Sending message: {message}")
+            try:
+                decoded_message = message.decode('utf-8')
+                logging.info(f"Sending message: {decoded_message}")
+            except UnicodeDecodeError:
+                logging.warning(f"Sending undecodable bytes: {message}")
             ser.write(message)
             time.sleep(interval)  # Send message every 'interval' seconds
     except serial.SerialException as e:
@@ -88,7 +96,7 @@ def main():
 
     # Start sending messages periodically in the main thread
     try:
-        send_message_periodically(ser, interval=5)
+        send_message_periodically(ser, interval=3)
     except KeyboardInterrupt:
         logging.info("Interrupted by user. Exiting...")
     finally:
