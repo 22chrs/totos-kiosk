@@ -1,3 +1,5 @@
+# realTimeClient.py
+
 '''
 Python 3.x library to control an UR robot through its TCP/IP interfaces
 Copyright (C) 2017  Martin Huus Bjerge, Rope Robotics ApS, Denmark
@@ -32,6 +34,7 @@ import select
 import re
 import numpy as np
 import time
+import queue
 
 DEFAULT_TIMEOUT = 1.0
 
@@ -84,6 +87,9 @@ class RealTimeClient(object):
             self.__logger.info('RT_CLient constructor done')
         else:
             self.__logger.info('RT_CLient constructor done but not connected')
+
+        #! Initialize the script queue and worker thread 
+        self.__init_new_code()
         
     def __connect(self):
         '''
@@ -311,26 +317,148 @@ class RealTimeClient(object):
 
 ### NEW CODE HERE:
 
+    def __init_new_code(self):
+        """
+        Initialize the script queue and start the worker thread.
+        This method is called from the existing __init__ method.
+        """
+        self.__script_queue = queue.Queue()
+        self.__script_worker = threading.Thread(target=self.__process_script_queue, daemon=True)
+        self.__script_worker.start()
+        self.__logger.info('Script queue and worker thread initialized.')
+
+    def __process_script_queue(self):
+        """
+        Worker thread method that processes scripts from the queue sequentially.
+        Each item in the queue is a tuple of (programName, event).
+        """
+        while True:
+            item = self.__script_queue.get()
+            if item is None:
+                # None is the signal to terminate the worker thread
+                self.__logger.info('Worker thread received shutdown signal.')
+                self.__script_queue.task_done()
+                break
+            programName, event = item
+            self.__logger.info(f"Processing script: {programName}")
+            self.sendScript_blocking(programName)
+            self.__logger.info(f"Finished processing script: {programName}")
+            event.set()  # Signal that the script has been processed
+            self.__script_queue.task_done()
+
+    def sendScriptwithLineup(self, programName):
+        '''
+        Enqueue a script to be sent to the robot. Scripts are executed in the order they are received.
+        If a script is already running, the new script is queued and executed after the current one finishes.
+        This function blocks until the script execution is completed and returns True.
+
+        Input parameters:
+        programName (string): The name of the script file (without extension).
+
+        Example:
+        rob.sendScriptwithLineup('move1')
+        rob.sendScriptwithLineup('move2')
+        '''
+        event = threading.Event()
+        self.__script_queue.put( (programName, event) )
+        self.__logger.info(f"Script '{programName}' has been enqueued for execution.")
+        event.wait()  # Wait until the script has been processed
+        self.__logger.info(f"Script '{programName}' has been fully executed.")
+        return True
+
+    def sendScript_blocking(self, programName):
+        '''
+        Load and send the script to the robot. This method blocks until the script execution is finished.
+
+        Input parameters:
+        programName (string): The name of the script file (without extension).
+
+        Example:
+        self.sendScript_blocking('move1')
+        '''
+        self.__logger.info(f"Loading script: {programName}")
+        try:
+            with open(f'./scripts/{programName}.script', 'r') as file:
+                script = file.read()
+        except FileNotFoundError:
+            self.__logger.error(f"Script file '{programName}.script' not found.")
+            return
+        except Exception as e:
+            self.__logger.error(f"Error reading script file '{programName}.script': {e}")
+            return
+
+        # Send the script
+        self.SendProgram(script)
+        self.__logger.info(f"Script '{programName}' sent to robot.")
+        self.wait_for_program_finish()
+        self.__logger.info(f"Script '{programName}' execution completed.")
+
+    def sendScript(self, programName):
+        '''
+        Send a script to the robot asynchronously without queuing. If a script is already running,
+        it will be stopped, and the new script will start immediately.
+
+        Input parameters:
+        programName (string): The name of the script file (without extension).
+
+        Example:
+        rob.sendScript('move1')
+        '''
+        script_thread = threading.Thread(target=self.sendScript_blocking, args=(programName,))
+        script_thread.start()
+        self.__logger.info(f"Script '{programName}' has been sent asynchronously.")
+
     def wait_for_program_finish(self):
+        '''
+        Wait for the current program to finish executing.
+        '''
         if self.__thread is not None:
             self.__thread.join()
 
-    def sendScript_blocking(self, programName):
-        # Load the script file
-        print("hello")
-        with open(f'./scripts/{programName}.script', 'r') as file:
-            script = file.read()
-        # Send the script
-        self.SendProgram(script)
-        print("script started")
-        self.wait_for_program_finish()
-        print("script finished")
+    def Disconnect(self):
+        '''
+        Disconnect the RT Client connection and gracefully shut down the script worker thread.
+        '''
+        if self.__sock:
+            self.__sock.close()
+            self.__sock = None
+            self.__logger.info('Disconnected from robot.')
+        self.__robotModel.rtcConnectionState = ConnectionState.DISCONNECTED
 
-    def sendScript(self, programName):
-        script_thread = threading.Thread(target=self.sendScript_blocking, args=(programName,))
-        script_thread.start()
-
-    def hello():
-        print("hello hello")
+        # Signal the worker thread to exit by sending None
+        self.__script_queue.put(None)
+        self.__script_worker.join()
+        self.__logger.info('Worker thread has been terminated.')
+        return True
 
 ### END NEW CODE
+
+
+
+# Example usage
+# if __name__ == "__main__":
+#     # Initialize your RobotModel appropriately
+#     robot_model = URBasic.robotModel.RobotModel(ipAddress='192.168.56.101')  # Example IP
+#     rob = RealTimeClient(robot_model)
+    
+#     # Connect to the robot
+#     if rob.__connect():
+#         rob.__logger.info("Connected to the robot.")
+#     else:
+#         rob.__logger.error("Failed to connect to the robot.")
+
+#     # Enqueue multiple scripts
+#     try:
+#         success1 = rob.sendScriptwithLineup('move1')
+#         print(f"Script 'move1' executed successfully: {success1}")
+
+#         success2 = rob.sendScriptwithLineup('move2')
+#         print(f"Script 'move2' executed successfully: {success2}")
+
+#         success3 = rob.sendScriptwithLineup('move3')
+#         print(f"Script 'move3' executed successfully: {success3}")
+#     except Exception as e:
+#         rob.__logger.error(f"An error occurred while executing scripts: {e}")
+
+#     # Disconnect from the robot
+#     rob.Disconnect()

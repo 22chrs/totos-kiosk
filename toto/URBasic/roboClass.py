@@ -1,14 +1,15 @@
+# RoboClass.py
+
 import URBasic
-import threading
 import time
 
 class RoboClass():
     def __init__(self, ip, acceleration, velocity):
-        # Initialisation of variables
+        # Initialization of variables
         self.acceleration = acceleration
         self.velocity = velocity
 
-        # Initialisation of Robot Model
+        # Initialization of Robot Model
         self.robotModel = URBasic.robotModel.RobotModel()
         self.robot = URBasic.urScriptExt.UrScriptExt(host=ip, robotModel=self.robotModel)
 
@@ -18,58 +19,50 @@ class RoboClass():
         self.robotModel.rt_interface = ip
         self.real_time_client = URBasic.realTimeClient.RealTimeClient(self.robotModel)
         
-        # Power of robot and reset errors
-        #self.robot.print_actual_tcp_pose
+        # Power on robot and reset errors
         self.robot.init_realtime_control()
         time.sleep(1)
         self.robot.reset_error()
-        #self.robot.waitRobotIdleOrStopFlag()
         time.sleep(1)
-        print("Init testClass done.")
-
-
-
-    # def stopPose(self, pose):
-    #     print("stopPose sent")
-    #     self.robot.set_realtime_pose(pose)
+        print("Initialization of RoboClass is complete.")
 
     def movej(self, pose):
-        print("movej sent")
+        print("Executing movej command.")
         self.robot.movej(pose)
 
     def stopj(self, a):
-        print("stopPose")
+        print("Executing stopj command.")
         self.robot.stopj(a)
 
-    def _sendScript_notWaiting(self, programName):
-        # Load the script file
-        with open(f'./scripts/{programName}.script', 'r') as file:
-            script = file.read()
-        # Send the script
-        self.real_time_client.SendProgram(script)
-        print("script sent")
-
-    def _sendScript_blocking(self, programName):
-        self._sendScript_notWaiting(programName)
-        self.real_time_client.wait_for_program_finish()
-        print("script finished")
-
     def sendScript(self, programName):
-        script_thread = threading.Thread(target=self._sendScript_blocking, args=(programName,))
-        script_thread.start()
+        '''
+        Enqueue a script to be sent to the robot. Scripts are executed in the order they are received.
+        If a script is already running, the new script is queued and executed after the current one finishes.
+        This function blocks until the script execution is completed and returns True.
+        '''
+        print(f"Enqueuing script '{programName}' for execution.")
+        success = self.real_time_client.sendScriptwithLineup(programName)
+        if success:
+            print(f"Script '{programName}' executed successfully.")
+        else:
+            print(f"Script '{programName}' failed to execute.")
+        return success
 
     def stopScript(self):
         # Generate a script to stop the robot smoothly
         stop_script = "stopj({})".format(self.acceleration)
         # Send the stop script
         self.real_time_client.SendProgram(stop_script)
-        print("Stop script sent")
+        print("Stop script sent to the robot.")
 
     def powerOn(self):
         self.robot.reset_error()
         time.sleep(1)
-        print("Hej Toto!")
+        print("Robot powered on and errors reset.")
 
     def powerOff(self):
         self.robotDash.ur_shutdown()
-        print("Sleep well.")
+        print("Robot is shutting down.")
+        # Gracefully disconnect
+        self.real_time_client.Disconnect()
+        print("Disconnected from the robot gracefully.")
