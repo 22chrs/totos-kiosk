@@ -344,6 +344,12 @@ class RealTimeClient(object):
             self.sendScript_blocking(programName)
             self.__logger.info(f"Finished processing script: {programName}")
             event.set()  # Signal that the script has been processed
+
+            # Add a small delay before processing the next script
+            small_delay = 0.05  # Delay time in seconds
+            self.__logger.info(f"Waiting for {small_delay} seconds before processing the next script.")
+            time.sleep(small_delay)
+
             self.__script_queue.task_done()
 
     def sendScriptwithLineup(self, programName):
@@ -364,6 +370,7 @@ class RealTimeClient(object):
         self.__logger.info(f"Script '{programName}' has been enqueued for execution.")
         event.wait()  # Wait until the script has been processed
         self.__logger.info(f"Script '{programName}' has been fully executed.")
+        print("DONE!!!")
         return True
 
     def sendScript_blocking(self, programName):

@@ -3,6 +3,7 @@
 from websocket.websocket import websocket_main, send_message
 from URBasic.roboClass import RoboClass
 import asyncio
+import time
 
 ROBOT_IP = '192.168.1.124'
 ACCELERATION = 0.3  # Robot acceleration value
@@ -12,7 +13,11 @@ VELOCITY = 0.5  # Robot speed value
 toto = RoboClass(ip=ROBOT_IP, acceleration=ACCELERATION, velocity=VELOCITY)
 
 if __name__ == '__main__':
-    toto.sendScript('01_move')
+    time.sleep(2) 
+    print("Sending scripts.")
+    success = toto.sendScript('01_move')
+    if success:  # Fixed the typo here
+        print("123")
     toto.sendScript('02_move_back')
 
     #loop = asyncio.get_event_loop()
