@@ -7,4 +7,5 @@ numpy==2.1.2 #1.20.1
 #six==1.16.0 #1.15.0
 #wincertstore==0.2.1 #mybe not used 
 setuptools==75.2.0
-# -e ./URBasic
+-e ./URBasic
+pyserial==3.5
